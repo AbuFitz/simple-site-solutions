@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TypewriterTextProps {
   texts: string[];
@@ -19,6 +19,11 @@ export function TypewriterText({
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Calculate the longest word to set min-width
+  const longestWord = useMemo(() => {
+    return texts.reduce((a, b) => (a.length > b.length ? a : b), "");
+  }, [texts]);
 
   useEffect(() => {
     const text = texts[currentTextIndex];
@@ -44,13 +49,20 @@ export function TypewriterText({
   }, [currentText, isDeleting, currentTextIndex, texts, speed, deleteSpeed, pauseDuration]);
 
   return (
-    <span className={className}>
-      {currentText}
-      <motion.span
-        className="inline-block w-0.5 h-[1em] bg-primary ml-1 align-middle"
-        animate={{ opacity: [1, 0] }}
-        transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
-      />
+    <span className={`inline-block ${className}`}>
+      {/* Invisible text to set the width */}
+      <span className="invisible" aria-hidden="true">
+        {longestWord}
+      </span>
+      {/* Actual typewriter text positioned absolutely within this space */}
+      <span className="absolute">
+        {currentText}
+        <motion.span
+          className="inline-block w-0.5 h-[0.9em] bg-primary ml-0.5 align-middle"
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
+        />
+      </span>
     </span>
   );
 }

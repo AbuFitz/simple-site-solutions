@@ -147,7 +147,7 @@ export default function HowItWorks() {
           <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl">
             {/* Includes */}
             <motion.div
-              className="card-highlight hover-lift"
+              className="card-base border-primary/30 hover-lift"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}

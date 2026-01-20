@@ -88,13 +88,23 @@ export function Navbar() {
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
 
-          {/* Menu Button - Mobile */}
+          {/* Menu Button - Mobile (styled like Get Started on desktop) */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 sm:p-2.5 rounded-full bg-secondary text-foreground hover:bg-muted transition-colors border border-border"
+            className="md:hidden flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
             aria-label="Toggle menu"
           >
-            {menuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5" />}
+            {menuOpen ? (
+              <>
+                Close
+                <X className="w-4 h-4" />
+              </>
+            ) : (
+              <>
+                Menu
+                <Menu className="w-4 h-4" />
+              </>
+            )}
           </button>
         </nav>
       </motion.header>
