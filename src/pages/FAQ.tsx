@@ -1,91 +1,64 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ArrowRight } from "lucide-react";
 
-const faqCategories = [
+const faqs = [
   {
-    title: "The Process",
-    faqs: [
-      {
-        question: "How is this different from a normal web design agency?",
-        answer: "We don't offer custom design or unlimited revisions. We build from proven industry layouts that already convert. You're not paying for creativity—you're paying for speed, structure, and results.",
-      },
-      {
-        question: "Can I choose my own design or provide inspiration?",
-        answer: "No. We analyse your industry and build from what works. You don't pick designs, compare options, or provide moodboards. We lead the process.",
-      },
-      {
-        question: "What if I don't like the design?",
-        answer: "You get one structured revision round for text changes, image swaps, and minor tweaks. If you want a completely different design direction, this isn't the right service for you.",
-      },
-      {
-        question: "How long does it take?",
-        answer: "Starter: 5 days. Pro: 7 days. Growth: 10 days. These timelines assume you provide content promptly.",
-      },
-    ],
+    question: "How is this different from hiring a web designer?",
+    answer:
+      "We're a productised service, not a custom agency. We don't offer unlimited revisions, moodboards, or 'design by committee.' We analyse what works in your industry and build you a proven layout. It's faster, more affordable, and gets better results.",
   },
   {
-    title: "Revisions & Changes",
-    faqs: [
-      {
-        question: "What counts as a revision?",
-        answer: "Text changes, image swaps, and minor colour adjustments within your brand. That's it.",
-      },
-      {
-        question: "What's NOT included in revisions?",
-        answer: "New sections, layout changes, additional pages, feature additions, or 'I changed my mind' requests. These are paid upgrades.",
-      },
-      {
-        question: "Why only one revision round?",
-        answer: "Because endless revisions don't make better websites—they make bloated projects and scope creep. We build from proven layouts. One round of refinement is all you need.",
-      },
-      {
-        question: "What if I need more changes after launch?",
-        answer: "Additional changes are available as paid work. We offer ongoing maintenance packages if you need regular updates.",
-      },
-    ],
+    question: "Can I choose my own design?",
+    answer:
+      "No. That's by design. We build based on layouts that already convert in your industry. If you want full creative control, we're not the right fit. If you want results, we are.",
   },
   {
-    title: "Content & Assets",
-    faqs: [
-      {
-        question: "What do I need to provide?",
-        answer: "Your logo (if you have one), text content for each page, photos of your work/team/premises, and any specific contact details or calls-to-action.",
-      },
-      {
-        question: "What if I don't have content ready?",
-        answer: "We can help with copywriting and source stock images as paid add-ons. But the project timeline only starts when we have your content.",
-      },
-      {
-        question: "Can you take photos for me?",
-        answer: "We don't offer photography, but we can recommend partners or source relevant stock images.",
-      },
-    ],
+    question: "What if I don't like the design?",
+    answer:
+      "You get one structured revision round for text changes, image swaps, and minor colour tweaks. We don't do redesigns. Our layouts are proven to work — trust the process.",
   },
   {
-    title: "Technical & Hosting",
-    faqs: [
-      {
-        question: "Do you provide hosting?",
-        answer: "We set up your site and provide guidance on hosting. We recommend simple, reliable options. Ongoing hosting costs are separate from the build.",
-      },
-      {
-        question: "Will my site work on mobile?",
-        answer: "Yes. Every site we build is mobile-first. It's designed for phones first, then scales up to tablets and desktops.",
-      },
-      {
-        question: "Is SEO included?",
-        answer: "Basic on-page SEO is included (proper titles, meta descriptions, clean structure). Advanced SEO or content strategy is a paid upgrade.",
-      },
-    ],
+    question: "How long does it take?",
+    answer:
+      "Starter: 5 days. Pro: 7 days. Growth: 10 days. This is from the moment you submit your content. No endless timelines.",
+  },
+  {
+    question: "What do you need from me?",
+    answer:
+      "Business info, service details, contact information, and any images/logos you want to use. We guide you through it with a simple form.",
+  },
+  {
+    question: "Do you write the content?",
+    answer:
+      "We provide a content guide and structure. You provide the raw content. Professional copywriting is available as an add-on for £297.",
+  },
+  {
+    question: "What about hosting and domain?",
+    answer:
+      "Hosting for the first year is included. Domain registration is separate (we can help you set it up). After year one, hosting is £47/month.",
+  },
+  {
+    question: "Can I make changes after the site goes live?",
+    answer:
+      "Yes. You can add our monthly maintenance plan (£47/mo) which includes small content updates. Larger changes are quoted separately.",
+  },
+  {
+    question: "What if I need a booking system or special features?",
+    answer:
+      "These are available as add-ons. Booking system integration is £197. We keep the core packages simple and add extras as needed.",
+  },
+  {
+    question: "Do you offer refunds?",
+    answer:
+      "Due to the nature of custom work, we don't offer refunds once work has begun. However, we do offer a satisfaction guarantee — if we can't agree on a final design within the revision scope, we'll work with you to find a solution.",
   },
 ];
 
@@ -93,88 +66,82 @@ export default function FAQ() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="section pt-32 pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 gradient-bg-subtle" />
-        <div className="floating-shape w-[400px] h-[400px] bg-cyan-500/20 -bottom-40 -right-40" />
-        
-        <div className="container relative">
-          <motion.div 
-            className="mx-auto max-w-3xl text-center"
-            initial={{ opacity: 0, y: 30 }}
+      <section className="section">
+        <div className="content-width">
+          <motion.div
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
-            <span className="badge-gradient mb-6 inline-block">Questions</span>
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6">
-              <span className="gradient-text">FAQ</span>
+            <span className="badge-primary mb-6 inline-block">FAQ</span>
+            <h1 className="text-display mb-8">
+              Straight <span className="text-accent">answers.</span>
             </h1>
-            <p className="text-xl text-muted-foreground">
-              Common questions about how we work. Read before you reach out.
+            <p className="text-body-lg max-w-2xl">
+              No jargon. No runaround. Here's everything you need to know before
+              getting started.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* FAQs */}
-      <section className="section">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            {faqCategories.map((category, categoryIndex) => (
-              <motion.div 
-                key={category.title} 
-                className="mb-12"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-2xl font-bold mb-6 gradient-text">{category.title}</h2>
-                <Accordion type="single" collapsible className="space-y-4">
-                  {category.faqs.map((faq, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`${category.title}-${index}`}
-                      className="card-glow px-6 border-0"
-                    >
-                      <AccordionTrigger className="text-left font-medium hover:no-underline py-6">
-                        {faq.question}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground pb-6">
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </motion.div>
-            ))}
-          </div>
+      {/* FAQ List */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="card-base border-border px-6"
+                >
+                  <AccordionTrigger className="text-left text-base font-semibold hover:no-underline py-5">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground pb-5 text-base leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="section relative overflow-hidden">
-        <div className="absolute inset-0 gradient-bg opacity-10" />
-        
-        <div className="container relative">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center"
-            initial={{ opacity: 0, y: 30 }}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="card-base text-center max-w-3xl mx-auto py-12"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Got it? <span className="gradient-text">Let's go.</span>
+            <h2 className="text-title mb-4">
+              Still have <span className="text-accent">questions?</span>
             </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              If this sounds like what you need, let's get started.
+            <p className="text-body-lg mb-8 max-w-lg mx-auto">
+              The best way to learn more is to start. Fill out the form, choose
+              your package, and we'll take it from there.
             </p>
-            <Button size="lg" asChild className="gradient-bg border-0 text-white hover:opacity-90">
-              <Link to="/start">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link to="/start" className="btn-primary btn-lg">
                 Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
-            </Button>
+              <Link to="/packages" className="btn-outline btn-lg">
+                View Packages
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
