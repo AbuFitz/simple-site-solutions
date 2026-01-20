@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -66,20 +66,20 @@ export default function FAQ() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="section">
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24">
         <div className="content-width">
           <motion.div
             className="max-w-3xl"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
           >
             <span className="badge-primary mb-6 inline-block">FAQ</span>
             <h1 className="text-display mb-8">
-              Straight <span className="text-accent">answers.</span>
+              Straight <span className="text-primary">answers.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
-              No jargon. No runaround. Here's everything you need to know before
+              No jargon. No runaround. Everything you need to know before
               getting started.
             </p>
           </motion.div>
@@ -101,7 +101,7 @@ export default function FAQ() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="card-base border-border px-6"
+                  className="bg-secondary rounded-xl px-6 border-0"
                 >
                   <AccordionTrigger className="text-left text-base font-semibold hover:no-underline py-5">
                     {faq.question}
@@ -120,26 +120,32 @@ export default function FAQ() {
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="card-base text-center max-w-3xl mx-auto py-12"
-            initial={{ opacity: 0, y: 20 }}
+            className="grey-box text-center px-8 py-16"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <h2 className="text-title mb-4">
-              Still have <span className="text-accent">questions?</span>
+              Still have <span className="text-primary">questions?</span>
             </h2>
             <p className="text-body-lg mb-8 max-w-lg mx-auto">
               The best way to learn more is to start. Fill out the form, choose
               your package, and we'll take it from there.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/start" className="btn-primary btn-lg">
+              <Link
+                to="/start"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all"
+              >
                 Get Started
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowUpRight className="w-5 h-5" />
               </Link>
-              <Link to="/packages" className="btn-outline btn-lg">
-                View Packages
+              <Link
+                to="/packages"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-background text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all border border-border"
+              >
+                View Pricing
               </Link>
             </div>
           </motion.div>

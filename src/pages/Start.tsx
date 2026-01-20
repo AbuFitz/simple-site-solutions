@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, ArrowLeft, Sparkles, Send } from "lucide-react";
+import { Check, ArrowRight, ArrowLeft, Send } from "lucide-react";
 
 const packages = [
   {
@@ -63,8 +63,8 @@ export default function Start() {
 
   return (
     <Layout>
-      <section className="section">
-        <div className="content-width max-w-3xl">
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24">
+        <div className="content-width max-w-2xl">
           <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.div
@@ -75,7 +75,7 @@ export default function Start() {
               >
                 {/* Progress */}
                 <div className="mb-12">
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between mb-4">
                     <span className="text-sm text-muted-foreground font-medium">
                       Step {step} of 3
                     </span>
@@ -83,7 +83,7 @@ export default function Start() {
                       {Math.round((step / 3) * 100)}%
                     </span>
                   </div>
-                  <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                  <div className="h-1 bg-secondary rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-primary"
                       initial={{ width: 0 }}
@@ -101,50 +101,52 @@ export default function Start() {
                     exit={{ opacity: 0, x: -20 }}
                   >
                     <h1 className="text-headline mb-4">
-                      Choose your <span className="text-accent">package</span>
+                      Choose your <span className="text-primary">package</span>
                     </h1>
                     <p className="text-body-lg mb-10">
                       Select the package that fits your business needs.
                     </p>
 
-                    <div className="grid gap-4 md:grid-cols-3 mb-10">
+                    <div className="space-y-3 mb-10">
                       {packages.map((pkg) => (
                         <button
                           key={pkg.id}
                           onClick={() => setSelectedPackage(pkg.id)}
-                          className={`relative p-5 rounded-xl text-left transition-all ${
+                          className={`relative w-full p-5 rounded-xl text-left transition-all flex items-center justify-between ${
                             selectedPackage === pkg.id
-                              ? "card-highlight"
-                              : "card-base hover:border-muted-foreground/30"
+                              ? "bg-secondary border-2 border-primary"
+                              : "bg-secondary border-2 border-transparent hover:border-border"
                           }`}
                         >
-                          {pkg.popular && (
-                            <div className="absolute -top-2 right-3">
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-xs font-bold">
-                                <Sparkles className="w-3 h-3" />
-                              </span>
+                          <div>
+                            <div className="flex items-center gap-3 mb-1">
+                              <span className="text-lg font-bold">{pkg.name}</span>
+                              {pkg.popular && (
+                                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                                  Popular
+                                </span>
+                              )}
                             </div>
-                          )}
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-lg font-bold">{pkg.name}</span>
+                            <p className="text-sm text-muted-foreground">
+                              {pkg.description}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-4">
+                            <span className="text-xl font-bold text-primary">
+                              {pkg.price}
+                            </span>
                             <div
-                              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                                 selectedPackage === pkg.id
                                   ? "border-primary bg-primary"
                                   : "border-muted-foreground/30"
                               }`}
                             >
                               {selectedPackage === pkg.id && (
-                                <Check className="w-3 h-3 text-primary-foreground" />
+                                <Check className="w-3.5 h-3.5 text-primary-foreground" />
                               )}
                             </div>
                           </div>
-                          <div className="text-xl font-bold text-primary mb-1">
-                            {pkg.price}
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            {pkg.description}
-                          </p>
                         </button>
                       ))}
                     </div>
@@ -152,10 +154,10 @@ export default function Start() {
                     <button
                       onClick={() => setStep(2)}
                       disabled={!canProceedStep1}
-                      className="btn-primary btn-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Continue
-                      <ArrowRight className="ml-2 w-5 h-5" />
+                      <ArrowRight className="w-5 h-5" />
                     </button>
                   </motion.div>
                 )}
@@ -168,11 +170,10 @@ export default function Start() {
                     exit={{ opacity: 0, x: -20 }}
                   >
                     <h1 className="text-headline mb-4">
-                      What's your <span className="text-accent">industry?</span>
+                      What's your <span className="text-primary">industry?</span>
                     </h1>
                     <p className="text-body-lg mb-10">
-                      This helps us apply the right proven layouts for your
-                      business.
+                      This helps us apply the right proven layouts for your business.
                     </p>
 
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
@@ -183,7 +184,7 @@ export default function Start() {
                           className={`p-4 rounded-xl text-center font-medium transition-all text-sm ${
                             selectedIndustry === industry
                               ? "bg-primary text-primary-foreground"
-                              : "bg-muted text-foreground hover:bg-muted/80"
+                              : "bg-secondary text-foreground hover:bg-muted"
                           }`}
                         >
                           {industry}
@@ -194,18 +195,18 @@ export default function Start() {
                     <div className="flex gap-4">
                       <button
                         onClick={() => setStep(1)}
-                        className="btn-outline btn-lg"
+                        className="inline-flex items-center gap-2 px-6 py-4 bg-secondary text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all"
                       >
-                        <ArrowLeft className="mr-2 w-5 h-5" />
+                        <ArrowLeft className="w-5 h-5" />
                         Back
                       </button>
                       <button
                         onClick={() => setStep(3)}
                         disabled={!canProceedStep2}
-                        className="btn-primary btn-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Continue
-                        <ArrowRight className="ml-2 w-5 h-5" />
+                        <ArrowRight className="w-5 h-5" />
                       </button>
                     </div>
                   </motion.div>
@@ -219,8 +220,7 @@ export default function Start() {
                     exit={{ opacity: 0, x: -20 }}
                   >
                     <h1 className="text-headline mb-4">
-                      Tell us about{" "}
-                      <span className="text-accent">your business</span>
+                      Tell us about <span className="text-primary">your business</span>
                     </h1>
                     <p className="text-body-lg mb-10">
                       Just the basics. We'll take it from here.
@@ -287,7 +287,7 @@ export default function Start() {
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">
-                          Anything else we should know?
+                          Anything else?
                         </label>
                         <textarea
                           value={formData.details}
@@ -304,18 +304,18 @@ export default function Start() {
                     <div className="flex gap-4">
                       <button
                         onClick={() => setStep(2)}
-                        className="btn-outline btn-lg"
+                        className="inline-flex items-center gap-2 px-6 py-4 bg-secondary text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all"
                       >
-                        <ArrowLeft className="mr-2 w-5 h-5" />
+                        <ArrowLeft className="w-5 h-5" />
                         Back
                       </button>
                       <button
                         onClick={handleSubmit}
                         disabled={!canProceedStep3}
-                        className="btn-primary btn-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Submit
-                        <Send className="ml-2 w-5 h-5" />
+                        <Send className="w-5 h-5" />
                       </button>
                     </div>
                   </motion.div>
@@ -338,13 +338,13 @@ export default function Start() {
                   <Check className="w-10 h-10 text-primary" />
                 </motion.div>
                 <h1 className="text-headline mb-4">
-                  <span className="text-accent">You're in!</span>
+                  <span className="text-primary">You're in!</span>
                 </h1>
                 <p className="text-body-lg max-w-md mx-auto mb-8">
                   We've received your request. Check your email — we'll be in
-                  touch within 24 hours to get started on your new website.
+                  touch within 24 hours to get started.
                 </p>
-                <div className="card-base inline-block p-6 text-left">
+                <div className="inline-block p-6 rounded-xl bg-secondary text-left">
                   <div className="text-sm text-muted-foreground mb-1">
                     Selected Package
                   </div>
@@ -353,7 +353,10 @@ export default function Start() {
                   </div>
                 </div>
                 <div className="mt-8">
-                  <Link to="/" className="btn-outline btn-lg">
+                  <Link
+                    to="/"
+                    className="inline-flex items-center gap-2 px-6 py-4 bg-secondary text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all"
+                  >
                     Back to Home
                   </Link>
                 </div>
