@@ -23,10 +23,10 @@ export function CTASection({
   secondaryButtonLink,
 }: CTASectionProps) {
   return (
-    <section className="section-sm">
+    <section className="py-10 sm:py-14 md:py-20 pb-24 md:pb-20">
       <div className="content-width">
         <motion.div
-          className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 md:py-20 relative overflow-hidden"
+          className="bordered-highlight text-center px-4 sm:px-6 py-10 sm:py-12 md:py-16 relative overflow-hidden"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -34,24 +34,24 @@ export function CTASection({
         >
           <DottedGrid className="opacity-20" spacing={24} />
           <div className="relative z-10">
-            <h2 className="text-title mb-3 sm:mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-2 sm:mb-3">
               {title} <span className="text-primary">{highlightedText}</span>
             </h2>
-            <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground mb-5 sm:mb-6 max-w-md mx-auto">
               {description}
             </p>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-2.5 sm:gap-3">
               <Link
                 to={primaryButtonLink}
-                className="btn-primary btn-lg justify-center"
+                className="btn-primary btn-md sm:btn-lg justify-center"
               >
                 {primaryButtonText}
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                <ArrowUpRight className="w-4 h-4 ml-1.5" />
               </Link>
               {secondaryButtonText && secondaryButtonLink && (
                 <Link
                   to={secondaryButtonLink}
-                  className="btn-outline btn-lg justify-center"
+                  className="btn-outline btn-md sm:btn-lg justify-center"
                 >
                   {secondaryButtonText}
                 </Link>

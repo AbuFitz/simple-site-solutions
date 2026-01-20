@@ -4,7 +4,8 @@ import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
-import { FloatingNudge } from "@/components/FloatingNudge";
+import { StickyMobileCTA } from "@/components/StickyMobileCTA";
+import { TrustStrip } from "@/components/TrustStrip";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, X, Zap, Target, Clock, Smartphone } from "lucide-react";
 
@@ -14,22 +15,22 @@ const benefits = [
   {
     icon: Zap,
     title: "5-10 Days",
-    description: "Your site goes live fast. No waiting months for a simple website.",
+    description: "Your site goes live fast. No waiting months.",
   },
   {
     icon: Target,
     title: "Proven Layouts",
-    description: "Built from what already converts in your industry.",
+    description: "Built from what already converts.",
   },
   {
     icon: Clock,
     title: "No Drama",
-    description: "No endless meetings. No moodboards. No design-by-committee.",
+    description: "No endless meetings or moodboards.",
   },
   {
     icon: Smartphone,
     title: "Mobile-First",
-    description: "Perfect on every device. Because that's where your customers are.",
+    description: "Perfect on every device.",
   },
 ];
 
@@ -50,13 +51,13 @@ const forYou = [
 export default function Index() {
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="min-h-[90vh] sm:min-h-screen flex items-center pt-20 pb-12 sm:pt-24 sm:pb-16 md:pt-32 md:pb-24 relative">
-        <DottedGrid className="opacity-50" spacing={32} />
+      {/* Hero Section - Tighter on mobile */}
+      <section className="min-h-[75vh] sm:min-h-[85vh] flex items-center pt-20 pb-6 sm:pt-24 sm:pb-10 md:pt-28 md:pb-16 relative">
+        <DottedGrid className="opacity-40" spacing={28} />
         <div className="content-width relative z-10">
           <div className="max-w-4xl">
             <motion.div
-              className="bordered-section inline-block px-4 py-2 mb-6 sm:mb-8"
+              className="bordered-section inline-block px-3 py-1.5 sm:px-4 sm:py-2 mb-4 sm:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -67,7 +68,7 @@ export default function Index() {
             </motion.div>
 
             <motion.h1
-              className="text-display mb-6 sm:mb-8"
+              className="text-display mb-4 sm:mb-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -82,17 +83,17 @@ export default function Index() {
             </motion.h1>
 
             <motion.p
-              className="text-body-lg max-w-2xl mb-8 sm:mb-12"
+              className="text-body-lg max-w-2xl mb-6 sm:mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               Fast, proven websites for local businesses using layouts that
-              already work in your industry. No fluff. No endless revisions.
+              already work in your industry.
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+              className="flex flex-col sm:flex-row gap-3"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -111,88 +112,91 @@ export default function Index() {
                 View Pricing
               </Link>
             </motion.div>
+
+            {/* Trust strip */}
+            <TrustStrip />
           </div>
         </div>
       </section>
 
-      {/* Portfolio */}
+      {/* Portfolio - Tighter spacing */}
       <PortfolioShowcase />
 
-      {/* Benefits */}
-      <section className="section relative">
-        <DottedGrid className="opacity-30" spacing={40} />
+      {/* Benefits - Compact grid */}
+      <section className="py-12 sm:py-16 md:py-24 relative">
+        <DottedGrid className="opacity-30" spacing={36} />
         <div className="content-width relative z-10">
           <motion.div
-            className="mb-10 sm:mb-16"
+            className="mb-6 sm:mb-10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <span className="badge-primary mb-4 inline-block">Why Us</span>
+            <span className="badge-primary mb-3 inline-block">Why Us</span>
             <h2 className="text-headline max-w-xl">
               Built from what <span className="text-primary">already works</span>
             </h2>
           </motion.div>
 
-          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
             {benefits.map((benefit, index) => (
               <motion.div
                 key={benefit.title}
-                className="feature-item hover-lift"
+                className="feature-item p-4 sm:p-5 md:p-6"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="step-number mb-4 sm:mb-6">
-                  <benefit.icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                <div className="step-number w-8 h-8 sm:w-10 sm:h-10 mb-3 sm:mb-4">
+                  <benefit.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3">{benefit.title}</h3>
-                <p className="text-body">{benefit.description}</p>
+                <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2">{benefit.title}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Is This For You */}
-      <section className="section-sm">
+      {/* Is This For You - Compact */}
+      <section className="py-10 sm:py-14 md:py-20">
         <div className="content-width">
           <motion.div
-            className="bordered-section-lg p-4 sm:p-8 md:p-12 relative"
+            className="bordered-section-lg p-4 sm:p-6 md:p-10 relative"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <DottedGrid className="opacity-20" spacing={28} />
+            <DottedGrid className="opacity-20" spacing={24} />
             <div className="relative z-10">
-              <div className="text-center mb-8 sm:mb-12">
-                <h2 className="text-headline">
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">
                   This is <span className="text-primary">not</span> for everyone
                 </h2>
               </div>
 
-              <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+              <div className="grid gap-3 sm:gap-4 md:grid-cols-2 max-w-4xl mx-auto">
                 {/* Not For You */}
                 <motion.div
-                  className="card-dark"
+                  className="card-dark p-4 sm:p-5 md:p-6"
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-muted-foreground">
+                  <h3 className="text-sm sm:text-base font-bold mb-3 sm:mb-4 text-muted-foreground">
                     Not for you if you want...
                   </h3>
-                  <ul className="space-y-3 sm:space-y-4">
+                  <ul className="space-y-2.5 sm:space-y-3">
                     {notForYou.map((item) => (
-                      <li key={item} className="flex items-center gap-2 sm:gap-3">
-                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
-                          <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-destructive" />
+                      <li key={item} className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
+                          <X className="w-2.5 h-2.5 text-destructive" />
                         </div>
-                        <span className="text-sm sm:text-base text-muted-foreground">{item}</span>
+                        <span className="text-xs sm:text-sm text-muted-foreground">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -200,22 +204,22 @@ export default function Index() {
 
                 {/* For You */}
                 <motion.div
-                  className="card-highlight"
+                  className="card-highlight p-4 sm:p-5 md:p-6"
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6">
+                  <h3 className="text-sm sm:text-base font-bold mb-3 sm:mb-4">
                     Perfect if you want...
                   </h3>
-                  <ul className="space-y-3 sm:space-y-4">
+                  <ul className="space-y-2.5 sm:space-y-3">
                     {forYou.map((item) => (
-                      <li key={item} className="flex items-center gap-2 sm:gap-3">
-                        <div className="check-icon">
-                          <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <li key={item} className="flex items-center gap-2">
+                        <div className="check-icon w-5 h-5">
+                          <Check className="w-2.5 h-2.5" />
                         </div>
-                        <span className="text-sm sm:text-base text-foreground">{item}</span>
+                        <span className="text-xs sm:text-sm text-foreground">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -237,8 +241,8 @@ export default function Index() {
         secondaryButtonLink="/packages"
       />
 
-      {/* Floating Nudge */}
-      <FloatingNudge />
+      {/* Sticky Mobile CTA */}
+      <StickyMobileCTA />
     </Layout>
   );
 }
