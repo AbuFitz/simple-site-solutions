@@ -12,8 +12,8 @@ export default {
         sm: "640px",
         md: "768px",
         lg: "1024px",
-        xl: "1200px",
-        "2xl": "1400px",
+        xl: "1280px",
+        "2xl": "1536px",
       },
     },
     extend: {
@@ -58,6 +58,18 @@ export default {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
+        grey: {
+          50: "hsl(var(--grey-50))",
+          100: "hsl(var(--grey-100))",
+          200: "hsl(var(--grey-200))",
+          300: "hsl(var(--grey-300))",
+          400: "hsl(var(--grey-400))",
+          500: "hsl(var(--grey-500))",
+          600: "hsl(var(--grey-600))",
+          700: "hsl(var(--grey-700))",
+          800: "hsl(var(--grey-800))",
+          900: "hsl(var(--grey-900))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -73,6 +85,9 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        xl: "1rem",
+        "2xl": "1.25rem",
+        "3xl": "1.5rem",
       },
       keyframes: {
         "accordion-down": {
@@ -83,15 +98,15 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "marquee": {
+        "slide-left": {
           "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(-100%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "marquee": "marquee 30s linear infinite",
+        "slide-left": "slide-left 40s linear infinite",
       },
     },
   },

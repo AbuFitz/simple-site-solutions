@@ -2,159 +2,104 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, X, Zap, Target, Clock, Smartphone } from "lucide-react";
-
-const industries = [
-  "Plumbers",
-  "Electricians",
-  "Mechanics",
-  "Cleaners",
-  "Tutors",
-  "Barbers",
-  "Builders",
-  "Decorators",
-  "Landscapers",
-  "Mobile Services",
-];
+import { ArrowUpRight, Check, X, Zap, Target, Clock, Smartphone } from "lucide-react";
 
 const benefits = [
   {
     icon: Zap,
-    title: "5-10 Days Delivery",
-    description: "Your site goes live fast. No waiting months.",
+    title: "5-10 Days",
+    description: "Your site goes live fast. No waiting months for a simple website.",
   },
   {
     icon: Target,
     title: "Proven Layouts",
-    description: "Built from what already converts in your industry.",
+    description: "Built from what already converts in your industry. Data-driven design.",
   },
   {
     icon: Clock,
     title: "No Drama",
-    description: "No endless meetings. No moodboards. No stress.",
+    description: "No endless meetings. No moodboards. No design-by-committee stress.",
   },
   {
     icon: Smartphone,
     title: "Mobile-First",
-    description: "Perfect on every device your customers use.",
+    description: "Perfect on every device. Because that's where your customers are.",
   },
 ];
 
 const notForYou = [
-  "You want unlimited revisions",
-  "You want to design it yourself",
-  "You need a custom web app",
-  "You're looking for the cheapest option",
+  "Unlimited revisions",
+  "Design it yourself",
+  "Custom web apps",
+  "The cheapest option",
 ];
 
 const forYou = [
-  "You want a website that converts",
-  "You trust proven industry layouts",
-  "You want fast delivery",
-  "You value results over opinions",
-];
-
-const stats = [
-  { value: "500+", label: "Sites Built" },
-  { value: "98%", label: "Satisfaction" },
-  { value: "7", label: "Day Average" },
-  { value: "3x", label: "More Enquiries" },
+  "A website that converts",
+  "Proven industry layouts",
+  "Fast, reliable delivery",
+  "Results over opinions",
 ];
 
 export default function Index() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="section">
+      <section className="min-h-screen flex items-center pt-24 pb-16 md:pt-32 md:pb-24">
         <div className="content-width">
           <div className="max-w-4xl">
-            <motion.div
+            <motion.span
+              className="badge-primary mb-8 inline-block"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="badge-primary mb-6 inline-block">
-                Productised Website Service
-              </span>
-            </motion.div>
+              Websites for Local UK Businesses
+            </motion.span>
 
             <motion.h1
               className="text-display mb-8"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
             >
               Websites that{" "}
-              <span className="text-accent">convert.</span>
+              <span className="text-primary">convert.</span>
               <br />
-              <span className="text-muted-foreground">Not just impress.</span>
+              Not just impress.
             </motion.h1>
 
             <motion.p
-              className="text-body-lg max-w-2xl mb-10"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-body-lg max-w-2xl mb-12"
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               Fast, proven websites for local businesses using layouts that
-              already work in your industry. No fluff. No endless revisions.{" "}
-              <span className="text-foreground font-medium">Just results.</span>
+              already work in your industry. No fluff. No endless revisions.
+              Just results.
             </motion.p>
 
             <motion.div
               className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <Link to="/start" className="btn-primary btn-lg">
+              <Link
+                to="/start"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all"
+              >
                 Get Started
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowUpRight className="w-5 h-5" />
               </Link>
-              <Link to="/packages" className="btn-outline btn-lg">
-                View Packages
+              <Link
+                to="/packages"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all"
+              >
+                View Pricing
               </Link>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Industries Ticker */}
-      <section className="py-6 border-y border-border overflow-hidden">
-        <div className="flex animate-marquee">
-          {[...industries, ...industries, ...industries, ...industries].map((industry, index) => (
-            <span
-              key={index}
-              className="text-base font-medium text-muted-foreground whitespace-nowrap px-6 flex items-center gap-3"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              {industry}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="section-sm">
-        <div className="content-width">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-muted-foreground font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
@@ -163,36 +108,36 @@ export default function Index() {
       <PortfolioShowcase />
 
       {/* Benefits */}
-      <section className="section bg-card">
+      <section className="section">
         <div className="content-width">
           <motion.div
             className="mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <span className="badge-primary mb-4 inline-block">Why Us</span>
-            <h2 className="text-headline max-w-3xl">
-              Built from what <span className="text-accent">already works</span>
+            <h2 className="text-headline max-w-2xl">
+              Built from what <span className="text-primary">already works</span>
             </h2>
           </motion.div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((benefit, index) => (
               <motion.div
                 key={benefit.title}
-                className="card-subtle"
-                initial={{ opacity: 0, y: 20 }}
+                className="feature-item"
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6">
                   <benefit.icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">{benefit.title}</h3>
-                <p className="text-body">{benefit.description}</p>
+                <h3 className="text-xl font-bold mb-3">{benefit.title}</h3>
+                <p className="text-muted-foreground">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -204,33 +149,33 @@ export default function Index() {
         <div className="content-width">
           <motion.div
             className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <h2 className="text-headline">
-              This is <span className="text-accent">not</span> for everyone
+              This is <span className="text-primary">not</span> for everyone
             </h2>
           </motion.div>
 
-          <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+          <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
             {/* Not For You */}
             <motion.div
-              className="card-subtle"
-              initial={{ opacity: 0, x: -20 }}
+              className="feature-item"
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
               <h3 className="text-lg font-bold mb-6 text-muted-foreground">
-                NOT for you if...
+                Not for you if you want...
               </h3>
-              <ul className="check-list">
+              <ul className="space-y-4">
                 {notForYou.map((item) => (
-                  <li key={item} className="check-item">
-                    <div className="w-5 h-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
-                      <X className="w-3 h-3 text-destructive" />
+                  <li key={item} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
+                      <X className="w-3.5 h-3.5 text-destructive" />
                     </div>
                     <span className="text-muted-foreground">{item}</span>
                   </li>
@@ -240,18 +185,20 @@ export default function Index() {
 
             {/* For You */}
             <motion.div
-              className="card-highlight"
-              initial={{ opacity: 0, x: 20 }}
+              className="feature-item border-2 border-primary"
+              initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-lg font-bold mb-6">Perfect for you if...</h3>
-              <ul className="check-list">
+              <h3 className="text-lg font-bold mb-6">
+                Perfect if you want...
+              </h3>
+              <ul className="space-y-4">
                 {forYou.map((item) => (
-                  <li key={item} className="check-item">
-                    <div className="check-icon">
-                      <Check className="w-3 h-3" />
+                  <li key={item} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <Check className="w-3.5 h-3.5 text-primary" />
                     </div>
                     <span className="text-foreground">{item}</span>
                   </li>
@@ -262,27 +209,29 @@ export default function Index() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Simple CTA */}
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="card-base text-center max-w-3xl mx-auto py-12 md:py-16"
-            initial={{ opacity: 0, y: 20 }}
+            className="grey-box text-center px-8 py-16 md:py-20"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <h2 className="text-title mb-4">
               Ready for a website that{" "}
-              <span className="text-accent">actually works?</span>
+              <span className="text-primary">works?</span>
             </h2>
-            <p className="text-body-lg mb-8 max-w-xl mx-auto">
-              Choose your package, tell us about your business, and we'll build
-              you a site that converts.
+            <p className="text-body-lg mb-8 max-w-lg mx-auto">
+              Choose your package, tell us about your business, and get a site that converts.
             </p>
-            <Link to="/start" className="btn-primary btn-lg">
+            <Link
+              to="/start"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all"
+            >
               Get Started Now
-              <ArrowRight className="ml-2 w-5 h-5" />
+              <ArrowUpRight className="w-5 h-5" />
             </Link>
           </motion.div>
         </div>
