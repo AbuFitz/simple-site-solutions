@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface TypewriterTextProps {
   texts: string[];
@@ -49,20 +49,16 @@ export function TypewriterText({
   }, [currentText, isDeleting, currentTextIndex, texts, speed, deleteSpeed, pauseDuration]);
 
   return (
-    <span className={`inline-block ${className}`}>
-      {/* Invisible text to set the width */}
-      <span className="invisible" aria-hidden="true">
-        {longestWord}
-      </span>
-      {/* Actual typewriter text positioned absolutely within this space */}
-      <span className="absolute">
-        {currentText}
-        <motion.span
-          className="inline-block w-0.5 h-[0.9em] bg-primary ml-0.5 align-middle"
-          animate={{ opacity: [1, 0] }}
-          transition={{ duration: 0.6, repeat: Infinity, repeatType: "reverse" }}
-        />
-      </span>
+    <span 
+      className={`inline-block ${className}`} 
+      style={{ minWidth: `${longestWord.length + 0.5}ch` }}
+    >
+      {currentText}
+      <motion.span
+        className="inline-block w-[3px] h-[0.8em] bg-current ml-[2px] align-baseline relative top-[0.05em]"
+        animate={{ opacity: [1, 0] }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+      />
     </span>
   );
 }

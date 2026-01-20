@@ -73,8 +73,9 @@ export default function Index() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <span className="block">Websites that{" "}
-                <span className="text-primary relative">
+              <span className="block">
+                Websites that{" "}
+                <span className="text-primary">
                   <TypewriterText texts={typewriterWords} speed={120} />
                 </span>
               </span>
