@@ -53,18 +53,20 @@ const revisionExcludes = [
 export default function HowItWorks() {
   return (
     <Layout>
-      {/* Hero Card */}
-      <section className="pt-24 pb-8 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16">
-        <div className="content-width">
-          <motion.div
-            className="hero-card max-w-4xl"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <DottedGrid className="opacity-30" spacing={28} />
-            <div className="hero-card-inner relative z-10">
-              <div className="inline-block px-4 py-2 mb-4 sm:mb-6 rounded-full border border-primary/30 bg-primary/5">
+      {/* Page Frame */}
+      <div className="page-frame">
+        <DottedGrid className="opacity-15" spacing={40} />
+
+        {/* Hero */}
+        <section className="pt-20 pb-8 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16 relative z-10">
+          <div className="content-width">
+            <motion.div
+              className="max-w-3xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="inline-block px-4 py-2 mb-4 sm:mb-6 rounded-full border border-primary/40 bg-primary/5">
                 <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-primary">
                   The Process
                 </span>
@@ -76,114 +78,133 @@ export default function HowItWorks() {
                 We've removed everything that slows down typical web projects.
                 No discovery calls. No moodboards. No endless back-and-forth.
               </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+            </motion.div>
+          </div>
+        </section>
 
-      {/* Steps */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="card-elevated max-w-3xl"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.number}
-                className="relative flex gap-4 sm:gap-6 md:gap-8 pb-8 sm:pb-10 last:pb-0 border-b border-border last:border-b-0"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {/* Number */}
-                <div className="shrink-0 pt-1">
-                  <div className="step-number">
-                    {step.number}
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="pt-2 sm:pt-3">
-                  <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{step.title}</h3>
-                  <p className="text-body">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Revision Policy */}
-      <section className="section">
-        <div className="content-width">
-          <motion.div
-            className="mb-8 sm:mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <span className="badge-primary mb-4 inline-block">Important</span>
-            <h2 className="text-headline max-w-2xl">
-              Revision Policy: <span className="text-primary">One round</span>
-            </h2>
-            <p className="text-body-lg max-w-2xl mt-3 sm:mt-4">
-              We're a productised service. One structured revision round keeps things fast and focused.
-            </p>
-          </motion.div>
-
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl">
-            {/* Includes */}
+        {/* Steps */}
+        <section className="py-12 sm:py-16 relative z-10">
+          <div className="content-width">
             <motion.div
-              className="card-highlight hover-lift"
+              className="bordered-section p-5 sm:p-8 md:p-10 max-w-3xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6">Revisions include</h3>
-              <ul className="space-y-3 sm:space-y-4">
-                {revisionIncludes.map((item) => (
-                  <li key={item} className="flex items-center gap-2 sm:gap-3">
-                    <div className="check-icon">
-                      <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.number}
+                  className="relative flex gap-4 sm:gap-6 pb-6 sm:pb-8 last:pb-0 border-b border-border last:border-b-0 mb-6 last:mb-0"
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.08 }}
+                  viewport={{ once: true }}
+                >
+                  {/* Number */}
+                  <div className="shrink-0">
+                    <div className="step-number">
+                      {step.number}
                     </div>
-                    <span className="text-sm sm:text-base font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+                  </div>
 
-            {/* Excludes */}
-            <motion.div
-              className="feature-item hover-lift"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-muted-foreground">
-                Revisions do NOT include
-              </h3>
-              <ul className="space-y-3 sm:space-y-4">
-                {revisionExcludes.map((item) => (
-                  <li key={item} className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
-                      <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-destructive" />
-                    </div>
-                    <span className="text-sm sm:text-base text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
+                  {/* Content */}
+                  <div className="pt-1.5 sm:pt-2">
+                    <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{step.title}</h3>
+                    <p className="text-body">{step.description}</p>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Revision Policy */}
+        <section className="section relative z-10">
+          <div className="content-width">
+            <motion.div
+              className="mb-8 sm:mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <span className="badge-primary mb-4 inline-block">Important</span>
+              <h2 className="text-headline max-w-2xl">
+                Revision Policy: <span className="text-primary">One round</span>
+              </h2>
+              <p className="text-body-lg max-w-2xl mt-3 sm:mt-4">
+                We're a productised service. One structured revision round keeps things fast and focused.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl">
+              {/* Includes */}
+              <motion.div
+                className="card-highlight hover-glow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-5">Revisions include</h3>
+                <ul className="space-y-3 sm:space-y-4">
+                  {revisionIncludes.map((item, index) => (
+                    <motion.li 
+                      key={item} 
+                      className="flex items-center gap-2 sm:gap-3"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="check-icon">
+                        <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      </div>
+                      <span className="text-sm sm:text-base font-medium">{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              {/* Excludes */}
+              <motion.div
+                className="feature-item hover-glow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.01 }}
+              >
+                <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-5 text-muted-foreground">
+                  Revisions do NOT include
+                </h3>
+                <ul className="space-y-3 sm:space-y-4">
+                  {revisionExcludes.map((item, index) => (
+                    <motion.li 
+                      key={item} 
+                      className="flex items-center gap-2 sm:gap-3"
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
+                        <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-destructive" />
+                      </div>
+                      <span className="text-sm sm:text-base text-muted-foreground">{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Bottom padding for mobile nav */}
+        <div className="h-20 md:h-0" />
+      </div>
     </Layout>
   );
 }
