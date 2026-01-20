@@ -50,7 +50,7 @@ export function Navbar() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-between sm:justify-start gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`flex items-center justify-between gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
@@ -88,21 +88,21 @@ export function Navbar() {
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
 
-          {/* Menu Button - Mobile */}
+          {/* Menu Button - Mobile (green pill matching desktop CTA style) */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="inline-flex md:hidden items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
+            className="md:hidden flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
             aria-label="Toggle menu"
           >
             {menuOpen ? (
               <>
-                Close
                 <X className="w-4 h-4" />
+                <span>Close</span>
               </>
             ) : (
               <>
-                Menu
                 <Menu className="w-4 h-4" />
+                <span>Menu</span>
               </>
             )}
           </button>
