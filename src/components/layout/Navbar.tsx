@@ -50,17 +50,35 @@ export function Navbar() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-between gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`flex items-center justify-center md:justify-between gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
-          {/* Logo */}
-          <Link
-            to="/"
-            className="min-w-0 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight truncate max-w-[52%] sm:max-w-none"
-          >
-            one<span className="text-primary">simple</span>site
-          </Link>
+          {/* Brand (desktop) + Brand-as-Menu (mobile) */}
+          <div className="flex items-center min-w-0">
+            <Link
+              to="/"
+              className="hidden md:inline-flex min-w-0 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight whitespace-nowrap"
+            >
+              one<span className="text-primary">simple</span>site
+            </Link>
+
+            {/* On mobile, the logo *is* the menu trigger (with a green segment) */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden inline-flex items-stretch rounded-full overflow-hidden border-2 border-border focus-ring"
+              aria-label="Open menu"
+              aria-expanded={menuOpen}
+            >
+              <span className="min-w-0 px-3 py-2 text-base font-bold tracking-tight truncate max-w-[60vw]">
+                one<span className="text-primary">simple</span>site
+              </span>
+              <span className="shrink-0 px-3 py-2 bg-primary text-primary-foreground inline-flex items-center justify-center">
+                {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              </span>
+            </button>
+          </div>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-0.5 sm:gap-1">
@@ -88,25 +106,7 @@ export function Navbar() {
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
 
-          {/* Menu Button - Mobile (green pill matching desktop CTA style) */}
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden shrink-0 inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
-            aria-label="Toggle menu"
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? (
-              <>
-                <X className="w-4 h-4" />
-                <span className="hidden sm:inline">Close</span>
-              </>
-            ) : (
-              <>
-                <Menu className="w-4 h-4" />
-                <span className="hidden sm:inline">Menu</span>
-              </>
-            )}
-          </button>
+          {/* Mobile menu trigger lives inside the logo (see above) */}
         </nav>
       </motion.header>
 
