@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { PortfolioShowcase } from "@/components/PortfolioShowcase";
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, X, Zap, Target, Clock, Smartphone } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  X,
+  Zap,
+  Target,
+  Clock,
+  Smartphone,
+  ChevronDown,
+} from "lucide-react";
 
 const industries = [
   "Plumbers",
@@ -14,28 +22,30 @@ const industries = [
   "Barbers",
   "Builders",
   "Mobile Services",
+  "Decorators",
+  "Landscapers",
 ];
 
 const benefits = [
   {
     icon: Zap,
-    title: "Built Fast",
-    description: "Your site live in 5-10 days. Not months.",
+    title: "5-10 Days",
+    description: "Not months. Your site goes live fast.",
   },
   {
     icon: Target,
-    title: "Built to Convert",
-    description: "Layouts proven to turn visitors into calls.",
+    title: "Proven Layouts",
+    description: "Built from what already converts.",
   },
   {
     icon: Clock,
-    title: "No Wasted Time",
-    description: "No endless meetings. No moodboards. No drama.",
+    title: "No Drama",
+    description: "No endless meetings or moodboards.",
   },
   {
     icon: Smartphone,
     title: "Mobile-First",
-    description: "Perfect on every device. Because that's where your customers are.",
+    description: "Where your customers actually are.",
   },
 ];
 
@@ -49,176 +59,185 @@ const notForYou = [
 const forYou = [
   "You want a website that converts",
   "You trust proven industry layouts",
-  "You want fast delivery, not endless meetings",
+  "You want fast delivery",
   "You value results over opinions",
 ];
 
-const process = [
-  {
-    number: "01",
-    title: "Choose Your Package",
-    description: "Starter, Pro, or Growth. Pick what fits.",
-  },
-  {
-    number: "02",
-    title: "We Analyse & Build",
-    description: "Industry research. Proven layouts. Fast execution.",
-  },
-  {
-    number: "03",
-    title: "One Revision Round",
-    description: "Text changes. Image swaps. That's it.",
-  },
-  {
-    number: "04",
-    title: "Go Live",
-    description: "Your site launches. Calls start coming in.",
-  },
+const stats = [
+  { value: "500+", label: "Sites Built" },
+  { value: "98%", label: "Client Satisfaction" },
+  { value: "7", label: "Day Avg Delivery" },
+  { value: "3x", label: "More Enquiries" },
 ];
 
 export default function Index() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Animated background shapes */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="floating-shape w-[600px] h-[600px] bg-primary/30 -top-40 -left-40 animate-float" />
-          <div className="floating-shape w-[500px] h-[500px] bg-pink-500/20 top-1/2 -right-40 animate-float animation-delay-200" />
-          <div className="floating-shape w-[400px] h-[400px] bg-cyan-500/20 -bottom-20 left-1/3 animate-float animation-delay-400" />
-        </div>
-
-        {/* Grid overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px',
-          }}
-        />
-
-        <div className="container relative z-10">
-          <div className="mx-auto max-w-5xl text-center">
+      <section className="min-h-screen flex flex-col justify-center relative overflow-hidden py-20 lg:py-0">
+        <div className="container">
+          <div className="max-w-5xl">
+            {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
             >
-              <span className="badge-gradient mb-8 inline-block">
-                <Zap className="w-4 h-4" />
+              <span className="badge-glow mb-8 inline-flex">
+                <span className="w-2 h-2 rounded-full bg-electric animate-pulse mr-2" />
                 Productised Website Service
               </span>
             </motion.div>
-            
-            <motion.h1 
-              className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8"
-              initial={{ opacity: 0, y: 30 }}
+
+            {/* Headline */}
+            <motion.h1
+              className="heading-xl mb-8"
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
             >
-              Websites that{" "}
-              <span className="gradient-text">convert.</span>
+              Websites that
               <br />
-              <span className="text-muted-foreground">Not websites that impress.</span>
+              <span className="text-gradient">convert.</span>
             </motion.h1>
-            
-            <motion.p 
-              className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12"
+
+            {/* Subheadline */}
+            <motion.p
+              className="text-body max-w-2xl mb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Fast, proven websites for local businesses using layouts that already work in your industry. 
-              No fluff. No endless revisions. <span className="text-foreground font-medium">Just results.</span>
+              Fast, proven websites for local businesses using layouts that
+              already work in your industry.{" "}
+              <span className="text-foreground font-medium">
+                No fluff. No endless revisions. Just results.
+              </span>
             </motion.p>
-            
-            <motion.div 
-              className="flex flex-col items-center justify-center gap-4 sm:flex-row"
+
+            {/* CTAs */}
+            <motion.div
+              className="flex flex-wrap gap-4"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <Button size="lg" asChild className="gradient-bg border-0 text-white text-lg px-8 py-6 hover:opacity-90">
-                <Link to="/start">
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button variant="outline" size="lg" asChild className="text-lg px-8 py-6 border-border hover:bg-muted">
-                <a href="#work">See Our Work</a>
-              </Button>
+              <Link to="/start" className="btn-primary group">
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link to="/packages" className="btn-outline">
+                View Packages
+              </Link>
             </motion.div>
           </div>
         </div>
 
         {/* Scroll indicator */}
-        <motion.div 
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:block"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 1.2 }}
         >
-          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-2">
-            <motion.div 
-              className="w-1.5 h-3 bg-muted-foreground/50 rounded-full"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
-          </div>
+          <motion.div
+            className="flex flex-col items-center gap-2 text-muted-foreground"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <span className="text-xs font-medium uppercase tracking-widest">
+              Scroll
+            </span>
+            <ChevronDown className="w-5 h-5" />
+          </motion.div>
         </motion.div>
       </section>
 
-      {/* Industries Ticker */}
-      <section className="py-8 border-y border-border bg-muted/30 overflow-hidden">
-        <div className="flex animate-scroll">
-          {[...industries, ...industries, ...industries].map((industry, index) => (
-            <span 
-              key={index} 
-              className="text-sm font-medium text-muted-foreground whitespace-nowrap px-8 flex items-center gap-2"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              {industry}
-            </span>
-          ))}
+      {/* Industries Marquee */}
+      <section className="py-8 border-y border-border overflow-hidden">
+        <div className="marquee">
+          <div className="marquee-content">
+            {[...industries, ...industries].map((industry, index) => (
+              <span
+                key={index}
+                className="text-lg font-medium text-muted-foreground whitespace-nowrap flex items-center gap-3"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-electric" />
+                {industry}
+              </span>
+            ))}
+          </div>
+          <div className="marquee-content" aria-hidden>
+            {[...industries, ...industries].map((industry, index) => (
+              <span
+                key={index}
+                className="text-lg font-medium text-muted-foreground whitespace-nowrap flex items-center gap-3"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-electric" />
+                {industry}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Portfolio Showcase */}
-      <PortfolioShowcase />
-
-      {/* Benefits */}
-      <section className="section relative overflow-hidden">
-        <div className="absolute inset-0 gradient-bg-subtle" />
-        
-        <div className="container relative">
-          <motion.div 
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <span className="badge-gradient mb-6 inline-block">Why OneSimpleSite</span>
-            <h2 className="section-title">
-              Built from what <span className="gradient-text">already works</span>
-            </h2>
-            <p className="section-subtitle">
-              We don't guess. We analyse top-performing sites in your industry and build you a proven layout.
-            </p>
-          </motion.div>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-            {benefits.map((benefit, index) => (
-              <motion.div 
-                key={benefit.title}
-                className="card-glow"
+      {/* Stats */}
+      <section className="section-tight">
+        <div className="container">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                className="text-center lg:text-left"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center mb-6">
-                  <benefit.icon className="w-7 h-7 text-white" />
+                <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-electric mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-muted-foreground font-medium">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Portfolio */}
+      <PortfolioShowcase />
+
+      {/* Benefits */}
+      <section className="section">
+        <div className="container">
+          <motion.div
+            className="mb-16 lg:mb-24"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <span className="badge-glow mb-6 inline-block">Why Us</span>
+            <h2 className="heading-lg max-w-3xl">
+              Built from what{" "}
+              <span className="text-gradient">already works</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={benefit.title}
+                className="card-glass p-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="w-14 h-14 rounded-2xl bg-electric/10 flex items-center justify-center mb-6">
+                  <benefit.icon className="w-7 h-7 text-electric" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
                 <p className="text-muted-foreground">{benefit.description}</p>
@@ -228,35 +247,41 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Divider */}
+      <div className="container">
+        <div className="divider-glow" />
+      </div>
+
       {/* Is This For You */}
       <section className="section">
         <div className="container">
-          <motion.div 
-            className="section-header"
+          <motion.div
+            className="mb-16 lg:mb-24 text-center"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="section-title">This is <span className="gradient-text">not</span> for everyone.</h2>
-            <p className="section-subtitle">
-              We're a productised service, not a custom agency. Know what you're getting into.
-            </p>
+            <h2 className="heading-lg">
+              This is <span className="text-gradient">not</span> for everyone
+            </h2>
           </motion.div>
-          
-          <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+
+          <div className="grid gap-8 lg:grid-cols-2 max-w-5xl mx-auto">
             {/* Not For You */}
-            <motion.div 
-              className="card-glass"
+            <motion.div
+              className="card-solid p-8 lg:p-10"
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl font-bold mb-6 text-muted-foreground">This is NOT for you if...</h3>
-              <ul className="space-y-4">
+              <h3 className="text-xl font-bold mb-8 text-muted-foreground">
+                NOT for you if...
+              </h3>
+              <ul className="space-y-5">
                 {notForYou.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
+                  <li key={item} className="flex items-start gap-4">
                     <div className="w-6 h-6 rounded-full bg-destructive/20 flex items-center justify-center shrink-0 mt-0.5">
                       <X className="h-4 w-4 text-destructive" />
                     </div>
@@ -265,141 +290,54 @@ export default function Index() {
                 ))}
               </ul>
             </motion.div>
-            
+
             {/* For You */}
-            <motion.div 
-              className="gradient-border"
+            <motion.div
+              className="card-glass p-8 lg:p-10"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="gradient-border-inner p-6 md:p-8">
-                <h3 className="text-xl font-bold mb-6">This IS for you if...</h3>
-                <ul className="space-y-4">
-                  {forYou.map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full gradient-bg flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="h-4 w-4 text-white" />
-                      </div>
-                      <span className="text-foreground">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <h3 className="text-xl font-bold mb-8">Perfect for you if...</h3>
+              <ul className="space-y-5">
+                {forYou.map((item) => (
+                  <li key={item} className="flex items-start gap-4">
+                    <div className="w-6 h-6 rounded-full bg-electric/20 flex items-center justify-center shrink-0 mt-0.5">
+                      <Check className="h-4 w-4 text-electric" />
+                    </div>
+                    <span className="text-foreground">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Process */}
-      <section className="section relative overflow-hidden">
-        <div className="absolute inset-0 gradient-bg-subtle" />
-        
-        <div className="container relative">
-          <motion.div 
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <span className="badge-gradient mb-6 inline-block">The Process</span>
-            <h2 className="section-title">How it works</h2>
-            <p className="section-subtitle">
-              Four steps. No discovery calls. No moodboards. No endless back-and-forth.
-            </p>
-          </motion.div>
-          
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
-            {process.map((step, index) => (
-              <motion.div 
-                key={step.number}
-                className="relative text-center"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="number-gradient mb-4">{step.number}</div>
-                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Packages Preview */}
-      <section className="section">
+      {/* Final CTA */}
+      <section className="section-tight">
         <div className="container">
-          <motion.div 
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
+          <motion.div
+            className="card-glass p-12 lg:p-20 text-center max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="section-title">
-              Simple packages. <span className="gradient-text">Clear pricing.</span>
+            <h2 className="heading-md mb-6">
+              Ready to get a website that{" "}
+              <span className="text-gradient">actually works?</span>
             </h2>
-            <p className="section-subtitle">
-              Pick a package. Get your site. No negotiation.
+            <p className="text-body mb-10 max-w-xl mx-auto">
+              Choose your package, tell us about your business, and we'll build
+              you a site that converts.
             </p>
+            <Link to="/start" className="btn-primary group">
+              Get Started Now
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </motion.div>
-          
-          <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-            {/* Starter */}
-            <motion.div 
-              className="card-glow flex flex-col"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-bold mb-2">Starter</h3>
-              <p className="text-muted-foreground mb-6">1-page website</p>
-              <p className="text-muted-foreground text-sm flex-1">Fixed industry template. Fast delivery. One revision round.</p>
-              <Button variant="outline" className="w-full mt-6" asChild>
-                <Link to="/packages">View Details</Link>
-              </Button>
-            </motion.div>
-            
-            {/* Pro */}
-            <motion.div 
-              className="gradient-border flex flex-col"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="gradient-border-inner p-6 md:p-8 flex flex-col h-full">
-                <div className="text-xs font-bold text-primary mb-2">MOST POPULAR</div>
-                <h3 className="text-2xl font-bold mb-2">Pro</h3>
-                <p className="text-muted-foreground mb-6">Multi-page website</p>
-                <p className="text-muted-foreground text-sm flex-1">Home, Services, About, Contact. Industry-optimised structure.</p>
-                <Button className="w-full mt-6 gradient-bg border-0 text-white hover:opacity-90" asChild>
-                  <Link to="/packages">View Details</Link>
-                </Button>
-              </div>
-            </motion.div>
-            
-            {/* Growth */}
-            <motion.div 
-              className="card-glow flex flex-col"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-bold mb-2">Growth</h3>
-              <p className="text-muted-foreground mb-6">Everything + extras</p>
-              <p className="text-muted-foreground text-sm flex-1">Lead capture, tracking readiness, ongoing updates option.</p>
-              <Button variant="outline" className="w-full mt-6" asChild>
-                <Link to="/packages">View Details</Link>
-              </Button>
-            </motion.div>
-          </div>
         </div>
       </section>
     </Layout>

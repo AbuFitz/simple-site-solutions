@@ -1,129 +1,147 @@
-import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 
 interface PortfolioItem {
   id: number;
   title: string;
   industry: string;
-  gradient: string;
+  color: string;
+  stats: string;
 }
 
 const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
     title: "Smith's Plumbing",
-    industry: "Plumber",
-    gradient: "from-blue-600 via-blue-500 to-cyan-400",
+    industry: "Emergency Plumber",
+    color: "from-cyan-500 via-blue-600 to-indigo-700",
+    stats: "+340% enquiries",
   },
   {
     id: 2,
-    title: "Sparkle Clean",
+    title: "Sparkle Clean Co",
     industry: "Cleaning Service",
-    gradient: "from-emerald-600 via-teal-500 to-cyan-400",
+    color: "from-emerald-400 via-teal-500 to-cyan-600",
+    stats: "+210% bookings",
   },
   {
     id: 3,
-    title: "Dave's Auto",
+    title: "Dave's Auto Care",
     industry: "Mechanic",
-    gradient: "from-orange-600 via-red-500 to-pink-500",
+    color: "from-orange-400 via-red-500 to-pink-600",
+    stats: "+180% calls",
   },
 ];
 
 export function PortfolioShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   return (
-    <section id="work" className="section overflow-hidden relative">
-      {/* Background elements */}
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl -translate-y-1/2" />
-      <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl -translate-y-1/2" />
-      
-      <div className="container relative">
-        <div className="section-header">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <span className="badge-gradient mb-6 inline-block">Our Work</span>
-            <h2 className="section-title">
-              Websites that <span className="gradient-text">actually work</span>
-            </h2>
-            <p className="section-subtitle">
-              Real sites. Real businesses. Real results.
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Scrolling Portfolio */}
-        <div 
-          ref={containerRef}
-          className="relative"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+    <section className="section-tight overflow-hidden">
+      <div className="container">
+        {/* Header */}
+        <motion.div
+          className="mb-16 lg:mb-24"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
         >
-          <div 
-            className={`flex gap-8 ${isHovered ? '' : 'animate-scroll'}`}
-            style={{
-              animationPlayState: isHovered ? 'paused' : 'running',
-            }}
-          >
-            {/* Double the items for seamless loop */}
-            {[...portfolioItems, ...portfolioItems].map((item, index) => (
-              <motion.div
-                key={`${item.id}-${index}`}
-                className="flex-shrink-0 w-[400px] md:w-[500px] lg:w-[600px]"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.02, y: -10 }}
-              >
-                <div className="gradient-border">
-                  <div className="gradient-border-inner overflow-hidden">
-                    {/* Mock website preview */}
-                    <div className={`aspect-[16/10] bg-gradient-to-br ${item.gradient} relative`}>
-                      {/* Browser chrome */}
-                      <div className="absolute top-0 left-0 right-0 bg-gray-900/90 backdrop-blur px-4 py-2 flex items-center gap-2">
-                        <div className="flex gap-1.5">
-                          <div className="w-3 h-3 rounded-full bg-red-500" />
-                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                          <div className="w-3 h-3 rounded-full bg-green-500" />
-                        </div>
-                        <div className="flex-1 ml-4">
-                          <div className="bg-gray-800 rounded px-3 py-1 text-xs text-gray-400 max-w-xs">
-                            {item.title.toLowerCase().replace(/['\s]/g, '')}.co.uk
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Mock content */}
-                      <div className="absolute inset-0 top-10 p-6 flex flex-col items-center justify-center text-white text-center">
-                        <div className="w-16 h-16 rounded-full bg-white/20 mb-4" />
-                        <div className="h-8 w-48 bg-white/30 rounded mb-3" />
-                        <div className="h-4 w-64 bg-white/20 rounded mb-2" />
-                        <div className="h-4 w-56 bg-white/20 rounded mb-6" />
-                        <div className="h-10 w-32 bg-white rounded-lg" />
-                      </div>
-                    </div>
-                    
-                    {/* Info */}
-                    <div className="p-6 bg-card">
-                      <h3 className="text-xl font-bold mb-1">{item.title}</h3>
-                      <p className="text-muted-foreground">{item.industry}</p>
-                    </div>
+          <span className="badge-glow mb-6 inline-block">Selected Work</span>
+          <h2 className="heading-lg max-w-4xl">
+            Websites that{" "}
+            <span className="text-gradient">deliver results</span>
+          </h2>
+        </motion.div>
+
+        {/* Portfolio Grid */}
+        <div
+          ref={containerRef}
+          className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {portfolioItems.map((item, index) => (
+            <motion.div
+              key={item.id}
+              className="group relative"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              viewport={{ once: true }}
+              onMouseEnter={() => setHoveredId(item.id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              <div className="portfolio-card cursor-pointer">
+                {/* Gradient background */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${item.color} transition-transform duration-700 group-hover:scale-110`}
+                />
+
+                {/* Mock browser */}
+                <div className="absolute top-4 left-4 right-4 flex items-center gap-2 z-10">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+                  </div>
+                  <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
+                    <span className="text-white/60 text-xs font-medium">
+                      {item.title.toLowerCase().replace(/['\s]/g, "")}.co.uk
+                    </span>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+
+                {/* Content preview */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8 pt-16">
+                  <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur mb-6" />
+                  <div className="h-6 w-40 bg-white/30 rounded-lg mb-3" />
+                  <div className="h-3 w-56 bg-white/20 rounded mb-2" />
+                  <div className="h-3 w-48 bg-white/20 rounded mb-6" />
+                  <div className="h-10 w-28 bg-white/90 rounded-lg" />
+                </div>
+
+                {/* Hover overlay */}
+                <motion.div
+                  className="absolute inset-0 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center z-20"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: hoveredId === item.id ? 1 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="w-14 h-14 rounded-full border-2 border-electric flex items-center justify-center mb-4">
+                    <ArrowUpRight className="w-6 h-6 text-electric" />
+                  </div>
+                  <span className="text-electric font-semibold text-lg">
+                    {item.stats}
+                  </span>
+                </motion.div>
+              </div>
+
+              {/* Info */}
+              <div className="mt-5">
+                <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+                <p className="text-muted-foreground">{item.industry}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent pointer-events-none z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent pointer-events-none z-10" />
+        {/* View all link */}
+        <motion.div
+          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          viewport={{ once: true }}
+        >
+          <a
+            href="#"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-electric transition-colors group"
+          >
+            <span className="font-medium">View more projects</span>
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );
