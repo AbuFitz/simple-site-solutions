@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, X } from "lucide-react";
 
@@ -53,16 +54,21 @@ export default function HowItWorks() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="content-width">
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
+        <DottedGrid className="opacity-40" spacing={36} />
+        <div className="content-width relative z-10">
           <motion.div
             className="max-w-3xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="badge-primary mb-6 inline-block">The Process</span>
-            <h1 className="text-display mb-8">
+            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                The Process
+              </span>
+            </div>
+            <h1 className="text-display mb-6 sm:mb-8">
               Simple. <span className="text-primary">Structured.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
@@ -76,46 +82,54 @@ export default function HowItWorks() {
       {/* Steps */}
       <section className="section-sm">
         <div className="content-width">
-          <div className="max-w-3xl">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.number}
-                className="relative flex gap-6 md:gap-8 pb-12 last:pb-0"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {/* Line */}
-                {index < steps.length - 1 && (
-                  <div className="absolute left-7 top-16 bottom-0 w-px bg-border" />
-                )}
+          <motion.div
+            className="bordered-section-lg p-4 sm:p-8 md:p-12 relative"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-20" spacing={28} />
+            <div className="relative z-10 max-w-3xl mx-auto">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.number}
+                  className="relative flex gap-4 sm:gap-6 md:gap-8 pb-8 sm:pb-12 last:pb-0"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  {/* Line */}
+                  {index < steps.length - 1 && (
+                    <div className="absolute left-5 sm:left-6 top-12 sm:top-14 bottom-0 w-px bg-border" />
+                  )}
 
-                {/* Number */}
-                <div className="shrink-0">
-                  <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center">
-                    <span className="text-primary font-bold text-lg">
+                  {/* Number */}
+                  <div className="shrink-0">
+                    <div className="step-number">
                       {step.number}
-                    </span>
+                    </div>
                   </div>
-                </div>
 
-                {/* Content */}
-                <div className="pt-2">
-                  <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                  <p className="text-muted-foreground">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                  {/* Content */}
+                  <div className="pt-1 sm:pt-2">
+                    <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{step.title}</h3>
+                    <p className="text-body">{step.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Revision Policy */}
-      <section className="section">
-        <div className="content-width">
+      <section className="section relative">
+        <DottedGrid className="opacity-30" spacing={40} />
+        <div className="content-width relative z-10">
           <motion.div
-            className="mb-12"
+            className="mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -125,28 +139,28 @@ export default function HowItWorks() {
             <h2 className="text-headline max-w-2xl">
               Revision Policy: <span className="text-primary">One round</span>
             </h2>
-            <p className="text-body-lg max-w-2xl mt-4">
+            <p className="text-body-lg max-w-2xl mt-3 sm:mt-4">
               We're a productised service. One structured revision round keeps things fast and focused.
             </p>
           </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-2 max-w-4xl">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl">
             {/* Includes */}
             <motion.div
-              className="feature-item border-2 border-primary"
+              className="card-highlight hover-lift"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-lg font-bold mb-6">Revisions include</h3>
-              <ul className="space-y-4">
+              <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6">Revisions include</h3>
+              <ul className="space-y-3 sm:space-y-4">
                 {revisionIncludes.map((item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                      <Check className="w-3.5 h-3.5 text-primary" />
+                  <li key={item} className="flex items-center gap-2 sm:gap-3">
+                    <div className="check-icon">
+                      <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </div>
-                    <span className="font-medium">{item}</span>
+                    <span className="text-sm sm:text-base font-medium">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -154,22 +168,22 @@ export default function HowItWorks() {
 
             {/* Excludes */}
             <motion.div
-              className="feature-item"
+              className="feature-item hover-lift"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-lg font-bold mb-6 text-muted-foreground">
+              <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-muted-foreground">
                 Revisions do NOT include
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-3 sm:space-y-4">
                 {revisionExcludes.map((item) => (
-                  <li key={item} className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
-                      <X className="w-3.5 h-3.5 text-destructive" />
+                  <li key={item} className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
+                      <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-destructive" />
                     </div>
-                    <span className="text-muted-foreground">{item}</span>
+                    <span className="text-sm sm:text-base text-muted-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -182,32 +196,35 @@ export default function HowItWorks() {
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="grey-box text-center px-8 py-16"
+            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-title mb-4">
-              Ready to <span className="text-primary">skip the drama?</span>
-            </h2>
-            <p className="text-body-lg mb-8 max-w-lg mx-auto">
-              Pick your package, submit your details, and get a website that converts.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/start"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all"
-              >
-                Get Started
-                <ArrowUpRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/packages"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-background text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all border border-border"
-              >
-                View Pricing
-              </Link>
+            <DottedGrid className="opacity-20" spacing={24} />
+            <div className="relative z-10">
+              <h2 className="text-title mb-3 sm:mb-4">
+                Ready to <span className="text-primary">skip the drama?</span>
+              </h2>
+              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
+                Pick your package, submit your details, and get a website that converts.
+              </p>
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+                <Link
+                  to="/start"
+                  className="btn-primary btn-lg justify-center"
+                >
+                  Get Started
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                </Link>
+                <Link
+                  to="/packages"
+                  className="btn-outline btn-lg justify-center"
+                >
+                  View Pricing
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>

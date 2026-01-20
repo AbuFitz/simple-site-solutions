@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import {
@@ -66,16 +67,21 @@ export default function FAQ() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24">
-        <div className="content-width">
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
+        <DottedGrid className="opacity-40" spacing={36} />
+        <div className="content-width relative z-10">
           <motion.div
             className="max-w-3xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="badge-primary mb-6 inline-block">FAQ</span>
-            <h1 className="text-display mb-8">
+            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                FAQ
+              </span>
+            </div>
+            <h1 className="text-display mb-6 sm:mb-8">
               Straight <span className="text-primary">answers.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
@@ -90,28 +96,31 @@ export default function FAQ() {
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="max-w-3xl"
+            className="bordered-section-lg p-4 sm:p-6 md:p-8 max-w-3xl relative"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((faq, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
-                  className="bg-secondary rounded-xl px-6 border-0"
-                >
-                  <AccordionTrigger className="text-left text-base font-semibold hover:no-underline py-5">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-5 text-base leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <DottedGrid className="opacity-15" spacing={24} />
+            <div className="relative z-10">
+              <Accordion type="single" collapsible className="space-y-2 sm:space-y-3">
+                {faqs.map((faq, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="bg-secondary rounded-lg sm:rounded-xl px-4 sm:px-6 border border-border"
+                  >
+                    <AccordionTrigger className="text-left text-sm sm:text-base font-semibold hover:no-underline py-4 sm:py-5">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-4 sm:pb-5 text-sm sm:text-base leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -120,33 +129,36 @@ export default function FAQ() {
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="grey-box text-center px-8 py-16"
+            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-title mb-4">
-              Still have <span className="text-primary">questions?</span>
-            </h2>
-            <p className="text-body-lg mb-8 max-w-lg mx-auto">
-              The best way to learn more is to start. Fill out the form, choose
-              your package, and we'll take it from there.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/start"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-full text-base font-semibold hover:brightness-110 transition-all"
-              >
-                Get Started
-                <ArrowUpRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/packages"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-background text-foreground rounded-full text-base font-semibold hover:bg-muted transition-all border border-border"
-              >
-                View Pricing
-              </Link>
+            <DottedGrid className="opacity-20" spacing={24} />
+            <div className="relative z-10">
+              <h2 className="text-title mb-3 sm:mb-4">
+                Still have <span className="text-primary">questions?</span>
+              </h2>
+              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
+                The best way to learn more is to start. Fill out the form, choose
+                your package, and we'll take it from there.
+              </p>
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+                <Link
+                  to="/start"
+                  className="btn-primary btn-lg justify-center"
+                >
+                  Get Started
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                </Link>
+                <Link
+                  to="/packages"
+                  className="btn-outline btn-lg justify-center"
+                >
+                  View Pricing
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>
