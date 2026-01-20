@@ -66,28 +66,30 @@ const addons = [
 export default function Packages() {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
-        <DottedGrid className="opacity-40" spacing={36} />
-        <div className="content-width relative z-10">
+      {/* Hero Card */}
+      <section className="pt-24 pb-8 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16">
+        <div className="content-width">
           <motion.div
-            className="max-w-3xl"
+            className="hero-card max-w-4xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Pricing
-              </span>
+            <DottedGrid className="opacity-30" spacing={28} />
+            <div className="hero-card-inner relative z-10">
+              <div className="inline-block px-4 py-2 mb-4 sm:mb-6 rounded-full border border-primary/30 bg-primary/5">
+                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-primary">
+                  Pricing
+                </span>
+              </div>
+              <h1 className="text-display mb-4 sm:mb-6">
+                Simple pricing. <span className="text-primary">No surprises.</span>
+              </h1>
+              <p className="text-body-lg max-w-2xl">
+                Pick a package. Get your site. Every package includes industry
+                research, proven layouts, and one revision round.
+              </p>
             </div>
-            <h1 className="text-display mb-6 sm:mb-8">
-              Simple pricing. <span className="text-primary">No surprises.</span>
-            </h1>
-            <p className="text-body-lg max-w-2xl">
-              Pick a package. Get your site. Every package includes industry
-              research, proven layouts, and one revision round.
-            </p>
           </motion.div>
         </div>
       </section>
@@ -99,10 +101,10 @@ export default function Packages() {
             {packages.map((pkg, index) => (
               <motion.div
                 key={pkg.name}
-                className={`relative rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col border-2 bg-card hover-lift ${
+                className={`relative flex flex-col hover-lift ${
                   pkg.popular
-                    ? "border-primary"
-                    : "border-border"
+                    ? "card-highlight"
+                    : "card-elevated"
                 }`}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -112,7 +114,7 @@ export default function Packages() {
                 {/* Popular badge */}
                 {pkg.popular && (
                   <div className="absolute -top-3 left-4 sm:left-6">
-                    <span className="inline-flex items-center px-3 sm:px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider border-2 border-primary">
+                    <span className="inline-flex items-center px-3 sm:px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider">
                       Most Popular
                     </span>
                   </div>
@@ -142,10 +144,10 @@ export default function Packages() {
 
                 <Link
                   to="/start"
-                  className={`w-full flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold transition-all border-2 ${
+                  className={`w-full flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold transition-all ${
                     pkg.popular
-                      ? "bg-primary text-primary-foreground border-primary hover:brightness-110"
-                      : "bg-card text-foreground border-border hover:bg-muted"
+                      ? "bg-primary text-primary-foreground hover:brightness-110"
+                      : "bg-secondary text-foreground border border-border hover:bg-muted"
                   }`}
                 >
                   Get Started
@@ -158,69 +160,34 @@ export default function Packages() {
       </section>
 
       {/* Add-ons */}
-      <section className="section relative">
-        <DottedGrid className="opacity-30" spacing={40} />
-        <div className="content-width relative z-10">
-          <motion.div
-            className="bordered-section p-4 sm:p-8 md:p-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-15" spacing={24} />
-            <div className="relative z-10">
-              <div className="mb-8 sm:mb-12">
-                <h2 className="text-headline">
-                  Optional <span className="text-primary">add-ons</span>
-                </h2>
-                <p className="text-body-lg mt-3 sm:mt-4">
-                  Need something extra? Add these to any package.
-                </p>
-              </div>
-
-              <div className="grid gap-2 sm:gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {addons.map((addon) => (
-                  <div
-                    key={addon.name}
-                    className="flex items-center justify-between p-4 sm:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border"
-                  >
-                    <span className="text-sm sm:text-base font-medium">{addon.name}</span>
-                    <span className="text-primary font-bold text-sm sm:text-base">{addon.price}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="section-sm">
+      <section className="section">
         <div className="content-width">
           <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
+            className="card-elevated max-w-4xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Not sure which <span className="text-primary">package?</span>
+            <div className="mb-6 sm:mb-8">
+              <h2 className="text-headline">
+                Optional <span className="text-primary">add-ons</span>
               </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                Start with Pro. It's our most popular and includes everything
-                most local businesses need.
+              <p className="text-body-lg mt-2 sm:mt-3">
+                Need something extra? Add these to any package.
               </p>
-              <Link
-                to="/start"
-                className="btn-primary btn-lg"
-              >
-                Start with Pro
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              </Link>
+            </div>
+
+            <div className="grid gap-2 sm:gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {addons.map((addon) => (
+                <div
+                  key={addon.name}
+                  className="flex items-center justify-between p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-secondary border border-border"
+                >
+                  <span className="text-sm sm:text-base font-medium">{addon.name}</span>
+                  <span className="text-primary font-bold text-sm sm:text-base">{addon.price}</span>
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>

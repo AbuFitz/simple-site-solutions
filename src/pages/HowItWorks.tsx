@@ -53,28 +53,30 @@ const revisionExcludes = [
 export default function HowItWorks() {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
-        <DottedGrid className="opacity-40" spacing={36} />
-        <div className="content-width relative z-10">
+      {/* Hero Card */}
+      <section className="pt-24 pb-8 sm:pt-28 sm:pb-12 md:pt-32 md:pb-16">
+        <div className="content-width">
           <motion.div
-            className="max-w-3xl"
+            className="hero-card max-w-4xl"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                The Process
-              </span>
+            <DottedGrid className="opacity-30" spacing={28} />
+            <div className="hero-card-inner relative z-10">
+              <div className="inline-block px-4 py-2 mb-4 sm:mb-6 rounded-full border border-primary/30 bg-primary/5">
+                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-primary">
+                  The Process
+                </span>
+              </div>
+              <h1 className="text-display mb-4 sm:mb-6">
+                Simple. <span className="text-primary">Structured.</span>
+              </h1>
+              <p className="text-body-lg max-w-2xl">
+                We've removed everything that slows down typical web projects.
+                No discovery calls. No moodboards. No endless back-and-forth.
+              </p>
             </div>
-            <h1 className="text-display mb-6 sm:mb-8">
-              Simple. <span className="text-primary">Structured.</span>
-            </h1>
-            <p className="text-body-lg max-w-2xl">
-              We've removed everything that slows down typical web projects.
-              No discovery calls. No moodboards. No endless back-and-forth.
-            </p>
           </motion.div>
         </div>
       </section>
@@ -83,51 +85,42 @@ export default function HowItWorks() {
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="bordered-section-lg p-4 sm:p-8 md:p-12 relative"
+            className="card-elevated max-w-3xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <DottedGrid className="opacity-20" spacing={28} />
-            <div className="relative z-10 max-w-3xl mx-auto">
-              {steps.map((step, index) => (
-                <motion.div
-                  key={step.number}
-                  className="relative flex gap-4 sm:gap-6 md:gap-8 pb-8 sm:pb-12 last:pb-0"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {/* Line */}
-                  {index < steps.length - 1 && (
-                    <div className="absolute left-5 sm:left-6 top-12 sm:top-14 bottom-0 w-px bg-border" />
-                  )}
-
-                  {/* Number */}
-                  <div className="shrink-0">
-                    <div className="step-number">
-                      {step.number}
-                    </div>
+            {steps.map((step, index) => (
+              <motion.div
+                key={step.number}
+                className="relative flex gap-4 sm:gap-6 md:gap-8 pb-8 sm:pb-10 last:pb-0 border-b border-border last:border-b-0"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                {/* Number */}
+                <div className="shrink-0 pt-1">
+                  <div className="step-number">
+                    {step.number}
                   </div>
+                </div>
 
-                  {/* Content */}
-                  <div className="pt-1 sm:pt-2">
-                    <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{step.title}</h3>
-                    <p className="text-body">{step.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                {/* Content */}
+                <div className="pt-2 sm:pt-3">
+                  <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{step.title}</h3>
+                  <p className="text-body">{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* Revision Policy */}
-      <section className="section relative">
-        <DottedGrid className="opacity-30" spacing={40} />
-        <div className="content-width relative z-10">
+      <section className="section">
+        <div className="content-width">
           <motion.div
             className="mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 30 }}
@@ -189,44 +182,6 @@ export default function HowItWorks() {
               </ul>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Ready to <span className="text-primary">skip the drama?</span>
-              </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                Pick your package, submit your details, and get a website that converts.
-              </p>
-              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-                <Link
-                  to="/start"
-                  className="btn-primary btn-lg justify-center"
-                >
-                  Get Started
-                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-                </Link>
-                <Link
-                  to="/packages"
-                  className="btn-outline btn-lg justify-center"
-                >
-                  View Pricing
-                </Link>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
     </Layout>

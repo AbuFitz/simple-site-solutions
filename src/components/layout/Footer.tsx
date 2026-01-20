@@ -1,31 +1,44 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import { motion } from "framer-motion";
 
-export function Footer() {
+interface FooterProps {
+  showCTA?: boolean;
+}
+
+export function Footer({ showCTA = true }: FooterProps) {
   return (
-    <footer className="border-t-2 border-border relative">
-      <DottedGrid className="opacity-20" spacing={32} />
+    <footer className="border-t border-border relative">
+      <DottedGrid className="opacity-10" spacing={32} />
       <div className="content-width py-12 sm:py-16 md:py-20 relative z-10">
-        {/* Main CTA */}
-        <div className="bordered-highlight text-center p-6 sm:p-8 md:p-12 mb-12 sm:mb-16 md:mb-20 relative">
-          <DottedGrid className="opacity-15" spacing={20} />
-          <div className="relative z-10">
-            <h2 className="text-headline mb-4 sm:mb-6">
-              Ready to get <span className="text-primary">started?</span>
-            </h2>
-            <p className="text-body-lg max-w-md mx-auto mb-6 sm:mb-8">
-              Let's build you a website that actually converts.
-            </p>
-            <Link
-              to="/start"
-              className="btn-primary btn-lg"
-            >
-              Start Your Project
-              <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-            </Link>
-          </div>
-        </div>
+        {/* Main CTA - Only show if showCTA is true */}
+        {showCTA && (
+          <motion.div 
+            className="hero-card max-w-2xl mx-auto mb-12 sm:mb-16 md:mb-20"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-20" spacing={24} />
+            <div className="hero-card-inner relative z-10 text-center">
+              <h2 className="text-title sm:text-headline mb-3 sm:mb-4">
+                Let's build your site
+              </h2>
+              <p className="text-body-lg max-w-md mx-auto mb-6 sm:mb-8">
+                Pick a package, share your details, and get a website that converts.
+              </p>
+              <Link
+                to="/start"
+                className="btn-primary btn-lg"
+              >
+                Start Your Project
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+              </Link>
+            </div>
+          </motion.div>
+        )}
 
         {/* Footer Grid */}
         <div className="grid gap-8 sm:gap-12 md:grid-cols-4 pb-8 sm:pb-12 md:pb-16 border-b border-border">
