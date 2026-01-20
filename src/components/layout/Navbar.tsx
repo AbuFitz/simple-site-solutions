@@ -57,7 +57,7 @@ export function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight whitespace-nowrap"
+            className="min-w-0 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight truncate max-w-[52%] sm:max-w-none"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -91,18 +91,19 @@ export function Navbar() {
           {/* Menu Button - Mobile (green pill matching desktop CTA style) */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
+            className="md:hidden shrink-0 inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? (
               <>
                 <X className="w-4 h-4" />
-                <span>Close</span>
+                <span className="hidden sm:inline">Close</span>
               </>
             ) : (
               <>
                 <Menu className="w-4 h-4" />
-                <span>Menu</span>
+                <span className="hidden sm:inline">Menu</span>
               </>
             )}
           </button>
