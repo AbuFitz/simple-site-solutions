@@ -4,8 +4,8 @@
 
 /* OneSimpleSite Design System
    Refined. Minimal. Bold.
+   White canvas with inset cards
    Grey tones with signature green accent
-   DIY feel with bordered sections
 */
 
 @layer base {
@@ -55,23 +55,25 @@
   }
 
   .dark {
-    --background: 0 0% 4%;
+    /* Dark background canvas */
+    --background: 0 0% 8%;
     --foreground: 0 0% 94%;
 
-    --card: 0 0% 7%;
+    /* Slightly lighter card for inset effect */
+    --card: 0 0% 11%;
     --card-foreground: 0 0% 94%;
 
-    --popover: 0 0% 7%;
+    --popover: 0 0% 11%;
     --popover-foreground: 0 0% 94%;
 
     --primary: 158 64% 42%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 10%;
+    --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 88%;
 
-    --muted: 0 0% 14%;
-    --muted-foreground: 0 0% 50%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 55%;
 
     --accent: 158 64% 42%;
     --accent-foreground: 0 0% 100%;
@@ -79,20 +81,20 @@
     --destructive: 0 62% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 16%;
-    --input: 0 0% 16%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
     --ring: 158 64% 42%;
 
     --success: 158 64% 42%;
     --success-foreground: 0 0% 100%;
 
-    --sidebar-background: 0 0% 7%;
+    --sidebar-background: 0 0% 11%;
     --sidebar-foreground: 0 0% 94%;
     --sidebar-primary: 158 64% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 14%;
+    --sidebar-accent: 0 0% 16%;
     --sidebar-accent-foreground: 0 0% 94%;
-    --sidebar-border: 0 0% 16%;
+    --sidebar-border: 0 0% 20%;
     --sidebar-ring: 158 64% 42%;
   }
 }
@@ -132,6 +134,19 @@
 
   .section-sm {
     @apply py-12 sm:py-16 md:py-20;
+  }
+
+  /* Hero Card - Inset with elevation */
+  .hero-card {
+    @apply bg-card rounded-3xl border border-border relative overflow-hidden;
+    box-shadow: 
+      0 1px 2px hsl(0 0% 0% / 0.05),
+      0 4px 8px hsl(0 0% 0% / 0.05),
+      0 16px 32px hsl(0 0% 0% / 0.08);
+  }
+
+  .hero-card-inner {
+    @apply p-6 sm:p-8 md:p-12 lg:p-16;
   }
 
   /* Bordered sections - DIY feel */
@@ -186,21 +201,26 @@
     @apply text-primary;
   }
 
-  /* Cards - Bordered style */
+  /* Cards - Elevated style */
   .card-base {
-    @apply bg-card rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6 md:p-8;
+    @apply bg-card rounded-2xl sm:rounded-3xl border border-border p-4 sm:p-6 md:p-8;
+    box-shadow: 0 2px 8px hsl(0 0% 0% / 0.04);
   }
 
   .card-highlight {
-    @apply bg-card rounded-xl sm:rounded-2xl border-2 border-primary p-4 sm:p-6 md:p-8;
+    @apply bg-card rounded-2xl sm:rounded-3xl border-2 border-primary p-4 sm:p-6 md:p-8;
+    box-shadow: 0 4px 12px hsl(var(--primary) / 0.1);
   }
 
   .card-subtle {
-    @apply bg-muted/40 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-border;
+    @apply bg-muted/40 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-border;
   }
 
-  .card-dark {
-    @apply bg-secondary rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 border border-border;
+  .card-elevated {
+    @apply bg-card rounded-2xl sm:rounded-3xl border border-border p-4 sm:p-6 md:p-8;
+    box-shadow: 
+      0 1px 2px hsl(0 0% 0% / 0.04),
+      0 4px 16px hsl(0 0% 0% / 0.06);
   }
 
   /* Buttons - Mobile optimized */
@@ -320,7 +340,8 @@
 
   /* Feature grid item */
   .feature-item {
-    @apply p-5 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl bg-card border border-border;
+    @apply p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-card border border-border;
+    box-shadow: 0 2px 8px hsl(0 0% 0% / 0.04);
   }
 
   /* Step number badge */

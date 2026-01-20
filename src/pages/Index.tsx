@@ -49,67 +49,54 @@ export default function Index() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="min-h-[90vh] sm:min-h-screen flex items-center pt-20 pb-12 sm:pt-24 sm:pb-16 md:pt-32 md:pb-24 relative">
-        <DottedGrid className="opacity-50" spacing={32} />
-        <div className="content-width relative z-10">
-          <div className="max-w-4xl">
-            <motion.div
-              className="bordered-section inline-block px-4 py-2 mb-6 sm:mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Websites for Local UK Businesses
-              </span>
-            </motion.div>
+      <section className="min-h-[85vh] sm:min-h-[90vh] flex items-center pt-20 pb-8 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16">
+        <div className="content-width">
+          <motion.div
+            className="hero-card max-w-5xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <DottedGrid className="opacity-40" spacing={32} />
+            <div className="hero-card-inner relative z-10">
+              <div className="inline-block px-4 py-2 mb-4 sm:mb-6 rounded-full border border-primary/30 bg-primary/5">
+                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-primary">
+                  Websites for Local UK Businesses
+                </span>
+              </div>
 
-            <motion.h1
-              className="text-display mb-6 sm:mb-8"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-            >
-              Websites that{" "}
-              <span className="text-primary">
-                <TypewriterText texts={typewriterWords} speed={120} />
-              </span>
-              <br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>
-              Not just impress.
-            </motion.h1>
+              <h1 className="text-display mb-6 sm:mb-8">
+                Websites that{" "}
+                <span className="text-primary">
+                  <TypewriterText texts={typewriterWords} speed={120} />
+                </span>
+                <br className="hidden sm:block" />
+                <span className="sm:hidden"> </span>
+                Not just impress.
+              </h1>
 
-            <motion.p
-              className="text-body-lg max-w-2xl mb-8 sm:mb-12"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Fast, proven websites for local businesses using layouts that
-              already work in your industry. No fluff. No endless revisions.
-            </motion.p>
+              <p className="text-body-lg max-w-2xl mb-8 sm:mb-10">
+                Fast, proven websites for local businesses using layouts that
+                already work in your industry. No fluff. No endless revisions.
+              </p>
 
-            <motion.div
-              className="flex flex-col sm:flex-row gap-3 sm:gap-4"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <Link
-                to="/start"
-                className="btn-primary btn-lg w-full sm:w-auto justify-center"
-              >
-                Get Started
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              </Link>
-              <Link
-                to="/packages"
-                className="btn-outline btn-lg w-full sm:w-auto justify-center"
-              >
-                View Pricing
-              </Link>
-            </motion.div>
-          </div>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Link
+                  to="/start"
+                  className="btn-primary btn-lg w-full sm:w-auto justify-center"
+                >
+                  Get Started
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                </Link>
+                <Link
+                  to="/packages"
+                  className="btn-outline btn-lg w-full sm:w-auto justify-center"
+                >
+                  View Pricing
+                </Link>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -117,9 +104,8 @@ export default function Index() {
       <PortfolioShowcase />
 
       {/* Benefits */}
-      <section className="section relative">
-        <DottedGrid className="opacity-30" spacing={40} />
-        <div className="content-width relative z-10">
+      <section className="section">
+        <div className="content-width">
           <motion.div
             className="mb-10 sm:mb-16"
             initial={{ opacity: 0, y: 30 }}
@@ -158,29 +144,23 @@ export default function Index() {
       <section className="section-sm">
         <div className="content-width">
           <motion.div
-            className="bordered-section-lg p-4 sm:p-8 md:p-12 relative"
+            className="hero-card max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
             <DottedGrid className="opacity-20" spacing={28} />
-            <div className="relative z-10">
+            <div className="hero-card-inner relative z-10">
               <div className="text-center mb-8 sm:mb-12">
                 <h2 className="text-headline">
                   This is <span className="text-primary">not</span> for everyone
                 </h2>
               </div>
 
-              <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+              <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
                 {/* Not For You */}
-                <motion.div
-                  className="card-dark"
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <div className="card-subtle">
                   <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-muted-foreground">
                     Not for you if you want...
                   </h3>
@@ -194,16 +174,10 @@ export default function Index() {
                       </li>
                     ))}
                   </ul>
-                </motion.div>
+                </div>
 
                 {/* For You */}
-                <motion.div
-                  className="card-highlight"
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                >
+                <div className="card-highlight">
                   <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6">
                     Perfect if you want...
                   </h3>
@@ -217,39 +191,8 @@ export default function Index() {
                       </li>
                     ))}
                   </ul>
-                </motion.div>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Simple CTA */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 md:py-20 relative overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Ready for a website that{" "}
-                <span className="text-primary">works?</span>
-              </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                Choose your package, tell us about your business, and get a site that converts.
-              </p>
-              <Link
-                to="/start"
-                className="btn-primary btn-lg"
-              >
-                Get Started Now
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              </Link>
             </div>
           </motion.div>
         </div>
