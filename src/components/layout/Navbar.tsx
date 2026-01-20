@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
+  { name: "Work", path: "/#work" },
   { name: "How It Works", path: "/how-it-works" },
   { name: "Packages", path: "/packages" },
   { name: "FAQ", path: "/faq" },
@@ -14,16 +15,18 @@ export function Navbar() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <nav className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold tracking-tight text-foreground">
-            onesimplesite
+    <header className="fixed top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl">
+      <nav className="container flex h-20 items-center justify-between">
+        <Link to="/" className="flex items-center group">
+          <span className="text-2xl font-bold tracking-tight">
+            <span className="gradient-text">one</span>
+            <span className="text-foreground">simple</span>
+            <span className="gradient-text">site</span>
           </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -39,15 +42,15 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:block">
-          <Button asChild>
+        <div className="hidden lg:block">
+          <Button asChild className="gradient-bg border-0 text-white hover:opacity-90">
             <Link to="/start">Get Started</Link>
           </Button>
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden"
+          className="lg:hidden"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
@@ -61,14 +64,14 @@ export function Navbar() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="border-t border-border md:hidden">
-          <div className="container flex flex-col gap-4 py-4">
+        <div className="border-t border-border lg:hidden">
+          <div className="container flex flex-col gap-4 py-6">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
+                className={`text-lg font-medium transition-colors hover:text-primary ${
                   location.pathname === link.path
                     ? "text-primary"
                     : "text-muted-foreground"
@@ -77,7 +80,7 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Button asChild className="mt-2 w-full">
+            <Button asChild className="mt-4 gradient-bg border-0 text-white">
               <Link to="/start" onClick={() => setIsOpen(false)}>
                 Get Started
               </Link>

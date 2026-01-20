@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 
 const packages = [
@@ -58,121 +59,177 @@ const upgrades = [
   { name: "Ongoing maintenance", description: "Monthly updates and support" },
 ];
 
+const included = [
+  "Mobile-first design",
+  "Fast-loading pages",
+  "SSL security",
+  "GDPR-compliant forms",
+  "Industry-proven layout",
+  "1 structured revision round",
+  "Hosting setup guidance",
+  "Launch support",
+];
+
 export default function Packages() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="section border-b border-border">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
+      <section className="section pt-32 pb-20 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg-subtle" />
+        <div className="floating-shape w-[500px] h-[500px] bg-pink-500/20 -top-40 -left-40" />
+        
+        <div className="container relative">
+          <motion.div 
+            className="mx-auto max-w-3xl text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="badge-gradient mb-6 inline-block">Pricing</span>
             <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6">
-              Packages
+              <span className="gradient-text">Packages</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               Three packages. Clear deliverables. No custom quotes.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Packages */}
-      <section className="section border-b border-border">
+      <section className="section">
         <div className="container">
-          <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
-            {packages.map((pkg) => (
-              <div
+          <div className="grid gap-8 lg:grid-cols-3 max-w-6xl mx-auto">
+            {packages.map((pkg, index) => (
+              <motion.div
                 key={pkg.name}
-                className={pkg.popular ? "card-highlight flex flex-col" : "card-dark flex flex-col"}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className={pkg.popular ? "gradient-border lg:-mt-8 lg:mb-8" : ""}
               >
-                {pkg.popular && (
-                  <div className="text-xs font-bold text-primary mb-2">MOST POPULAR</div>
-                )}
-                <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
-                <p className="text-muted-foreground text-sm mb-6">{pkg.description}</p>
-                
-                <ul className="space-y-3 mb-8 flex-1">
-                  {pkg.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-sm">
-                      <Check className="h-4 w-4 shrink-0 text-primary mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                
-                <Button 
-                  className="w-full" 
-                  variant={pkg.popular ? "default" : "outline"}
-                  asChild
-                >
-                  <Link to="/start">
-                    Get Started
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
+                <div className={`${pkg.popular ? "gradient-border-inner p-6 md:p-8 h-full" : "card-glow h-full"} flex flex-col`}>
+                  {pkg.popular && (
+                    <div className="text-xs font-bold text-primary mb-4">MOST POPULAR</div>
+                  )}
+                  <h3 className="text-3xl font-bold mb-2">{pkg.name}</h3>
+                  <p className="text-muted-foreground mb-8">{pkg.description}</p>
+                  
+                  <ul className="space-y-4 mb-8 flex-1">
+                    {pkg.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-3">
+                        <div className={`w-5 h-5 rounded-full ${pkg.popular ? 'gradient-bg' : 'bg-primary/20'} flex items-center justify-center shrink-0 mt-0.5`}>
+                          <Check className={`h-3 w-3 ${pkg.popular ? 'text-white' : 'text-primary'}`} />
+                        </div>
+                        <span className="text-sm">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <Button 
+                    className={`w-full ${pkg.popular ? 'gradient-bg border-0 text-white hover:opacity-90' : ''}`}
+                    variant={pkg.popular ? "default" : "outline"}
+                    size="lg"
+                    asChild
+                  >
+                    <Link to="/start">
+                      Get Started
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* What's Included */}
-      <section className="section border-b border-border">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-8">
-              What's included in every package
+      <section className="section relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg-subtle" />
+        
+        <div className="container relative">
+          <motion.div 
+            className="section-header"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="section-title">
+              What's <span className="gradient-text">included</span> in every package
             </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Mobile-first design",
-                "Fast-loading pages",
-                "SSL security",
-                "GDPR-compliant forms",
-                "Industry-proven layout",
-                "1 structured revision round",
-                "Hosting setup guidance",
-                "Launch support",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 p-4 card-dark">
-                  <Check className="h-5 w-5 text-primary shrink-0" />
-                  <span>{item}</span>
+          </motion.div>
+          
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
+            {included.map((item, index) => (
+              <motion.div 
+                key={item}
+                className="card-glass flex items-center gap-3"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                viewport={{ once: true }}
+              >
+                <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center shrink-0">
+                  <Check className="h-4 w-4 text-white" />
                 </div>
-              ))}
-            </div>
+                <span className="font-medium">{item}</span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Paid Upgrades */}
-      <section className="section border-b border-border">
+      <section className="section">
         <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">Paid Upgrades</h2>
+          <motion.div 
+            className="section-header"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <span className="badge-gradient mb-6 inline-block">Add-ons</span>
+            <h2 className="section-title">Paid <span className="gradient-text">Upgrades</span></h2>
             <p className="section-subtitle">
               Need more? These are available as add-ons to any package.
             </p>
-          </div>
+          </motion.div>
           
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
-            {upgrades.map((upgrade) => (
-              <div key={upgrade.name} className="card-dark">
+            {upgrades.map((upgrade, index) => (
+              <motion.div 
+                key={upgrade.name}
+                className="card-glow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                viewport={{ once: true }}
+              >
                 <h3 className="font-bold mb-1">{upgrade.name}</h3>
                 <p className="text-sm text-muted-foreground">{upgrade.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-          
-          <p className="text-center text-muted-foreground mt-8">
-            Upgrade pricing provided during onboarding.
-          </p>
         </div>
       </section>
 
       {/* Important Notes */}
-      <section className="section border-b border-border">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Important to know</h2>
+      <section className="section relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg-subtle" />
+        
+        <div className="container relative">
+          <motion.div 
+            className="max-w-3xl mx-auto card-glass"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl font-bold mb-6">Important to <span className="gradient-text">know</span></h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
                 <strong className="text-foreground">One revision round only.</strong> Revisions cover text changes, image swaps, and minor colour tweaks. Not layout changes or new features.
@@ -187,27 +244,33 @@ export default function Packages() {
                 <strong className="text-foreground">Pricing is fixed.</strong> No haggling, no special deals. The structure is the structure.
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
       <section className="section">
         <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+          <motion.div 
+            className="max-w-3xl mx-auto text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Know what you want?
+              Know what you <span className="gradient-text">want</span>?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               Pick your package and let's get your website live.
             </p>
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="gradient-bg border-0 text-white hover:opacity-90">
               <Link to="/start">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
     </Layout>

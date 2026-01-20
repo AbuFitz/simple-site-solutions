@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -84,31 +85,6 @@ const faqCategories = [
         question: "Is SEO included?",
         answer: "Basic on-page SEO is included (proper titles, meta descriptions, clean structure). Advanced SEO or content strategy is a paid upgrade.",
       },
-      {
-        question: "Can I edit the site myself after?",
-        answer: "Depends on the setup. We'll provide guidance on making simple updates. Complex changes should go through us.",
-      },
-    ],
-  },
-  {
-    title: "Pricing & Payment",
-    faqs: [
-      {
-        question: "Why don't you show prices on the site?",
-        answer: "Because pricing depends on your specific needs and any add-ons. Contact us to get a clear quote for your package.",
-      },
-      {
-        question: "Can I negotiate on price?",
-        answer: "No. Our packages are fixed. The structure is the structure. This keeps things fair and efficient for everyone.",
-      },
-      {
-        question: "When do I pay?",
-        answer: "Typically 50% upfront to start, 50% before launch. Payment terms are confirmed during onboarding.",
-      },
-      {
-        question: "Do you offer payment plans?",
-        answer: "Not currently. Our pricing is already streamlined to be accessible. We keep things simple.",
-      },
     ],
   },
 ];
@@ -117,65 +93,89 @@ export default function FAQ() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="section border-b border-border">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
+      <section className="section pt-32 pb-20 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg-subtle" />
+        <div className="floating-shape w-[400px] h-[400px] bg-cyan-500/20 -bottom-40 -right-40" />
+        
+        <div className="container relative">
+          <motion.div 
+            className="mx-auto max-w-3xl text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="badge-gradient mb-6 inline-block">Questions</span>
             <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6">
-              FAQ
+              <span className="gradient-text">FAQ</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               Common questions about how we work. Read before you reach out.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* FAQs */}
-      <section className="section border-b border-border">
+      <section className="section">
         <div className="container">
           <div className="max-w-3xl mx-auto">
-            {faqCategories.map((category) => (
-              <div key={category.title} className="mb-12">
-                <h2 className="text-2xl font-bold mb-6">{category.title}</h2>
+            {faqCategories.map((category, categoryIndex) => (
+              <motion.div 
+                key={category.title} 
+                className="mb-12"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <h2 className="text-2xl font-bold mb-6 gradient-text">{category.title}</h2>
                 <Accordion type="single" collapsible className="space-y-4">
                   {category.faqs.map((faq, index) => (
                     <AccordionItem
                       key={index}
                       value={`${category.title}-${index}`}
-                      className="border border-border rounded-lg px-6 bg-card"
+                      className="card-glow px-6 border-0"
                     >
-                      <AccordionTrigger className="text-left font-medium hover:no-underline">
+                      <AccordionTrigger className="text-left font-medium hover:no-underline py-6">
                         {faq.question}
                       </AccordionTrigger>
-                      <AccordionContent className="text-muted-foreground">
+                      <AccordionContent className="text-muted-foreground pb-6">
                         {faq.answer}
                       </AccordionContent>
                     </AccordionItem>
                   ))}
                 </Accordion>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="section">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
+      <section className="section relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg opacity-10" />
+        
+        <div className="container relative">
+          <motion.div 
+            className="max-w-3xl mx-auto text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Got it?
+              Got it? <span className="gradient-text">Let's go.</span>
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               If this sounds like what you need, let's get started.
             </p>
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="gradient-bg border-0 text-white hover:opacity-90">
               <Link to="/start">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
     </Layout>
