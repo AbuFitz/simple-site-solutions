@@ -1,70 +1,74 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-
-const footerLinks = [
-  { name: "Work", path: "/#work" },
-  { name: "How It Works", path: "/how-it-works" },
-  { name: "Packages", path: "/packages" },
-  { name: "FAQ", path: "/faq" },
-];
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-border bg-background overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 gradient-bg-subtle opacity-50" />
-      
-      <div className="container relative py-20">
-        {/* CTA Section */}
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Ready to get your website <span className="gradient-text">live</span>?
-          </h2>
-          <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
-            Stop losing customers to competitors with better websites.
-          </p>
-          <Button asChild size="lg" className="gradient-bg border-0 text-white hover:opacity-90">
-            <Link to="/start">
-              Get Started Now
-              <ArrowRight className="ml-2 h-4 w-4" />
+    <footer className="border-t border-border bg-background">
+      <div className="content-width py-16 md:py-20">
+        <div className="grid gap-12 md:grid-cols-4">
+          {/* Brand */}
+          <div className="md:col-span-2">
+            <Link to="/" className="logo text-2xl">
+              one<span className="logo-accent">simple</span>site
             </Link>
-          </Button>
-        </div>
-
-        <div className="border-t border-border pt-12">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
-            {/* Brand */}
-            <div className="text-center md:text-left">
-              <Link to="/" className="text-2xl font-bold tracking-tight">
-                <span className="gradient-text">one</span>
-                <span className="text-foreground">simple</span>
-                <span className="gradient-text">site</span>
-              </Link>
-              <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-                Proven websites for local businesses. Fast. Focused. Built for results.
-              </p>
-            </div>
-
-            {/* Links */}
-            <div className="flex flex-wrap justify-center gap-8">
-              {footerLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className="text-sm text-muted-foreground transition-colors hover:text-primary"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} OneSimpleSite. All rights reserved.
+            <p className="mt-4 text-body max-w-sm">
+              Fast, proven websites for local businesses. Built from what
+              already works in your industry.
             </p>
           </div>
+
+          {/* Links */}
+          <div>
+            <h4 className="font-semibold mb-4">Navigation</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/" className="text-body hover:text-foreground transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/how-it-works" className="text-body hover:text-foreground transition-colors">
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link to="/packages" className="text-body hover:text-foreground transition-colors">
+                  Packages
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-body hover:text-foreground transition-colors">
+                  FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="font-semibold mb-4">Get Started</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/start" className="text-body hover:text-foreground transition-colors">
+                  Start Your Project
+                </Link>
+              </li>
+              <li>
+                <a href="mailto:hello@onesimplesite.co.uk" className="text-body hover:text-foreground transition-colors">
+                  hello@onesimplesite.co.uk
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom */}
+        <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-muted-foreground">
+            © {new Date().getFullYear()} OneSimpleSite. All rights reserved.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Built for local businesses in the UK.
+          </p>
         </div>
       </div>
     </footer>

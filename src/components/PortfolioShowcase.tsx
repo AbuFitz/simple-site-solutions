@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -6,8 +5,7 @@ interface PortfolioItem {
   id: number;
   title: string;
   industry: string;
-  color: string;
-  stats: string;
+  result: string;
 }
 
 const portfolioItems: PortfolioItem[] = [
@@ -15,133 +13,90 @@ const portfolioItems: PortfolioItem[] = [
     id: 1,
     title: "Smith's Plumbing",
     industry: "Emergency Plumber",
-    color: "from-cyan-500 via-blue-600 to-indigo-700",
-    stats: "+340% enquiries",
+    result: "+340% enquiries",
   },
   {
     id: 2,
     title: "Sparkle Clean Co",
     industry: "Cleaning Service",
-    color: "from-emerald-400 via-teal-500 to-cyan-600",
-    stats: "+210% bookings",
+    result: "+210% bookings",
   },
   {
     id: 3,
     title: "Dave's Auto Care",
     industry: "Mechanic",
-    color: "from-orange-400 via-red-500 to-pink-600",
-    stats: "+180% calls",
+    result: "+180% calls",
   },
 ];
 
 export function PortfolioShowcase() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
-
   return (
-    <section className="section-tight overflow-hidden">
-      <div className="container">
+    <section className="section">
+      <div className="content-width">
         {/* Header */}
         <motion.div
-          className="mb-16 lg:mb-24"
-          initial={{ opacity: 0, y: 30 }}
+          className="mb-16"
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
         >
-          <span className="badge-glow mb-6 inline-block">Selected Work</span>
-          <h2 className="heading-lg max-w-4xl">
-            Websites that{" "}
-            <span className="text-gradient">deliver results</span>
+          <span className="badge-primary mb-4 inline-block">Our Work</span>
+          <h2 className="text-headline">
+            Real results for <span className="text-accent">real businesses</span>
           </h2>
         </motion.div>
 
         {/* Portfolio Grid */}
-        <div
-          ref={containerRef}
-          className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid gap-6 md:grid-cols-3">
           {portfolioItems.map((item, index) => (
             <motion.div
               key={item.id}
-              className="group relative"
-              initial={{ opacity: 0, y: 40 }}
+              className="group"
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.15 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              onMouseEnter={() => setHoveredId(item.id)}
-              onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="portfolio-card cursor-pointer">
-                {/* Gradient background */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${item.color} transition-transform duration-700 group-hover:scale-110`}
-                />
-
-                {/* Mock browser */}
-                <div className="absolute top-4 left-4 right-4 flex items-center gap-2 z-10">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-white/30" />
+              <div className="card-base hover:border-primary/50 transition-colors cursor-pointer">
+                {/* Mock Preview */}
+                <div className="aspect-[4/3] bg-muted rounded-lg mb-6 relative overflow-hidden">
+                  {/* Browser bar */}
+                  <div className="absolute top-0 left-0 right-0 h-8 bg-secondary flex items-center px-3 gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+                    <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+                    <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+                    <div className="ml-3 flex-1 h-4 bg-muted rounded" />
                   </div>
-                  <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
-                    <span className="text-white/60 text-xs font-medium">
-                      {item.title.toLowerCase().replace(/['\s]/g, "")}.co.uk
-                    </span>
+                  
+                  {/* Mock content */}
+                  <div className="absolute inset-0 top-8 p-4 flex flex-col items-center justify-center">
+                    <div className="w-12 h-12 bg-primary/20 rounded-lg mb-3" />
+                    <div className="w-24 h-4 bg-foreground/10 rounded mb-2" />
+                    <div className="w-32 h-3 bg-foreground/5 rounded mb-4" />
+                    <div className="w-16 h-6 bg-primary/30 rounded" />
+                  </div>
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-background/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="text-center">
+                      <div className="w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center mx-auto mb-3">
+                        <ArrowUpRight className="w-5 h-5 text-primary" />
+                      </div>
+                      <span className="text-primary font-bold text-lg">
+                        {item.result}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Content preview */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8 pt-16">
-                  <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur mb-6" />
-                  <div className="h-6 w-40 bg-white/30 rounded-lg mb-3" />
-                  <div className="h-3 w-56 bg-white/20 rounded mb-2" />
-                  <div className="h-3 w-48 bg-white/20 rounded mb-6" />
-                  <div className="h-10 w-28 bg-white/90 rounded-lg" />
-                </div>
-
-                {/* Hover overlay */}
-                <motion.div
-                  className="absolute inset-0 bg-background/90 backdrop-blur-sm flex flex-col items-center justify-center z-20"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: hoveredId === item.id ? 1 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="w-14 h-14 rounded-full border-2 border-electric flex items-center justify-center mb-4">
-                    <ArrowUpRight className="w-6 h-6 text-electric" />
-                  </div>
-                  <span className="text-electric font-semibold text-lg">
-                    {item.stats}
-                  </span>
-                </motion.div>
-              </div>
-
-              {/* Info */}
-              <div className="mt-5">
+                {/* Info */}
                 <h3 className="text-xl font-bold mb-1">{item.title}</h3>
                 <p className="text-muted-foreground">{item.industry}</p>
               </div>
             </motion.div>
           ))}
         </div>
-
-        {/* View all link */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-electric transition-colors group"
-          >
-            <span className="font-medium">View more projects</span>
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
-        </motion.div>
       </div>
     </section>
   );
