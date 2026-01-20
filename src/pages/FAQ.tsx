@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -126,43 +125,15 @@ export default function FAQ() {
       </section>
 
       {/* CTA */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Still have <span className="text-primary">questions?</span>
-              </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                The best way to learn more is to start. Fill out the form, choose
-                your package, and we'll take it from there.
-              </p>
-              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-                <Link
-                  to="/start"
-                  className="btn-primary btn-lg justify-center"
-                >
-                  Get Started
-                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-                </Link>
-                <Link
-                  to="/packages"
-                  className="btn-outline btn-lg justify-center"
-                >
-                  View Pricing
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CTASection
+        title="Still have"
+        highlightedText="questions?"
+        description="The best way to learn more is to start. Fill out the form, choose your package, and we'll take it from there."
+        primaryButtonText="Get Started"
+        primaryButtonLink="/start"
+        secondaryButtonText="View Pricing"
+        secondaryButtonLink="/packages"
+      />
     </Layout>
   );
 }
