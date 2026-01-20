@@ -7,30 +7,30 @@ import { CTASection } from "@/components/CTASection";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
 import { TrustStrip } from "@/components/TrustStrip";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Check, X, Zap, Target, Clock, Smartphone } from "lucide-react";
+import { ArrowUpRight, Check, X } from "lucide-react";
 
 const typewriterWords = ["converts.", "performs.", "delivers.", "works."];
 
-const benefits = [
+const whyUsPoints = [
   {
-    icon: Zap,
+    number: "01",
+    title: "Proven Layouts",
+    description: "Built from what converts in your industry. No guesswork.",
+  },
+  {
+    number: "02",
     title: "5-10 Days",
     description: "Your site goes live fast. No waiting months.",
   },
   {
-    icon: Target,
-    title: "Proven Layouts",
-    description: "Built from what already converts.",
-  },
-  {
-    icon: Clock,
+    number: "03",
     title: "No Drama",
-    description: "No endless meetings or moodboards.",
+    description: "No endless meetings, moodboards, or revisions.",
   },
   {
-    icon: Smartphone,
+    number: "04",
     title: "Mobile-First",
-    description: "Perfect on every device.",
+    description: "Perfect on every device, every time.",
   },
 ];
 
@@ -51,8 +51,8 @@ const forYou = [
 export default function Index() {
   return (
     <Layout>
-      {/* Hero Section - Tighter on mobile */}
-      <section className="min-h-[75vh] sm:min-h-[85vh] flex items-center pt-20 pb-6 sm:pt-24 sm:pb-10 md:pt-28 md:pb-16 relative">
+      {/* Hero Section */}
+      <section className="min-h-[70vh] sm:min-h-[80vh] flex items-center pt-20 pb-4 sm:pt-24 sm:pb-8 md:pt-28 md:pb-12 relative">
         <DottedGrid className="opacity-40" spacing={28} />
         <div className="content-width relative z-10">
           <div className="max-w-4xl">
@@ -73,13 +73,12 @@ export default function Index() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              Websites that{" "}
-              <span className="text-primary">
-                <TypewriterText texts={typewriterWords} speed={120} />
+              <span className="block">Websites that{" "}
+                <span className="text-primary relative">
+                  <TypewriterText texts={typewriterWords} speed={120} />
+                </span>
               </span>
-              <br className="hidden sm:block" />
-              <span className="sm:hidden"> </span>
-              Not just impress.
+              <span className="block">Not just impress.</span>
             </motion.h1>
 
             <motion.p
@@ -119,12 +118,11 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Portfolio - Tighter spacing */}
+      {/* Portfolio */}
       <PortfolioShowcase />
 
-      {/* Benefits - Compact grid */}
-      <section className="py-12 sm:py-16 md:py-24 relative">
-        <DottedGrid className="opacity-30" spacing={36} />
+      {/* Why Us - Redesigned */}
+      <section className="py-10 sm:py-14 md:py-20 relative">
         <div className="content-width relative z-10">
           <motion.div
             className="mb-6 sm:mb-10"
@@ -139,21 +137,27 @@ export default function Index() {
             </h2>
           </motion.div>
 
-          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-            {benefits.map((benefit, index) => (
+          {/* Two-column layout on desktop */}
+          <div className="grid gap-3 md:grid-cols-2">
+            {whyUsPoints.map((point, index) => (
               <motion.div
-                key={benefit.title}
-                className="feature-item p-4 sm:p-5 md:p-6"
-                initial={{ opacity: 0, y: 30 }}
+                key={point.number}
+                className="group relative flex items-start gap-4 p-4 sm:p-5 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="step-number w-8 h-8 sm:w-10 sm:h-10 mb-3 sm:mb-4">
-                  <benefit.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                {/* Number */}
+                <span className="text-3xl sm:text-4xl font-bold text-primary/20 group-hover:text-primary/40 transition-colors">
+                  {point.number}
+                </span>
+                
+                {/* Content */}
+                <div className="pt-1">
+                  <h3 className="text-sm sm:text-base font-bold mb-1">{point.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{point.description}</p>
                 </div>
-                <h3 className="text-sm sm:text-base md:text-lg font-bold mb-1 sm:mb-2">{benefit.title}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -161,7 +165,7 @@ export default function Index() {
       </section>
 
       {/* Is This For You - Compact */}
-      <section className="py-10 sm:py-14 md:py-20">
+      <section className="py-8 sm:py-12 md:py-16">
         <div className="content-width">
           <motion.div
             className="bordered-section-lg p-4 sm:p-6 md:p-10 relative"
@@ -204,7 +208,7 @@ export default function Index() {
 
                 {/* For You */}
                 <motion.div
-                  className="card-highlight p-4 sm:p-5 md:p-6"
+                  className="card-base border-primary/30 p-4 sm:p-5 md:p-6"
                   initial={{ opacity: 0, x: 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6 }}
