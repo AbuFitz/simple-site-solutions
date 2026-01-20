@@ -2,8 +2,13 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Plus, Minus } from "lucide-react";
-import { useState } from "react";
+import { ArrowUpRight } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const faqs = [
   {
@@ -58,157 +63,106 @@ const faqs = [
   },
 ];
 
-function FAQItem({ question, answer, isOpen, onToggle, index }: { 
-  question: string; 
-  answer: string; 
-  isOpen: boolean;
-  onToggle: () => void;
-  index: number;
-}) {
-  return (
-    <motion.div
-      className={`border-b border-border last:border-b-0 ${isOpen ? 'bg-primary/5' : ''} transition-colors rounded-lg`}
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-      viewport={{ once: true }}
-    >
-      <button
-        onClick={onToggle}
-        className="w-full flex items-start justify-between gap-4 py-4 sm:py-5 px-2 text-left group"
-      >
-        <span className="text-sm sm:text-base font-semibold group-hover:text-primary transition-colors">
-          {question}
-        </span>
-        <motion.div 
-          className={`shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all ${
-            isOpen 
-              ? 'bg-primary border-primary text-primary-foreground' 
-              : 'border-border text-muted-foreground group-hover:border-primary group-hover:text-primary'
-          }`}
-          whileTap={{ scale: 0.9 }}
-        >
-          {isOpen ? (
-            <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          ) : (
-            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          )}
-        </motion.div>
-      </button>
-      <motion.div
-        initial={false}
-        animate={{ 
-          height: isOpen ? 'auto' : 0,
-          opacity: isOpen ? 1 : 0
-        }}
-        transition={{ duration: 0.25 }}
-        className="overflow-hidden"
-      >
-        <p className="text-sm sm:text-base text-muted-foreground pb-4 sm:pb-5 px-2 pr-12 sm:pr-16 leading-relaxed">
-          {answer}
-        </p>
-      </motion.div>
-    </motion.div>
-  );
-}
-
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   return (
-    <Layout showFooterCTA={true}>
-      {/* Page Frame */}
-      <div className="page-frame">
-        <DottedGrid className="opacity-15" spacing={40} />
+    <Layout>
+      {/* Hero */}
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
+        <DottedGrid className="opacity-40" spacing={36} />
+        <div className="content-width relative z-10">
+          <motion.div
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                FAQ
+              </span>
+            </div>
+            <h1 className="text-display mb-6 sm:mb-8">
+              Straight <span className="text-primary">answers.</span>
+            </h1>
+            <p className="text-body-lg max-w-2xl">
+              No jargon. No runaround. Everything you need to know before
+              getting started.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
-        {/* Hero */}
-        <section className="pt-20 pb-8 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16 relative z-10">
-          <div className="content-width">
-            <motion.div
-              className="max-w-3xl mx-auto text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="inline-block px-4 py-2 mb-4 sm:mb-6 rounded-full border border-primary/40 bg-primary/5">
-                <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-primary">
-                  FAQ
-                </span>
-              </div>
-              <h1 className="text-display mb-4 sm:mb-6">
-                Straight <span className="text-primary">answers.</span>
-              </h1>
-              <p className="text-body-lg max-w-xl mx-auto">
-                No jargon. No runaround. Everything you need to know before
-                getting started.
+      {/* FAQ List */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="bordered-section-lg p-4 sm:p-6 md:p-8 max-w-3xl relative"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-15" spacing={24} />
+            <div className="relative z-10">
+              <Accordion type="single" collapsible className="space-y-2 sm:space-y-3">
+                {faqs.map((faq, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="bg-secondary rounded-lg sm:rounded-xl px-4 sm:px-6 border border-border"
+                  >
+                    <AccordionTrigger className="text-left text-sm sm:text-base font-semibold hover:no-underline py-4 sm:py-5">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-4 sm:pb-5 text-sm sm:text-base leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-20" spacing={24} />
+            <div className="relative z-10">
+              <h2 className="text-title mb-3 sm:mb-4">
+                Still have <span className="text-primary">questions?</span>
+              </h2>
+              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
+                The best way to learn more is to start. Fill out the form, choose
+                your package, and we'll take it from there.
               </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* FAQ List */}
-        <section className="py-12 sm:py-16 relative z-10">
-          <div className="content-width">
-            <motion.div
-              className="bordered-section p-4 sm:p-6 md:p-8 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              {faqs.map((faq, index) => (
-                <FAQItem
-                  key={index}
-                  question={faq.question}
-                  answer={faq.answer}
-                  isOpen={openIndex === index}
-                  onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-                  index={index}
-                />
-              ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Quick Links */}
-        <section className="py-12 sm:py-16 relative z-10">
-          <div className="content-width">
-            <motion.div
-              className="max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
+                <Link
+                  to="/start"
+                  className="btn-primary btn-lg justify-center"
+                >
+                  Get Started
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                </Link>
                 <Link
                   to="/packages"
-                  className="card-base hover-lift group flex items-center justify-between"
+                  className="btn-outline btn-lg justify-center"
                 >
-                  <div>
-                    <h3 className="font-bold text-base sm:text-lg group-hover:text-primary transition-colors">View Pricing</h3>
-                    <p className="text-sm text-muted-foreground">See all packages</p>
-                  </div>
-                  <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link>
-                <Link
-                  to="/how-it-works"
-                  className="card-base hover-lift group flex items-center justify-between"
-                >
-                  <div>
-                    <h3 className="font-bold text-base sm:text-lg group-hover:text-primary transition-colors">Our Process</h3>
-                    <p className="text-sm text-muted-foreground">How it works</p>
-                  </div>
-                  <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  View Pricing
                 </Link>
               </div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Bottom padding for mobile nav */}
-        <div className="h-20 md:h-0" />
-      </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </Layout>
   );
 }
