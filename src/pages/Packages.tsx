@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
 import { Check, ArrowUpRight } from "lucide-react";
 
@@ -196,35 +197,13 @@ export default function Packages() {
       </section>
 
       {/* CTA */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Not sure which <span className="text-primary">package?</span>
-              </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                Start with Pro. It's our most popular and includes everything
-                most local businesses need.
-              </p>
-              <Link
-                to="/start"
-                className="btn-primary btn-lg"
-              >
-                Start with Pro
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CTASection
+        title="Not sure which"
+        highlightedText="package?"
+        description="Start with Pro. It's our most popular and includes everything most local businesses need."
+        primaryButtonText="Start with Pro"
+        primaryButtonLink="/start"
+      />
     </Layout>
   );
 }

@@ -3,6 +3,8 @@ import { Layout } from "@/components/layout/Layout";
 import { PortfolioShowcase } from "@/components/PortfolioShowcase";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import { CTASection } from "@/components/CTASection";
+import { FloatingNudge } from "@/components/FloatingNudge";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, X, Zap, Target, Clock, Smartphone } from "lucide-react";
 
@@ -224,36 +226,19 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Simple CTA */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 md:py-20 relative overflow-hidden"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Ready for a website that{" "}
-                <span className="text-primary">works?</span>
-              </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                Choose your package, tell us about your business, and get a site that converts.
-              </p>
-              <Link
-                to="/start"
-                className="btn-primary btn-lg"
-              >
-                Get Started Now
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* CTA */}
+      <CTASection
+        title="Let's build something"
+        highlightedText="that converts."
+        description="Pick your package. Send your details. Get a website in days, not months."
+        primaryButtonText="Start Your Project"
+        primaryButtonLink="/start"
+        secondaryButtonText="See Pricing"
+        secondaryButtonLink="/packages"
+      />
+
+      {/* Floating Nudge */}
+      <FloatingNudge />
     </Layout>
   );
 }

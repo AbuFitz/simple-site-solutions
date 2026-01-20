@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 const steps = [
   {
@@ -193,42 +193,15 @@ export default function HowItWorks() {
       </section>
 
       {/* CTA */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-highlight text-center px-4 sm:px-8 py-12 sm:py-16 relative"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <h2 className="text-title mb-3 sm:mb-4">
-                Ready to <span className="text-primary">skip the drama?</span>
-              </h2>
-              <p className="text-body-lg mb-6 sm:mb-8 max-w-lg mx-auto">
-                Pick your package, submit your details, and get a website that converts.
-              </p>
-              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-                <Link
-                  to="/start"
-                  className="btn-primary btn-lg justify-center"
-                >
-                  Get Started
-                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-                </Link>
-                <Link
-                  to="/packages"
-                  className="btn-outline btn-lg justify-center"
-                >
-                  View Pricing
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <CTASection
+        title="Ready to skip"
+        highlightedText="the drama?"
+        description="Pick your package, submit your details, and get a website that converts."
+        primaryButtonText="Get Started"
+        primaryButtonLink="/start"
+        secondaryButtonText="View Pricing"
+        secondaryButtonLink="/packages"
+      />
     </Layout>
   );
 }
