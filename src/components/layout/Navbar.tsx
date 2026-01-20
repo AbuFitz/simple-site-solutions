@@ -75,7 +75,10 @@ export function Navbar() {
                 one<span className="text-primary">simple</span>site
               </span>
               <span className="shrink-0 px-3 py-2 bg-primary text-primary-foreground inline-flex items-center justify-center">
-                {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                <span className="inline-flex items-center gap-1.5">
+                  {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                  <span className="text-sm font-semibold">{menuOpen ? "Close" : "Menu"}</span>
+                </span>
               </span>
             </button>
           </div>
