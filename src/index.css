@@ -3,96 +3,101 @@
 @tailwind utilities;
 
 /* OneSimpleSite Design System
-   Bold, Authoritative, Productised Service
-   Dark theme with electric accent
+   Bold, Vibrant, Electric
+   Dark theme with gradient accents
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 4%;
+    --background: 240 10% 98%;
+    --foreground: 240 10% 4%;
 
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 4%;
+    --popover-foreground: 240 10% 4%;
 
-    /* Electric lime accent - bold and distinctive */
-    --primary: 75 100% 45%;
-    --primary-foreground: 0 0% 0%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
 
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 75 100% 45%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 262 83% 58%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
 
-    --sidebar-background: 0 0% 98%;
+    /* Gradient colors */
+    --gradient-start: 262 83% 58%;
+    --gradient-mid: 280 85% 50%;
+    --gradient-end: 320 85% 55%;
+    --gradient-accent: 190 95% 50%;
+
+    --sidebar-background: 240 5% 96%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 75 100% 45%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 262 83% 58%;
   }
 
   .dark {
-    --background: 0 0% 3%;
+    --background: 240 10% 4%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 5%;
+    --card: 240 10% 6%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 5%;
+    --popover: 240 10% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 75 100% 50%;
-    --primary-foreground: 0 0% 0%;
+    --primary: 262 83% 65%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 10%;
+    --secondary: 240 4% 16%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 0 0% 10%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 262 83% 65%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 63% 31%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 75 100% 50%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 262 83% 65%;
 
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
 
-    --sidebar-background: 0 0% 5%;
+    --sidebar-background: 240 10% 6%;
     --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 75 100% 50%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 0 0% 10%;
+    --sidebar-primary: 262 83% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4% 16%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 75 100% 50%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 262 83% 65%;
   }
 }
 
@@ -102,7 +107,7 @@
   }
 
   html {
-    @apply dark;
+    @apply dark scroll-smooth;
   }
 
   body {
@@ -113,11 +118,15 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight text-foreground;
   }
+
+  ::selection {
+    @apply bg-primary/30 text-foreground;
+  }
 }
 
 @layer components {
   .section {
-    @apply py-20 md:py-28;
+    @apply py-24 md:py-32;
   }
 
   .section-header {
@@ -125,40 +134,106 @@
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-4;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-6;
   }
 
   .section-subtitle {
     @apply text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto;
   }
 
-  .accent-text {
-    @apply text-primary;
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-[hsl(262,83%,65%)] via-[hsl(280,85%,60%)] to-[hsl(320,85%,60%)] bg-clip-text text-transparent;
   }
 
-  .card-dark {
-    @apply bg-card rounded-lg border border-border p-6 md:p-8;
+  /* Gradient backgrounds */
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(262, 83%, 58%) 0%, hsl(280, 85%, 50%) 50%, hsl(320, 85%, 55%) 100%);
   }
 
-  .card-highlight {
-    @apply bg-card rounded-lg border-2 border-primary p-6 md:p-8;
+  .gradient-bg-subtle {
+    background: linear-gradient(135deg, hsl(262, 83%, 58%, 0.1) 0%, hsl(320, 85%, 55%, 0.1) 100%);
   }
 
-  .badge {
-    @apply inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary border border-primary/20;
+  .gradient-border {
+    @apply relative;
+    background: linear-gradient(135deg, hsl(262, 83%, 58%) 0%, hsl(320, 85%, 55%) 100%);
+    padding: 2px;
+    border-radius: 1rem;
   }
 
-  .divider {
-    @apply border-t border-border;
+  .gradient-border-inner {
+    @apply bg-card rounded-[14px] h-full w-full;
   }
 
-  .number-badge {
-    @apply inline-flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm font-bold;
+  /* Cards */
+  .card-glass {
+    @apply bg-card/50 backdrop-blur-xl rounded-2xl border border-border/50 p-6 md:p-8;
+  }
+
+  .card-glow {
+    @apply bg-card rounded-2xl border border-border p-6 md:p-8 transition-all duration-300;
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  .card-glow:hover {
+    @apply border-primary/50;
+    box-shadow: 0 0 30px -5px hsl(262 83% 58% / 0.3);
+  }
+
+  /* Badge */
+  .badge-gradient {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold;
+    background: linear-gradient(135deg, hsl(262, 83%, 58%, 0.15) 0%, hsl(320, 85%, 55%, 0.15) 100%);
+    border: 1px solid hsl(262, 83%, 58%, 0.3);
+    color: hsl(262, 83%, 75%);
+  }
+
+  /* Animated background shapes */
+  .floating-shape {
+    @apply absolute rounded-full blur-3xl opacity-30 animate-pulse;
+  }
+
+  /* Number with gradient */
+  .number-gradient {
+    @apply text-7xl md:text-8xl font-bold;
+    background: linear-gradient(135deg, hsl(262, 83%, 58%, 0.3) 0%, hsl(320, 85%, 55%, 0.1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
   }
 }
