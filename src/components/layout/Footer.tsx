@@ -9,20 +9,20 @@ interface FooterProps {
 
 export function Footer({ showCTA = true }: FooterProps) {
   return (
-    <footer className="border-t border-border relative">
+    <footer className="border-t border-border relative bg-background">
       <DottedGrid className="opacity-10" spacing={32} />
       <div className="content-width py-12 sm:py-16 md:py-20 relative z-10">
         {/* Main CTA - Only show if showCTA is true */}
         {showCTA && (
           <motion.div 
-            className="hero-card max-w-2xl mx-auto mb-12 sm:mb-16 md:mb-20"
+            className="bordered-section p-6 sm:p-8 md:p-10 max-w-2xl mx-auto mb-12 sm:mb-16 md:mb-20 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="hero-card-inner relative z-10 text-center">
+            <DottedGrid className="opacity-15" spacing={24} />
+            <div className="relative z-10">
               <h2 className="text-title sm:text-headline mb-3 sm:mb-4">
                 Let's build your site
               </h2>
@@ -31,10 +31,10 @@ export function Footer({ showCTA = true }: FooterProps) {
               </p>
               <Link
                 to="/start"
-                className="btn-primary btn-lg"
+                className="btn-primary btn-lg group"
               >
                 Start Your Project
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
           </motion.div>
@@ -44,7 +44,7 @@ export function Footer({ showCTA = true }: FooterProps) {
         <div className="grid gap-8 sm:gap-12 md:grid-cols-4 pb-8 sm:pb-12 md:pb-16 border-b border-border">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link to="/" className="text-xl sm:text-2xl font-bold tracking-tight">
+            <Link to="/" className="text-xl sm:text-2xl font-bold tracking-tight inline-block hover:text-primary transition-colors">
               one<span className="text-primary">simple</span>site
             </Link>
             <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground max-w-sm">
@@ -111,6 +111,9 @@ export function Footer({ showCTA = true }: FooterProps) {
             Made for local UK businesses
           </p>
         </div>
+
+        {/* Extra padding for mobile bottom nav */}
+        <div className="h-16 md:h-0" />
       </div>
     </footer>
   );
