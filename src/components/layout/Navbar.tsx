@@ -4,12 +4,9 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "Services", path: "/services" },
-  { name: "Pricing", path: "/pricing" },
-  { name: "About", path: "/about" },
+  { name: "How It Works", path: "/how-it-works" },
+  { name: "Packages", path: "/packages" },
   { name: "FAQ", path: "/faq" },
-  { name: "Contact", path: "/contact" },
 ];
 
 export function Navbar() {
@@ -17,13 +14,12 @@ export function Navbar() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <nav className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <span className="text-sm font-bold text-primary-foreground">OS</span>
-          </div>
-          <span className="text-xl font-bold text-foreground">OneSimpleSite</span>
+        <Link to="/" className="flex items-center">
+          <span className="text-xl font-bold tracking-tight text-foreground">
+            onesimplesite
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -45,7 +41,7 @@ export function Navbar() {
 
         <div className="hidden md:block">
           <Button asChild>
-            <Link to="/contact">Get Your Site</Link>
+            <Link to="/start">Get Started</Link>
           </Button>
         </div>
 
@@ -82,8 +78,8 @@ export function Navbar() {
               </Link>
             ))}
             <Button asChild className="mt-2 w-full">
-              <Link to="/contact" onClick={() => setIsOpen(false)}>
-                Get Your Site
+              <Link to="/start" onClick={() => setIsOpen(false)}>
+                Get Started
               </Link>
             </Button>
           </div>

@@ -11,19 +11,82 @@ import { ArrowRight } from "lucide-react";
 
 const faqCategories = [
   {
-    title: "Getting Started",
+    title: "The Process",
     faqs: [
       {
-        question: "How do I get started with OneSimpleSite?",
-        answer: "Simply fill out our contact form or give us a call. We'll arrange a free 15-minute consultation to understand your business and requirements. After that, we'll send you a quote and can get started right away.",
+        question: "How is this different from a normal web design agency?",
+        answer: "We don't offer custom design or unlimited revisions. We build from proven industry layouts that already convert. You're not paying for creativity—you're paying for speed, structure, and results.",
       },
       {
-        question: "What information do I need to provide?",
-        answer: "We'll need your business details, logo (if you have one), any existing website, photos of your work/business, and content for your pages. Don't worry if you don't have everything ready – we can help with copywriting and source professional stock images.",
+        question: "Can I choose my own design or provide inspiration?",
+        answer: "No. We analyse your industry and build from what works. You don't pick designs, compare options, or provide moodboards. We lead the process.",
       },
       {
-        question: "How long does it take to build my website?",
-        answer: "Most websites are completed within 5-10 working days after we receive all your content. Our Premium package may take up to 2 weeks due to additional features and design complexity.",
+        question: "What if I don't like the design?",
+        answer: "You get one structured revision round for text changes, image swaps, and minor tweaks. If you want a completely different design direction, this isn't the right service for you.",
+      },
+      {
+        question: "How long does it take?",
+        answer: "Starter: 5 days. Pro: 7 days. Growth: 10 days. These timelines assume you provide content promptly.",
+      },
+    ],
+  },
+  {
+    title: "Revisions & Changes",
+    faqs: [
+      {
+        question: "What counts as a revision?",
+        answer: "Text changes, image swaps, and minor colour adjustments within your brand. That's it.",
+      },
+      {
+        question: "What's NOT included in revisions?",
+        answer: "New sections, layout changes, additional pages, feature additions, or 'I changed my mind' requests. These are paid upgrades.",
+      },
+      {
+        question: "Why only one revision round?",
+        answer: "Because endless revisions don't make better websites—they make bloated projects and scope creep. We build from proven layouts. One round of refinement is all you need.",
+      },
+      {
+        question: "What if I need more changes after launch?",
+        answer: "Additional changes are available as paid work. We offer ongoing maintenance packages if you need regular updates.",
+      },
+    ],
+  },
+  {
+    title: "Content & Assets",
+    faqs: [
+      {
+        question: "What do I need to provide?",
+        answer: "Your logo (if you have one), text content for each page, photos of your work/team/premises, and any specific contact details or calls-to-action.",
+      },
+      {
+        question: "What if I don't have content ready?",
+        answer: "We can help with copywriting and source stock images as paid add-ons. But the project timeline only starts when we have your content.",
+      },
+      {
+        question: "Can you take photos for me?",
+        answer: "We don't offer photography, but we can recommend partners or source relevant stock images.",
+      },
+    ],
+  },
+  {
+    title: "Technical & Hosting",
+    faqs: [
+      {
+        question: "Do you provide hosting?",
+        answer: "We set up your site and provide guidance on hosting. We recommend simple, reliable options. Ongoing hosting costs are separate from the build.",
+      },
+      {
+        question: "Will my site work on mobile?",
+        answer: "Yes. Every site we build is mobile-first. It's designed for phones first, then scales up to tablets and desktops.",
+      },
+      {
+        question: "Is SEO included?",
+        answer: "Basic on-page SEO is included (proper titles, meta descriptions, clean structure). Advanced SEO or content strategy is a paid upgrade.",
+      },
+      {
+        question: "Can I edit the site myself after?",
+        answer: "Depends on the setup. We'll provide guidance on making simple updates. Complex changes should go through us.",
       },
     ],
   },
@@ -31,62 +94,20 @@ const faqCategories = [
     title: "Pricing & Payment",
     faqs: [
       {
-        question: "What's included in the price?",
-        answer: "Each package includes design, development, hosting (for the period specified), SSL certificate, SEO basics, and the number of pages listed. Check our pricing page for detailed breakdowns of each package.",
+        question: "Why don't you show prices on the site?",
+        answer: "Because pricing depends on your specific needs and any add-ons. Contact us to get a clear quote for your package.",
       },
       {
-        question: "Are there any hidden costs?",
-        answer: "No hidden costs whatsoever. The price you see is the price you pay. After your included hosting period, hosting renewal is just £10/month.",
+        question: "Can I negotiate on price?",
+        answer: "No. Our packages are fixed. The structure is the structure. This keeps things fair and efficient for everyone.",
       },
       {
-        question: "What payment methods do you accept?",
-        answer: "We accept bank transfer, credit/debit cards, and PayPal. We offer flexible payment options: 50% upfront and 50% on completion, or split into 3 monthly payments.",
+        question: "When do I pay?",
+        answer: "Typically 50% upfront to start, 50% before launch. Payment terms are confirmed during onboarding.",
       },
       {
-        question: "Do you offer refunds?",
-        answer: "If you're not happy after the first design draft, we'll refund your deposit in full. After the design is approved and we proceed to development, refunds are not available, but we'll keep working until you're satisfied.",
-      },
-    ],
-  },
-  {
-    title: "Design & Development",
-    faqs: [
-      {
-        question: "Will my website work on mobile phones?",
-        answer: "Absolutely! All our websites are mobile-first, meaning they're designed for mobile devices first and then scaled up for tablets and desktops. Your site will look great on any device.",
-      },
-      {
-        question: "Can I see examples of your work?",
-        answer: "Yes! Check out our Case Studies page to see examples of websites we've built for other local businesses. We're happy to share more examples relevant to your industry.",
-      },
-      {
-        question: "Can I make changes to my website after it's built?",
-        answer: "Yes! We provide basic training so you can make simple text and image updates yourself. For larger changes, our monthly maintenance plan covers unlimited content updates.",
-      },
-      {
-        question: "Will my website appear on Google?",
-        answer: "We set up basic SEO including proper page titles, meta descriptions, and Google Search Console registration. For more advanced SEO and local ranking, consider our Premium package or SEO add-on.",
-      },
-    ],
-  },
-  {
-    title: "Technical & Support",
-    faqs: [
-      {
-        question: "What happens after my website launches?",
-        answer: "We'll provide you with all login details and basic training. Your site will continue to be hosted and secured. We're available for any questions, and you can opt for our monthly maintenance plan for ongoing support.",
-      },
-      {
-        question: "Do you provide hosting?",
-        answer: "Yes! Hosting is included in all packages for the specified period. Our hosting includes SSL security, daily backups, and 99.9% uptime guarantee. Renewal after the included period is £10/month.",
-      },
-      {
-        question: "What if something breaks on my website?",
-        answer: "During your included hosting period, we'll fix any technical issues at no extra cost. With our maintenance plan, you get priority support and quick fixes for any problems.",
-      },
-      {
-        question: "Can I transfer my website to another host later?",
-        answer: "Yes, you own your website. If you ever want to move to a different host, we'll provide all the files and assist with the transfer.",
+        question: "Do you offer payment plans?",
+        answer: "Not currently. Our pricing is already streamlined to be accessible. We keep things simple.",
       },
     ],
   },
@@ -96,32 +117,32 @@ export default function FAQ() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary/50 to-background py-20">
+      <section className="section border-b border-border">
         <div className="container">
           <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-              Frequently Asked <span className="gradient-text">Questions</span>
+            <h1 className="text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-6">
+              FAQ
             </h1>
-            <p className="text-lg text-muted-foreground md:text-xl">
-              Everything you need to know about working with OneSimpleSite.
+            <p className="text-lg md:text-xl text-muted-foreground">
+              Common questions about how we work. Read before you reach out.
             </p>
           </div>
         </div>
       </section>
 
       {/* FAQs */}
-      <section className="section">
+      <section className="section border-b border-border">
         <div className="container">
-          <div className="mx-auto max-w-3xl">
+          <div className="max-w-3xl mx-auto">
             {faqCategories.map((category) => (
               <div key={category.title} className="mb-12">
-                <h2 className="mb-6 text-2xl font-bold">{category.title}</h2>
+                <h2 className="text-2xl font-bold mb-6">{category.title}</h2>
                 <Accordion type="single" collapsible className="space-y-4">
                   {category.faqs.map((faq, index) => (
                     <AccordionItem
                       key={index}
                       value={`${category.title}-${index}`}
-                      className="rounded-lg border border-border bg-card px-6"
+                      className="border border-border rounded-lg px-6 bg-card"
                     >
                       <AccordionTrigger className="text-left font-medium hover:no-underline">
                         {faq.question}
@@ -138,29 +159,22 @@ export default function FAQ() {
         </div>
       </section>
 
-      {/* Still Have Questions */}
-      <section className="section bg-muted/30">
+      {/* CTA */}
+      <section className="section">
         <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-4 text-2xl font-bold md:text-3xl">
-              Still Have Questions?
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Got it?
             </h2>
-            <p className="mb-6 text-muted-foreground">
-              Can't find the answer you're looking for? We're here to help.
+            <p className="text-lg text-muted-foreground mb-8">
+              If this sounds like what you need, let's get started.
             </p>
-            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button asChild>
-                <Link to="/contact">
-                  Contact Us
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button variant="outline" asChild>
-                <a href="mailto:hello@onesimplesite.co.uk">
-                  Email Us Directly
-                </a>
-              </Button>
-            </div>
+            <Button size="lg" asChild>
+              <Link to="/start">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
