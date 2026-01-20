@@ -66,40 +66,40 @@ export function PortfolioShowcase() {
   }, [emblaApi, onSelect]);
 
   return (
-    <section className="section-sm overflow-hidden relative">
+    <section className="py-8 sm:py-12 md:py-16 overflow-hidden relative">
       <div className="content-width">
-        {/* Header */}
+        {/* Header - Compact */}
         <motion.div
-          className="bordered-section p-4 sm:p-6 md:p-8 mb-8 sm:mb-12 relative"
+          className="bordered-section p-3 sm:p-5 md:p-6 mb-5 sm:mb-8 relative"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
           <DottedGrid className="opacity-20" spacing={20} />
-          <div className="relative z-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4">
             <div>
-              <span className="badge-primary mb-3 sm:mb-4 inline-block">Our Work</span>
-              <h2 className="text-headline">
+              <span className="badge-primary mb-2 sm:mb-3 inline-block text-[9px] sm:text-xs">Our Work</span>
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">
                 Websites that <span className="text-primary">deliver</span>
               </h2>
             </div>
             
             {/* Navigation arrows */}
-            <div className="flex gap-2 sm:gap-3">
+            <div className="flex gap-2">
               <button
                 onClick={scrollPrev}
-                className="p-3 sm:p-4 rounded-full bg-secondary text-foreground hover:bg-muted transition-colors border border-border"
+                className="p-2.5 sm:p-3 rounded-full bg-secondary text-foreground hover:bg-muted transition-colors border border-border"
                 aria-label="Previous slide"
               >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 onClick={scrollNext}
-                className="p-3 sm:p-4 rounded-full bg-secondary text-foreground hover:bg-muted transition-colors border border-border"
+                className="p-2.5 sm:p-3 rounded-full bg-secondary text-foreground hover:bg-muted transition-colors border border-border"
                 aria-label="Next slide"
               >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -195,15 +195,15 @@ export function PortfolioShowcase() {
       </div>
 
       {/* Pagination dots */}
-      <div className="flex justify-center gap-2 mt-6 sm:mt-10">
+      <div className="flex justify-center gap-1.5 mt-5 sm:mt-8">
         {portfolioItems.map((_, index) => (
           <button
             key={index}
             onClick={() => emblaApi?.scrollTo(index)}
-            className={`h-2 rounded-full transition-all duration-300 border ${
+            className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 border ${
               selectedIndex === index
-                ? "w-6 sm:w-8 bg-primary border-primary"
-                : "w-2 bg-muted-foreground/30 border-transparent hover:bg-muted-foreground/50"
+                ? "w-5 sm:w-6 bg-primary border-primary"
+                : "w-1.5 sm:w-2 bg-muted-foreground/30 border-transparent hover:bg-muted-foreground/50"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
