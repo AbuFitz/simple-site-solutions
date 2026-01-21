@@ -3,32 +3,34 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import fixnowScreenshot from "@/assets/portfolio/fixnowmechanics.png";
+import arfmodsScreenshot from "@/assets/portfolio/arfmods.png";
 
 interface PortfolioItem {
   id: number;
   title: string;
   industry: string;
   description: string;
+  url: string;
+  screenshot: string;
 }
 
 const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
-    title: "Smith's Plumbing",
-    industry: "Emergency Plumber",
-    description: "24/7 emergency plumbing services in Manchester",
+    title: "FixNow Mechanics",
+    industry: "Mobile Mechanic",
+    description: "Mobile mechanic services in Hertfordshire - we come to you!",
+    url: "https://fixnowmechanics.co.uk",
+    screenshot: fixnowScreenshot,
   },
   {
     id: 2,
-    title: "Sparkle Clean Co",
-    industry: "Cleaning Service",
-    description: "Professional home & office cleaning",
-  },
-  {
-    id: 3,
-    title: "Dave's Auto Care",
-    industry: "Auto Mechanic",
-    description: "Trusted car repairs & MOT services",
+    title: "ARF Mods",
+    industry: "E-commerce / Auto Parts",
+    description: "Premium BMW performance parts & coding services",
+    url: "https://arfmods.vercel.app",
+    screenshot: arfmodsScreenshot,
   },
 ];
 
@@ -137,49 +139,33 @@ export function PortfolioShowcase() {
                     </div>
                   </div>
 
-                  {/* Website Preview */}
-                  <div className="aspect-[16/10] bg-background relative">
-                    {/* Placeholder website mockup */}
-                    <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col">
-                      {/* Hero section mockup */}
-                      <div className="flex items-center justify-between mb-4 sm:mb-8">
-                        <div className="h-4 sm:h-6 w-20 sm:w-32 bg-foreground/10 rounded" />
-                        <div className="hidden sm:flex gap-2">
-                          <div className="h-6 w-16 bg-foreground/5 rounded" />
-                          <div className="h-6 w-16 bg-foreground/5 rounded" />
-                          <div className="h-8 w-24 bg-primary/30 rounded-full" />
-                        </div>
-                      </div>
-                      
-                      <div className="flex-1 flex items-center">
-                        <div className="w-full max-w-md">
-                          <div className="h-3 sm:h-4 w-20 sm:w-24 bg-primary/20 rounded mb-3 sm:mb-4" />
-                          <div className="h-8 sm:h-12 w-full bg-foreground/10 rounded mb-2 sm:mb-3" />
-                          <div className="h-8 sm:h-12 w-3/4 bg-foreground/10 rounded mb-4 sm:mb-6" />
-                          <div className="h-3 sm:h-4 w-full bg-foreground/5 rounded mb-1.5 sm:mb-2" />
-                          <div className="h-3 sm:h-4 w-2/3 bg-foreground/5 rounded mb-6 sm:mb-8" />
-                          <div className="flex gap-2 sm:gap-3">
-                            <div className="h-8 sm:h-12 w-24 sm:w-32 bg-primary/40 rounded-full" />
-                            <div className="h-8 sm:h-12 w-24 sm:w-32 bg-foreground/5 rounded-full border border-border" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  {/* Website Preview - Real Screenshot */}
+                  <div className="aspect-[16/10] bg-background relative overflow-hidden">
+                    <img 
+                      src={item.screenshot} 
+                      alt={`${item.title} website preview`}
+                      className="w-full h-full object-cover object-top"
+                    />
 
                     {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-background/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="absolute inset-0 bg-background/95 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                    >
                       <div className="text-center px-4">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto mb-3 sm:mb-4">
                           <ExternalLink className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                         </div>
                         <p className="text-foreground font-semibold text-base sm:text-lg mb-1">
-                          {item.title}
+                          Visit {item.title}
                         </p>
                         <p className="text-muted-foreground text-xs sm:text-sm">
                           {item.description}
                         </p>
                       </div>
-                    </div>
+                    </a>
                   </div>
                 </div>
 
