@@ -8,61 +8,66 @@ import { Check, ArrowUpRight } from "lucide-react";
 const packages = [
   {
     name: "Starter",
-    price: "£497",
-    description: "Perfect for new businesses that need to get online fast.",
+    price: "£499",
+    description: "For businesses that want a proper, professional website. Not basic — just focused.",
     features: [
-      "1-page website",
-      "Fixed industry template",
-      "Mobile responsive",
-      "Basic SEO setup",
-      "Contact form",
-      "1 revision round",
-      "5-day delivery",
+      "Market & competitor review",
+      "Up to 3 pages",
+      "Mobile-friendly, modern design",
+      "Contact form, click-to-call, WhatsApp",
+      "Google Map + service area",
+      "Trust sections (reviews, guarantees)",
+      "SEO basics + cookie notice",
+      "1 refinement round",
     ],
     popular: false,
   },
   {
-    name: "Pro",
-    price: "£997",
-    description: "For established businesses ready to convert more customers.",
+    name: "Core",
+    price: "£699",
+    description: "For businesses that want more room and clarity. The balance package.",
     features: [
-      "Multi-page site (up to 5)",
-      "Home, Services, About, Contact",
-      "Industry-optimised layout",
-      "Advanced SEO foundation",
-      "Lead capture forms",
-      "Google Analytics setup",
-      "1 revision round",
-      "7-day delivery",
+      "Everything in Starter, plus:",
+      "Deeper market review",
+      "Up to 4–5 pages",
+      "Clearer service breakdown",
+      "Stronger trust & credibility flow",
+      "Better content structure",
+      "1–2 refinement rounds",
     ],
     popular: true,
   },
   {
     name: "Growth",
-    price: "£1,497",
-    description: "Everything you need to scale with tracking and support.",
+    price: "£899",
+    description: "For businesses that want to compete and look established.",
     features: [
-      "Everything in Pro",
-      "Up to 8 pages",
-      "Conversion tracking",
-      "Google Business Profile",
-      "Social media integration",
-      "Monthly maintenance option",
-      "Priority support",
-      "10-day delivery",
+      "Everything in Core, plus:",
+      "Deeper positioning decisions",
+      "Up to 6 pages",
+      "Clear service hierarchy (SEO-ready)",
+      "Strong trust positioning",
+      "Basic analytics setup",
+      "2 refinement rounds",
     ],
     popular: false,
   },
 ];
 
 const addons = [
-  { name: "Logo Design", price: "£197" },
-  { name: "Professional Copywriting", price: "£297" },
-  { name: "Booking System", price: "£197" },
-  { name: "Blog Setup", price: "£247" },
-  { name: "Additional Pages", price: "£97/page" },
-  { name: "Monthly Maintenance", price: "£47/mo" },
+  { name: "Booking System", price: "£150" },
+  { name: "Blog Setup", price: "£120" },
+  { name: "Blog Post Writing", price: "£75" },
+  { name: "SEO Content Writing", price: "£95/page" },
+  { name: "Local SEO Setup", price: "£150" },
+  { name: "Simple Logo Refresh", price: "£120" },
 ];
+
+const hosting = {
+  name: "Hosting",
+  price: "£15/month",
+  features: ["Secure hosting", "SSL (https)", "Backups", "Updates", "Minor fixes if needed"],
+};
 
 export default function Packages() {
   return (
@@ -86,8 +91,8 @@ export default function Packages() {
               Simple pricing. <span className="text-primary">No surprises.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
-              Pick a package. Get your site. Every package includes industry
-              research, proven layouts, and one revision round.
+              Pick a package. Get your site. Every package includes market research, 
+              proven layouts, and refinement rounds.
             </p>
           </motion.div>
         </div>
@@ -158,6 +163,41 @@ export default function Packages() {
         </div>
       </section>
 
+      {/* Hosting */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="bordered-section p-5 sm:p-8 md:p-10"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-8">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold mb-2">
+                  {hosting.name} <span className="text-primary">(Optional)</span>
+                </h3>
+                <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-0">
+                  Want us to host and maintain your site? You're also free to host it yourself.
+                </p>
+              </div>
+              <div className="text-right shrink-0">
+                <span className="text-2xl sm:text-3xl font-bold text-primary">{hosting.price}</span>
+              </div>
+            </div>
+            <ul className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-6">
+              {hosting.features.map((feature) => (
+                <li key={feature} className="flex items-center gap-2 text-xs sm:text-sm">
+                  <Check className="w-3.5 h-3.5 text-primary" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Add-ons */}
       <section className="section relative">
         <DottedGrid className="opacity-30" spacing={40} />
@@ -173,10 +213,10 @@ export default function Packages() {
             <div className="relative z-10">
               <div className="mb-8 sm:mb-12">
                 <h2 className="text-headline">
-                  Optional <span className="text-primary">add-ons</span>
+                  Optional <span className="text-primary">extras</span>
                 </h2>
                 <p className="text-body-lg mt-3 sm:mt-4">
-                  Need something extra? Add these to any package.
+                  Only if you want them. One-off, clear, understandable.
                 </p>
               </div>
 
@@ -191,6 +231,19 @@ export default function Packages() {
                   </div>
                 ))}
               </div>
+
+              {/* Updates section */}
+              <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
+                <h4 className="font-semibold mb-3 text-sm sm:text-base">Updates & Changes</h4>
+                <p className="text-muted-foreground text-xs sm:text-sm mb-4">
+                  No subscriptions. No pressure. Just fair, when you need it.
+                </p>
+                <div className="flex flex-wrap gap-4 text-xs sm:text-sm">
+                  <span><strong className="text-primary">£30</strong> — Small text/image update</span>
+                  <span><strong className="text-primary">£85</strong> — New page</span>
+                  <span><strong className="text-primary">Quoted</strong> — Bigger changes</span>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -200,8 +253,8 @@ export default function Packages() {
       <CTASection
         title="Not sure which"
         highlightedText="package?"
-        description="Start with Pro. It's our most popular and includes everything most local businesses need."
-        primaryButtonText="Start with Pro"
+        description="Start with Core. It's our most popular and includes everything most local businesses need."
+        primaryButtonText="Start with Core"
         primaryButtonLink="/start"
       />
     </Layout>
