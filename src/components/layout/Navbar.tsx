@@ -44,44 +44,23 @@ export function Navbar() {
     <>
       {/* Floating Navigation Pill */}
       <motion.header
-        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] sm:w-auto max-w-2xl"
+        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-center md:justify-between gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`flex items-center justify-between gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
-          {/* Brand (desktop) + Brand-as-Menu (mobile) */}
-          <div className="flex items-center min-w-0">
-            <Link
-              to="/"
-              className="hidden md:inline-flex min-w-0 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight whitespace-nowrap"
-            >
-              one<span className="text-primary">simple</span>site
-            </Link>
-
-            {/* On mobile, the logo *is* the menu trigger (with a green segment) */}
-            <button
-              type="button"
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden inline-flex items-stretch rounded-full overflow-hidden border-2 border-border focus-ring"
-              aria-label="Open menu"
-              aria-expanded={menuOpen}
-            >
-              <span className="min-w-0 px-3 py-2 text-base font-bold tracking-tight truncate max-w-[60vw]">
-                one<span className="text-primary">simple</span>site
-              </span>
-              <span className="shrink-0 px-3 py-2 bg-primary text-primary-foreground inline-flex items-center justify-center">
-                <span className="inline-flex items-center gap-1.5">
-                  {menuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-                  <span className="text-sm font-semibold">{menuOpen ? "Close" : "Menu"}</span>
-                </span>
-              </span>
-            </button>
-          </div>
+          {/* Brand */}
+          <Link
+            to="/"
+            className="px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight whitespace-nowrap"
+          >
+            one<span className="text-primary">simple</span>site
+          </Link>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-0.5 sm:gap-1">
@@ -100,7 +79,7 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* CTA Button - Desktop */}
+          {/* Desktop CTA */}
           <Link
             to="/start"
             className="hidden md:inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
@@ -109,7 +88,26 @@ export function Navbar() {
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
 
-          {/* Mobile menu trigger lives inside the logo (see above) */}
+          {/* Mobile Menu Button - Green pill on the right */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold transition-all hover:brightness-110"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? (
+              <>
+                <X className="w-4 h-4" />
+                Close
+              </>
+            ) : (
+              <>
+                <Menu className="w-4 h-4" />
+                Menu
+              </>
+            )}
+          </button>
         </nav>
       </motion.header>
 
