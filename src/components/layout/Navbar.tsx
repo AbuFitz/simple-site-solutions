@@ -57,12 +57,36 @@ export function Navbar() {
           {/* Brand */}
           <Link
             to="/"
-            className="min-w-0 flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight truncate sm:overflow-visible sm:text-clip"
+            className="min-w-0 flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight truncate lg:overflow-visible lg:text-clip"
           >
             one<span className="text-primary">simple</span>site
           </Link>
 
-          {/* Desktop Links */}
+          {/* Tablet Links - show 2 key links on md screens */}
+          <div className="hidden md:flex lg:hidden items-center gap-1">
+            <Link
+              to="/packages"
+              className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
+                location.pathname === "/packages"
+                  ? "bg-secondary text-foreground border-border"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
+              }`}
+            >
+              Pricing
+            </Link>
+            <Link
+              to="/faq"
+              className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
+                location.pathname === "/faq"
+                  ? "bg-secondary text-foreground border-border"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
+              }`}
+            >
+              FAQ
+            </Link>
+          </div>
+
+          {/* Desktop Links - show all on lg+ */}
           <div className="hidden lg:flex items-center gap-0.5 sm:gap-1">
             {navItems.map((item) => (
               <Link
@@ -88,7 +112,7 @@ export function Navbar() {
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </Link>
 
-          {/* Mobile Menu Button - Green pill on the right */}
+          {/* Mobile/Tablet Menu Button - Green pill on the right */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -111,15 +135,15 @@ export function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Full-screen Mobile Menu */}
+      {/* Full-screen Mobile Menu with slide-down animation */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             className="fixed inset-0 z-40 bg-background"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ y: "-100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-100%", opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
           >
             {/* Dotted grid background */}
             <div
@@ -135,10 +159,10 @@ export function Navbar() {
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ delay: index * 0.08 }}
+                    exit={{ opacity: 0, y: 30 }}
+                    transition={{ delay: 0.1 + index * 0.08, duration: 0.3 }}
                   >
                     <Link
                       to={item.path}
@@ -154,10 +178,10 @@ export function Navbar() {
                 ))}
                 
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: navItems.length * 0.08 }}
+                  exit={{ opacity: 0, y: 30 }}
+                  transition={{ delay: 0.1 + navItems.length * 0.08, duration: 0.3 }}
                   className="pt-6 sm:pt-8"
                 >
                   <Link

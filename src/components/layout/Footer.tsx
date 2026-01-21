@@ -1,9 +1,10 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 
-export function Footer() {
+export const Footer = forwardRef<HTMLElement>((_, ref) => {
   return (
-    <footer className="border-t-2 border-border relative mt-auto">
+    <footer ref={ref} className="border-t-2 border-border relative mt-auto">
       <DottedGrid className="opacity-15" spacing={28} />
       <div className="content-width py-10 sm:py-12 md:py-16 relative z-10">
         {/* Footer Grid */}
@@ -80,4 +81,6 @@ export function Footer() {
       </div>
     </footer>
   );
-}
+});
+
+Footer.displayName = "Footer";
