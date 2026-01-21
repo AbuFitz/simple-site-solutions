@@ -4,26 +4,27 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 const packages = [
   {
     id: "starter",
     name: "Starter",
-    price: "£497",
-    description: "1-page website, 5-day delivery",
+    price: "£499",
+    description: "Up to 3 pages, 1 refinement round",
   },
   {
-    id: "pro",
-    name: "Pro",
-    price: "£997",
-    description: "Multi-page site, 7-day delivery",
+    id: "core",
+    name: "Core",
+    price: "£699",
+    description: "Up to 5 pages, 1-2 refinement rounds",
     popular: true,
   },
   {
     id: "growth",
     name: "Growth",
-    price: "£1,497",
-    description: "Full package, 10-day delivery",
+    price: "£899",
+    description: "Up to 6 pages, 2 refinement rounds",
   },
 ];
 
@@ -62,6 +63,8 @@ export default function Start() {
   const canProceedStep3 =
     formData.businessName && formData.name && formData.email;
 
+  const progressValue = step === 1 ? 33 : step === 2 ? 66 : 100;
+
   return (
     <Layout>
       <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative min-h-screen">
@@ -75,29 +78,25 @@ export default function Start() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {/* Progress */}
-                <motion.div 
-                  className="bordered-section p-4 sm:p-6 mb-8 sm:mb-12"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <div className="flex items-center justify-between mb-3 sm:mb-4">
-                    <span className="text-xs sm:text-sm text-muted-foreground font-medium">
-                      Step {step} of 3
-                    </span>
-                    <span className="text-xs sm:text-sm text-muted-foreground">
-                      {Math.round((step / 3) * 100)}%
-                    </span>
-                  </div>
-                  <div className="h-1.5 sm:h-2 bg-secondary rounded-full overflow-hidden border border-border">
-                    <motion.div
-                      className="h-full bg-primary"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(step / 3) * 100}%` }}
+                {/* Progress - Only shows after package is selected */}
+                <AnimatePresence>
+                  {selectedPackage && (
+                    <motion.div 
+                      className="bordered-section p-4 sm:p-6 mb-8 sm:mb-12"
+                      initial={{ opacity: 0, y: -10, height: 0, marginBottom: 0, padding: 0 }}
+                      animate={{ opacity: 1, y: 0, height: "auto", marginBottom: "2rem", padding: "1rem" }}
+                      exit={{ opacity: 0, y: -10, height: 0, marginBottom: 0, padding: 0 }}
                       transition={{ duration: 0.3 }}
-                    />
-                  </div>
-                </motion.div>
+                    >
+                      <div className="flex justify-between text-xs sm:text-sm mb-2 sm:mb-3 text-muted-foreground">
+                        <span className={step >= 1 ? "text-primary font-medium" : ""}>Package</span>
+                        <span className={step >= 2 ? "text-primary font-medium" : ""}>Industry</span>
+                        <span className={step >= 3 ? "text-primary font-medium" : ""}>Details</span>
+                      </div>
+                      <Progress value={progressValue} className="h-1.5 sm:h-2" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Step 1: Package Selection */}
                 {step === 1 && (
@@ -357,7 +356,7 @@ export default function Start() {
                       Selected Package
                     </div>
                     <div className="text-lg sm:text-xl font-bold capitalize">
-                      {selectedPackage}
+                      {packages.find(p => p.id === selectedPackage)?.name || selectedPackage}
                     </div>
                   </div>
                   <div className="mt-6 sm:mt-8">
