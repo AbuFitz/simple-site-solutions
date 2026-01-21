@@ -22,14 +22,12 @@ const packages = [
       "1 refinement round",
     ],
     popular: false,
-    discount: true,
     perfectFor: ["Sole traders", "New businesses", "Anyone who wants it done properly"],
     payment: "Paid upfront",
   },
   {
     name: "Core",
     price: "£599",
-    originalPrice: "£699",
     description: "For businesses that want more room and clarity. The balance package.",
     features: [
       "Everything in Starter, plus:",
@@ -41,7 +39,6 @@ const packages = [
       "1–2 refinement rounds",
     ],
     popular: true,
-    discount: true,
     perfectFor: ["Businesses already trading", "People who want it done once, done right"],
     payment: "50% upfront / 50% before launch",
   },
@@ -148,11 +145,6 @@ export default function Packages() {
                     )}
                     <span className="text-muted-foreground text-xs sm:text-sm">one-time</span>
                   </div>
-                  {pkg.discount && (
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-destructive/10 text-destructive text-[10px] sm:text-xs font-medium border border-destructive/30 mb-3">
-                      Limited time offer
-                    </div>
-                  )}
                   <p className="text-sm sm:text-base text-muted-foreground">{pkg.description}</p>
                 </div>
 

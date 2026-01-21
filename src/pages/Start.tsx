@@ -13,16 +13,13 @@ const packages = [
     price: "£349",
     originalPrice: "£499",
     description: "Up to 3 pages, 1 refinement round",
-    discount: true,
   },
   {
     id: "core",
     name: "Core",
     price: "£599",
-    originalPrice: "£699",
     description: "Up to 5 pages, 1-2 refinement rounds",
     popular: true,
-    discount: true,
   },
   {
     id: "growth",
@@ -114,20 +111,11 @@ export default function Start() {
               >
                 {/* Progress - Always visible */}
                 <div className="bordered-section p-4 sm:p-6 mb-8 sm:mb-12">
-                  <div className="flex justify-between text-[10px] sm:text-xs mb-2 sm:mb-3 text-muted-foreground">
-                    {stepLabels.map((label, index) => (
-                      <span
-                        key={label}
-                        className={step > index || (index === 0 && selectedPackage) ? "text-primary font-medium" : ""}
-                      >
-                        {label}
-                      </span>
-                    ))}
+                  <div className="flex items-center justify-between mb-2 sm:mb-3">
+                    <span className="text-xs sm:text-sm text-muted-foreground">Progress</span>
+                    <span className="text-sm sm:text-base font-bold text-primary">{getProgressValue()}%</span>
                   </div>
-                  <Progress value={getProgressValue()} className="h-1.5 sm:h-2" />
-                  <div className="text-right mt-2">
-                    <span className="text-xs sm:text-sm font-medium text-primary">{getProgressValue()}%</span>
-                  </div>
+                  <Progress value={getProgressValue()} className="h-2 sm:h-3" />
                 </div>
 
                 {/* Step 1: Package Selection */}
@@ -163,20 +151,15 @@ export default function Start() {
                                   Popular
                                 </span>
                               )}
-                              {pkg.discount && (
-                                <span className="px-2 py-0.5 rounded-full bg-destructive/10 text-destructive text-[10px] sm:text-xs font-medium border border-destructive/30">
-                                  Save
-                                </span>
-                              )}
                             </div>
                             <p className="text-xs sm:text-sm text-muted-foreground">
                               {pkg.description}
                             </p>
                           </div>
                           <div className="flex items-center gap-3 sm:gap-4">
-                            <div className="text-right">
+                            <div className="text-right flex items-baseline gap-2">
                               {pkg.originalPrice && (
-                                <span className="text-xs sm:text-sm text-muted-foreground line-through block">
+                                <span className="text-xs sm:text-sm text-muted-foreground line-through">
                                   {pkg.originalPrice}
                                 </span>
                               )}
