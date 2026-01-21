@@ -6,6 +6,35 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Globe, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
+function StepHeader({
+  title,
+  description,
+  progress,
+}: {
+  title: React.ReactNode;
+  description: string;
+  progress: number;
+}) {
+  return (
+    <div className="mb-5 sm:mb-7">
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
+        {title}
+      </h1>
+      <p className="text-sm sm:text-base md:text-lg text-muted-foreground">{description}</p>
+
+      <div className="mt-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest">
+            Progress
+          </span>
+          <span className="text-[10px] sm:text-xs font-semibold text-foreground">{progress}%</span>
+        </div>
+        <Progress value={progress} className="h-1 sm:h-1.5" />
+      </div>
+    </div>
+  );
+}
+
 const packages = [
   {
     id: "starter",
@@ -94,11 +123,9 @@ export default function Start() {
     return 100;
   };
 
-  const stepLabels = ["Package", "Industry", "Website", "Extras", "Details"];
-
   return (
     <Layout>
-      <section className="pt-20 pb-8 sm:pt-24 sm:pb-12 md:pt-28 md:pb-16 relative min-h-[calc(100vh-4rem)]">
+      <section className="pt-16 pb-6 sm:pt-20 sm:pb-10 md:pt-22 md:pb-12 lg:pt-24 lg:pb-14 relative min-h-[calc(100vh-4rem)]">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width max-w-xl sm:max-w-2xl relative z-10">
           <AnimatePresence mode="wait">
@@ -109,15 +136,6 @@ export default function Start() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {/* Progress - Always visible */}
-                <div className="bordered-section p-3 sm:p-4 md:p-6 mb-6 sm:mb-8 md:mb-10">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] sm:text-xs text-muted-foreground">Progress</span>
-                    <span className="text-xs sm:text-sm md:text-base font-bold text-primary">{getProgressValue()}%</span>
-                  </div>
-                  <Progress value={getProgressValue()} className="h-1.5 sm:h-2" />
-                </div>
-
                 {/* Step 1: Package Selection */}
                 {step === 1 && (
                   <motion.div
@@ -125,12 +143,15 @@ export default function Start() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                   >
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
-                      Choose your <span className="text-primary">package</span>
-                    </h1>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
-                      Select the package that fits your business needs.
-                    </p>
+                    <StepHeader
+                      title={
+                        <>
+                          Choose your <span className="text-primary">package</span>
+                        </>
+                      }
+                      description="Select the package that fits your business needs."
+                      progress={getProgressValue()}
+                    />
 
                     <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                       {packages.map((pkg) => (
@@ -201,12 +222,15 @@ export default function Start() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                   >
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
-                      What's your <span className="text-primary">industry?</span>
-                    </h1>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
-                      This helps us apply the right proven layouts for your business.
-                    </p>
+                    <StepHeader
+                      title={
+                        <>
+                          What's your <span className="text-primary">industry?</span>
+                        </>
+                      }
+                      description="This helps us apply the right proven layouts for your business."
+                      progress={getProgressValue()}
+                    />
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-2 mb-6 sm:mb-8">
                       {industries.map((industry) => (
@@ -251,12 +275,15 @@ export default function Start() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                   >
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
-                      Do you have an <span className="text-primary">existing website?</span>
-                    </h1>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
-                      This helps us understand where you're starting from.
-                    </p>
+                    <StepHeader
+                      title={
+                        <>
+                          Do you have an <span className="text-primary">existing website?</span>
+                        </>
+                      }
+                      description="This helps us understand where you're starting from."
+                      progress={getProgressValue()}
+                    />
 
                     <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
                       <button
@@ -377,12 +404,15 @@ export default function Start() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                   >
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
-                      Any <span className="text-primary">extras?</span>
-                    </h1>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
-                      Optional add-ons to enhance your website. Select any or skip.
-                    </p>
+                    <StepHeader
+                      title={
+                        <>
+                          Any <span className="text-primary">extras?</span>
+                        </>
+                      }
+                      description="Optional add-ons to enhance your website. Select any or skip."
+                      progress={getProgressValue()}
+                    />
 
                     <div className="grid gap-1.5 sm:gap-2 mb-4 sm:mb-6">
                       {availableAddons.map((addon) => (
@@ -453,12 +483,15 @@ export default function Start() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                   >
-                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
-                      Tell us about <span className="text-primary">your business</span>
-                    </h1>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-6 sm:mb-8">
-                      Just the basics. We'll take it from here.
-                    </p>
+                    <StepHeader
+                      title={
+                        <>
+                          Tell us about <span className="text-primary">your business</span>
+                        </>
+                      }
+                      description="Just the basics. We'll take it from here."
+                      progress={getProgressValue()}
+                    />
 
                     <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                       <div>

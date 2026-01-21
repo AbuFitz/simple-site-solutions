@@ -13,11 +13,6 @@ export default function Terms() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="bordered-section inline-block px-3 py-1.5 sm:px-4 sm:py-2 mb-4 sm:mb-6">
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Legal
-              </span>
-            </div>
             <h1 className="text-headline mb-6 sm:mb-8">
               Terms of <span className="text-primary">Service</span>
             </h1>
