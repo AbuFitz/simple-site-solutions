@@ -6,12 +6,12 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
   return (
     <footer ref={ref} className="border-t-2 border-border relative mt-auto">
       <DottedGrid className="opacity-15" spacing={28} />
-      <div className="content-width py-10 sm:py-12 md:py-16 relative z-10">
+      <div className="content-width py-8 sm:py-10 md:py-12 lg:py-16 relative z-10">
         {/* Footer Grid */}
         <div className="grid gap-6 sm:gap-8 md:grid-cols-4 pb-6 sm:pb-8 border-b border-border">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link to="/" className="text-lg sm:text-xl font-bold tracking-tight">
+            <Link to="/" className="text-base sm:text-lg md:text-xl font-bold tracking-tight">
               one<span className="text-primary">simple</span>site
             </Link>
             <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xs">
@@ -70,10 +70,24 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
         </div>
 
         {/* Bottom */}
-        <div className="pt-4 sm:pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-3">
+        <div className="pt-4 sm:pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
           <p className="text-[10px] sm:text-xs text-muted-foreground">
             © {new Date().getFullYear()} OneSimpleSite
           </p>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              to="/privacy"
+              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Terms of Service
+            </Link>
+          </div>
           <p className="text-[10px] sm:text-xs text-muted-foreground">
             Made for local UK businesses
           </p>
