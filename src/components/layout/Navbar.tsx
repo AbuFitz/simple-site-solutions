@@ -15,6 +15,15 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Diagnostics: helps confirm viewport + breakpoint behaviour when debugging mobile issues.
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log("[Navbar] mounted", { width: window.innerWidth, path: location.pathname });
+    // eslint-disable-next-line no-console
+    console.log("[Navbar] Tailwind lg breakpoint is 1024px");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -50,14 +59,14 @@ export function Navbar() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-between gap-2 min-w-0 overflow-hidden p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 pr-20 lg:pr-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -92,7 +101,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden shrink-0 inline-flex whitespace-nowrap items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-full text-xs sm:text-sm font-semibold transition-all hover:brightness-110"
+            className="lg:hidden absolute right-1.5 sm:right-2 top-1.5 sm:top-2 z-10 inline-flex whitespace-nowrap items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-full text-xs sm:text-sm font-semibold transition-all hover:brightness-110"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
