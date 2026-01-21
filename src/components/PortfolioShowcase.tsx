@@ -5,6 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import fixnowScreenshot from "@/assets/portfolio/fixnowmechanics.png";
 import arfmodsScreenshot from "@/assets/portfolio/arfmods.png";
+import readysoldScreenshot from "@/assets/portfolio/readysold.png";
 
 interface PortfolioItem {
   id: number;
@@ -31,6 +32,14 @@ const portfolioItems: PortfolioItem[] = [
     description: "Premium BMW performance parts & coding services",
     url: "https://arfmods.vercel.app",
     screenshot: arfmodsScreenshot,
+  },
+  {
+    id: 3,
+    title: "ReadySold",
+    industry: "Car Sales Service",
+    description: "Sell your car stress-free with full market value",
+    url: "https://readysold.vercel.app",
+    screenshot: readysoldScreenshot,
   },
 ];
 
