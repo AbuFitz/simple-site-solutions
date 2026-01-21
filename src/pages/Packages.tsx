@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, ArrowUpRight, Sparkles } from "lucide-react";
+import { Check, ArrowUpRight } from "lucide-react";
 
 const packages = [
   {
@@ -126,7 +126,6 @@ export default function Packages() {
                 {pkg.popular && (
                   <div className="absolute -top-3 left-4 sm:left-6">
                     <span className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider border-2 border-primary">
-                      <Sparkles className="w-3 h-3" />
                       Most Popular
                     </span>
                   </div>
