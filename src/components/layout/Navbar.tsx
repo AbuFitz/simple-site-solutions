@@ -50,20 +50,20 @@ export function Navbar() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-between gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`flex items-center justify-between min-w-0 gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
           {/* Brand */}
           <Link
             to="/"
-            className="px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight whitespace-nowrap"
+            className="min-w-0 flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight truncate sm:overflow-visible sm:text-clip"
           >
             one<span className="text-primary">simple</span>site
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden md:flex items-center gap-0.5 sm:gap-1">
+          <div className="hidden lg:flex items-center gap-0.5 sm:gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
@@ -82,7 +82,7 @@ export function Navbar() {
           {/* Desktop CTA */}
           <Link
             to="/start"
-            className="hidden md:inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
+            className="hidden lg:inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
           >
             Get Started
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -92,7 +92,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold transition-all hover:brightness-110"
+            className="lg:hidden shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold transition-all hover:brightness-110"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
