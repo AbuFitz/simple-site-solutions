@@ -44,20 +44,20 @@ export function Navbar() {
     <>
       {/* Floating Navigation Pill */}
       <motion.header
-        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
+        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-between gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`flex items-center justify-between gap-2 min-w-0 overflow-hidden p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
           {/* Brand */}
           <Link
             to="/"
-            className="min-w-0 max-w-[58%] sm:max-w-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -92,7 +92,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-full text-xs sm:text-sm font-semibold transition-all hover:brightness-110"
+            className="lg:hidden shrink-0 inline-flex whitespace-nowrap items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-full text-xs sm:text-sm font-semibold transition-all hover:brightness-110"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
@@ -115,7 +115,7 @@ export function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-background"
+            className="fixed inset-0 z-[70] bg-background"
             initial={{ y: "-100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
