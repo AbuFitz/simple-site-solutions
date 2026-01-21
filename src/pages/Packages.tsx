@@ -3,12 +3,13 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, ArrowUpRight } from "lucide-react";
+import { Check, ArrowUpRight, Sparkles } from "lucide-react";
 
 const packages = [
   {
     name: "Starter",
-    price: "£499",
+    price: "£349",
+    originalPrice: "£499",
     description: "For businesses that want a proper, professional website. Not basic — just focused.",
     features: [
       "Market & competitor review",
@@ -21,10 +22,14 @@ const packages = [
       "1 refinement round",
     ],
     popular: false,
+    discount: true,
+    perfectFor: ["Sole traders", "New businesses", "Anyone who wants it done properly"],
+    payment: "Paid upfront",
   },
   {
     name: "Core",
-    price: "£699",
+    price: "£599",
+    originalPrice: "£699",
     description: "For businesses that want more room and clarity. The balance package.",
     features: [
       "Everything in Starter, plus:",
@@ -36,6 +41,9 @@ const packages = [
       "1–2 refinement rounds",
     ],
     popular: true,
+    discount: true,
+    perfectFor: ["Businesses already trading", "People who want it done once, done right"],
+    payment: "50% upfront / 50% before launch",
   },
   {
     name: "Growth",
@@ -51,16 +59,18 @@ const packages = [
       "2 refinement rounds",
     ],
     popular: false,
+    perfectFor: ["Established businesses", "Anyone investing in growth"],
+    payment: "50% upfront / 50% before launch",
   },
 ];
 
 const addons = [
-  { name: "Booking System", price: "£150" },
-  { name: "Blog Setup", price: "£120" },
-  { name: "Blog Post Writing", price: "£75" },
-  { name: "SEO Content Writing", price: "£95/page" },
-  { name: "Local SEO Setup", price: "£150" },
-  { name: "Simple Logo Refresh", price: "£120" },
+  { name: "Booking System", price: "£150", description: "Let customers book appointments online" },
+  { name: "Blog Setup", price: "£120", description: "Share news and updates" },
+  { name: "Blog Post Writing", price: "£75", description: "Per post, professionally written" },
+  { name: "SEO Content Writing", price: "£95/page", description: "Optimized copy that ranks" },
+  { name: "Local SEO Setup", price: "£150", description: "Get found on Google Maps" },
+  { name: "Simple Logo Refresh", price: "£120", description: "Clean up your brand" },
 ];
 
 const hosting = {
@@ -101,13 +111,13 @@ export default function Packages() {
       {/* Packages Grid */}
       <section className="section-sm">
         <div className="content-width">
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
             {packages.map((pkg, index) => (
               <motion.div
                 key={pkg.name}
-                className={`relative rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col border-2 bg-card hover-lift ${
+                className={`relative rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col border-2 bg-card ${
                   pkg.popular
-                    ? "border-primary"
+                    ? "border-primary lg:scale-105 lg:-my-4"
                     : "border-border"
                 }`}
                 initial={{ opacity: 0, y: 30 }}
@@ -118,24 +128,35 @@ export default function Packages() {
                 {/* Popular badge */}
                 {pkg.popular && (
                   <div className="absolute -top-3 left-4 sm:left-6">
-                    <span className="inline-flex items-center px-3 sm:px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider border-2 border-primary">
+                    <span className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider border-2 border-primary">
+                      <Sparkles className="w-3 h-3" />
                       Most Popular
                     </span>
                   </div>
                 )}
 
                 <div className="mb-6 sm:mb-8 pt-2">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-2">{pkg.name}</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-3">{pkg.name}</h3>
                   <div className="flex items-baseline gap-2 mb-3 sm:mb-4">
                     <span className="text-3xl sm:text-4xl font-bold text-primary">
                       {pkg.price}
                     </span>
+                    {pkg.originalPrice && (
+                      <span className="text-lg text-muted-foreground line-through">
+                        {pkg.originalPrice}
+                      </span>
+                    )}
                     <span className="text-muted-foreground text-xs sm:text-sm">one-time</span>
                   </div>
+                  {pkg.discount && (
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-destructive/10 text-destructive text-[10px] sm:text-xs font-medium border border-destructive/30 mb-3">
+                      Limited time offer
+                    </div>
+                  )}
                   <p className="text-sm sm:text-base text-muted-foreground">{pkg.description}</p>
                 </div>
 
-                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-6 sm:mb-8">
+                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-6">
                   {pkg.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2 sm:gap-3">
                       <div className="check-icon w-4 h-4 sm:w-5 sm:h-5">
@@ -145,6 +166,21 @@ export default function Packages() {
                     </li>
                   ))}
                 </ul>
+
+                {/* Perfect for section */}
+                <div className="mb-6 p-3 sm:p-4 rounded-xl bg-secondary/50 border border-border">
+                  <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider mb-2">Perfect for</div>
+                  <ul className="space-y-1">
+                    {pkg.perfectFor.map((item) => (
+                      <li key={item} className="text-xs sm:text-sm text-foreground">• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Payment terms */}
+                <div className="mb-6 text-xs sm:text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">Payment:</span> {pkg.payment}
+                </div>
 
                 <Link
                   to="/start"
@@ -220,28 +256,66 @@ export default function Packages() {
                 </p>
               </div>
 
-              <div className="grid gap-2 sm:gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {addons.map((addon) => (
                   <div
                     key={addon.name}
-                    className="flex items-center justify-between p-4 sm:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border"
+                    className="p-4 sm:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border"
                   >
-                    <span className="text-sm sm:text-base font-medium">{addon.name}</span>
-                    <span className="text-primary font-bold text-sm sm:text-base">{addon.price}</span>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm sm:text-base font-semibold">{addon.name}</span>
+                      <span className="text-primary font-bold text-sm sm:text-base">{addon.price}</span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground">{addon.description}</p>
                   </div>
                 ))}
               </div>
 
+              {/* Refinements section */}
+              <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border">
+                <h4 className="font-semibold mb-3 text-base sm:text-lg">What's included in refinements</h4>
+                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
+                  <div>
+                    <div className="text-xs sm:text-sm text-primary font-medium mb-2">Covered</div>
+                    <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+                      <li>• Text changes</li>
+                      <li>• Image swaps</li>
+                      <li>• Small layout tweaks</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-xs sm:text-sm text-destructive font-medium mb-2">Not covered</div>
+                    <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
+                      <li>• Redesigns</li>
+                      <li>• Changing direction halfway</li>
+                      <li>• Adding new pages or features</li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="text-xs sm:text-sm text-muted-foreground">
+                  Extra refinement (if ever needed): <span className="text-primary font-semibold">£95</span>
+                </div>
+              </div>
+
               {/* Updates section */}
               <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
-                <h4 className="font-semibold mb-3 text-sm sm:text-base">Updates & Changes</h4>
+                <h4 className="font-semibold mb-3 text-base sm:text-lg">Updates & Changes</h4>
                 <p className="text-muted-foreground text-xs sm:text-sm mb-4">
                   No subscriptions. No pressure. Just fair, when you need it.
                 </p>
-                <div className="flex flex-wrap gap-4 text-xs sm:text-sm">
-                  <span><strong className="text-primary">£30</strong> — Small text/image update</span>
-                  <span><strong className="text-primary">£85</strong> — New page</span>
-                  <span><strong className="text-primary">Quoted</strong> — Bigger changes</span>
+                <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm">
+                  <div className="p-3 rounded-lg bg-muted/50 border border-border">
+                    <span className="text-primary font-bold text-lg">£30</span>
+                    <span className="text-muted-foreground block">Small text/image update</span>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted/50 border border-border">
+                    <span className="text-primary font-bold text-lg">£85</span>
+                    <span className="text-muted-foreground block">New page</span>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted/50 border border-border">
+                    <span className="text-primary font-bold text-lg">Quoted</span>
+                    <span className="text-muted-foreground block">Bigger changes</span>
+                  </div>
                 </div>
               </div>
             </div>

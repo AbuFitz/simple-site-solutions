@@ -3,22 +3,26 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, ArrowLeft, Send } from "lucide-react";
+import { Check, ArrowRight, ArrowLeft, Send, Globe, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 const packages = [
   {
     id: "starter",
     name: "Starter",
-    price: "£499",
+    price: "£349",
+    originalPrice: "£499",
     description: "Up to 3 pages, 1 refinement round",
+    discount: true,
   },
   {
     id: "core",
     name: "Core",
-    price: "£699",
+    price: "£599",
+    originalPrice: "£699",
     description: "Up to 5 pages, 1-2 refinement rounds",
     popular: true,
+    discount: true,
   },
   {
     id: "growth",
@@ -41,10 +45,22 @@ const industries = [
   "Other",
 ];
 
+const availableAddons = [
+  { id: "hosting", name: "Hosting", price: "£15/month", description: "We host and maintain your site" },
+  { id: "booking", name: "Booking System", price: "£150", description: "Let customers book appointments" },
+  { id: "blog", name: "Blog Setup", price: "£120", description: "Share updates and news" },
+  { id: "seo-content", name: "SEO Content Writing", price: "£95/page", description: "Professionally written copy" },
+  { id: "local-seo", name: "Local SEO Setup", price: "£150", description: "Get found on Google Maps" },
+  { id: "logo", name: "Logo Refresh", price: "£120", description: "Simple, professional logo update" },
+];
+
 export default function Start() {
   const [step, setStep] = useState(1);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
+  const [hasExistingWebsite, setHasExistingWebsite] = useState<boolean | null>(null);
+  const [existingWebsiteUrl, setExistingWebsiteUrl] = useState("");
+  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     businessName: "",
     name: "",
@@ -58,12 +74,30 @@ export default function Start() {
     setIsSubmitted(true);
   };
 
+  const toggleAddon = (addonId: string) => {
+    setSelectedAddons(prev =>
+      prev.includes(addonId)
+        ? prev.filter(id => id !== addonId)
+        : [...prev, addonId]
+    );
+  };
+
   const canProceedStep1 = selectedPackage !== null;
   const canProceedStep2 = selectedIndustry !== null;
-  const canProceedStep3 =
-    formData.businessName && formData.name && formData.email;
+  const canProceedStep3 = hasExistingWebsite !== null && (hasExistingWebsite === false || existingWebsiteUrl.trim() !== "");
+  const canProceedStep5 = formData.businessName && formData.name && formData.email;
 
-  const progressValue = step === 1 ? 33 : step === 2 ? 66 : 100;
+  // Progress: Step 1 = 0%, Package selected = 20%, Step 2 complete = 40%, Step 3 complete = 60%, Step 4 complete = 80%, Step 5 = 100%
+  const getProgressValue = () => {
+    if (!selectedPackage) return 0;
+    if (step === 1) return 20;
+    if (step === 2) return 40;
+    if (step === 3) return 60;
+    if (step === 4) return 80;
+    return 100;
+  };
+
+  const stepLabels = ["Package", "Industry", "Website", "Extras", "Details"];
 
   return (
     <Layout>
@@ -78,25 +112,23 @@ export default function Start() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {/* Progress - Only shows after package is selected */}
-                <AnimatePresence>
-                  {selectedPackage && (
-                    <motion.div 
-                      className="bordered-section p-4 sm:p-6 mb-8 sm:mb-12"
-                      initial={{ opacity: 0, y: -10, height: 0, marginBottom: 0, padding: 0 }}
-                      animate={{ opacity: 1, y: 0, height: "auto", marginBottom: "2rem", padding: "1rem" }}
-                      exit={{ opacity: 0, y: -10, height: 0, marginBottom: 0, padding: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="flex justify-between text-xs sm:text-sm mb-2 sm:mb-3 text-muted-foreground">
-                        <span className={step >= 1 ? "text-primary font-medium" : ""}>Package</span>
-                        <span className={step >= 2 ? "text-primary font-medium" : ""}>Industry</span>
-                        <span className={step >= 3 ? "text-primary font-medium" : ""}>Details</span>
-                      </div>
-                      <Progress value={progressValue} className="h-1.5 sm:h-2" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Progress - Always visible */}
+                <div className="bordered-section p-4 sm:p-6 mb-8 sm:mb-12">
+                  <div className="flex justify-between text-[10px] sm:text-xs mb-2 sm:mb-3 text-muted-foreground">
+                    {stepLabels.map((label, index) => (
+                      <span
+                        key={label}
+                        className={step > index || (index === 0 && selectedPackage) ? "text-primary font-medium" : ""}
+                      >
+                        {label}
+                      </span>
+                    ))}
+                  </div>
+                  <Progress value={getProgressValue()} className="h-1.5 sm:h-2" />
+                  <div className="text-right mt-2">
+                    <span className="text-xs sm:text-sm font-medium text-primary">{getProgressValue()}%</span>
+                  </div>
+                </div>
 
                 {/* Step 1: Package Selection */}
                 {step === 1 && (
@@ -131,15 +163,27 @@ export default function Start() {
                                   Popular
                                 </span>
                               )}
+                              {pkg.discount && (
+                                <span className="px-2 py-0.5 rounded-full bg-destructive/10 text-destructive text-[10px] sm:text-xs font-medium border border-destructive/30">
+                                  Save
+                                </span>
+                              )}
                             </div>
                             <p className="text-xs sm:text-sm text-muted-foreground">
                               {pkg.description}
                             </p>
                           </div>
                           <div className="flex items-center gap-3 sm:gap-4">
-                            <span className="text-lg sm:text-xl font-bold text-primary">
-                              {pkg.price}
-                            </span>
+                            <div className="text-right">
+                              {pkg.originalPrice && (
+                                <span className="text-xs sm:text-sm text-muted-foreground line-through block">
+                                  {pkg.originalPrice}
+                                </span>
+                              )}
+                              <span className="text-lg sm:text-xl font-bold text-primary">
+                                {pkg.price}
+                              </span>
+                            </div>
                             <div
                               className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                                 selectedPackage === pkg.id
@@ -217,8 +261,210 @@ export default function Start() {
                   </motion.div>
                 )}
 
-                {/* Step 3: Details */}
+                {/* Step 3: Existing Website */}
                 {step === 3 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                  >
+                    <h1 className="text-headline mb-3 sm:mb-4">
+                      Do you have an <span className="text-primary">existing website?</span>
+                    </h1>
+                    <p className="text-body-lg mb-8 sm:mb-10">
+                      This helps us understand where you're starting from.
+                    </p>
+
+                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                      <button
+                        onClick={() => setHasExistingWebsite(true)}
+                        className={`w-full p-4 sm:p-5 rounded-xl text-left transition-all flex items-center gap-4 border-2 bg-card ${
+                          hasExistingWebsite === true
+                            ? "border-primary"
+                            : "border-border hover:border-muted-foreground/50"
+                        }`}
+                      >
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
+                          hasExistingWebsite === true ? "bg-primary" : "bg-muted"
+                        }`}>
+                          <Globe className={`w-5 h-5 sm:w-6 sm:h-6 ${
+                            hasExistingWebsite === true ? "text-primary-foreground" : "text-muted-foreground"
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <span className="text-base sm:text-lg font-semibold block">Yes, I have a website</span>
+                          <span className="text-xs sm:text-sm text-muted-foreground">We'll review it before we start</span>
+                        </div>
+                        <div
+                          className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                            hasExistingWebsite === true
+                              ? "border-primary bg-primary"
+                              : "border-muted-foreground/30"
+                          }`}
+                        >
+                          {hasExistingWebsite === true && (
+                            <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary-foreground" />
+                          )}
+                        </div>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setHasExistingWebsite(false);
+                          setExistingWebsiteUrl("");
+                        }}
+                        className={`w-full p-4 sm:p-5 rounded-xl text-left transition-all flex items-center gap-4 border-2 bg-card ${
+                          hasExistingWebsite === false
+                            ? "border-primary"
+                            : "border-border hover:border-muted-foreground/50"
+                        }`}
+                      >
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${
+                          hasExistingWebsite === false ? "bg-primary" : "bg-muted"
+                        }`}>
+                          <X className={`w-5 h-5 sm:w-6 sm:h-6 ${
+                            hasExistingWebsite === false ? "text-primary-foreground" : "text-muted-foreground"
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <span className="text-base sm:text-lg font-semibold block">No, starting fresh</span>
+                          <span className="text-xs sm:text-sm text-muted-foreground">We'll build everything from scratch</span>
+                        </div>
+                        <div
+                          className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                            hasExistingWebsite === false
+                              ? "border-primary bg-primary"
+                              : "border-muted-foreground/30"
+                          }`}
+                        >
+                          {hasExistingWebsite === false && (
+                            <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary-foreground" />
+                          )}
+                        </div>
+                      </button>
+                    </div>
+
+                    {/* URL Input - Only shows when "Yes" is selected */}
+                    <AnimatePresence>
+                      {hasExistingWebsite === true && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="mb-6 sm:mb-8"
+                        >
+                          <label className="block text-xs sm:text-sm font-medium mb-2">
+                            Your website URL
+                          </label>
+                          <input
+                            type="url"
+                            value={existingWebsiteUrl}
+                            onChange={(e) => setExistingWebsiteUrl(e.target.value)}
+                            placeholder="https://www.example.com"
+                            className="input-base text-sm sm:text-base"
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      <button
+                        onClick={() => setStep(2)}
+                        className="btn-outline btn-lg justify-center order-2 sm:order-1"
+                      >
+                        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                        Back
+                      </button>
+                      <button
+                        onClick={() => setStep(4)}
+                        disabled={!canProceedStep3}
+                        className="btn-primary btn-lg justify-center order-1 sm:order-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Continue
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Step 4: Add-ons Selection */}
+                {step === 4 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                  >
+                    <h1 className="text-headline mb-3 sm:mb-4">
+                      Any <span className="text-primary">extras?</span>
+                    </h1>
+                    <p className="text-body-lg mb-8 sm:mb-10">
+                      Optional add-ons to enhance your website. Select any that interest you, or skip this step.
+                    </p>
+
+                    <div className="grid gap-2 sm:gap-3 mb-8 sm:mb-10">
+                      {availableAddons.map((addon) => (
+                        <button
+                          key={addon.id}
+                          onClick={() => toggleAddon(addon.id)}
+                          className={`w-full p-4 sm:p-5 rounded-xl text-left transition-all flex items-center justify-between border-2 bg-card ${
+                            selectedAddons.includes(addon.id)
+                              ? "border-primary"
+                              : "border-border hover:border-muted-foreground/50"
+                          }`}
+                        >
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="text-sm sm:text-base font-semibold">{addon.name}</span>
+                              <span className="text-xs sm:text-sm text-primary font-medium">{addon.price}</span>
+                            </div>
+                            <p className="text-xs sm:text-sm text-muted-foreground">
+                              {addon.description}
+                            </p>
+                          </div>
+                          <div
+                            className={`w-5 h-5 sm:w-6 sm:h-6 rounded-md border-2 flex items-center justify-center transition-colors ml-4 ${
+                              selectedAddons.includes(addon.id)
+                                ? "border-primary bg-primary"
+                                : "border-muted-foreground/30"
+                            }`}
+                          >
+                            {selectedAddons.includes(addon.id) && (
+                              <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary-foreground" />
+                            )}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+
+                    {selectedAddons.length > 0 && (
+                      <div className="mb-6 sm:mb-8 p-3 sm:p-4 rounded-xl bg-secondary border border-border">
+                        <div className="text-xs sm:text-sm text-muted-foreground">
+                          Selected: <span className="text-foreground font-medium">{selectedAddons.length} add-on{selectedAddons.length > 1 ? "s" : ""}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                      <button
+                        onClick={() => setStep(3)}
+                        className="btn-outline btn-lg justify-center order-2 sm:order-1"
+                      >
+                        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                        Back
+                      </button>
+                      <button
+                        onClick={() => setStep(5)}
+                        className="btn-primary btn-lg justify-center order-1 sm:order-2"
+                      >
+                        {selectedAddons.length > 0 ? "Continue" : "Skip & Continue"}
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Step 5: Details */}
+                {step === 5 && (
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -308,7 +554,7 @@ export default function Start() {
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <button
-                        onClick={() => setStep(2)}
+                        onClick={() => setStep(4)}
                         className="btn-outline btn-lg justify-center order-2 sm:order-1"
                       >
                         <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
@@ -316,7 +562,7 @@ export default function Start() {
                       </button>
                       <button
                         onClick={handleSubmit}
-                        disabled={!canProceedStep3}
+                        disabled={!canProceedStep5}
                         className="btn-primary btn-lg justify-center order-1 sm:order-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Submit
@@ -358,6 +604,16 @@ export default function Start() {
                     <div className="text-lg sm:text-xl font-bold capitalize">
                       {packages.find(p => p.id === selectedPackage)?.name || selectedPackage}
                     </div>
+                    {selectedAddons.length > 0 && (
+                      <div className="mt-3 pt-3 border-t border-border">
+                        <div className="text-xs sm:text-sm text-muted-foreground mb-1">
+                          Selected Add-ons
+                        </div>
+                        <div className="text-sm font-medium">
+                          {selectedAddons.map(id => availableAddons.find(a => a.id === id)?.name).join(", ")}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="mt-6 sm:mt-8">
                     <Link
