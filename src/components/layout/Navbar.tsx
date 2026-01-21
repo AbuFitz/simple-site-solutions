@@ -15,14 +15,6 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Diagnostics: helps confirm viewport + breakpoint behaviour when debugging mobile issues.
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log("[Navbar] mounted", { width: window.innerWidth, path: location.pathname });
-    // eslint-disable-next-line no-console
-    console.log("[Navbar] Tailwind lg breakpoint is 1024px");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {

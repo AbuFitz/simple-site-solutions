@@ -14,7 +14,6 @@ export function CookieConsent() {
       const existing = window.localStorage.getItem(CONSENT_KEY) as ConsentValue | null;
       if (!existing) setOpen(true);
     } catch {
-      // If storage is unavailable, still show the notice.
       setOpen(true);
     }
   }, []);
@@ -32,7 +31,7 @@ export function CookieConsent() {
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed left-3 right-3 sm:left-auto sm:right-6 bottom-20 sm:bottom-6 z-[60] sm:max-w-md"
+          className="fixed left-3 right-3 sm:left-auto sm:right-6 bottom-20 sm:bottom-6 z-[60] sm:max-w-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
@@ -41,25 +40,26 @@ export function CookieConsent() {
           aria-live="polite"
           aria-label="Cookie notice"
         >
-          <div className="bordered-section bg-background/70 backdrop-blur p-4 sm:p-5 shadow-lg">
-            <DottedGrid className="opacity-25" spacing={24} />
-            <div className="relative z-10 flex items-start gap-3">
-              <div className="mt-0.5 shrink-0 rounded-lg bg-secondary/60 border border-border px-2.5 py-2">
-                <span className="text-lg leading-none" aria-hidden="true">
+          <div className="border-2 border-border rounded-2xl sm:rounded-3xl bg-background/80 backdrop-blur-md p-4 sm:p-5 shadow-xl relative overflow-hidden">
+            <DottedGrid className="opacity-20" spacing={20} />
+            <div className="relative z-10 flex items-start gap-3 sm:gap-4">
+              {/* Cookie emoji icon */}
+              <div className="mt-0.5 shrink-0 w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-secondary/70 border border-border flex items-center justify-center">
+                <span className="text-xl sm:text-2xl leading-none" role="img" aria-label="cookie">
                   🍪
                 </span>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold leading-snug">Cookies</p>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-sm sm:text-base font-semibold leading-snug">Cookies</p>
                 <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mt-1">
-                  We use essential cookies to make this site work. Learn more in our{" "}
+                  We use essential cookies only.{" "}
                   <Link to="/privacy" className="text-primary hover:underline">
                     Privacy Policy
                   </Link>
-                  .
                 </p>
 
-                <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setConsent("accepted")}
@@ -74,6 +74,12 @@ export function CookieConsent() {
                   >
                     Reject
                   </button>
+                  <Link
+                    to="/privacy#cookies"
+                    className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                  >
+                    Cookie settings
+                  </Link>
                 </div>
               </div>
             </div>
