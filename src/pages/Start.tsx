@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Globe, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { contactFormSchema, websiteUrlSchema, type ContactFormData } from "@/lib/validations";
 
 function StepHeader({
   title,
@@ -32,6 +35,19 @@ function StepHeader({
         <Progress value={progress} className="h-1 sm:h-1.5" />
       </div>
     </div>
+  );
+}
+
+function FormError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <motion.p
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="text-[10px] sm:text-xs text-destructive mt-1.5"
+    >
+      {message}
+    </motion.p>
   );
 }
 
@@ -86,34 +102,55 @@ export default function Start() {
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
   const [hasExistingWebsite, setHasExistingWebsite] = useState<boolean | null>(null);
   const [existingWebsiteUrl, setExistingWebsiteUrl] = useState("");
+  const [urlError, setUrlError] = useState<string | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
-  const [formData, setFormData] = useState({
-    businessName: "",
-    name: "",
-    email: "",
-    phone: "",
-    details: "",
-  });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    trigger,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    mode: "onBlur",
+    defaultValues: {
+      businessName: "",
+      name: "",
+      email: "",
+      phone: "",
+      details: "",
+    },
+  });
+
+  const onSubmit = (data: ContactFormData) => {
+    // Form data is validated - proceed with submission
+    console.log("Form submitted:", { ...data, selectedPackage, selectedIndustry, hasExistingWebsite, existingWebsiteUrl, selectedAddons });
     setIsSubmitted(true);
   };
 
   const toggleAddon = (addonId: string) => {
-    setSelectedAddons(prev =>
-      prev.includes(addonId)
-        ? prev.filter(id => id !== addonId)
-        : [...prev, addonId]
+    setSelectedAddons((prev) =>
+      prev.includes(addonId) ? prev.filter((id) => id !== addonId) : [...prev, addonId]
     );
+  };
+
+  const validateUrl = (url: string): boolean => {
+    const result = websiteUrlSchema.safeParse(url);
+    if (!result.success) {
+      setUrlError(result.error.errors[0]?.message || "Invalid URL");
+      return false;
+    }
+    setUrlError(null);
+    return true;
   };
 
   const canProceedStep1 = selectedPackage !== null;
   const canProceedStep2 = selectedIndustry !== null;
-  const canProceedStep3 = hasExistingWebsite !== null && (hasExistingWebsite === false || existingWebsiteUrl.trim() !== "");
-  const canProceedStep5 = formData.businessName && formData.name && formData.email;
+  const canProceedStep3 =
+    hasExistingWebsite !== null &&
+    (hasExistingWebsite === false || (existingWebsiteUrl.trim() !== "" && !urlError));
 
-  // Progress: Step 1 = 0%, Package selected = 20%, Step 2 complete = 40%, Step 3 complete = 60%, Step 4 complete = 80%, Step 5 = 100%
   const getProgressValue = () => {
     if (!selectedPackage) return 0;
     if (step === 1) return 20;
@@ -294,22 +331,26 @@ export default function Start() {
                             : "border-border hover:border-muted-foreground/50"
                         }`}
                       >
-                        <div className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 ${
-                          hasExistingWebsite === true ? "bg-primary" : "bg-muted"
-                        }`}>
-                          <Globe className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                            hasExistingWebsite === true ? "text-primary-foreground" : "text-muted-foreground"
-                          }`} />
+                        <div
+                          className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 ${
+                            hasExistingWebsite === true ? "bg-primary" : "bg-muted"
+                          }`}
+                        >
+                          <Globe
+                            className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                              hasExistingWebsite === true ? "text-primary-foreground" : "text-muted-foreground"
+                            }`}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <span className="text-sm sm:text-base font-semibold block">Yes, I have a website</span>
-                          <span className="text-[10px] sm:text-xs text-muted-foreground">We'll review it before we start</span>
+                          <span className="text-[10px] sm:text-xs text-muted-foreground">
+                            We'll review it before we start
+                          </span>
                         </div>
                         <div
                           className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
-                            hasExistingWebsite === true
-                              ? "border-primary bg-primary"
-                              : "border-muted-foreground/30"
+                            hasExistingWebsite === true ? "border-primary bg-primary" : "border-muted-foreground/30"
                           }`}
                         >
                           {hasExistingWebsite === true && (
@@ -322,6 +363,7 @@ export default function Start() {
                         onClick={() => {
                           setHasExistingWebsite(false);
                           setExistingWebsiteUrl("");
+                          setUrlError(null);
                         }}
                         className={`w-full p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all flex items-center gap-3 border-2 bg-card ${
                           hasExistingWebsite === false
@@ -329,22 +371,26 @@ export default function Start() {
                             : "border-border hover:border-muted-foreground/50"
                         }`}
                       >
-                        <div className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 ${
-                          hasExistingWebsite === false ? "bg-primary" : "bg-muted"
-                        }`}>
-                          <X className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                            hasExistingWebsite === false ? "text-primary-foreground" : "text-muted-foreground"
-                          }`} />
+                        <div
+                          className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 ${
+                            hasExistingWebsite === false ? "bg-primary" : "bg-muted"
+                          }`}
+                        >
+                          <X
+                            className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                              hasExistingWebsite === false ? "text-primary-foreground" : "text-muted-foreground"
+                            }`}
+                          />
                         </div>
                         <div className="flex-1 min-w-0">
                           <span className="text-sm sm:text-base font-semibold block">No, starting fresh</span>
-                          <span className="text-[10px] sm:text-xs text-muted-foreground">We'll build everything from scratch</span>
+                          <span className="text-[10px] sm:text-xs text-muted-foreground">
+                            We'll build everything from scratch
+                          </span>
                         </div>
                         <div
                           className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
-                            hasExistingWebsite === false
-                              ? "border-primary bg-primary"
-                              : "border-muted-foreground/30"
+                            hasExistingWebsite === false ? "border-primary bg-primary" : "border-muted-foreground/30"
                           }`}
                         >
                           {hasExistingWebsite === false && (
@@ -369,10 +415,18 @@ export default function Start() {
                           <input
                             type="url"
                             value={existingWebsiteUrl}
-                            onChange={(e) => setExistingWebsiteUrl(e.target.value)}
+                            onChange={(e) => {
+                              setExistingWebsiteUrl(e.target.value);
+                              if (e.target.value) validateUrl(e.target.value);
+                              else setUrlError(null);
+                            }}
+                            onBlur={() => {
+                              if (existingWebsiteUrl) validateUrl(existingWebsiteUrl);
+                            }}
                             placeholder="https://www.example.com"
-                            className="input-base text-sm"
+                            className={`input-base text-sm ${urlError ? "border-destructive focus:ring-destructive/50" : ""}`}
                           />
+                          <FormError message={urlError || undefined} />
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -452,7 +506,10 @@ export default function Start() {
                     {selectedAddons.length > 0 && (
                       <div className="mb-4 sm:mb-6 p-2.5 sm:p-3 rounded-lg bg-secondary border border-border">
                         <div className="text-[10px] sm:text-xs text-muted-foreground">
-                          Selected: <span className="text-foreground font-medium">{selectedAddons.length} add-on{selectedAddons.length > 1 ? "s" : ""}</span>
+                          Selected:{" "}
+                          <span className="text-foreground font-medium">
+                            {selectedAddons.length} add-on{selectedAddons.length > 1 ? "s" : ""}
+                          </span>
                         </div>
                       </div>
                     )}
@@ -493,22 +550,17 @@ export default function Start() {
                       progress={getProgressValue()}
                     />
 
-                    <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
                       <div>
                         <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
                           Business Name *
                         </label>
                         <input
-                          value={formData.businessName}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              businessName: e.target.value,
-                            })
-                          }
+                          {...register("businessName")}
                           placeholder="e.g. Smith's Plumbing"
-                          className="input-base text-sm"
+                          className={`input-base text-sm ${errors.businessName ? "border-destructive focus:ring-destructive/50" : ""}`}
                         />
+                        <FormError message={errors.businessName?.message} />
                       </div>
                       <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                         <div>
@@ -516,26 +568,22 @@ export default function Start() {
                             Your Name *
                           </label>
                           <input
-                            value={formData.name}
-                            onChange={(e) =>
-                              setFormData({ ...formData, name: e.target.value })
-                            }
+                            {...register("name")}
                             placeholder="John Smith"
-                            className="input-base text-sm"
+                            className={`input-base text-sm ${errors.name ? "border-destructive focus:ring-destructive/50" : ""}`}
                           />
+                          <FormError message={errors.name?.message} />
                         </div>
                         <div>
                           <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
                             Phone
                           </label>
                           <input
-                            value={formData.phone}
-                            onChange={(e) =>
-                              setFormData({ ...formData, phone: e.target.value })
-                            }
+                            {...register("phone")}
                             placeholder="07XXX XXXXXX"
-                            className="input-base text-sm"
+                            className={`input-base text-sm ${errors.phone ? "border-destructive focus:ring-destructive/50" : ""}`}
                           />
+                          <FormError message={errors.phone?.message} />
                         </div>
                       </div>
                       <div>
@@ -544,47 +592,43 @@ export default function Start() {
                         </label>
                         <input
                           type="email"
-                          value={formData.email}
-                          onChange={(e) =>
-                            setFormData({ ...formData, email: e.target.value })
-                          }
+                          {...register("email")}
                           placeholder="john@example.com"
-                          className="input-base text-sm"
+                          className={`input-base text-sm ${errors.email ? "border-destructive focus:ring-destructive/50" : ""}`}
                         />
+                        <FormError message={errors.email?.message} />
                       </div>
                       <div>
                         <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
                           Anything else?
                         </label>
                         <textarea
-                          value={formData.details}
-                          onChange={(e) =>
-                            setFormData({ ...formData, details: e.target.value })
-                          }
+                          {...register("details")}
                           placeholder="Tell us about your services, target customers, or anything specific..."
                           rows={3}
-                          className="input-base resize-none text-sm"
+                          className={`input-base resize-none text-sm ${errors.details ? "border-destructive focus:ring-destructive/50" : ""}`}
                         />
+                        <FormError message={errors.details?.message} />
                       </div>
-                    </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                      <button
-                        onClick={() => setStep(4)}
-                        className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
-                      >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back
-                      </button>
-                      <button
-                        onClick={handleSubmit}
-                        disabled={!canProceedStep5}
-                        className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Submit
-                        <Send className="w-4 h-4 ml-2" />
-                      </button>
-                    </div>
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
+                        <button
+                          type="button"
+                          onClick={() => setStep(4)}
+                          className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
+                        >
+                          <ArrowLeft className="w-4 h-4 mr-2" />
+                          Back
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2"
+                        >
+                          Submit
+                          <Send className="w-4 h-4 ml-2" />
+                        </button>
+                      </div>
+                    </form>
                   </motion.div>
                 )}
               </motion.div>
@@ -613,28 +657,21 @@ export default function Start() {
                     We've received your request. We'll be in touch within 24 hours.
                   </p>
                   <div className="inline-block p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border text-left">
-                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
-                      Selected Package
-                    </div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Package</div>
                     <div className="text-base sm:text-lg font-bold capitalize">
-                      {packages.find(p => p.id === selectedPackage)?.name || selectedPackage}
+                      {packages.find((p) => p.id === selectedPackage)?.name || selectedPackage}
                     </div>
                     {selectedAddons.length > 0 && (
                       <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-border">
-                        <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">
-                          Selected Add-ons
-                        </div>
+                        <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Add-ons</div>
                         <div className="text-xs sm:text-sm font-medium">
-                          {selectedAddons.map(id => availableAddons.find(a => a.id === id)?.name).join(", ")}
+                          {selectedAddons.map((id) => availableAddons.find((a) => a.id === id)?.name).join(", ")}
                         </div>
                       </div>
                     )}
                   </div>
                   <div className="mt-4 sm:mt-6">
-                    <Link
-                      to="/"
-                      className="btn-outline btn-md sm:btn-lg"
-                    >
+                    <Link to="/" className="btn-outline btn-md sm:btn-lg">
                       Back to Home
                     </Link>
                   </div>
