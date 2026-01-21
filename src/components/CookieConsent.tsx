@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Cookie } from "lucide-react";
 import { Link } from "react-router-dom";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 
 const CONSENT_KEY = "oss_cookie_consent";
 type ConsentValue = "accepted" | "rejected";
@@ -41,10 +41,13 @@ export function CookieConsent() {
           aria-live="polite"
           aria-label="Cookie notice"
         >
-          <div className="bordered-section bg-background/98 backdrop-blur p-4 sm:p-5 shadow-lg">
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5 shrink-0 rounded-lg bg-primary/10 border border-primary/20 p-2">
-                <Cookie className="h-4 w-4 text-primary" aria-hidden="true" />
+          <div className="bordered-section bg-background/70 backdrop-blur p-4 sm:p-5 shadow-lg">
+            <DottedGrid className="opacity-25" spacing={24} />
+            <div className="relative z-10 flex items-start gap-3">
+              <div className="mt-0.5 shrink-0 rounded-lg bg-secondary/60 border border-border px-2.5 py-2">
+                <span className="text-lg leading-none" aria-hidden="true">
+                  🍪
+                </span>
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-semibold leading-snug">Cookies</p>
