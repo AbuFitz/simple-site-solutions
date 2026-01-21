@@ -71,16 +71,16 @@ export function CookieConsent() {
                         <button
                           type="button"
                           onClick={() => setConsent("accepted")}
-                          className="inline-flex items-center justify-center rounded-full px-4 h-8 text-xs sm:text-sm font-semibold leading-none bg-primary text-primary-foreground hover:brightness-110 transition-all"
+                          className="grid place-items-center rounded-full px-4 h-8 text-xs sm:text-sm font-semibold bg-primary text-primary-foreground hover:brightness-110 transition-all"
                         >
-                          Accept
+                          <span className="translate-y-px">Accept</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => setConsent("rejected")}
-                          className="inline-flex items-center justify-center rounded-full px-4 h-8 text-xs sm:text-sm font-semibold leading-none bg-secondary text-foreground hover:bg-secondary/80 transition-all"
+                          className="grid place-items-center rounded-full px-4 h-8 text-xs sm:text-sm font-semibold bg-secondary text-foreground hover:bg-secondary/80 transition-all"
                         >
-                          Reject
+                          <span className="translate-y-px">Reject</span>
                         </button>
                         <button
                           type="button"
