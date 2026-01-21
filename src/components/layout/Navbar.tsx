@@ -44,55 +44,31 @@ export function Navbar() {
     <>
       {/* Floating Navigation Pill */}
       <motion.header
-        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-2xl"
+        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`flex items-center justify-between min-w-0 gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`flex items-center justify-between gap-2 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
           {/* Brand */}
           <Link
             to="/"
-            className="min-w-0 flex-1 px-3 sm:px-4 py-1.5 sm:py-2 text-base sm:text-lg font-bold tracking-tight truncate lg:overflow-visible lg:text-clip"
+            className="shrink-0 px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight"
           >
             one<span className="text-primary">simple</span>site
           </Link>
 
-          {/* Tablet Links - show 2 key links on md screens */}
-          <div className="hidden md:flex lg:hidden items-center gap-1">
-            <Link
-              to="/packages"
-              className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
-                location.pathname === "/packages"
-                  ? "bg-secondary text-foreground border-border"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
-              }`}
-            >
-              Pricing
-            </Link>
-            <Link
-              to="/faq"
-              className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
-                location.pathname === "/faq"
-                  ? "bg-secondary text-foreground border-border"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
-              }`}
-            >
-              FAQ
-            </Link>
-          </div>
-
-          {/* Desktop Links - show all on lg+ */}
-          <div className="hidden lg:flex items-center gap-0.5 sm:gap-1">
+          {/* Desktop Links - hidden on mobile/tablet */}
+          <div className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium rounded-full transition-all duration-200 border ${
+                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
                   location.pathname === item.path
                     ? "bg-secondary text-foreground border-border"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
@@ -106,36 +82,36 @@ export function Navbar() {
           {/* Desktop CTA */}
           <Link
             to="/start"
-            className="hidden lg:inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
+            className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
           >
             Get Started
-            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
 
-          {/* Mobile/Tablet Menu Button - Green pill on the right */}
+          {/* Mobile/Tablet Menu Button */}
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden shrink-0 inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold transition-all hover:brightness-110"
+            className="lg:hidden shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-full text-xs sm:text-sm font-semibold transition-all hover:brightness-110"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
             {menuOpen ? (
               <>
-                <X className="w-4 h-4" />
-                Close
+                <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">Close</span>
               </>
             ) : (
               <>
-                <Menu className="w-4 h-4" />
-                Menu
+                <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden xs:inline">Menu</span>
               </>
             )}
           </button>
         </nav>
       </motion.header>
 
-      {/* Full-screen Mobile Menu with slide-down animation */}
+      {/* Full-screen Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -154,8 +130,8 @@ export function Navbar() {
               }}
             />
             
-            <div className="flex flex-col items-center justify-center min-h-screen px-6 relative z-10">
-              <nav className="space-y-1 text-center w-full max-w-sm">
+            <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 relative z-10">
+              <nav className="space-y-2 text-center w-full max-w-xs sm:max-w-sm">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
@@ -166,7 +142,7 @@ export function Navbar() {
                   >
                     <Link
                       to={item.path}
-                      className={`block py-3 sm:py-4 text-2xl sm:text-3xl font-bold transition-colors rounded-2xl border-2 mb-2 ${
+                      className={`block py-3 text-xl sm:text-2xl md:text-3xl font-bold transition-colors rounded-xl border-2 mb-2 ${
                         location.pathname === item.path
                           ? "text-primary border-primary bg-primary/5"
                           : "text-foreground hover:text-primary border-transparent hover:border-border"
@@ -182,14 +158,14 @@ export function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 30 }}
                   transition={{ delay: 0.1 + navItems.length * 0.08, duration: 0.3 }}
-                  className="pt-6 sm:pt-8"
+                  className="pt-4 sm:pt-6"
                 >
                   <Link
                     to="/start"
-                    className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-primary-foreground rounded-full text-base sm:text-lg font-semibold w-full justify-center border-2 border-primary"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 bg-primary text-primary-foreground rounded-full text-sm sm:text-base font-semibold w-full justify-center border-2 border-primary"
                   >
                     Get Started
-                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <ArrowUpRight className="w-4 h-4" />
                   </Link>
                 </motion.div>
               </nav>
