@@ -58,7 +58,7 @@ export function Navbar() {
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 pr-20 lg:pr-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 lg:pr-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -93,20 +93,14 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden absolute right-1.5 sm:right-2 top-1.5 sm:top-2 z-10 inline-flex whitespace-nowrap items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-primary text-primary-foreground rounded-full text-xs sm:text-sm font-semibold transition-all hover:brightness-110"
+            className="lg:hidden flex-shrink-0 inline-flex items-center justify-center p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-full transition-all hover:brightness-110"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
           >
             {menuOpen ? (
-              <>
-                <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span>Close</span>
-              </>
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             ) : (
-              <>
-                <Menu className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span>Menu</span>
-              </>
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             )}
           </button>
         </nav>
