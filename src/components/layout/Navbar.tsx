@@ -125,8 +125,8 @@ export function Navbar() {
               }}
             />
 
-            <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 relative z-10">
-              <nav className="space-y-3 text-center w-full max-w-xs sm:max-w-md">
+            <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 py-20 relative z-10">
+              <nav className="space-y-2 sm:space-y-3 text-center w-full max-w-xs sm:max-w-md">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
@@ -137,7 +137,7 @@ export function Navbar() {
                   >
                     <Link
                       to={item.path}
-                      className={`block py-4 sm:py-5 text-2xl sm:text-3xl md:text-4xl font-bold transition-colors rounded-xl border-2 mb-2 ${
+                      className={`block py-3 sm:py-4 md:py-5 text-xl sm:text-2xl md:text-3xl font-bold transition-colors rounded-xl border-2 mb-2 ${
                         location.pathname === item.path
                           ? "text-primary border-primary bg-primary/5"
                           : "text-foreground hover:text-primary border-transparent hover:border-border"
@@ -147,20 +147,20 @@ export function Navbar() {
                     </Link>
                   </motion.div>
                 ))}
-                
+
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 30 }}
                   transition={{ delay: 0.1 + navItems.length * 0.08, duration: 0.3 }}
-                  className="pt-6 sm:pt-8"
+                  className="pt-4 sm:pt-6 md:pt-8"
                 >
                   <Link
                     to="/start"
-                    className="inline-flex items-center gap-2 px-6 sm:px-8 py-4 sm:py-5 bg-primary text-primary-foreground rounded-full text-base sm:text-lg font-semibold w-full justify-center border-2 border-primary hover:brightness-110 transition-all"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 bg-primary text-primary-foreground rounded-full text-sm sm:text-base md:text-lg font-semibold w-full justify-center border-2 border-primary hover:brightness-110 transition-all"
                   >
                     Get Started
-                    <ArrowUpRight className="w-5 h-5" />
+                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </Link>
                 </motion.div>
               </nav>
