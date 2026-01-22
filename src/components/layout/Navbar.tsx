@@ -125,8 +125,8 @@ export function Navbar() {
               }}
             />
 
-            <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 pt-16 pb-8 relative z-10">
-              <nav className="space-y-2 sm:space-y-3 text-center w-full max-w-xs sm:max-w-md">
+            <div className="flex flex-col items-start justify-center min-h-screen w-full px-6 sm:px-8 pt-16 pb-8 relative z-10">
+              <nav className="space-y-2 sm:space-y-3 w-full max-w-sm">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
@@ -137,7 +137,7 @@ export function Navbar() {
                   >
                     <Link
                       to={item.path}
-                      className={`block py-3 sm:py-4 md:py-5 text-xl sm:text-2xl md:text-3xl font-bold transition-colors rounded-xl border-2 mb-2 ${
+                      className={`block py-3 sm:py-4 md:py-5 px-4 text-xl sm:text-2xl md:text-3xl font-bold transition-colors rounded-xl border-2 mb-2 text-left ${
                         location.pathname === item.path
                           ? "text-primary border-primary bg-primary/5"
                           : "text-foreground hover:text-primary border-transparent hover:border-border"
@@ -157,7 +157,7 @@ export function Navbar() {
                 >
                   <Link
                     to="/start"
-                    className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 bg-primary text-primary-foreground rounded-full text-sm sm:text-base md:text-lg font-semibold w-full justify-center border-2 border-primary hover:brightness-110 transition-all"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 bg-primary text-primary-foreground rounded-full text-sm sm:text-base md:text-lg font-semibold w-full justify-start border-2 border-primary hover:brightness-110 transition-all"
                   >
                     Get Started
                     <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
