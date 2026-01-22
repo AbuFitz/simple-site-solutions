@@ -116,7 +116,7 @@ export function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-[70] bg-background"
+            className="fixed inset-0 z-[90] bg-background"
             initial={{ y: "-100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
@@ -130,9 +130,9 @@ export function Navbar() {
                 backgroundSize: "24px 24px",
               }}
             />
-            
+
             <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 relative z-10">
-              <nav className="space-y-2 text-center w-full max-w-xs sm:max-w-sm">
+              <nav className="space-y-3 text-center w-full max-w-xs sm:max-w-md">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
@@ -143,7 +143,7 @@ export function Navbar() {
                   >
                     <Link
                       to={item.path}
-                      className={`block py-3 text-xl sm:text-2xl md:text-3xl font-bold transition-colors rounded-xl border-2 mb-2 ${
+                      className={`block py-4 sm:py-5 text-2xl sm:text-3xl md:text-4xl font-bold transition-colors rounded-xl border-2 mb-2 ${
                         location.pathname === item.path
                           ? "text-primary border-primary bg-primary/5"
                           : "text-foreground hover:text-primary border-transparent hover:border-border"
@@ -159,14 +159,14 @@ export function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 30 }}
                   transition={{ delay: 0.1 + navItems.length * 0.08, duration: 0.3 }}
-                  className="pt-4 sm:pt-6"
+                  className="pt-6 sm:pt-8"
                 >
                   <Link
                     to="/start"
-                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-3 bg-primary text-primary-foreground rounded-full text-sm sm:text-base font-semibold w-full justify-center border-2 border-primary"
+                    className="inline-flex items-center gap-2 px-6 sm:px-8 py-4 sm:py-5 bg-primary text-primary-foreground rounded-full text-base sm:text-lg font-semibold w-full justify-center border-2 border-primary hover:brightness-110 transition-all"
                   >
                     Get Started
-                    <ArrowUpRight className="w-4 h-4" />
+                    <ArrowUpRight className="w-5 h-5" />
                   </Link>
                 </motion.div>
               </nav>
