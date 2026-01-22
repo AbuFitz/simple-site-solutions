@@ -125,8 +125,8 @@ export function Navbar() {
               }}
             />
 
-            <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 py-20 relative z-10">
-              <nav className="space-y-2 sm:space-y-3 text-center w-full max-w-xs sm:max-w-md">
+            <div className="flex flex-col items-center justify-start min-h-screen px-4 sm:px-6 pt-24 pb-8 relative z-10 overflow-y-auto">
+              <nav className="space-y-2 sm:space-y-3 text-center w-full max-w-xs sm:max-w-md my-auto">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
