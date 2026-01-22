@@ -110,7 +110,7 @@ export function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-0 z-[90] bg-background"
+            className="fixed inset-0 z-[90] bg-background overflow-y-auto"
             initial={{ y: "-100%", opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
@@ -125,8 +125,8 @@ export function Navbar() {
               }}
             />
 
-            <div className="flex flex-col items-start justify-center min-h-screen w-full px-6 sm:px-8 pt-16 pb-8 relative z-10">
-              <nav className="space-y-2 sm:space-y-3 w-full max-w-sm">
+            <div className="relative z-10 min-h-screen flex items-center px-6 py-20">
+              <nav className="w-full max-w-md space-y-2 sm:space-y-3">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
