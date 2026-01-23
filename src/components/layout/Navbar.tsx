@@ -73,7 +73,7 @@ export function Navbar() {
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>

@@ -53,46 +53,48 @@ export function CookieConsent() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="relative z-10 p-4 sm:p-6"
+                  className="relative z-10 p-5 sm:p-6"
                 >
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
-                      {/* Cookie emoji */}
-                      <span className="text-2xl sm:text-3xl mt-0.5 shrink-0" role="img" aria-label="cookie">
-                        🍪
-                      </span>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                    <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                      {/* Cookie icon */}
+                      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 flex items-center justify-center">
+                        <span className="text-xl sm:text-2xl" role="img" aria-label="cookie">🍪</span>
+                      </div>
 
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm sm:text-base font-bold leading-snug text-black">We use cookies</p>
-                        <p className="text-xs sm:text-sm text-gray-700 leading-relaxed mt-1">
-                          Essential cookies only — no tracking or ads.
+                        <p className="text-base sm:text-lg font-bold leading-tight text-black mb-1">
+                          This website uses cookies
+                        </p>
+                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                          We use essential cookies to make our site work. We'd also like to set optional cookies for analytics.
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 w-full sm:w-auto sm:flex-shrink-0">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto sm:flex-shrink-0">
                       <button
                         type="button"
                         onClick={() => setConsent("accepted")}
-                        className="flex-1 sm:flex-initial inline-flex items-center justify-center rounded-full px-5 sm:px-6 h-10 sm:h-11 text-sm font-semibold leading-none bg-primary text-white hover:brightness-110 transition-all"
+                        className="inline-flex items-center justify-center rounded-lg px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-semibold bg-primary text-white hover:brightness-110 transition-all shadow-sm"
                       >
-                        Accept
+                        Accept and continue
                       </button>
                       <button
                         type="button"
                         onClick={() => setConsent("rejected")}
-                        className="flex-1 sm:flex-initial inline-flex items-center justify-center rounded-full px-5 sm:px-6 h-10 sm:h-11 text-sm font-semibold leading-none bg-black text-white hover:bg-gray-800 transition-all"
+                        className="inline-flex items-center justify-center rounded-lg px-4 sm:px-5 py-2.5 sm:py-3 text-sm font-semibold bg-gray-100 text-gray-900 hover:bg-gray-200 transition-all"
                       >
-                        Reject
+                        Only necessary cookies
                       </button>
                       <button
                         type="button"
                         onClick={() => setShowSettings(true)}
-                        className="hidden sm:inline-flex items-center gap-1 text-xs text-gray-600 hover:text-black transition-colors px-2"
+                        className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-gray-700 hover:text-black transition-colors underline underline-offset-2"
                         aria-label="Cookie settings"
                       >
-                        <Settings2 className="w-3 h-3" />
-                        Settings
+                        <Settings2 className="w-4 h-4" />
+                        Manage cookies
                       </button>
                     </div>
                   </div>
@@ -103,71 +105,103 @@ export function CookieConsent() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="relative z-10 p-4 sm:p-6"
+                  className="relative z-10 p-5 sm:p-6"
                 >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-lg" role="img" aria-label="cookie">🍪</span>
-                    <p className="text-sm sm:text-base font-bold text-black">Cookie Settings</p>
+                  <div className="flex items-center gap-3 mb-4 sm:mb-5">
+                    <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl" role="img" aria-label="cookie">🍪</span>
+                    </div>
+                    <div>
+                      <p className="text-base sm:text-lg font-bold text-black">Cookie preferences</p>
+                      <p className="text-xs sm:text-sm text-gray-600">Choose which cookies you want to accept</p>
+                    </div>
                   </div>
 
-                  <div className="space-y-3 mb-4">
+                  <div className="space-y-3 mb-5 sm:mb-6">
                     {/* Essential cookies - always on */}
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200">
-                      <div>
-                        <p className="text-xs sm:text-sm font-semibold text-black">Essential</p>
-                        <p className="text-[10px] sm:text-xs text-gray-600">Required for site functionality</p>
-                      </div>
-                      <div className="px-2 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
-                        Always on
-                      </div>
-                    </div>
-
-                    {/* Analytics - we don't use */}
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50/50 border border-gray-200">
-                      <div>
-                        <p className="text-xs sm:text-sm font-semibold text-gray-600">Analytics</p>
-                        <p className="text-[10px] sm:text-xs text-gray-500">We don't use analytics cookies</p>
-                      </div>
-                      <div className="px-2 py-1 rounded-full bg-gray-200 text-gray-600 text-[10px] font-medium">
-                        Not used
+                    <div className="p-4 rounded-lg bg-gray-50 border-2 border-gray-200">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="text-sm font-bold text-black">Essential cookies</p>
+                            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                              Always active
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-600 leading-relaxed">
+                            These cookies are necessary for the website to function and cannot be switched off.
+                          </p>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Marketing - we don't use */}
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50/50 border border-gray-200">
-                      <div>
-                        <p className="text-xs sm:text-sm font-semibold text-gray-600">Marketing</p>
-                        <p className="text-[10px] sm:text-xs text-gray-500">We don't use marketing cookies</p>
+                    {/* Analytics - optional */}
+                    <div className="p-4 rounded-lg bg-white border-2 border-gray-200">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1">
+                          <p className="text-sm font-bold text-black mb-1">Analytics cookies</p>
+                          <p className="text-xs text-gray-600 leading-relaxed">
+                            Help us understand how visitors interact with our website (currently not used).
+                          </p>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <div className="px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-xs font-medium">
+                            Not used
+                          </div>
+                        </div>
                       </div>
-                      <div className="px-2 py-1 rounded-full bg-gray-200 text-gray-600 text-[10px] font-medium">
-                        Not used
+                    </div>
+
+                    {/* Marketing - optional */}
+                    <div className="p-4 rounded-lg bg-white border-2 border-gray-200">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1">
+                          <p className="text-sm font-bold text-black mb-1">Marketing cookies</p>
+                          <p className="text-xs text-gray-600 leading-relaxed">
+                            Used to track visitors across websites for advertising purposes (currently not used).
+                          </p>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <div className="px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-xs font-medium">
+                            Not used
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2.5">
                     <button
                       type="button"
                       onClick={() => setConsent("accepted")}
-                      className="flex-1 inline-flex items-center justify-center rounded-full px-5 sm:px-6 h-10 sm:h-11 text-sm font-semibold bg-primary text-white hover:brightness-110 transition-all"
+                      className="flex-1 inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold bg-primary text-white hover:brightness-110 transition-all shadow-sm"
                     >
-                      Accept essentials
+                      Accept all cookies
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConsent("rejected")}
+                      className="flex-1 inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold bg-gray-100 text-gray-900 hover:bg-gray-200 transition-all"
+                    >
+                      Only necessary
                     </button>
                     <button
                       type="button"
                       onClick={() => setShowSettings(false)}
-                      className="inline-flex items-center justify-center rounded-full px-5 sm:px-6 h-10 sm:h-11 text-sm font-semibold bg-black text-white hover:bg-gray-800 transition-all"
+                      className="sm:flex-initial inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold border-2 border-gray-300 text-gray-900 hover:bg-gray-50 transition-all"
                     >
                       Back
                     </button>
                   </div>
 
-                  <Link
-                    to="/privacy"
-                    className="block text-center mt-3 text-[10px] sm:text-xs text-gray-600 hover:text-black transition-colors underline underline-offset-2"
-                  >
-                    Read our Privacy Policy
-                  </Link>
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                    <Link
+                      to="/privacy"
+                      className="text-xs sm:text-sm text-gray-600 hover:text-black transition-colors underline underline-offset-2"
+                    >
+                      Read our Privacy Policy
+                    </Link>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
