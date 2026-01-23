@@ -51,14 +51,29 @@ export function Navbar() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`relative flex items-center justify-between gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
+          {/* Mobile/Tablet Menu Button - Moved before logo */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="lg:hidden flex-shrink-0 inline-flex items-center justify-center p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-full transition-all hover:brightness-110"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? (
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            ) : (
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+            )}
+          </button>
+
           {/* Brand */}
           <Link
             to="/"
-            className="flex-shrink min-w-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -88,21 +103,6 @@ export function Navbar() {
             Get Started
             <ArrowUpRight className="w-3.5 h-3.5" />
           </Link>
-
-          {/* Mobile/Tablet Menu Button */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden flex-shrink-0 inline-flex items-center justify-center p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-full transition-all hover:brightness-110"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? (
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
-            ) : (
-              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-            )}
-          </button>
         </nav>
       </motion.header>
 
