@@ -53,7 +53,7 @@ export default function Index() {
     <Layout>
       {/* Hero Section */}
       <section className="min-h-[70vh] sm:min-h-[80vh] flex items-center pt-20 pb-4 sm:pt-24 sm:pb-8 md:pt-28 md:pb-12 relative">
-        <DottedGrid className="opacity-40" spacing={28} />
+        <DottedGrid className="opacity-40" spacing={24} dotSize={1.5} />
         <div className="content-width relative z-10">
           <div className="max-w-4xl">
             <motion.div

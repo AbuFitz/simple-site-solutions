@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { CookieConsent } from "@/components/CookieConsent";
-import { DottedGrid } from "@/components/ui/DottedGrid";
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,16 +17,11 @@ export function Layout({ children }: LayoutProps) {
   }, [pathname]);
 
   return (
-    <div className="page-container overflow-x-hidden relative">
-      {/* Global grid background */}
-      <DottedGrid className="fixed inset-0 opacity-40 pointer-events-none" spacing={24} dotSize={2.5} />
-
-      <div className="relative z-10">
-        <Navbar />
-        <main>{children}</main>
-        <CookieConsent />
-        <Footer />
-      </div>
+    <div className="page-container overflow-x-hidden">
+      <Navbar />
+      <main>{children}</main>
+      <CookieConsent />
+      <Footer />
     </div>
   );
 }
