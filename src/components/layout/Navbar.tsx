@@ -150,10 +150,10 @@ export function Navbar() {
                       >
                         <Link
                           to={item.path}
-                          className={`block px-4 py-3 text-base font-semibold rounded-lg transition-colors ${
+                          className={`block px-4 py-3 text-base font-semibold rounded-lg transition-colors border-2 ${
                             location.pathname === item.path
-                              ? "text-primary bg-primary/10"
-                              : "text-foreground hover:bg-secondary"
+                              ? "text-primary border-primary"
+                              : "text-foreground border-transparent hover:bg-secondary"
                           }`}
                         >
                           {item.label}
