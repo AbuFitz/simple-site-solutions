@@ -51,20 +51,20 @@ export function Navbar() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
-          className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
+          className={`relative flex items-center justify-between gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
             scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 lg:pr-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-sm sm:text-base md:text-lg font-bold tracking-tight truncate"
+            className="flex-shrink min-w-0 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-base sm:text-lg md:text-xl lg:text-2xl font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
 
           {/* Desktop Links - hidden on mobile/tablet */}
-          <div className="hidden lg:flex items-center gap-0.5">
+          <div className="hidden lg:flex items-center gap-0.5 flex-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
