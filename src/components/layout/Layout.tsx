@@ -20,7 +20,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="page-container overflow-x-hidden relative">
       {/* Global grid background */}
-      <DottedGrid className="fixed inset-0 opacity-20 pointer-events-none" spacing={24} />
+      <DottedGrid className="fixed inset-0 opacity-40 pointer-events-none" spacing={24} />
 
       <div className="relative z-10">
         <Navbar />

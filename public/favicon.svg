@@ -1,4 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect width="64" height="64" rx="12" fill="#000000"/>
-  <text x="32" y="48" font-family="system-ui, -apple-system, sans-serif" font-size="40" font-weight="700" fill="#26a269" text-anchor="middle">１</text>
+  <rect width="64" height="64" rx="14" fill="#000000"/>
+  <g transform="translate(20, 12)">
+    <!-- Main vertical bar of the "1" -->
+    <rect x="6" y="0" width="12" height="40" rx="2" fill="#26a269"/>
+    <!-- Top serif/foot of the "1" -->
+    <path d="M6 5 L0 8 L0 0 L6 0 Z" fill="#26a269"/>
+    <!-- Bottom serif -->
+    <rect x="0" y="40" width="24" height="6" rx="2" fill="#26a269"/>
+  </g>
 </svg>

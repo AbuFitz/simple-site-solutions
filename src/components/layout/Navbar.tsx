@@ -73,7 +73,7 @@ export function Navbar() {
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-lg font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -106,66 +106,81 @@ export function Navbar() {
         </nav>
       </motion.header>
 
-      {/* Full-screen Mobile Menu */}
+      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            className="fixed inset-0 z-[90] bg-background overflow-y-auto"
-            initial={{ y: "-100%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "-100%", opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
-          >
-            {/* Dotted grid background */}
-            <div
-              className="absolute inset-0 opacity-30"
-              style={{
-                backgroundImage: `radial-gradient(circle, hsl(var(--muted-foreground) / 0.2) 1px, transparent 1px)`,
-                backgroundSize: "24px 24px",
-              }}
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 z-[75] bg-black/20 backdrop-blur-sm lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMenuOpen(false)}
             />
 
-            <div className="relative z-10 min-h-screen flex items-center px-6 py-20">
-              <nav className="w-full max-w-md space-y-2 sm:space-y-3">
-                {navItems.map((item, index) => (
+            {/* Menu Panel */}
+            <motion.div
+              className="fixed top-[4.5rem] left-3 right-3 sm:left-6 sm:right-6 z-[85] lg:hidden"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+            >
+              <div className="bg-background border-2 border-border rounded-2xl shadow-2xl overflow-hidden">
+                {/* Dotted grid background */}
+                <div
+                  className="absolute inset-0 opacity-20"
+                  style={{
+                    backgroundImage: `radial-gradient(circle, hsl(var(--muted-foreground) / 0.3) 1px, transparent 1px)`,
+                    backgroundSize: "20px 20px",
+                  }}
+                />
+
+                <nav className="relative z-10 p-4 sm:p-5">
+                  <div className="space-y-1">
+                    {navItems.map((item, index) => (
+                      <motion.div
+                        key={item.path}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ delay: 0.05 + index * 0.05, duration: 0.2 }}
+                      >
+                        <Link
+                          to={item.path}
+                          className={`block px-4 py-3 text-base font-semibold rounded-lg transition-colors ${
+                            location.pathname === item.path
+                              ? "text-primary bg-primary/10"
+                              : "text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          {item.label}
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+
                   <motion.div
-                    key={item.path}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 30 }}
-                    transition={{ delay: 0.1 + index * 0.08, duration: 0.3 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ delay: 0.2, duration: 0.2 }}
+                    className="mt-4 pt-4 border-t border-border"
                   >
                     <Link
-                      to={item.path}
-                      className={`block py-3 sm:py-4 md:py-5 px-4 text-xl sm:text-2xl md:text-3xl font-bold transition-colors rounded-xl border-2 mb-2 text-left ${
-                        location.pathname === item.path
-                          ? "text-primary border-primary bg-primary/5"
-                          : "text-foreground hover:text-primary border-transparent hover:border-border"
-                      }`}
+                      to="/start"
+                      className="flex items-center justify-center gap-2 w-full px-5 py-3 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:brightness-110 transition-all"
                     >
-                      {item.label}
+                      Get Started
+                      <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </motion.div>
-                ))}
-
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 30 }}
-                  transition={{ delay: 0.1 + navItems.length * 0.08, duration: 0.3 }}
-                  className="pt-4 sm:pt-6 md:pt-8"
-                >
-                  <Link
-                    to="/start"
-                    className="inline-flex items-center gap-2 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 bg-primary text-primary-foreground rounded-full text-sm sm:text-base md:text-lg font-semibold w-full justify-start border-2 border-primary hover:brightness-110 transition-all"
-                  >
-                    Get Started
-                    <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </Link>
-                </motion.div>
-              </nav>
-            </div>
-          </motion.div>
+                </nav>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
