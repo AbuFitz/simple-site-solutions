@@ -11,6 +11,16 @@ import {
 
 const faqs = [
   {
+    question: "How much does a website cost?",
+    answer:
+      "We have three packages: Starter at £349 (up to 3 pages), Core at £599 (up to 5 pages), and Growth at £899 (up to 6 pages). All packages include market research, proven layouts, mobile-friendly design, contact forms, and refinement rounds. No hidden fees.",
+  },
+  {
+    question: "How long does it take to build my website?",
+    answer:
+      "5-10 business days from when you submit your content. Starter sites are typically faster (around 5 days), while Growth packages with more pages take closer to 10 days. We don't do endless timelines — you'll have your site live quickly.",
+  },
+  {
     question: "How is this different from hiring a web designer?",
     answer:
       "We're a productised service, not a custom agency. We don't offer unlimited revisions, moodboards, or 'design by committee.' We analyse what works in your industry and build you a proven layout. It's faster, more affordable, and gets better results.",
@@ -18,47 +28,67 @@ const faqs = [
   {
     question: "Can I choose my own design?",
     answer:
-      "No. That's by design. We build based on layouts that already convert in your industry. If you want full creative control, we're not the right fit. If you want results, we are.",
+      "No — and that's intentional. We build based on layouts that already convert in your industry. We've researched what works for plumbers, electricians, mechanics, cleaners, and other local trades. If you want full creative control, we're not the right fit. If you want results, we are.",
   },
   {
     question: "What if I don't like the design?",
     answer:
-      "You get one structured revision round for text changes, image swaps, and minor colour tweaks. We don't do redesigns. Our layouts are proven to work — trust the process.",
+      "Each package includes refinement rounds (1 for Starter, 1-2 for Core, 2 for Growth). These cover text changes, image swaps, and minor layout tweaks. We don't do full redesigns — our layouts are proven to work. If you need an extra refinement round, it's £95.",
   },
   {
-    question: "How long does it take?",
+    question: "What do you need from me to get started?",
     answer:
-      "Starter: 5 days. Pro: 7 days. Growth: 10 days. This is from the moment you submit your content. No endless timelines.",
+      "Business name and details, your services, contact information, and any images or logos you want to use. We guide you through it with a simple form. Don't worry if you don't have everything — we'll help you figure it out.",
   },
   {
-    question: "What do you need from me?",
+    question: "Do you write the website content?",
     answer:
-      "Business info, service details, contact information, and any images/logos you want to use. We guide you through it with a simple form.",
+      "We provide a content guide and structure — you provide the raw details about your business. If you'd prefer professional copywriting, we offer SEO Content Writing at £95 per page, or Blog Post Writing at £75 per post.",
   },
   {
-    question: "Do you write the content?",
+    question: "What about hosting and domains?",
     answer:
-      "We provide a content guide and structure. You provide the raw content. Professional copywriting is available as an add-on for £297.",
+      "Hosting is optional at £15/month. This includes secure hosting, SSL certificate (https), regular backups, updates, and minor fixes if needed. You're also free to host it yourself — we'll hand over all the files. Domain registration is separate (we can help you set it up or point your existing domain).",
   },
   {
-    question: "What about hosting and domain?",
+    question: "What are the payment terms?",
     answer:
-      "Hosting for the first year is included. Domain registration is separate (we can help you set it up). After year one, hosting is £47/month.",
+      "Starter package: paid upfront in full. Core and Growth packages: 50% upfront to begin, 50% before we launch your site. We accept bank transfer and card payments.",
   },
   {
     question: "Can I make changes after the site goes live?",
     answer:
-      "Yes. You can add our monthly maintenance plan (£47/mo) which includes small content updates. Larger changes are quoted separately.",
+      "Yes. Small text or image updates are £30. Adding a new page is £85. Bigger changes are quoted separately. No monthly subscription required — just pay when you need something changed.",
   },
   {
     question: "What if I need a booking system or special features?",
     answer:
-      "These are available as add-ons. Booking system integration is £197. We keep the core packages simple and add extras as needed.",
+      "We offer add-ons: Booking System (£150), Blog Setup (£120), Local SEO Setup (£150), and Simple Logo Refresh (£120). These can be added to any package. We keep the core packages simple and add extras only when you need them.",
+  },
+  {
+    question: "What's included in every package?",
+    answer:
+      "Market and competitor review, mobile-friendly modern design, contact form with click-to-call and WhatsApp, Google Map integration, trust sections (reviews, guarantees), basic SEO setup, cookie notice, and refinement rounds. Everything you need to look professional and convert visitors.",
+  },
+  {
+    question: "Which package should I choose?",
+    answer:
+      "Starter (£349) is perfect for sole traders and new businesses who want it done properly. Core (£599) is our most popular — ideal for established businesses wanting more pages and clarity. Growth (£899) is for businesses ready to compete and look established with premium positioning.",
   },
   {
     question: "Do you offer refunds?",
     answer:
-      "Due to the nature of custom work, we don't offer refunds once work has begun. However, we do offer a satisfaction guarantee — if we can't agree on a final design within the revision scope, we'll work with you to find a solution.",
+      "Due to the nature of custom work, deposits are non-refundable once work has begun. However, we work with you through the refinement rounds to ensure you're happy with the result. We've never had an unhappy customer who followed the process.",
+  },
+  {
+    question: "What industries do you work with?",
+    answer:
+      "We specialise in local UK businesses: plumbers, electricians, mechanics, cleaners, barbers and salons, tutors, small shops, builders, and other trades. Our layouts are researched and proven for these industries.",
+  },
+  {
+    question: "Can I see examples of your work?",
+    answer:
+      "Yes! Check out our portfolio on the homepage. We've built sites for businesses like FixNow Mechanics, ARF Mods, and ReadySold. Each site follows our proven layout approach tailored to their industry.",
   },
 ];
 
