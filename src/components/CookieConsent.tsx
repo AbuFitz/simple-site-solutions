@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -8,6 +8,7 @@ const CONSENT_KEY = "oss_cookie_consent";
 
 export function CookieConsent() {
   const [open, setOpen] = useState(false);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
     try {
@@ -27,12 +28,19 @@ export function CookieConsent() {
     setOpen(false);
   };
 
+  // Only animate on first appearance, not on page navigation
+  const shouldAnimate = !hasAnimated.current;
+  if (open && !hasAnimated.current) {
+    hasAnimated.current = true;
+  }
+
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed left-0 right-0 bottom-0 sm:left-6 sm:right-6 sm:bottom-6 z-[60] sm:max-w-lg sm:mx-auto"
-          initial={{ opacity: 0, y: 20 }}
+          key="cookie-consent"
+          className="fixed left-0 right-0 bottom-0 sm:left-auto sm:right-6 sm:bottom-6 z-[60] sm:max-w-md"
+          initial={shouldAnimate ? { opacity: 0, y: 20 } : false}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.25 }}
