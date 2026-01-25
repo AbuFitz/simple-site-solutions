@@ -164,7 +164,7 @@ export default function Start() {
     <Layout>
       <section className="pt-20 pb-4 sm:pt-20 sm:pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 relative min-h-[calc(100dvh-3.5rem)] flex flex-col justify-start">
         <DottedGrid className="opacity-30" spacing={32} />
-        <div className="content-width max-w-xl sm:max-w-2xl relative z-10 flex-1 flex flex-col">
+        <div className="content-width max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10 flex-1 flex flex-col mx-auto">
           <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.div
