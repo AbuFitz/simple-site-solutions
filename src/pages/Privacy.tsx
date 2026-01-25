@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Privacy() {
   return (
@@ -100,10 +101,17 @@ export default function Privacy() {
 
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">7. Cookies</h2>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
+                  Our website uses essential cookies to ensure proper functionality.
+                  We do not use tracking or advertising cookies.
+                </p>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  Our website uses essential cookies to ensure proper functionality. 
-                  We do not use tracking or advertising cookies. 
-                  For more information, please see our cookie notice displayed on first visit.
+                  For detailed information about the cookies we use and how to manage them,
+                  please see our{" "}
+                  <Link to="/cookies" className="text-primary hover:underline">
+                    Cookie Policy
+                  </Link>
+                  .
                 </p>
               </section>
 

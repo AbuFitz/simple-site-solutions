@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Terms() {
   return (
@@ -155,7 +156,22 @@ export default function Terms() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">13. Contact</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">13. Privacy & Cookies</h2>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                  Your use of our website and services is also governed by our{" "}
+                  <Link to="/privacy" className="text-primary hover:underline">
+                    Privacy Policy
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/cookies" className="text-primary hover:underline">
+                    Cookie Policy
+                  </Link>
+                  , which explain how we collect, use, and protect your personal information.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">14. Contact</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   For any questions regarding these Terms, please contact us at{" "}
                   <a href="mailto:hello@onesimplesite.co.uk" className="text-primary hover:underline">

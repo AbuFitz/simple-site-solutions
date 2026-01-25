@@ -87,6 +87,12 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
             >
               Terms of Service
             </Link>
+            <Link
+              to="/cookies"
+              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Cookie Policy
+            </Link>
           </div>
           <p className="text-[10px] sm:text-xs text-muted-foreground">
             Made for local UK businesses

@@ -194,12 +194,18 @@ export function CookieConsent() {
                     </button>
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="mt-4 pt-4 border-t border-gray-200 flex flex-wrap gap-3">
+                    <Link
+                      to="/cookies"
+                      className="text-xs sm:text-sm text-gray-600 hover:text-black transition-colors underline underline-offset-2"
+                    >
+                      Cookie Policy
+                    </Link>
                     <Link
                       to="/privacy"
                       className="text-xs sm:text-sm text-gray-600 hover:text-black transition-colors underline underline-offset-2"
                     >
-                      Read our Privacy Policy
+                      Privacy Policy
                     </Link>
                   </div>
                 </motion.div>
