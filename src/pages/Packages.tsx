@@ -3,77 +3,87 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, ArrowUpRight } from "lucide-react";
+import { Check, ArrowUpRight, X } from "lucide-react";
 
 const packages = [
   {
-    name: "Starter",
-    price: "£349",
-    originalPrice: "£499",
-    description: "For businesses that want a proper, professional website. Not basic — just focused.",
+    name: "Essential",
+    price: "£199",
+    description: "For getting online properly. No fluff, no upsell traps.",
     features: [
-      "Market & competitor review",
-      "Up to 3 pages",
-      "Mobile-friendly, modern design",
-      "Contact form, click-to-call, WhatsApp",
+      "Complete website (all necessary pages)",
+      "Clean, mobile-first design",
+      "Clear services & contact flow",
+      "Local SEO foundations baked in",
       "Google Map + service area",
-      "Trust sections (reviews, guarantees)",
-      "SEO basics + cookie notice",
-      "1 refinement round",
+      "Contact, call & WhatsApp setup",
+      "Cookie notice & privacy compliance",
+    ],
+    notIncluded: [
+      "Heavy strategy work",
+      "Multiple refinement rounds",
+      "Deep positioning work",
     ],
     popular: false,
-    perfectFor: ["Sole traders", "New businesses", "Anyone who wants it done properly"],
+    perfectFor: ["New businesses", "Sole traders", "Getting online fast"],
     payment: "Paid upfront",
   },
   {
-    name: "Core",
-    price: "£599",
-    description: "For businesses that want more room and clarity. The balance package.",
+    name: "Business",
+    price: "£399",
+    description: "For businesses that want clarity and confidence.",
     features: [
-      "Everything in Starter, plus:",
-      "Deeper market review",
-      "Up to 4–5 pages",
-      "Clearer service breakdown",
-      "Stronger trust & credibility flow",
-      "Better content structure",
+      "Everything in Essential, plus:",
+      "Clear service hierarchy (built for Google + humans)",
+      "Conversion-focused layout",
+      "Trust positioning (reviews, guarantees, proof)",
+      "Refined messaging (what you do, who it's for, why you)",
       "1–2 refinement rounds",
     ],
     popular: true,
-    perfectFor: ["Businesses already trading", "People who want it done once, done right"],
+    perfectFor: ["Established businesses", "Service-based trades", "Anyone wanting it done right"],
     payment: "50% upfront / 50% before launch",
   },
   {
     name: "Growth",
-    price: "£899",
-    description: "For businesses that want to compete and look established.",
+    price: "£649",
+    description: "For businesses that want to compete seriously.",
     features: [
-      "Everything in Core, plus:",
-      "Deeper positioning decisions",
-      "Up to 6 pages",
-      "Clear service hierarchy (SEO-ready)",
-      "Strong trust positioning",
-      "Basic analytics setup",
-      "2 refinement rounds",
+      "Everything in Business, plus:",
+      "Deeper positioning & differentiation",
+      "SEO-led structure from day one",
+      "Analytics setup",
+      "Built to scale with future content",
+      "Multiple refinement rounds",
     ],
     popular: false,
-    perfectFor: ["Established businesses", "Anyone investing in growth"],
+    perfectFor: ["Businesses investing in growth", "Competitive markets", "Long-term thinkers"],
     payment: "50% upfront / 50% before launch",
   },
 ];
 
 const addons = [
-  { name: "Booking System", price: "£150", description: "Let customers book appointments online" },
-  { name: "Blog Setup", price: "£120", description: "Share news and updates" },
-  { name: "Blog Post Writing", price: "£75", description: "Per post, professionally written" },
-  { name: "SEO Content Writing", price: "£95/page", description: "Optimized copy that ranks" },
-  { name: "Local SEO Setup", price: "£150", description: "Get found on Google Maps" },
-  { name: "Simple Logo Refresh", price: "£120", description: "Clean up your brand" },
+  {
+    name: "Google Business Profile Setup",
+    price: "£99",
+    description: "Profile setup or clean-up, category optimisation, business description, service area setup"
+  },
+  {
+    name: "Speed & Performance",
+    price: "£99",
+    description: "Image optimisation, performance clean-up, mobile optimisation pass"
+  },
+  {
+    name: "Yearly Maintenance",
+    price: "£95/year",
+    description: "Security updates, minor text changes, basic health checks, support when needed"
+  },
 ];
 
 const hosting = {
-  name: "Hosting",
-  price: "£15/month",
-  features: ["Secure hosting", "SSL (https)", "Backups", "Updates", "Minor fixes if needed"],
+  name: "Hosting + Domain",
+  price: "£95/year",
+  features: ["Reliable hosting", "Domain connection", "SSL certificate", "Basic monitoring", "One point of contact"],
 };
 
 export default function Packages() {
@@ -95,11 +105,11 @@ export default function Packages() {
               </span>
             </div>
             <h1 className="text-display mb-6 sm:mb-8">
-              Simple pricing. <span className="text-primary">No surprises.</span>
+              Honest pricing. <span className="text-primary">No surprises.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
-              Pick a package. Get your site. Every package includes market research, 
-              proven layouts, and refinement rounds.
+              Pick a package. Get your site. Local SEO included in every package.
+              No hidden fees, no upsell traps.
             </p>
           </motion.div>
         </div>
@@ -137,17 +147,12 @@ export default function Packages() {
                     <span className="text-3xl sm:text-4xl font-bold text-primary">
                       {pkg.price}
                     </span>
-                    {pkg.originalPrice && (
-                      <span className="text-lg text-muted-foreground line-through">
-                        {pkg.originalPrice}
-                      </span>
-                    )}
                     <span className="text-muted-foreground text-xs sm:text-sm">one-time</span>
                   </div>
                   <p className="text-sm sm:text-base text-muted-foreground">{pkg.description}</p>
                 </div>
 
-                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-6">
+                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-4">
                   {pkg.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2 sm:gap-3">
                       <div className="check-icon w-4 h-4 sm:w-5 sm:h-5">
@@ -157,6 +162,18 @@ export default function Packages() {
                     </li>
                   ))}
                 </ul>
+
+                {/* Not included section for Essential */}
+                {pkg.notIncluded && (
+                  <ul className="space-y-2 mb-6 pt-4 border-t border-border">
+                    {pkg.notIncluded.map((item) => (
+                      <li key={item} className="flex items-start gap-2 sm:gap-3 text-muted-foreground">
+                        <X className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/50" />
+                        <span className="text-xs sm:text-sm">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 {/* Perfect for section */}
                 <div className="mb-6 p-3 sm:p-4 rounded-xl bg-secondary/50 border border-border">
@@ -206,7 +223,7 @@ export default function Packages() {
                   {hosting.name} <span className="text-primary">(Optional)</span>
                 </h3>
                 <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-0">
-                  Want us to host and maintain your site? You're also free to host it yourself.
+                  Don't want to deal with hosting and technical setup? We'll handle it.
                 </p>
               </div>
               <div className="text-right shrink-0">
@@ -243,7 +260,7 @@ export default function Packages() {
                   Optional <span className="text-primary">extras</span>
                 </h2>
                 <p className="text-body-lg mt-3 sm:mt-4">
-                  Only if you want them. One-off, clear, understandable.
+                  Only if you need them. No pressure, no upsells.
                 </p>
               </div>
 
@@ -262,52 +279,33 @@ export default function Packages() {
                 ))}
               </div>
 
-              {/* Refinements section */}
+              {/* What's included note */}
               <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border">
-                <h4 className="font-semibold mb-3 text-base sm:text-lg">What's included in refinements</h4>
-                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
-                  <div>
-                    <div className="text-xs sm:text-sm text-primary font-medium mb-2">Covered</div>
-                    <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
-                      <li>• Text changes</li>
-                      <li>• Image swaps</li>
-                      <li>• Small layout tweaks</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <div className="text-xs sm:text-sm text-destructive font-medium mb-2">Not covered</div>
-                    <ul className="space-y-1.5 text-xs sm:text-sm text-muted-foreground">
-                      <li>• Redesigns</li>
-                      <li>• Changing direction halfway</li>
-                      <li>• Adding new pages or features</li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="text-xs sm:text-sm text-muted-foreground">
-                  Extra refinement (if ever needed): <span className="text-primary font-semibold">£95</span>
+                <h4 className="font-semibold mb-3 text-base sm:text-lg">What's included in every package</h4>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                  {[
+                    "Local SEO foundations",
+                    "Mobile-first design",
+                    "Contact forms & WhatsApp",
+                    "Google Map integration",
+                    "Cookie & privacy compliance",
+                    "Clean, professional look",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-2 text-xs sm:text-sm">
+                      <Check className="w-4 h-4 text-primary" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Updates section */}
+              {/* Refinements note */}
               <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
-                <h4 className="font-semibold mb-3 text-base sm:text-lg">Updates & Changes</h4>
+                <h4 className="font-semibold mb-3 text-base sm:text-lg">About refinements</h4>
                 <p className="text-muted-foreground text-xs sm:text-sm mb-4">
-                  No subscriptions. No pressure. Just fair, when you need it.
+                  Business and Growth packages include refinement rounds for text changes, image swaps,
+                  and small layout tweaks. Essential is built right the first time — no back-and-forth needed.
                 </p>
-                <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm">
-                  <div className="p-3 rounded-lg bg-muted/50 border border-border">
-                    <span className="text-primary font-bold text-lg">£30</span>
-                    <span className="text-muted-foreground block">Small text/image update</span>
-                  </div>
-                  <div className="p-3 rounded-lg bg-muted/50 border border-border">
-                    <span className="text-primary font-bold text-lg">£85</span>
-                    <span className="text-muted-foreground block">New page</span>
-                  </div>
-                  <div className="p-3 rounded-lg bg-muted/50 border border-border">
-                    <span className="text-primary font-bold text-lg">Quoted</span>
-                    <span className="text-muted-foreground block">Bigger changes</span>
-                  </div>
-                </div>
               </div>
             </div>
           </motion.div>
@@ -318,8 +316,8 @@ export default function Packages() {
       <CTASection
         title="Not sure which"
         highlightedText="package?"
-        description="Start with Core. It's our most popular and includes everything most local businesses need."
-        primaryButtonText="Start with Core"
+        description="Business is our most popular — it includes everything most local businesses need, with room to refine."
+        primaryButtonText="Start with Business"
         primaryButtonLink="/start"
       />
     </Layout>

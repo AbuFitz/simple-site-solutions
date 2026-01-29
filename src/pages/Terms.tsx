@@ -41,12 +41,12 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">2. Services</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  We provide web design and development services as outlined in your selected package:
+                  We provide web design and development services as outlined in your selected package. All packages include local SEO foundations:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Starter (£349):</strong> Up to 3 pages, 1 refinement round</li>
-                  <li><strong>Core (£599):</strong> Up to 5 pages, 1-2 refinement rounds</li>
-                  <li><strong>Growth (£899):</strong> Up to 6 pages, 2 refinement rounds</li>
+                  <li><strong>Essential (£199):</strong> Complete website, mobile-first design, local SEO, contact setup</li>
+                  <li><strong>Business (£399):</strong> Everything in Essential, plus conversion-focused layout, trust positioning, 1-2 refinement rounds</li>
+                  <li><strong>Growth (£649):</strong> Everything in Business, plus deeper positioning, SEO-led structure, analytics, multiple refinement rounds</li>
                 </ul>
               </section>
 
@@ -56,8 +56,8 @@ export default function Terms() {
                   Payment terms vary by package:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Starter:</strong> Full payment upfront before work begins</li>
-                  <li><strong>Core & Growth:</strong> 50% deposit upfront, 50% before launch</li>
+                  <li><strong>Essential:</strong> Full payment upfront before work begins</li>
+                  <li><strong>Business & Growth:</strong> 50% deposit upfront, 50% before launch</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
                   All prices are in GBP and inclusive of VAT where applicable.
@@ -67,7 +67,7 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">4. Refinements</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  Included refinement rounds cover:
+                  Business and Growth packages include refinement rounds that cover:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
                   <li>Text changes</li>
@@ -75,8 +75,8 @@ export default function Terms() {
                   <li>Small layout tweaks</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
-                  Refinements do not include redesigns, changing project direction, or adding new pages/features. 
-                  Additional refinement rounds are available at £95 per round.
+                  Essential is built right the first time with no back-and-forth needed.
+                  Refinements do not include redesigns, changing project direction, or adding new pages/features.
                 </p>
               </section>
 
@@ -112,20 +112,20 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting (Optional)</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  If you opt for our hosting service (£15/month), we will host, secure, back up, and maintain your website. 
-                  This includes SSL, updates, and minor fixes. Either party may terminate hosting with 30 days' notice.
+                  If you opt for our hosting service (£95/year), we will host and secure your website.
+                  This includes reliable hosting, domain connection, SSL certificate, and basic monitoring.
+                  Either party may terminate hosting with 30 days' notice.
                 </p>
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">9. Updates & Changes</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">9. Updates & Maintenance</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  Post-launch changes are available at the following rates:
+                  Post-launch support options:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li>Small text/image update: £30</li>
-                  <li>New page: £85</li>
-                  <li>Bigger changes: Quoted individually</li>
+                  <li><strong>Yearly Maintenance (£95/year):</strong> Security updates, minor text changes, basic health checks, support when needed</li>
+                  <li><strong>One-off changes:</strong> Quoted individually based on scope</li>
                 </ul>
               </section>
 

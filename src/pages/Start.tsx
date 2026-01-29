@@ -53,24 +53,23 @@ function FormError({ message }: { message?: string }) {
 
 const packages = [
   {
-    id: "starter",
-    name: "Starter",
-    price: "£349",
-    originalPrice: "£499",
-    description: "Up to 3 pages, 1 refinement round",
+    id: "essential",
+    name: "Essential",
+    price: "£199",
+    description: "Get online properly, no frills",
   },
   {
-    id: "core",
-    name: "Core",
-    price: "£599",
-    description: "Up to 5 pages, 1-2 refinement rounds",
+    id: "business",
+    name: "Business",
+    price: "£399",
+    description: "Clarity, trust positioning, 1-2 refinements",
     popular: true,
   },
   {
     id: "growth",
     name: "Growth",
-    price: "£899",
-    description: "Up to 6 pages, 2 refinement rounds",
+    price: "£649",
+    description: "Deep positioning, SEO-led, multiple refinements",
   },
 ];
 

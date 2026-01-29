@@ -13,12 +13,32 @@ const faqs = [
   {
     question: "How much does a website cost?",
     answer:
-      "We have three packages: Starter at £349 (up to 3 pages), Core at £599 (up to 5 pages), and Growth at £899 (up to 6 pages). All packages include market research, proven layouts, mobile-friendly design, contact forms, and refinement rounds. No hidden fees.",
+      "We have three packages: Essential at £199 (for getting online properly), Business at £399 (our most popular, with refinement rounds), and Growth at £649 (for businesses competing seriously). All packages include local SEO foundations, mobile-first design, and everything you need. No hidden fees, no upsell traps.",
   },
   {
     question: "How long does it take to build my website?",
     answer:
-      "5-10 business days from when you submit your content. Starter sites are typically faster (around 5 days), while Growth packages with more pages take closer to 10 days. We don't do endless timelines — you'll have your site live quickly.",
+      "5-10 business days from when you submit your content. Essential sites are typically faster, while Growth packages with deeper positioning take a bit longer. We don't do endless timelines — you'll have your site live quickly.",
+  },
+  {
+    question: "What's included in every package?",
+    answer:
+      "Local SEO foundations baked in, clean mobile-first design, clear services and contact flow, Google Map integration, contact forms with click-to-call and WhatsApp, and cookie/privacy compliance. Every package gives you a complete, professional website.",
+  },
+  {
+    question: "What's the difference between the packages?",
+    answer:
+      "Essential (£199) gets you online properly — no frills, just a clean professional site. Business (£399) adds conversion-focused layouts, trust positioning, refined messaging, and 1-2 refinement rounds. Growth (£649) includes deeper positioning, SEO-led structure, analytics setup, and multiple refinement rounds.",
+  },
+  {
+    question: "Which package should I choose?",
+    answer:
+      "Essential is perfect for new businesses and sole traders who need to get online fast. Business is our most popular — ideal for established businesses wanting clarity, trust positioning, and room to refine. Growth is for businesses investing seriously in competing and scaling.",
+  },
+  {
+    question: "Is SEO included?",
+    answer:
+      "Yes — local SEO foundations are included in every package. This means your site is built with proper structure, meta tags, and local optimisation from day one. No separate SEO add-on needed.",
   },
   {
     question: "How is this different from hiring a web designer?",
@@ -31,9 +51,9 @@ const faqs = [
       "No — and that's intentional. We build based on layouts that already convert in your industry. We've researched what works for plumbers, electricians, mechanics, cleaners, and other local trades. If you want full creative control, we're not the right fit. If you want results, we are.",
   },
   {
-    question: "What if I don't like the design?",
+    question: "What about refinements?",
     answer:
-      "Each package includes refinement rounds (1 for Starter, 1-2 for Core, 2 for Growth). These cover text changes, image swaps, and minor layout tweaks. We don't do full redesigns — our layouts are proven to work. If you need an extra refinement round, it's £95.",
+      "Business includes 1-2 refinement rounds, Growth includes multiple rounds. These cover text changes, image swaps, and small layout tweaks. Essential is built right the first time with no back-and-forth — it's our ethical starter package.",
   },
   {
     question: "What do you need from me to get started?",
@@ -41,44 +61,24 @@ const faqs = [
       "Business name and details, your services, contact information, and any images or logos you want to use. We guide you through it with a simple form. Don't worry if you don't have everything — we'll help you figure it out.",
   },
   {
-    question: "Do you write the website content?",
+    question: "What about hosting?",
     answer:
-      "We provide a content guide and structure — you provide the raw details about your business. If you'd prefer professional copywriting, we offer SEO Content Writing at £95 per page, or Blog Post Writing at £75 per post.",
-  },
-  {
-    question: "What about hosting and domains?",
-    answer:
-      "Hosting is optional at £15/month. This includes secure hosting, SSL certificate (https), regular backups, updates, and minor fixes if needed. You're also free to host it yourself — we'll hand over all the files. Domain registration is separate (we can help you set it up or point your existing domain).",
+      "Hosting is optional at £95/year. This includes reliable hosting, domain connection, SSL certificate, basic monitoring, and one point of contact for issues. You're also free to host it yourself — we'll hand over all the files.",
   },
   {
     question: "What are the payment terms?",
     answer:
-      "Starter package: paid upfront in full. Core and Growth packages: 50% upfront to begin, 50% before we launch your site. We accept bank transfer and card payments.",
+      "Essential: paid upfront in full. Business and Growth: 50% upfront to begin, 50% before we launch your site. We accept bank transfer and card payments.",
   },
   {
-    question: "Can I make changes after the site goes live?",
+    question: "What add-ons do you offer?",
     answer:
-      "Yes. Small text or image updates are £30. Adding a new page is £85. Bigger changes are quoted separately. No monthly subscription required — just pay when you need something changed.",
-  },
-  {
-    question: "What if I need a booking system or special features?",
-    answer:
-      "We offer add-ons: Booking System (£150), Blog Setup (£120), Local SEO Setup (£150), and Simple Logo Refresh (£120). These can be added to any package. We keep the core packages simple and add extras only when you need them.",
-  },
-  {
-    question: "What's included in every package?",
-    answer:
-      "Market and competitor review, mobile-friendly modern design, contact form with click-to-call and WhatsApp, Google Map integration, trust sections (reviews, guarantees), basic SEO setup, cookie notice, and refinement rounds. Everything you need to look professional and convert visitors.",
-  },
-  {
-    question: "Which package should I choose?",
-    answer:
-      "Starter (£349) is perfect for sole traders and new businesses who want it done properly. Core (£599) is our most popular — ideal for established businesses wanting more pages and clarity. Growth (£899) is for businesses ready to compete and look established with premium positioning.",
+      "Google Business Profile Setup (£99) for improving local visibility. Speed & Performance Optimisation (£99) for faster load times. Yearly Maintenance (£95/year) for ongoing updates and support. Only if you need them — no pressure.",
   },
   {
     question: "Do you offer refunds?",
     answer:
-      "Due to the nature of custom work, deposits are non-refundable once work has begun. However, we work with you through the refinement rounds to ensure you're happy with the result. We've never had an unhappy customer who followed the process.",
+      "Due to the nature of custom work, deposits are non-refundable once work has begun. However, we work with you through the refinement rounds (Business and Growth) to ensure you're happy with the result.",
   },
   {
     question: "What industries do you work with?",
