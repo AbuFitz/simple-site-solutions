@@ -65,25 +65,15 @@ const packages = [
 const addons = [
   {
     name: "Google Business Profile Setup",
-    price: "£99",
-    description: "Profile setup or clean-up, category optimisation, business description, service area setup"
-  },
-  {
-    name: "Speed & Performance",
-    price: "£99",
-    description: "Image optimisation, performance clean-up, mobile optimisation pass"
-  },
-  {
-    name: "Yearly Maintenance",
-    price: "£95/year",
-    description: "Security updates, minor text changes, basic health checks, support when needed"
+    price: "£79",
+    description: "Profile creation or cleanup, category optimisation, business info, service area setup, photo guidance, first posts, review response templates"
   },
 ];
 
 const hosting = {
-  name: "Hosting + Domain",
+  name: "Hosting + Maintenance",
   price: "£95/year",
-  features: ["Reliable hosting", "Domain connection", "SSL certificate", "Basic monitoring", "One point of contact"],
+  features: ["Reliable hosting", "Domain connection", "SSL certificate", "Security updates", "Minor text changes", "Support when needed"],
 };
 
 export default function Packages() {
@@ -223,7 +213,7 @@ export default function Packages() {
                   {hosting.name} <span className="text-primary">(Optional)</span>
                 </h3>
                 <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-0">
-                  Don't want to deal with hosting and technical setup? We'll handle it.
+                  Don't want to deal with hosting, updates, and ongoing changes? We'll handle everything.
                 </p>
               </div>
               <div className="text-right shrink-0">
@@ -257,14 +247,14 @@ export default function Packages() {
             <div className="relative z-10">
               <div className="mb-8 sm:mb-12">
                 <h2 className="text-headline">
-                  Optional <span className="text-primary">extras</span>
+                  Optional <span className="text-primary">extra</span>
                 </h2>
                 <p className="text-body-lg mt-3 sm:mt-4">
-                  Only if you need them. No pressure, no upsells.
+                  Only if you need it. No pressure, no upsells.
                 </p>
               </div>
 
-              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 max-w-md">
                 {addons.map((addon) => (
                   <div
                     key={addon.name}
@@ -286,10 +276,10 @@ export default function Packages() {
                   {[
                     "Local SEO foundations",
                     "Mobile-first design",
+                    "Speed & performance optimised",
                     "Contact forms & WhatsApp",
                     "Google Map integration",
                     "Cookie & privacy compliance",
-                    "Clean, professional look",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-2 text-xs sm:text-sm">
                       <Check className="w-4 h-4 text-primary" />

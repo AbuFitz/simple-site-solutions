@@ -23,7 +23,7 @@ const faqs = [
   {
     question: "What's included in every package?",
     answer:
-      "Local SEO foundations baked in, clean mobile-first design, clear services and contact flow, Google Map integration, contact forms with click-to-call and WhatsApp, and cookie/privacy compliance. Every package gives you a complete, professional website.",
+      "Local SEO foundations baked in, clean mobile-first design, speed and performance optimised, clear services and contact flow, Google Map integration, contact forms with click-to-call and WhatsApp, and cookie/privacy compliance. Every package gives you a complete, professional, fast-loading website.",
   },
   {
     question: "What's the difference between the packages?",
@@ -63,7 +63,7 @@ const faqs = [
   {
     question: "What about hosting?",
     answer:
-      "Hosting is optional at £95/year. This includes reliable hosting, domain connection, SSL certificate, basic monitoring, and one point of contact for issues. You're also free to host it yourself — we'll hand over all the files.",
+      "Hosting + Maintenance is optional at £95/year. This includes reliable hosting, domain connection, SSL certificate, security updates, minor text changes throughout the year, and support when you need it. It's everything in one simple package. You're also free to host it yourself — we'll hand over all the files.",
   },
   {
     question: "What are the payment terms?",
@@ -73,7 +73,7 @@ const faqs = [
   {
     question: "What add-ons do you offer?",
     answer:
-      "Google Business Profile Setup (£99) for improving local visibility. Speed & Performance Optimisation (£99) for faster load times. Yearly Maintenance (£95/year) for ongoing updates and support. Only if you need them — no pressure.",
+      "Google Business Profile Setup (£79) — we'll create or clean up your profile, optimise your categories and business info, set up your service area, give you photo guidance, create your first posts, and provide review response templates. It's a proper local visibility boost. Speed and performance optimisation is already included in every package — we build fast sites by default.",
   },
   {
     question: "Do you offer refunds?",

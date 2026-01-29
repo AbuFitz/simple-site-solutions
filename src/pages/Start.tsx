@@ -87,10 +87,8 @@ const industries = [
 ];
 
 const availableAddons = [
-  { id: "hosting", name: "Hosting + Domain", price: "£95/year", description: "We host and manage your site" },
-  { id: "google-business", name: "Google Business Profile", price: "£99", description: "Setup and optimisation for local search" },
-  { id: "performance", name: "Speed & Performance", price: "£99", description: "Image and mobile optimisation" },
-  { id: "maintenance", name: "Yearly Maintenance", price: "£95/year", description: "Updates, changes, and support" },
+  { id: "hosting", name: "Hosting + Maintenance", price: "£95/year", description: "Hosting, domain connection, updates, support — we handle it all" },
+  { id: "google-business", name: "Google Business Profile Setup", price: "£79", description: "Profile setup, optimisation, and local visibility boost" },
 ];
 
 export default function Start() {

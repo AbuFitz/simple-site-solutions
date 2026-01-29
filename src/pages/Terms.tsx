@@ -110,21 +110,21 @@ export default function Terms() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting (Optional)</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting + Maintenance (Optional)</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  If you opt for our hosting service (£95/year), we will host and secure your website.
-                  This includes reliable hosting, domain connection, SSL certificate, and basic monitoring.
-                  Either party may terminate hosting with 30 days' notice.
+                  If you opt for our Hosting + Maintenance service (£95/year), we will host, secure, and maintain your website.
+                  This includes reliable hosting, domain connection, SSL certificate, security updates, minor text changes throughout the year, and support when you need it.
+                  Either party may terminate with 30 days' notice.
                 </p>
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">9. Updates & Maintenance</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">9. Updates & Changes</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  Post-launch support options:
+                  Post-launch support:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Yearly Maintenance (£95/year):</strong> Security updates, minor text changes, basic health checks, support when needed</li>
+                  <li><strong>With Hosting + Maintenance:</strong> Minor text changes, security updates, and support are included</li>
                   <li><strong>One-off changes:</strong> Quoted individually based on scope</li>
                 </ul>
               </section>

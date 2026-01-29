@@ -32,6 +32,20 @@ function getPackageInfo(packageId: string): { name: string; price: string } {
   return packages[packageId] || { name: packageId, price: "" };
 }
 
+// Get add-on display names
+function getAddonDisplayName(addonId: string): string {
+  const addons: Record<string, string> = {
+    hosting: "Hosting + Maintenance (£95/year)",
+    "google-business": "Google Business Profile Setup (£79)",
+  };
+  return addons[addonId] || addonId;
+}
+
+// Format selected addons for display
+function formatAddons(addonIds: string[]): string {
+  return addonIds.map(id => getAddonDisplayName(id)).join(", ");
+}
+
 // Customer confirmation email HTML
 function customerEmailHtml(data: FormData): string {
   const pkg = getPackageInfo(data.selectedPackage);
@@ -86,7 +100,7 @@ function customerEmailHtml(data: FormData): string {
                 ${data.selectedAddons.length > 0 ? `
                 <div>
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Add-ons</div>
-                  <div style="font-size: 16px; color: #000000;">${data.selectedAddons.join(", ")}</div>
+                  <div style="font-size: 16px; color: #000000;">${formatAddons(data.selectedAddons)}</div>
                 </div>
                 ` : ""}
               </div>
@@ -202,7 +216,7 @@ function adminEmailHtml(data: FormData): string {
                 ${data.selectedAddons.length > 0 ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Selected Add-ons</div>
-                  <div style="font-size: 16px; color: #000000;">${data.selectedAddons.join(", ")}</div>
+                  <div style="font-size: 16px; color: #000000;">${formatAddons(data.selectedAddons)}</div>
                 </div>
                 ` : ""}
                 ${data.details ? `

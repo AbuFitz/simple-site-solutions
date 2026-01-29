@@ -125,6 +125,20 @@ function getPackageInfo(packageId: string): { name: string; price: string } {
   return packages[packageId] || { name: packageId, price: "" };
 }
 
+// Get add-on display names
+function getAddonDisplayName(addonId: string): string {
+  const addons: Record<string, string> = {
+    hosting: "Hosting + Maintenance (£95/year)",
+    "google-business": "Google Business Profile Setup (£79)",
+  };
+  return addons[addonId] || addonId;
+}
+
+// Format selected addons for display
+function formatAddons(addonIds: string[]): string {
+  return addonIds.map(id => getAddonDisplayName(id)).join(", ");
+}
+
 // Customer confirmation email template
 export function customerConfirmationEmail(data: FormData): string {
   const pkg = getPackageInfo(data.selectedPackage);
@@ -191,7 +205,7 @@ export function customerConfirmationEmail(data: FormData): string {
                 ${data.selectedAddons.length > 0 ? `
                 <div style="${styles.infoRow}">
                   <div style="${styles.infoLabel}">Add-ons</div>
-                  <div style="${styles.infoValue}">${data.selectedAddons.join(", ")}</div>
+                  <div style="${styles.infoValue}">${formatAddons(data.selectedAddons)}</div>
                 </div>
                 ` : ""}
               </div>
@@ -339,7 +353,7 @@ export function adminNotificationEmail(data: FormData): string {
                 ${data.selectedAddons.length > 0 ? `
                 <div style="${styles.infoRow}">
                   <div style="${styles.infoLabel}">Selected Add-ons</div>
-                  <div style="${styles.infoValue}">${data.selectedAddons.join(", ")}</div>
+                  <div style="${styles.infoValue}">${formatAddons(data.selectedAddons)}</div>
                 </div>
                 ` : ""}
 
