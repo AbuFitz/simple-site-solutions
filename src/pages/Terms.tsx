@@ -41,12 +41,12 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">2. Services</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  We provide web design and development services as outlined in your selected package. All packages include local SEO foundations:
+                  We provide web design and development services as outlined in your selected package. All packages include local SEO foundations and speed optimisation:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
                   <li><strong>Essential (£199):</strong> Complete website, mobile-first design, local SEO, contact setup</li>
-                  <li><strong>Business (£399):</strong> Everything in Essential, plus conversion-focused layout, trust positioning, 1-2 refinement rounds</li>
-                  <li><strong>Growth (£649):</strong> Everything in Business, plus deeper positioning, SEO-led structure, analytics, multiple refinement rounds</li>
+                  <li><strong>Business (£399):</strong> Everything in Essential, plus conversion-focused layout, trust positioning, refined messaging</li>
+                  <li><strong>Growth (£649):</strong> Everything in Business, plus deeper positioning, SEO-led structure, analytics</li>
                 </ul>
               </section>
 
@@ -65,18 +65,17 @@ export default function Terms() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">4. Refinements</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">4. Changes & Support</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  Business and Growth packages include refinement rounds that cover:
+                  We're committed to making sure you're happy with your website. During the project, we welcome feedback and will work with you on:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li>Text changes</li>
-                  <li>Image swaps</li>
-                  <li>Small layout tweaks</li>
+                  <li>Text changes and updates</li>
+                  <li>Image adjustments</li>
+                  <li>Layout tweaks</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
-                  Essential is built right the first time with no back-and-forth needed.
-                  Refinements do not include redesigns, changing project direction, or adding new pages/features.
+                  Major changes such as complete redesigns or adding significant new features may be quoted separately.
                 </p>
               </section>
 

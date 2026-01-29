@@ -56,20 +56,20 @@ const packages = [
     id: "essential",
     name: "Essential",
     price: "£199",
-    description: "Get online properly, no frills",
+    description: "Everything you need to get online properly",
   },
   {
     id: "business",
     name: "Business",
     price: "£399",
-    description: "Clarity, trust positioning, 1-2 refinements",
+    description: "Look established and win trust",
     popular: true,
   },
   {
     id: "growth",
     name: "Growth",
     price: "£649",
-    description: "Deep positioning, SEO-led, multiple refinements",
+    description: "Compete seriously and scale",
   },
 ];
 

@@ -13,7 +13,7 @@ const faqs = [
   {
     question: "How much does a website cost?",
     answer:
-      "We have three packages: Essential at £199 (for getting online properly), Business at £399 (our most popular, with refinement rounds), and Growth at £649 (for businesses competing seriously). All packages include local SEO foundations, mobile-first design, and everything you need. No hidden fees, no upsell traps.",
+      "We have three packages: Essential at £199 (for getting online properly), Business at £399 (our most popular — built to make you look established), and Growth at £649 (for businesses competing seriously). All packages include local SEO foundations, mobile-first design, speed optimisation, and everything you need. No hidden fees, no upsell traps.",
   },
   {
     question: "How long does it take to build my website?",
@@ -28,7 +28,7 @@ const faqs = [
   {
     question: "What's the difference between the packages?",
     answer:
-      "Essential (£199) gets you online properly — no frills, just a clean professional site. Business (£399) adds conversion-focused layouts, trust positioning, refined messaging, and 1-2 refinement rounds. Growth (£649) includes deeper positioning, SEO-led structure, analytics setup, and multiple refinement rounds.",
+      "Essential (£199) gets you online properly — a clean, professional site with everything you need. Business (£399) adds conversion-focused layouts, trust positioning, and messaging that actually sells. Growth (£649) goes deeper with positioning, SEO-led structure, analytics, and multiple rounds of refinements.",
   },
   {
     question: "Which package should I choose?",
@@ -51,9 +51,9 @@ const faqs = [
       "No — and that's intentional. We build based on layouts that already convert in your industry. We've researched what works for plumbers, electricians, mechanics, cleaners, and other local trades. If you want full creative control, we're not the right fit. If you want results, we are.",
   },
   {
-    question: "What about refinements?",
+    question: "What if I need changes after we launch?",
     answer:
-      "Business includes 1-2 refinement rounds, Growth includes multiple rounds. These cover text changes, image swaps, and small layout tweaks. Essential is built right the first time with no back-and-forth — it's our ethical starter package.",
+      "We're here to help. If you're on Hosting + Maintenance, minor text and image changes are included throughout the year. For bigger updates or changes outside of your package, we'll quote you fairly. Our goal is happy customers, not nickel-and-diming you.",
   },
   {
     question: "What do you need from me to get started?",
@@ -78,7 +78,7 @@ const faqs = [
   {
     question: "Do you offer refunds?",
     answer:
-      "Due to the nature of custom work, deposits are non-refundable once work has begun. However, we work with you through the refinement rounds (Business and Growth) to ensure you're happy with the result.",
+      "Due to the nature of custom work, deposits are non-refundable once work has begun. That said, we work with you to make sure you're happy with the result — we're not in the business of leaving customers disappointed.",
   },
   {
     question: "What industries do you work with?",

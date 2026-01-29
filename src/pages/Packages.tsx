@@ -3,26 +3,23 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, ArrowUpRight, X } from "lucide-react";
+import { Check, ArrowUpRight } from "lucide-react";
 
 const packages = [
   {
     name: "Essential",
     price: "£199",
-    description: "For getting online properly. No fluff, no upsell traps.",
+    originalPrice: "£249",
+    description: "Everything you need to get online properly. Clean, professional, done.",
     features: [
       "Complete website (all necessary pages)",
       "Clean, mobile-first design",
       "Clear services & contact flow",
       "Local SEO foundations baked in",
-      "Google Map + service area",
-      "Contact, call & WhatsApp setup",
+      "Google Maps integration",
+      "Contact forms, click-to-call & WhatsApp",
       "Cookie notice & privacy compliance",
-    ],
-    notIncluded: [
-      "Heavy strategy work",
-      "Multiple refinement rounds",
-      "Deep positioning work",
+      "Speed optimised",
     ],
     popular: false,
     perfectFor: ["New businesses", "Sole traders", "Getting online fast"],
@@ -31,14 +28,14 @@ const packages = [
   {
     name: "Business",
     price: "£399",
-    description: "For businesses that want clarity and confidence.",
+    description: "Our most popular. Built for businesses that want to look established and win trust.",
     features: [
       "Everything in Essential, plus:",
-      "Clear service hierarchy (built for Google + humans)",
       "Conversion-focused layout",
       "Trust positioning (reviews, guarantees, proof)",
-      "Refined messaging (what you do, who it's for, why you)",
-      "1–2 refinement rounds",
+      "Clear service hierarchy",
+      "Refined messaging that actually sells",
+      "Built to make you look like the obvious choice",
     ],
     popular: true,
     perfectFor: ["Established businesses", "Service-based trades", "Anyone wanting it done right"],
@@ -47,34 +44,33 @@ const packages = [
   {
     name: "Growth",
     price: "£649",
-    description: "For businesses that want to compete seriously.",
+    description: "For businesses investing seriously in standing out and scaling.",
     features: [
       "Everything in Business, plus:",
       "Deeper positioning & differentiation",
       "SEO-led structure from day one",
       "Analytics setup",
       "Built to scale with future content",
-      "Multiple refinement rounds",
+      "Multiple rounds of refinements",
     ],
     popular: false,
-    perfectFor: ["Businesses investing in growth", "Competitive markets", "Long-term thinkers"],
+    perfectFor: ["Competitive markets", "Businesses investing in growth", "Long-term thinkers"],
     payment: "50% upfront / 50% before launch",
   },
 ];
 
-const addons = [
+const optionalExtras = [
+  {
+    name: "Hosting + Maintenance",
+    price: "£95/year",
+    description: "We host your site, handle updates, make minor changes throughout the year, and support you when needed. Everything handled.",
+  },
   {
     name: "Google Business Profile Setup",
     price: "£79",
-    description: "Profile creation or cleanup, category optimisation, business info, service area setup, photo guidance, first posts, review response templates"
+    description: "Profile creation or cleanup, category optimisation, service area setup, photo guidance, first posts, and review response templates.",
   },
 ];
-
-const hosting = {
-  name: "Hosting + Maintenance",
-  price: "£95/year",
-  features: ["Reliable hosting", "Domain connection", "SSL certificate", "Security updates", "Minor text changes", "Support when needed"],
-};
 
 export default function Packages() {
   return (
@@ -98,7 +94,7 @@ export default function Packages() {
               Honest pricing. <span className="text-primary">No surprises.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
-              Pick a package. Get your site. Local SEO included in every package.
+              Pick a package. Get your site. Local SEO and speed optimisation included in every package.
               No hidden fees, no upsell traps.
             </p>
           </motion.div>
@@ -134,6 +130,11 @@ export default function Packages() {
                 <div className="mb-6 sm:mb-8 pt-2">
                   <h3 className="text-xl sm:text-2xl font-bold mb-3">{pkg.name}</h3>
                   <div className="flex items-baseline gap-2 mb-3 sm:mb-4">
+                    {pkg.originalPrice && (
+                      <span className="text-lg sm:text-xl text-muted-foreground line-through">
+                        {pkg.originalPrice}
+                      </span>
+                    )}
                     <span className="text-3xl sm:text-4xl font-bold text-primary">
                       {pkg.price}
                     </span>
@@ -142,7 +143,7 @@ export default function Packages() {
                   <p className="text-sm sm:text-base text-muted-foreground">{pkg.description}</p>
                 </div>
 
-                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-4">
+                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-6">
                   {pkg.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-2 sm:gap-3">
                       <div className="check-icon w-4 h-4 sm:w-5 sm:h-5">
@@ -152,18 +153,6 @@ export default function Packages() {
                     </li>
                   ))}
                 </ul>
-
-                {/* Not included section for Essential */}
-                {pkg.notIncluded && (
-                  <ul className="space-y-2 mb-6 pt-4 border-t border-border">
-                    {pkg.notIncluded.map((item) => (
-                      <li key={item} className="flex items-start gap-2 sm:gap-3 text-muted-foreground">
-                        <X className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground/50" />
-                        <span className="text-xs sm:text-sm">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
 
                 {/* Perfect for section */}
                 <div className="mb-6 p-3 sm:p-4 rounded-xl bg-secondary/50 border border-border">
@@ -197,42 +186,7 @@ export default function Packages() {
         </div>
       </section>
 
-      {/* Hosting */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="bordered-section p-5 sm:p-8 md:p-10"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-8">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold mb-2">
-                  {hosting.name} <span className="text-primary">(Optional)</span>
-                </h3>
-                <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-0">
-                  Don't want to deal with hosting, updates, and ongoing changes? We'll handle everything.
-                </p>
-              </div>
-              <div className="text-right shrink-0">
-                <span className="text-2xl sm:text-3xl font-bold text-primary">{hosting.price}</span>
-              </div>
-            </div>
-            <ul className="flex flex-wrap gap-3 sm:gap-4 mt-4 sm:mt-6">
-              {hosting.features.map((feature) => (
-                <li key={feature} className="flex items-center gap-2 text-xs sm:text-sm">
-                  <Check className="w-3.5 h-3.5 text-primary" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Add-ons */}
+      {/* Optional Extras */}
       <section className="section relative">
         <DottedGrid className="opacity-30" spacing={40} />
         <div className="content-width relative z-10">
@@ -247,38 +201,38 @@ export default function Packages() {
             <div className="relative z-10">
               <div className="mb-8 sm:mb-12">
                 <h2 className="text-headline">
-                  Optional <span className="text-primary">extra</span>
+                  Optional <span className="text-primary">extras</span>
                 </h2>
                 <p className="text-body-lg mt-3 sm:mt-4">
-                  Only if you need it. No pressure, no upsells.
+                  Only if you need them. No pressure, no upsells.
                 </p>
               </div>
 
-              <div className="grid gap-3 sm:gap-4 max-w-md">
-                {addons.map((addon) => (
+              <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-3xl">
+                {optionalExtras.map((extra) => (
                   <div
-                    key={addon.name}
-                    className="p-4 sm:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border"
+                    key={extra.name}
+                    className="p-5 sm:p-6 rounded-xl bg-secondary border border-border"
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm sm:text-base font-semibold">{addon.name}</span>
-                      <span className="text-primary font-bold text-sm sm:text-base">{addon.price}</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-base sm:text-lg font-semibold">{extra.name}</span>
+                      <span className="text-primary font-bold text-base sm:text-lg">{extra.price}</span>
                     </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">{addon.description}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{extra.description}</p>
                   </div>
                 ))}
               </div>
 
               {/* What's included note */}
-              <div className="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-border">
-                <h4 className="font-semibold mb-3 text-base sm:text-lg">What's included in every package</h4>
+              <div className="mt-10 sm:mt-12 pt-8 sm:pt-10 border-t border-border">
+                <h4 className="font-semibold mb-4 text-base sm:text-lg">What's included in every package</h4>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {[
                     "Local SEO foundations",
                     "Mobile-first design",
                     "Speed & performance optimised",
                     "Contact forms & WhatsApp",
-                    "Google Map integration",
+                    "Google Maps integration",
                     "Cookie & privacy compliance",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-2 text-xs sm:text-sm">
@@ -288,16 +242,35 @@ export default function Packages() {
                   ))}
                 </div>
               </div>
-
-              {/* Refinements note */}
-              <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-border">
-                <h4 className="font-semibold mb-3 text-base sm:text-lg">About refinements</h4>
-                <p className="text-muted-foreground text-xs sm:text-sm mb-4">
-                  Business and Growth packages include refinement rounds for text changes, image swaps,
-                  and small layout tweaks. Essential is built right the first time — no back-and-forth needed.
-                </p>
-              </div>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* This might not be for you */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="max-w-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-headline mb-6">
+              We're not for <span className="text-primary">everyone</span>
+            </h2>
+            <p className="text-body-lg text-muted-foreground mb-6">
+              We build websites that work — clean, fast, and focused on getting you customers.
+              If you want endless design options, mood boards, or "creative exploration", we're not the right fit.
+            </p>
+            <p className="text-body-lg text-muted-foreground mb-6">
+              But if you want a professional site that makes you look established, ranks locally, and actually converts visitors into enquiries — that's exactly what we do.
+            </p>
+            <p className="text-body text-muted-foreground">
+              We've built sites for plumbers, electricians, mechanics, cleaners, barbers, tutors, and more.
+              We know what works because we've seen it work.
+            </p>
           </motion.div>
         </div>
       </section>
@@ -306,8 +279,8 @@ export default function Packages() {
       <CTASection
         title="Not sure which"
         highlightedText="package?"
-        description="Business is our most popular — it includes everything most local businesses need, with room to refine."
-        primaryButtonText="Start with Business"
+        description="Most businesses go with Business — it's everything you need to look established and win trust. But if you just need to get online, Essential does the job."
+        primaryButtonText="Get Started"
         primaryButtonLink="/start"
       />
     </Layout>

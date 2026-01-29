@@ -11,7 +11,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
         <div className="grid gap-6 sm:gap-8 md:grid-cols-4 pb-6 sm:pb-8 border-b border-border">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link to="/" className="text-base sm:text-lg md:text-xl font-bold tracking-tight">
+            <Link to="/" className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold tracking-tight">
               one<span className="text-primary">simple</span>site
             </Link>
             <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xs">
