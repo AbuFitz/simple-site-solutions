@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, ArrowLeft, Send, Globe, X } from "lucide-react";
+import { Check, ArrowRight, ArrowLeft, Send, Globe, X, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { contactFormSchema, websiteUrlSchema, type ContactFormData } from "@/lib/validations";
 
@@ -87,12 +87,10 @@ const industries = [
 ];
 
 const availableAddons = [
-  { id: "hosting", name: "Hosting", price: "£15/month", description: "We host and maintain your site" },
-  { id: "booking", name: "Booking System", price: "£150", description: "Let customers book appointments" },
-  { id: "blog", name: "Blog Setup", price: "£120", description: "Share updates and news" },
-  { id: "seo-content", name: "SEO Content Writing", price: "£95/page", description: "Professionally written copy" },
-  { id: "local-seo", name: "Local SEO Setup", price: "£150", description: "Get found on Google Maps" },
-  { id: "logo", name: "Logo Refresh", price: "£120", description: "Simple, professional logo update" },
+  { id: "hosting", name: "Hosting + Domain", price: "£95/year", description: "We host and manage your site" },
+  { id: "google-business", name: "Google Business Profile", price: "£99", description: "Setup and optimisation for local search" },
+  { id: "performance", name: "Speed & Performance", price: "£99", description: "Image and mobile optimisation" },
+  { id: "maintenance", name: "Yearly Maintenance", price: "£95/year", description: "Updates, changes, and support" },
 ];
 
 export default function Start() {
@@ -104,6 +102,8 @@ export default function Start() {
   const [urlError, setUrlError] = useState<string | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -122,10 +122,42 @@ export default function Start() {
     },
   });
 
-  const onSubmit = (data: ContactFormData) => {
-    // Form data is validated - proceed with submission
-    console.log("Form submitted:", { ...data, selectedPackage, selectedIndustry, hasExistingWebsite, existingWebsiteUrl, selectedAddons });
-    setIsSubmitted(true);
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const response = await fetch("/api/submit-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          selectedPackage,
+          selectedIndustry,
+          hasExistingWebsite,
+          existingWebsiteUrl: hasExistingWebsite ? existingWebsiteUrl : undefined,
+          selectedAddons,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to submit form");
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again or email us directly."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleAddon = (addonId: string) => {
@@ -610,21 +642,42 @@ export default function Start() {
                         <FormError message={errors.details?.message} />
                       </div>
 
+                      {submitError && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="p-3 sm:p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm"
+                        >
+                          {submitError}
+                        </motion.div>
+                      )}
+
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
                         <button
                           type="button"
                           onClick={() => setStep(4)}
-                          className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
+                          disabled={isSubmitting}
+                          className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 disabled:opacity-50"
                         >
                           <ArrowLeft className="w-4 h-4 mr-2" />
                           Back
                         </button>
                         <button
                           type="submit"
-                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2"
+                          disabled={isSubmitting}
+                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-70"
                         >
-                          Submit
-                          <Send className="w-4 h-4 ml-2" />
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            <>
+                              Submit
+                              <Send className="w-4 h-4 ml-2" />
+                            </>
+                          )}
                         </button>
                       </div>
                     </form>
@@ -653,7 +706,7 @@ export default function Start() {
                     <span className="text-primary">You're in!</span>
                   </h1>
                   <p className="text-sm sm:text-base text-muted-foreground max-w-sm mx-auto mb-4 sm:mb-6">
-                    We've received your request. We'll be in touch within 24 hours.
+                    We've sent a confirmation to your email. We'll be in touch within 24 hours.
                   </p>
                   <div className="inline-block p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border text-left">
                     <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Package</div>
