@@ -2,52 +2,62 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, X } from "lucide-react";
+import { Check, Clock, Zap, Users, Target } from "lucide-react";
 
 const steps = [
   {
     number: "01",
     title: "Choose Your Package",
     description:
-      "Starter, Pro, or Growth. Pick what fits your business. No hidden costs.",
+      "Essential, Business, or Growth. Pick what fits your business and budget. Clear pricing, no hidden costs.",
   },
   {
     number: "02",
     title: "Tell Us About Your Business",
     description:
-      "A simple form. Your details, goals, and content. That's all we need.",
+      "Fill out a simple form with your details, services, and goals. Don't worry if you don't have everything — we'll guide you.",
   },
   {
     number: "03",
     title: "We Research & Build",
     description:
-      "We analyse top sites in your industry and build you a proven layout.",
+      "We look at what works in your industry and build you a site designed to convert. No guesswork, just proven layouts.",
   },
   {
     number: "04",
-    title: "One Revision Round",
+    title: "Review & Refine",
     description:
-      "Text changes. Image swaps. Minor tweaks. One structured round.",
+      "We'll share your site for feedback. Need changes? We'll work with you to get it right.",
   },
   {
     number: "05",
     title: "Go Live",
     description:
-      "Your site launches. Fast, mobile-first, and ready to convert.",
+      "Your site launches. Fast, mobile-first, SEO-ready, and built to get you customers.",
   },
 ];
 
-const revisionIncludes = [
-  "Text changes",
-  "Image swaps",
-  "Minor colour tweaks",
-];
-
-const revisionExcludes = [
-  "New sections",
-  "Layout changes",
-  "Feature additions",
-  '"I changed my mind"',
+const benefits = [
+  {
+    icon: Clock,
+    title: "5-10 Days",
+    description: "Not months. You'll have your site live quickly.",
+  },
+  {
+    icon: Zap,
+    title: "No Back-and-Forth",
+    description: "We've streamlined the process. No endless meetings or emails.",
+  },
+  {
+    icon: Target,
+    title: "Built to Convert",
+    description: "Every layout is designed to turn visitors into customers.",
+  },
+  {
+    icon: Users,
+    title: "We Handle It",
+    description: "Just provide your content. We do the rest.",
+  },
 ];
 
 export default function HowItWorks() {
@@ -69,11 +79,11 @@ export default function HowItWorks() {
               </span>
             </div>
             <h1 className="text-display mb-6 sm:mb-8">
-              Simple. <span className="text-primary">Structured.</span>
+              Simple. <span className="text-primary">Straightforward.</span>
             </h1>
             <p className="text-body-lg max-w-2xl">
-              We've removed everything that slows down typical web projects.
-              No discovery calls. No moodboards. No endless back-and-forth.
+              No discovery calls. No moodboards. No endless revision cycles.
+              Just a clear process that gets your site live fast.
             </p>
           </motion.div>
         </div>
@@ -124,7 +134,7 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      {/* Revision Policy */}
+      {/* Why This Works */}
       <section className="section relative">
         <DottedGrid className="opacity-30" spacing={40} />
         <div className="content-width relative z-10">
@@ -135,68 +145,79 @@ export default function HowItWorks() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <span className="badge-primary mb-4 inline-block">Important</span>
             <h2 className="text-headline max-w-2xl">
-              Revision Policy: <span className="text-primary">One round</span>
+              Why this <span className="text-primary">works</span>
             </h2>
             <p className="text-body-lg max-w-2xl mt-3 sm:mt-4">
-              We're a productised service. One structured revision round keeps things fast and focused.
+              We've stripped out everything that makes traditional web projects drag on.
+              Here's what you get instead.
             </p>
           </motion.div>
 
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 max-w-4xl">
-            {/* Includes */}
-            <motion.div
-              className="card-base border-primary/30 hover-lift"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6">Revisions include</h3>
-              <ul className="space-y-3 sm:space-y-4">
-                {revisionIncludes.map((item) => (
-                  <li key={item} className="flex items-center gap-2 sm:gap-3">
-                    <div className="check-icon">
-                      <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    </div>
-                    <span className="text-sm sm:text-base font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Excludes */}
-            <motion.div
-              className="feature-item hover-lift"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6 text-muted-foreground">
-                Revisions do NOT include
-              </h3>
-              <ul className="space-y-3 sm:space-y-4">
-                {revisionExcludes.map((item) => (
-                  <li key={item} className="flex items-center gap-2 sm:gap-3">
-                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
-                      <X className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-destructive" />
-                    </div>
-                    <span className="text-sm sm:text-base text-muted-foreground">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={benefit.title}
+                className="p-5 sm:p-6 rounded-xl bg-secondary border border-border"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
+                  <benefit.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold mb-2">{benefit.title}</h3>
+                <p className="text-sm text-muted-foreground">{benefit.description}</p>
+              </motion.div>
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* What We Need From You */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="bordered-section p-5 sm:p-8 md:p-10 max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-15" spacing={24} />
+            <div className="relative z-10">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
+                What we need from you
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                The more you can provide upfront, the faster we can build. But don't worry — we'll help if you're missing anything.
+              </p>
+              <ul className="space-y-3 sm:space-y-4">
+                {[
+                  "Your business name and contact details",
+                  "A list of your services",
+                  "Any images or logos you want to use",
+                  "A rough idea of what you want to say",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <div className="check-icon w-5 h-5 mt-0.5">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm sm:text-base">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA */}
       <CTASection
-        title="Ready to skip"
-        highlightedText="the drama?"
-        description="Pick your package, submit your details, and get a website that converts."
+        title="Ready to skip the"
+        highlightedText="drama?"
+        description="Pick your package, send us your details, and get a website that actually works for your business."
         primaryButtonText="Get Started"
         primaryButtonLink="/start"
         secondaryButtonText="View Pricing"
