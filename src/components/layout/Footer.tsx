@@ -59,6 +59,14 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
               </li>
               <li>
                 <a
+                  href="tel:01442601387"
+                  className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  01442 601387
+                </a>
+              </li>
+              <li>
+                <a
                   href="mailto:hello@onesimplesite.co.uk"
                   className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >

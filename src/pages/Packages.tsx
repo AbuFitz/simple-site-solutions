@@ -282,6 +282,7 @@ export default function Packages() {
         description="Most businesses go with Business — it's everything you need to look established and win trust. But if you just need to get online, Essential does the job."
         primaryButtonText="Get Started"
         primaryButtonLink="/start"
+        showPhone={true}
       />
     </Layout>
   );

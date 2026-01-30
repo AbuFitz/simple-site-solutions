@@ -10,6 +10,7 @@ interface CTASectionProps {
   primaryButtonLink?: string;
   secondaryButtonText?: string;
   secondaryButtonLink?: string;
+  showPhone?: boolean;
 }
 
 export function CTASection({
@@ -20,6 +21,7 @@ export function CTASection({
   primaryButtonLink = "/start",
   secondaryButtonText,
   secondaryButtonLink,
+  showPhone = false,
 }: CTASectionProps) {
   return (
     <section className="py-12 sm:py-16 md:py-24 pb-28 md:pb-24">
@@ -61,6 +63,14 @@ export function CTASection({
               </Link>
             )}
           </div>
+          {showPhone && (
+            <p className="mt-6 text-sm text-muted-foreground">
+              Or call us on{" "}
+              <a href="tel:01442601387" className="hover:text-foreground transition-colors">
+                01442 601387
+              </a>
+            </p>
+          )}
         </motion.div>
       </div>
     </section>

@@ -187,6 +187,10 @@ export default function Cookies() {
                   If you have any questions about our use of cookies, please contact us at{" "}
                   <a href="mailto:hello@onesimplesite.co.uk" className="text-primary hover:underline">
                     hello@onesimplesite.co.uk
+                  </a>{" "}
+                  or call us on{" "}
+                  <a href="tel:01442601387" className="text-primary hover:underline">
+                    01442 601387
                   </a>
                 </p>
               </section>

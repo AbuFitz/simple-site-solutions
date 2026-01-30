@@ -104,7 +104,7 @@ function customerEmailHtml(data: FormData): string {
                 </div>
                 ` : ""}
               </div>
-              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">In the meantime, feel free to check out our FAQ if you have any questions.</p>
+              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">In the meantime, feel free to check out our FAQ if you have any questions, or give us a call on <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a>.</p>
               <a href="${BASE_URL}/faq" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">View FAQ</a>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 32px 0 0 0;">
                 Cheers,<br><strong>The OneSimpleSite Team</strong>
@@ -120,6 +120,9 @@ function customerEmailHtml(data: FormData): string {
                 <a href="${BASE_URL}/terms" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Terms of Service</a>
                 <a href="${BASE_URL}/privacy" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Privacy Policy</a>
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
+              </p>
+              <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">
+                <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> · <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
               </p>
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 16px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">© ${new Date().getFullYear()} OneSimpleSite. Made for local UK businesses.</p>
@@ -236,11 +239,14 @@ function adminEmailHtml(data: FormData): string {
           <!-- Footer -->
           <tr>
             <td style="background-color: #f9fafb; padding: 32px 40px; border-top: 1px solid #e5e5e5;">
-              <p style="margin: 0;">
+              <p style="margin: 0 0 16px 0;">
                 <a href="${BASE_URL}/faq" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">FAQ</a>
                 <a href="${BASE_URL}/terms" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Terms of Service</a>
                 <a href="${BASE_URL}/privacy" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Privacy Policy</a>
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
+              </p>
+              <p style="font-size: 14px; color: #6b7280; margin: 0;">
+                01442 601387 · hello@onesimplesite.co.uk
               </p>
             </td>
           </tr>

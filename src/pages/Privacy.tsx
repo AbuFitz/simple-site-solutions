@@ -118,10 +118,14 @@ export default function Privacy() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Contact Us</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  If you have any questions about this Privacy Policy or wish to exercise your rights, 
+                  If you have any questions about this Privacy Policy or wish to exercise your rights,
                   please contact us at{" "}
                   <a href="mailto:hello@onesimplesite.co.uk" className="text-primary hover:underline">
                     hello@onesimplesite.co.uk
+                  </a>{" "}
+                  or call us on{" "}
+                  <a href="tel:01442601387" className="text-primary hover:underline">
+                    01442 601387
                   </a>
                 </p>
               </section>
