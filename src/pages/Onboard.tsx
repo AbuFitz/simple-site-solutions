@@ -133,6 +133,11 @@ const packages = [
   { id: "growth", name: "Growth", price: "£649" },
 ];
 
+// Shared input classes for consistent styling
+const inputClasses = "w-full px-4 py-3.5 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all";
+const textareaClasses = "w-full px-4 py-3.5 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none";
+const selectClasses = "w-full px-4 py-3.5 rounded-xl bg-secondary border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all appearance-none cursor-pointer";
+
 export default function Onboard() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -262,73 +267,78 @@ export default function Onboard() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Your Name *</label>
+                  <label className="block text-sm font-medium mb-2">Your Name *</label>
                   <input
                     type="text"
                     value={formData.contactName}
                     onChange={(e) => updateField("contactName", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="John Smith"
                   />
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1.5">Email Address *</label>
+                    <label className="block text-sm font-medium mb-2">Email Address *</label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => updateField("email", e.target.value)}
-                      className="input-field"
+                      className={inputClasses}
                       placeholder="john@example.com"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1.5">Phone Number *</label>
+                    <label className="block text-sm font-medium mb-2">Phone Number *</label>
                     <input
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => updateField("phone", e.target.value)}
-                      className="input-field"
+                      className={inputClasses}
                       placeholder="07123 456789"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Business Name *</label>
+                  <label className="block text-sm font-medium mb-2">Business Name *</label>
                   <input
                     type="text"
                     value={formData.businessName}
                     onChange={(e) => updateField("businessName", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="Smith Plumbing Ltd"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Trading Name (if different)</label>
+                  <label className="block text-sm font-medium mb-2">Trading Name (if different)</label>
                   <input
                     type="text"
                     value={formData.tradingName}
                     onChange={(e) => updateField("tradingName", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="Leave blank if same as above"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Business Type</label>
-                  <select
-                    value={formData.businessType}
-                    onChange={(e) => updateField("businessType", e.target.value)}
-                    className="input-field"
-                  >
-                    <option value="">Select...</option>
-                    {businessTypes.map((type) => (
-                      <option key={type} value={type}>{type}</option>
-                    ))}
-                  </select>
+                  <label className="block text-sm font-medium mb-2">Business Type</label>
+                  <div className="relative">
+                    <select
+                      value={formData.businessType}
+                      onChange={(e) => updateField("businessType", e.target.value)}
+                      className={selectClasses}
+                    >
+                      <option value="">Select...</option>
+                      {businessTypes.map((type) => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-muted-foreground">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -348,29 +358,29 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">Where you're based and how customers can reach you.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Business Address</label>
+                  <label className="block text-sm font-medium mb-2">Business Address</label>
                   <textarea
                     value={formData.businessAddress}
                     onChange={(e) => updateField("businessAddress", e.target.value)}
-                    className="input-field min-h-[80px]"
+                    className={`${textareaClasses} min-h-[100px]`}
                     placeholder="123 High Street, Hemel Hempstead, HP1 1AA"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Is your business location-based or mobile?</label>
-                  <div className="flex gap-3">
+                  <label className="block text-sm font-medium mb-3">Is your business location-based or mobile?</label>
+                  <div className="grid grid-cols-3 gap-2">
                     {["Location-based", "Mobile/Travel to customers", "Both"].map((opt) => (
                       <button
                         key={opt}
                         type="button"
                         onClick={() => updateField("isLocationBased", opt)}
-                        className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3 px-3 rounded-xl border text-sm font-medium transition-all ${
                           formData.isLocationBased === opt
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         {opt}
@@ -380,26 +390,26 @@ export default function Onboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Service Areas *</label>
+                  <label className="block text-sm font-medium mb-2">Service Areas *</label>
                   <input
                     type="text"
                     value={formData.serviceAreas}
                     onChange={(e) => updateField("serviceAreas", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="e.g., Hemel Hempstead, St Albans, Watford, and surrounding areas"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Show full address on website?</label>
-                  <div className="flex gap-3">
+                  <label className="block text-sm font-medium mb-3">Show full address on website?</label>
+                  <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
                       onClick={() => updateField("showAddressPublicly", true)}
-                      className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                      className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
                         formData.showAddressPublicly
                           ? "border-primary bg-primary/10 text-primary"
-                          : "border-border hover:border-muted-foreground"
+                          : "border-border bg-secondary hover:border-muted-foreground"
                       }`}
                     >
                       Yes
@@ -407,10 +417,10 @@ export default function Onboard() {
                     <button
                       type="button"
                       onClick={() => updateField("showAddressPublicly", false)}
-                      className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                      className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
                         !formData.showAddressPublicly
                           ? "border-primary bg-primary/10 text-primary"
-                          : "border-border hover:border-muted-foreground"
+                          : "border-border bg-secondary hover:border-muted-foreground"
                       }`}
                     >
                       No, just show area
@@ -418,57 +428,62 @@ export default function Onboard() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-border">
-                  <p className="text-sm font-medium mb-3">Contact details for your website</p>
+                <div className="pt-5 border-t border-border">
+                  <p className="text-sm font-medium mb-4">Contact details for your website</p>
 
                   <div className="space-y-4">
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium mb-1.5">Public Phone Number *</label>
+                        <label className="block text-sm font-medium mb-2">Public Phone Number *</label>
                         <input
                           type="tel"
                           value={formData.publicPhone}
                           onChange={(e) => updateField("publicPhone", e.target.value)}
-                          className="input-field"
+                          className={inputClasses}
                           placeholder="01234 567890"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium mb-1.5">WhatsApp Number</label>
+                        <label className="block text-sm font-medium mb-2">WhatsApp Number</label>
                         <input
                           type="tel"
                           value={formData.whatsappNumber}
                           onChange={(e) => updateField("whatsappNumber", e.target.value)}
-                          className="input-field"
+                          className={inputClasses}
                           placeholder="Leave blank if not using"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-1.5">Public Email Address *</label>
+                      <label className="block text-sm font-medium mb-2">Public Email Address *</label>
                       <input
                         type="email"
                         value={formData.publicEmail}
                         onChange={(e) => updateField("publicEmail", e.target.value)}
-                        className="input-field"
+                        className={inputClasses}
                         placeholder="info@yourbusiness.com"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium mb-2">Preferred contact method for enquiries</label>
-                      <select
-                        value={formData.preferredContact}
-                        onChange={(e) => updateField("preferredContact", e.target.value)}
-                        className="input-field"
-                      >
-                        <option value="">Select...</option>
-                        <option value="phone">Phone Call</option>
-                        <option value="email">Email</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="form">Contact Form</option>
-                      </select>
+                      <div className="relative">
+                        <select
+                          value={formData.preferredContact}
+                          onChange={(e) => updateField("preferredContact", e.target.value)}
+                          className={selectClasses}
+                        >
+                          <option value="">Select...</option>
+                          <option value="phone">Phone Call</option>
+                          <option value="email">Email</option>
+                          <option value="whatsapp">WhatsApp</option>
+                          <option value="form">Contact Form</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-muted-foreground">
+                          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -490,51 +505,51 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">This helps us write great content for your site.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">What does your business do? *</label>
-                  <p className="text-xs text-muted-foreground mb-2">Explain as if to a new customer who's never heard of you.</p>
+                  <label className="block text-sm font-medium mb-2">What does your business do? *</label>
+                  <p className="text-xs text-muted-foreground mb-3">Explain as if to a new customer who's never heard of you.</p>
                   <textarea
                     value={formData.whatYouDo}
                     onChange={(e) => updateField("whatYouDo", e.target.value)}
-                    className="input-field min-h-[100px]"
+                    className={`${textareaClasses} min-h-[120px]`}
                     placeholder="e.g., We provide emergency and scheduled plumbing services for homes across Hertfordshire. From leaky taps to full bathroom installations, we handle it all..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Who are your ideal customers? *</label>
+                  <label className="block text-sm font-medium mb-2">Who are your ideal customers? *</label>
                   <textarea
                     value={formData.idealCustomers}
                     onChange={(e) => updateField("idealCustomers", e.target.value)}
-                    className="input-field min-h-[80px]"
+                    className={`${textareaClasses} min-h-[100px]`}
                     placeholder="e.g., Homeowners, landlords, letting agents, small businesses..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Why should someone choose you over competitors?</label>
-                  <p className="text-xs text-muted-foreground mb-2">Your unique selling points, guarantees, experience, etc.</p>
+                  <label className="block text-sm font-medium mb-2">Why should someone choose you over competitors?</label>
+                  <p className="text-xs text-muted-foreground mb-3">Your unique selling points, guarantees, experience, etc.</p>
                   <textarea
                     value={formData.whyChooseYou}
                     onChange={(e) => updateField("whyChooseYou", e.target.value)}
-                    className="input-field min-h-[100px]"
+                    className={`${textareaClasses} min-h-[120px]`}
                     placeholder="e.g., 20 years experience, same-day emergency callouts, no call-out charge, fully insured, 5-star Google reviews..."
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-3">What tone should your website have?</label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-3">
                     {toneOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => updateField("tonePreference", opt.id)}
-                        className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3.5 px-4 rounded-xl border text-sm font-medium transition-all ${
                           formData.tonePreference === opt.id
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         {opt.label}
@@ -560,14 +575,14 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">What do you offer to customers?</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">List all your services *</label>
-                  <p className="text-xs text-muted-foreground mb-2">Include a brief description for each if possible.</p>
+                  <label className="block text-sm font-medium mb-2">List all your services *</label>
+                  <p className="text-xs text-muted-foreground mb-3">Include a brief description for each if possible.</p>
                   <textarea
                     value={formData.services}
                     onChange={(e) => updateField("services", e.target.value)}
-                    className="input-field min-h-[180px]"
+                    className={`${textareaClasses} min-h-[200px]`}
                     placeholder={`e.g.,
 • Boiler Installation & Replacement - New boiler fitting with up to 10 year warranty
 • Boiler Servicing - Annual servicing to keep your boiler running efficiently
@@ -578,17 +593,17 @@ export default function Onboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">Do you want pricing shown on your website?</label>
-                  <div className="flex gap-3">
+                  <label className="block text-sm font-medium mb-3">Do you want pricing shown on your website?</label>
+                  <div className="grid grid-cols-3 gap-2">
                     {["Yes", "No, enquiry-based", "Some services only"].map((opt) => (
                       <button
                         key={opt}
                         type="button"
                         onClick={() => updateField("showPricing", opt)}
-                        className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3 px-3 rounded-xl border text-sm font-medium transition-all ${
                           formData.showPricing === opt
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         {opt}
@@ -602,11 +617,11 @@ export default function Onboard() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                   >
-                    <label className="block text-sm font-medium mb-1.5">Pricing Information</label>
+                    <label className="block text-sm font-medium mb-2">Pricing Information</label>
                     <textarea
                       value={formData.pricingInfo}
                       onChange={(e) => updateField("pricingInfo", e.target.value)}
-                      className="input-field min-h-[100px]"
+                      className={`${textareaClasses} min-h-[120px]`}
                       placeholder={`e.g.,
 • Boiler Service: £79
 • Call-out fee: Free
@@ -632,19 +647,19 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">Visual elements for your website.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Do you have a logo?</label>
-                  <div className="flex gap-3">
+                  <label className="block text-sm font-medium mb-3">Do you have a logo?</label>
+                  <div className="grid grid-cols-3 gap-2">
                     {["Yes, I'll send it", "No, I need one", "No, just use text"].map((opt) => (
                       <button
                         key={opt}
                         type="button"
                         onClick={() => updateField("hasLogo", opt)}
-                        className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3 px-3 rounded-xl border text-sm font-medium transition-all ${
                           formData.hasLogo === opt
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         {opt}
@@ -654,28 +669,28 @@ export default function Onboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Brand Colours (if you have them)</label>
+                  <label className="block text-sm font-medium mb-2">Brand Colours (if you have them)</label>
                   <input
                     type="text"
                     value={formData.brandColors}
                     onChange={(e) => updateField("brandColors", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="e.g., Blue and white, or #1E40AF"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-3">What style do you prefer?</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {styleOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => updateField("stylePreference", opt.id)}
-                        className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3.5 px-4 rounded-xl border text-sm font-medium transition-all ${
                           formData.stylePreference === opt.id
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         {opt.label}
@@ -684,19 +699,19 @@ export default function Onboard() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-border">
+                <div className="pt-5 border-t border-border">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Do you have professional photos of your work?</label>
-                    <div className="flex gap-3">
+                    <label className="block text-sm font-medium mb-3">Do you have professional photos of your work?</label>
+                    <div className="grid grid-cols-3 gap-2">
                       {["Yes, I'll send them", "Some, not many", "No"].map((opt) => (
                         <button
                           key={opt}
                           type="button"
                           onClick={() => updateField("hasPhotos", opt)}
-                          className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                          className={`py-3 px-3 rounded-xl border text-sm font-medium transition-all ${
                             formData.hasPhotos === opt
                               ? "border-primary bg-primary/10 text-primary"
-                              : "border-border hover:border-muted-foreground"
+                              : "border-border bg-secondary hover:border-muted-foreground"
                           }`}
                         >
                           {opt}
@@ -705,16 +720,16 @@ export default function Onboard() {
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium mb-2">Can we use high-quality stock images if needed?</label>
-                    <div className="flex gap-3">
+                  <div className="mt-5">
+                    <label className="block text-sm font-medium mb-3">Can we use high-quality stock images if needed?</label>
+                    <div className="grid grid-cols-2 gap-3">
                       <button
                         type="button"
                         onClick={() => updateField("useStockImages", true)}
-                        className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
                           formData.useStockImages
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         Yes
@@ -722,10 +737,10 @@ export default function Onboard() {
                       <button
                         type="button"
                         onClick={() => updateField("useStockImages", false)}
-                        className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                        className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
                           !formData.useStockImages
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         No, only my photos
@@ -751,26 +766,26 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">Reviews and credentials that build customer confidence.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Google Business Profile Link</label>
-                  <p className="text-xs text-muted-foreground mb-2">If you have one, we can pull in your reviews.</p>
+                  <label className="block text-sm font-medium mb-2">Google Business Profile Link</label>
+                  <p className="text-xs text-muted-foreground mb-3">If you have one, we can pull in your reviews.</p>
                   <input
                     type="url"
                     value={formData.googleBusinessLink}
                     onChange={(e) => updateField("googleBusinessLink", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="https://g.page/yourbusiness or search link"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Testimonials to Include</label>
-                  <p className="text-xs text-muted-foreground mb-2">Paste any specific reviews or testimonials you want featured.</p>
+                  <label className="block text-sm font-medium mb-2">Testimonials to Include</label>
+                  <p className="text-xs text-muted-foreground mb-3">Paste any specific reviews or testimonials you want featured.</p>
                   <textarea
                     value={formData.testimonials}
                     onChange={(e) => updateField("testimonials", e.target.value)}
-                    className="input-field min-h-[120px]"
+                    className={`${textareaClasses} min-h-[140px]`}
                     placeholder={`e.g.,
 "Fantastic service, arrived within an hour and fixed the leak quickly. Would definitely recommend!" - Sarah, Hemel Hempstead
 
@@ -779,12 +794,12 @@ export default function Onboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Certifications & Accreditations</label>
-                  <p className="text-xs text-muted-foreground mb-2">Any qualifications, memberships, or guarantees to display.</p>
+                  <label className="block text-sm font-medium mb-2">Certifications & Accreditations</label>
+                  <p className="text-xs text-muted-foreground mb-3">Any qualifications, memberships, or guarantees to display.</p>
                   <textarea
                     value={formData.certifications}
                     onChange={(e) => updateField("certifications", e.target.value)}
-                    className="input-field min-h-[80px]"
+                    className={`${textareaClasses} min-h-[100px]`}
                     placeholder="e.g., Gas Safe Registered, NICEIC Approved, Checkatrade Member, Public Liability Insured..."
                   />
                 </div>
@@ -806,26 +821,26 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">How your website should work and what it should rank for.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium mb-3">What should visitors be encouraged to do? *</label>
-                  <p className="text-xs text-muted-foreground mb-2">Select all that apply.</p>
-                  <div className="grid grid-cols-2 gap-2">
+                  <p className="text-xs text-muted-foreground mb-3">Select all that apply.</p>
+                  <div className="grid grid-cols-2 gap-3">
                     {ctaOptions.map((opt) => (
                       <button
                         key={opt.id}
                         type="button"
                         onClick={() => toggleCTA(opt.id)}
-                        className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all text-left flex items-center gap-2 ${
+                        className={`py-3.5 px-4 rounded-xl border text-sm font-medium transition-all text-left flex items-center gap-3 ${
                           formData.mainCTA.includes(opt.id)
                             ? "border-primary bg-primary/10 text-primary"
-                            : "border-border hover:border-muted-foreground"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
-                        <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
-                          formData.mainCTA.includes(opt.id) ? "border-primary bg-primary" : "border-border"
+                        <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 ${
+                          formData.mainCTA.includes(opt.id) ? "border-primary bg-primary" : "border-border bg-muted"
                         }`}>
-                          {formData.mainCTA.includes(opt.id) && <Check className="w-2.5 h-2.5 text-white" />}
+                          {formData.mainCTA.includes(opt.id) && <Check className="w-3 h-3 text-white" />}
                         </div>
                         {opt.label}
                       </button>
@@ -834,37 +849,37 @@ export default function Onboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Primary Location for Google Searches *</label>
-                  <p className="text-xs text-muted-foreground mb-2">The main area you want to rank for.</p>
+                  <label className="block text-sm font-medium mb-2">Primary Location for Google Searches *</label>
+                  <p className="text-xs text-muted-foreground mb-3">The main area you want to rank for.</p>
                   <input
                     type="text"
                     value={formData.primaryLocation}
                     onChange={(e) => updateField("primaryLocation", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="e.g., Hemel Hempstead"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Key Services to Rank For</label>
-                  <p className="text-xs text-muted-foreground mb-2">What searches should find your website?</p>
+                  <label className="block text-sm font-medium mb-2">Key Services to Rank For</label>
+                  <p className="text-xs text-muted-foreground mb-3">What searches should find your website?</p>
                   <input
                     type="text"
                     value={formData.keyServices}
                     onChange={(e) => updateField("keyServices", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="e.g., emergency plumber, boiler installation, bathroom fitter"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Any Extra Pages Needed?</label>
-                  <p className="text-xs text-muted-foreground mb-2">We include Home, About, Services, Contact by default.</p>
+                  <label className="block text-sm font-medium mb-2">Any Extra Pages Needed?</label>
+                  <p className="text-xs text-muted-foreground mb-3">We include Home, About, Services, Contact by default.</p>
                   <input
                     type="text"
                     value={formData.extraPages}
                     onChange={(e) => updateField("extraPages", e.target.value)}
-                    className="input-field"
+                    className={inputClasses}
                     placeholder="e.g., Gallery, FAQ, Areas We Cover, Testimonials"
                   />
                 </div>
@@ -886,24 +901,24 @@ export default function Onboard() {
                 <p className="text-sm text-muted-foreground">Almost done! Just a few more things.</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
                   <label className="block text-sm font-medium mb-3">Confirmed Package *</label>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {packages.map((pkg) => (
                       <button
                         key={pkg.id}
                         type="button"
                         onClick={() => updateField("confirmedPackage", pkg.id)}
-                        className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
+                        className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${
                           formData.confirmedPackage === pkg.id
-                            ? "border-primary bg-primary/5"
-                            : "border-border hover:border-muted-foreground"
+                            ? "border-primary bg-primary/10"
+                            : "border-border bg-secondary hover:border-muted-foreground"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                            formData.confirmedPackage === pkg.id ? "border-primary bg-primary" : "border-border"
+                          <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                            formData.confirmedPackage === pkg.id ? "border-primary bg-primary" : "border-border bg-muted"
                           }`}>
                             {formData.confirmedPackage === pkg.id && <Check className="w-3 h-3 text-white" />}
                           </div>
@@ -916,37 +931,37 @@ export default function Onboard() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Anything that MUST be included?</label>
+                  <label className="block text-sm font-medium mb-2">Anything that MUST be included?</label>
                   <textarea
                     value={formData.mustInclude}
                     onChange={(e) => updateField("mustInclude", e.target.value)}
-                    className="input-field min-h-[80px]"
+                    className={`${textareaClasses} min-h-[100px]`}
                     placeholder="e.g., Must mention 24/7 availability, must show Gas Safe registration number..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Anything that must NOT be included?</label>
+                  <label className="block text-sm font-medium mb-2">Anything that must NOT be included?</label>
                   <textarea
                     value={formData.mustNotInclude}
                     onChange={(e) => updateField("mustNotInclude", e.target.value)}
-                    className="input-field min-h-[80px]"
+                    className={`${textareaClasses} min-h-[100px]`}
                     placeholder="e.g., Don't show my home address, don't mention old business name..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1.5">Any other notes or special requests?</label>
+                  <label className="block text-sm font-medium mb-2">Any other notes or special requests?</label>
                   <textarea
                     value={formData.additionalNotes}
                     onChange={(e) => updateField("additionalNotes", e.target.value)}
-                    className="input-field min-h-[100px]"
+                    className={`${textareaClasses} min-h-[120px]`}
                     placeholder="Anything else we should know..."
                   />
                 </div>
 
                 {submitError && (
-                  <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                  <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-sm">
                     {submitError}
                   </div>
                 )}
