@@ -8,21 +8,58 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "hello@onesimplesite.co.uk";
 const BASE_URL = "https://onesimplesite.co.uk";
 
 interface OnboardFormData {
-  name: string;
+  // Step 1: Your Details
+  contactName: string;
   email: string;
   phone: string;
   businessName: string;
-  industry: string;
+  tradingName: string;
+  businessType: string;
+
+  // Step 2: Location & Contact
+  businessAddress: string;
+  isLocationBased: string;
+  serviceAreas: string;
+  showAddressPublicly: boolean;
+  publicPhone: string;
+  publicEmail: string;
+  whatsappNumber: string;
+  preferredContact: string;
+
+  // Step 3: About Your Business
+  whatYouDo: string;
+  idealCustomers: string;
+  whyChooseYou: string;
+  tonePreference: string;
+
+  // Step 4: Services
   services: string;
-  targetArea: string;
-  hasExistingWebsite: boolean;
-  existingWebsiteUrl?: string;
-  hasLogo: boolean;
+  showPricing: string;
+  pricingInfo: string;
+
+  // Step 5: Branding & Images
+  hasLogo: string;
+  brandColors: string;
+  stylePreference: string;
+  hasPhotos: string;
+  useStockImages: boolean;
+
+  // Step 6: Trust & Proof
+  googleBusinessLink: string;
+  testimonials: string;
+  certifications: string;
+
+  // Step 7: Website Preferences
+  mainCTA: string[];
+  primaryLocation: string;
+  keyServices: string;
+  extraPages: string;
+
+  // Step 8: Final Details
+  mustInclude: string;
+  mustNotInclude: string;
+  additionalNotes: string;
   confirmedPackage: string;
-  addons: string[];
-  timeline: string;
-  contentReady: string;
-  additionalNotes?: string;
 }
 
 function getPackageInfo(packageId: string): { name: string; price: string } {
@@ -34,39 +71,61 @@ function getPackageInfo(packageId: string): { name: string; price: string } {
   return packages[packageId] || { name: packageId, price: "" };
 }
 
-function getAddonDisplayName(addonId: string): string {
-  const addons: Record<string, string> = {
-    hosting: "Hosting + Maintenance (£95/year)",
-    "google-business": "Google Business Profile Setup (£79)",
+function getToneLabel(toneId: string): string {
+  const tones: Record<string, string> = {
+    professional: "Professional",
+    friendly: "Friendly & Approachable",
+    premium: "Premium & High-End",
+    straightforward: "Straightforward & Direct",
   };
-  return addons[addonId] || addonId;
+  return tones[toneId] || toneId || "Not specified";
 }
 
-function formatAddons(addonIds: string[]): string {
-  if (addonIds.length === 0) return "None";
-  return addonIds.map((id) => getAddonDisplayName(id)).join(", ");
-}
-
-function getTimelineLabel(timelineId: string): string {
-  const timelines: Record<string, string> = {
-    asap: "As soon as possible",
-    "1-2weeks": "Within 1-2 weeks",
-    flexible: "Flexible / No rush",
+function getStyleLabel(styleId: string): string {
+  const styles: Record<string, string> = {
+    modern: "Modern & Clean",
+    minimal: "Minimal",
+    bold: "Bold & Eye-catching",
+    classic: "Classic & Traditional",
+    "no-preference": "No Preference",
   };
-  return timelines[timelineId] || timelineId;
+  return styles[styleId] || styleId || "Not specified";
 }
 
-function getContentReadyLabel(contentId: string): string {
+function getCTALabels(ctaIds: string[]): string {
+  const ctaMap: Record<string, string> = {
+    call: "Call Now",
+    quote: "Request a Quote",
+    book: "Book an Appointment",
+    whatsapp: "Message on WhatsApp",
+    "contact-form": "Contact Form",
+  };
+  if (ctaIds.length === 0) return "Not specified";
+  return ctaIds.map((id) => ctaMap[id] || id).join(", ");
+}
+
+function getPreferredContactLabel(contactId: string): string {
   const options: Record<string, string> = {
-    ready: "Everything ready",
-    mostly: "Most of it ready",
-    "need-help": "Needs some guidance",
-    nothing: "Starting from scratch",
+    phone: "Phone Call",
+    email: "Email",
+    whatsapp: "WhatsApp",
+    form: "Contact Form",
   };
-  return options[contentId] || contentId;
+  return options[contactId] || contactId || "Not specified";
 }
 
-// Client confirmation email
+function escapeHtml(text: string): string {
+  if (!text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/\n/g, "<br>");
+}
+
+// Client confirmation email - simple and reassuring
 function clientEmailHtml(data: OnboardFormData): string {
   const pkg = getPackageInfo(data.confirmedPackage);
 
@@ -93,9 +152,9 @@ function clientEmailHtml(data: OnboardFormData): string {
           <!-- Body -->
           <tr>
             <td style="padding: 40px;">
-              <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">Welcome aboard, ${data.name}!</h1>
+              <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">All done, ${escapeHtml(data.contactName)}!</h1>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                Thanks for choosing us to build your website. We've received your details and we're excited to get started on <strong>${data.businessName}</strong>.
+                Thanks for completing the onboarding form for <strong>${escapeHtml(data.businessName)}</strong>. We've got everything we need to get started on your new website.
               </p>
 
               <div style="background-color: #ecfdf5; border: 1px solid #3BA875; border-radius: 8px; padding: 16px; margin: 24px 0;">
@@ -106,40 +165,34 @@ function clientEmailHtml(data: OnboardFormData): string {
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">Here's what happens next:</p>
               <ol style="font-size: 16px; line-height: 1.8; color: #374151; margin: 0 0 24px 0; padding-left: 20px;">
-                <li>We'll review your details and reach out within 24 hours</li>
-                <li>We'll confirm the project scope and timeline</li>
-                <li>You'll receive payment details to get started</li>
-                <li>We'll begin building your website</li>
+                <li>We'll review your details over the next 24 hours</li>
+                <li>We'll reach out to confirm everything and collect payment</li>
+                <li>Once payment is received, we'll start building your website</li>
+                <li>You'll receive your website for review within a few days</li>
               </ol>
 
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Your Details</div>
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">What You Submitted</div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Business</div>
-                  <div style="font-size: 16px; color: #000000;">${data.businessName}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessName)}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Industry</div>
-                  <div style="font-size: 16px; color: #000000;">${data.industry}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Service Areas</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.serviceAreas)}</div>
                 </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Target Area</div>
-                  <div style="font-size: 16px; color: #000000;">${data.targetArea}</div>
-                </div>
-                ${data.addons.length > 0 ? `
                 <div>
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Add-ons</div>
-                  <div style="font-size: 16px; color: #000000;">${formatAddons(data.addons)}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Primary Location (SEO)</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.primaryLocation) || "Not specified"}</div>
                 </div>
-                ` : ""}
               </div>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                If you have any questions in the meantime, feel free to give us a call on <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a>.
+                If you need to add anything or have questions, give us a call on <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> or reply to this email.
               </p>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 32px 0 0 0;">
-                Looking forward to working with you,<br><strong>The OneSimpleSite Team</strong>
+                Speak soon,<br><strong>The OneSimpleSite Team</strong>
               </p>
             </td>
           </tr>
@@ -168,7 +221,7 @@ function clientEmailHtml(data: OnboardFormData): string {
 </html>`;
 }
 
-// Admin notification email with full details
+// Admin notification email with ALL details
 function adminEmailHtml(data: OnboardFormData): string {
   const pkg = getPackageInfo(data.confirmedPackage);
   const timestamp = new Date().toLocaleString("en-GB", {
@@ -202,7 +255,7 @@ function adminEmailHtml(data: OnboardFormData): string {
             <td style="padding: 40px;">
               <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">New Client Onboarded</h1>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                <strong>${data.name}</strong> from <strong>${data.businessName}</strong> has completed the onboarding form.
+                <strong>${escapeHtml(data.contactName)}</strong> from <strong>${escapeHtml(data.businessName)}</strong> has completed the onboarding form.
               </p>
 
               <div style="background-color: #ecfdf5; border: 1px solid #3BA875; border-radius: 8px; padding: 16px; margin: 24px 0;">
@@ -211,82 +264,230 @@ function adminEmailHtml(data: OnboardFormData): string {
                 </div>
               </div>
 
-              <!-- Contact Details -->
+              <!-- SECTION 1: Contact Details -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Contact Details</div>
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">1. Contact Details</div>
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Name</div>
-                  <div style="font-size: 16px; color: #000000;">${data.name}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Contact Name</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.contactName)}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Email</div>
-                  <div style="font-size: 16px;"><a href="mailto:${data.email}" style="color: #3BA875;">${data.email}</a></div>
+                  <div style="font-size: 16px;"><a href="mailto:${escapeHtml(data.email)}" style="color: #3BA875;">${escapeHtml(data.email)}</a></div>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Phone</div>
-                  <div style="font-size: 16px;"><a href="tel:${data.phone}" style="color: #3BA875;">${data.phone}</a></div>
+                  <div style="font-size: 16px;"><a href="tel:${escapeHtml(data.phone)}" style="color: #3BA875;">${escapeHtml(data.phone)}</a></div>
                 </div>
-                <div>
+                <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Business Name</div>
-                  <div style="font-size: 16px; color: #000000;">${data.businessName}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessName)}</div>
                 </div>
-              </div>
-
-              <!-- Business Details -->
-              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Business Details</div>
+                ${data.tradingName ? `
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Industry</div>
-                  <div style="font-size: 16px; color: #000000;">${data.industry}</div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Services</div>
-                  <div style="font-size: 16px; color: #000000;">${data.services}</div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Target Area</div>
-                  <div style="font-size: 16px; color: #000000;">${data.targetArea}</div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Existing Website</div>
-                  <div style="font-size: 16px; color: #000000;">${data.hasExistingWebsite ? "Yes" : "No"}</div>
-                </div>
-                ${data.hasExistingWebsite && data.existingWebsiteUrl ? `
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Current Website</div>
-                  <div style="font-size: 16px;"><a href="${data.existingWebsiteUrl}" style="color: #3BA875;" target="_blank">${data.existingWebsiteUrl}</a></div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Trading Name</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.tradingName)}</div>
                 </div>
                 ` : ""}
                 <div>
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Logo</div>
-                  <div style="font-size: 16px; color: #000000;">${data.hasLogo ? "Yes" : "No"}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Business Type</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessType) || "Not specified"}</div>
                 </div>
               </div>
 
-              <!-- Project Details -->
+              <!-- SECTION 2: Location & Public Contact -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Project Details</div>
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">2. Location & Public Contact</div>
+                ${data.businessAddress ? `
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Add-ons</div>
-                  <div style="font-size: 16px; color: #000000;">${formatAddons(data.addons)}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Business Address</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessAddress)}</div>
+                </div>
+                ` : ""}
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Location Based / Mobile</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.isLocationBased) || "Not specified"}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Timeline</div>
-                  <div style="font-size: 16px; color: #000000;">${getTimelineLabel(data.timeline)}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Service Areas</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.serviceAreas)}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Content Readiness</div>
-                  <div style="font-size: 16px; color: #000000;">${getContentReadyLabel(data.contentReady)}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Show Full Address on Website</div>
+                  <div style="font-size: 16px; color: #000000;">${data.showAddressPublicly ? "Yes" : "No, just show area"}</div>
                 </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Public Phone</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.publicPhone)}</div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Public Email</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.publicEmail)}</div>
+                </div>
+                ${data.whatsappNumber ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">WhatsApp Number</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.whatsappNumber)}</div>
+                </div>
+                ` : ""}
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Preferred Contact Method</div>
+                  <div style="font-size: 16px; color: #000000;">${getPreferredContactLabel(data.preferredContact)}</div>
+                </div>
+              </div>
+
+              <!-- SECTION 3: About the Business -->
+              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">3. About the Business</div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">What They Do</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.whatYouDo)}</div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Ideal Customers</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.idealCustomers)}</div>
+                </div>
+                ${data.whyChooseYou ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Why Choose Them (USP)</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.whyChooseYou)}</div>
+                </div>
+                ` : ""}
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Tone Preference</div>
+                  <div style="font-size: 16px; color: #000000;">${getToneLabel(data.tonePreference)}</div>
+                </div>
+              </div>
+
+              <!-- SECTION 4: Services -->
+              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">4. Services</div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Services Offered</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.services)}</div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Show Pricing on Website</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.showPricing) || "Not specified"}</div>
+                </div>
+                ${data.pricingInfo ? `
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Pricing Information</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.pricingInfo)}</div>
+                </div>
+                ` : ""}
+              </div>
+
+              <!-- SECTION 5: Branding & Images -->
+              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">5. Branding & Images</div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Logo</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.hasLogo) || "Not specified"}</div>
+                </div>
+                ${data.brandColors ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Brand Colours</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.brandColors)}</div>
+                </div>
+                ` : ""}
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Style Preference</div>
+                  <div style="font-size: 16px; color: #000000;">${getStyleLabel(data.stylePreference)}</div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Photos</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.hasPhotos) || "Not specified"}</div>
+                </div>
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Can Use Stock Images</div>
+                  <div style="font-size: 16px; color: #000000;">${data.useStockImages ? "Yes" : "No, only their photos"}</div>
+                </div>
+              </div>
+
+              <!-- SECTION 6: Trust & Proof -->
+              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">6. Trust & Proof</div>
+                ${data.googleBusinessLink ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Google Business Link</div>
+                  <div style="font-size: 16px;"><a href="${escapeHtml(data.googleBusinessLink)}" style="color: #3BA875;" target="_blank">${escapeHtml(data.googleBusinessLink)}</a></div>
+                </div>
+                ` : `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Google Business Link</div>
+                  <div style="font-size: 16px; color: #000000;">Not provided</div>
+                </div>
+                `}
+                ${data.testimonials ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Testimonials</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.testimonials)}</div>
+                </div>
+                ` : ""}
+                ${data.certifications ? `
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Certifications & Accreditations</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.certifications)}</div>
+                </div>
+                ` : ""}
+                ${!data.testimonials && !data.certifications && !data.googleBusinessLink ? `
+                <div style="font-size: 14px; color: #6b7280;">No trust elements provided</div>
+                ` : ""}
+              </div>
+
+              <!-- SECTION 7: Website Preferences -->
+              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">7. Website Preferences</div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Main CTAs</div>
+                  <div style="font-size: 16px; color: #000000;">${getCTALabels(data.mainCTA)}</div>
+                </div>
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Primary Location (SEO)</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.primaryLocation) || "Not specified"}</div>
+                </div>
+                ${data.keyServices ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Key Services to Rank For</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.keyServices)}</div>
+                </div>
+                ` : ""}
+                ${data.extraPages ? `
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Extra Pages Requested</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.extraPages)}</div>
+                </div>
+                ` : ""}
+              </div>
+
+              <!-- SECTION 8: Final Details -->
+              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">8. Final Details</div>
+                ${data.mustInclude ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">MUST Include</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.mustInclude)}</div>
+                </div>
+                ` : ""}
+                ${data.mustNotInclude ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Must NOT Include</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.mustNotInclude)}</div>
+                </div>
+                ` : ""}
                 ${data.additionalNotes ? `
                 <div>
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Additional Notes</div>
-                  <div style="font-size: 16px; color: #000000;">${data.additionalNotes}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.additionalNotes)}</div>
                 </div>
+                ` : ""}
+                ${!data.mustInclude && !data.mustNotInclude && !data.additionalNotes ? `
+                <div style="font-size: 14px; color: #6b7280;">No additional details provided</div>
                 ` : ""}
               </div>
 
-              <a href="mailto:${data.email}?subject=Welcome to OneSimpleSite - ${encodeURIComponent(data.businessName)}" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">Reply to ${data.name}</a>
+              <a href="mailto:${escapeHtml(data.email)}?subject=Your Website Project - ${encodeURIComponent(data.businessName)}" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">Reply to ${escapeHtml(data.contactName)}</a>
 
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">Received: ${timestamp}</p>
@@ -327,7 +528,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const data: OnboardFormData = req.body;
 
-    if (!data.email || !data.name || !data.businessName) {
+    // Validate required fields
+    if (!data.email || !data.contactName || !data.businessName) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -337,16 +539,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const clientEmail = await resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Welcome aboard - ${pkg.name} Package`,
+      subject: `All done - ${pkg.name} Package`,
       html: clientEmailHtml(data),
     });
 
-    // Send admin notification email
+    // Send admin notification email with full details
     const adminEmail = await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: data.email,
-      subject: `New Client Onboarded: ${data.businessName} - ${pkg.name} Package`,
+      subject: `New Client: ${data.businessName} - ${pkg.name} (${pkg.price})`,
       html: adminEmailHtml(data),
     });
 

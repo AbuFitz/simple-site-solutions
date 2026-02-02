@@ -1,37 +1,131 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Layout } from "@/components/layout/Layout";
-import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Loader2 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 
-const onboardSchema = z.object({
+interface FormData {
   // Step 1: Your Details
-  name: z.string().min(2, "Please enter your name"),
-  email: z.string().email("Please enter a valid email"),
-  phone: z.string().min(10, "Please enter a valid phone number"),
-  businessName: z.string().min(2, "Please enter your business name"),
+  contactName: string;
+  email: string;
+  phone: string;
+  businessName: string;
+  tradingName: string;
+  businessType: string;
 
-  // Step 2: About Your Business
-  industry: z.string().min(1, "Please select your industry"),
-  services: z.string().min(10, "Please briefly describe your services"),
-  targetArea: z.string().min(2, "Please enter your target area"),
-  hasExistingWebsite: z.boolean(),
-  existingWebsiteUrl: z.string().optional(),
-  hasLogo: z.boolean(),
+  // Step 2: Location & Contact
+  businessAddress: string;
+  isLocationBased: string;
+  serviceAreas: string;
+  showAddressPublicly: boolean;
+  publicPhone: string;
+  publicEmail: string;
+  whatsappNumber: string;
+  preferredContact: string;
 
-  // Step 3: Your Project
-  confirmedPackage: z.string().min(1, "Please confirm your package"),
-  addons: z.array(z.string()),
-  timeline: z.string().min(1, "Please select a timeline"),
-  contentReady: z.string().min(1, "Please let us know about your content"),
-  additionalNotes: z.string().optional(),
-});
+  // Step 3: About Your Business
+  whatYouDo: string;
+  idealCustomers: string;
+  whyChooseYou: string;
+  tonePreference: string;
 
-type OnboardFormData = z.infer<typeof onboardSchema>;
+  // Step 4: Services
+  services: string;
+  showPricing: string;
+  pricingInfo: string;
+
+  // Step 5: Branding & Images
+  hasLogo: string;
+  brandColors: string;
+  stylePreference: string;
+  hasPhotos: string;
+  useStockImages: boolean;
+
+  // Step 6: Trust & Proof
+  googleBusinessLink: string;
+  testimonials: string;
+  certifications: string;
+
+  // Step 7: Website Preferences
+  mainCTA: string[];
+  primaryLocation: string;
+  keyServices: string;
+  extraPages: string;
+
+  // Step 8: Final Details
+  mustInclude: string;
+  mustNotInclude: string;
+  additionalNotes: string;
+  confirmedPackage: string;
+}
+
+const initialFormData: FormData = {
+  contactName: "",
+  email: "",
+  phone: "",
+  businessName: "",
+  tradingName: "",
+  businessType: "",
+  businessAddress: "",
+  isLocationBased: "",
+  serviceAreas: "",
+  showAddressPublicly: true,
+  publicPhone: "",
+  publicEmail: "",
+  whatsappNumber: "",
+  preferredContact: "",
+  whatYouDo: "",
+  idealCustomers: "",
+  whyChooseYou: "",
+  tonePreference: "",
+  services: "",
+  showPricing: "",
+  pricingInfo: "",
+  hasLogo: "",
+  brandColors: "",
+  stylePreference: "",
+  hasPhotos: "",
+  useStockImages: true,
+  googleBusinessLink: "",
+  testimonials: "",
+  certifications: "",
+  mainCTA: [],
+  primaryLocation: "",
+  keyServices: "",
+  extraPages: "",
+  mustInclude: "",
+  mustNotInclude: "",
+  additionalNotes: "",
+  confirmedPackage: "",
+};
+
+const businessTypes = [
+  "Sole Trader",
+  "Limited Company",
+  "Partnership",
+  "Other",
+];
+
+const toneOptions = [
+  { id: "professional", label: "Professional" },
+  { id: "friendly", label: "Friendly & Approachable" },
+  { id: "premium", label: "Premium & High-End" },
+  { id: "straightforward", label: "Straightforward & Direct" },
+];
+
+const styleOptions = [
+  { id: "modern", label: "Modern & Clean" },
+  { id: "minimal", label: "Minimal" },
+  { id: "bold", label: "Bold & Eye-catching" },
+  { id: "classic", label: "Classic & Traditional" },
+  { id: "no-preference", label: "No Preference" },
+];
+
+const ctaOptions = [
+  { id: "call", label: "Call Now" },
+  { id: "quote", label: "Request a Quote" },
+  { id: "book", label: "Book an Appointment" },
+  { id: "whatsapp", label: "Message on WhatsApp" },
+  { id: "contact-form", label: "Contact Form" },
+];
 
 const packages = [
   { id: "essential", name: "Essential", price: "£199" },
@@ -39,127 +133,38 @@ const packages = [
   { id: "growth", name: "Growth", price: "£649" },
 ];
 
-const industries = [
-  "Plumber",
-  "Electrician",
-  "Mechanic",
-  "Cleaner",
-  "Builder",
-  "Decorator",
-  "Landscaper",
-  "Barber/Salon",
-  "Tutor",
-  "Restaurant/Cafe",
-  "Retail Shop",
-  "Other",
-];
-
-const availableAddons = [
-  { id: "hosting", name: "Hosting + Maintenance", price: "£95/year" },
-  { id: "google-business", name: "Google Business Profile Setup", price: "£79" },
-];
-
-const timelines = [
-  { id: "asap", label: "As soon as possible" },
-  { id: "1-2weeks", label: "Within 1-2 weeks" },
-  { id: "flexible", label: "Flexible / No rush" },
-];
-
-const contentOptions = [
-  { id: "ready", label: "I have everything ready" },
-  { id: "mostly", label: "I have most of it" },
-  { id: "need-help", label: "I'll need some guidance" },
-  { id: "nothing", label: "Starting from scratch" },
-];
-
-function StepHeader({ step, totalSteps }: { step: number; totalSteps: number }) {
-  const progress = (step / totalSteps) * 100;
-  return (
-    <div className="mb-6">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-muted-foreground uppercase tracking-widest">
-          Step {step} of {totalSteps}
-        </span>
-        <span className="text-xs font-semibold">{Math.round(progress)}%</span>
-      </div>
-      <Progress value={progress} className="h-1.5" />
-    </div>
-  );
-}
-
-function FormError({ message }: { message?: string }) {
-  if (!message) return null;
-  return (
-    <motion.p
-      initial={{ opacity: 0, y: -4 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="text-xs text-destructive mt-1.5"
-    >
-      {message}
-    </motion.p>
-  );
-}
-
 export default function Onboard() {
   const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const totalSteps = 4;
+  const totalSteps = 8;
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useForm<OnboardFormData>({
-    resolver: zodResolver(onboardSchema),
-    defaultValues: {
-      hasExistingWebsite: false,
-      hasLogo: false,
-      addons: [],
-    },
-  });
+  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
-  const hasExistingWebsite = watch("hasExistingWebsite");
-  const selectedAddons = watch("addons") || [];
-
-  const toggleAddon = (addonId: string) => {
-    const current = selectedAddons;
-    if (current.includes(addonId)) {
-      setValue("addons", current.filter((id) => id !== addonId));
+  const toggleCTA = (ctaId: string) => {
+    const current = formData.mainCTA;
+    if (current.includes(ctaId)) {
+      updateField("mainCTA", current.filter((id) => id !== ctaId));
     } else {
-      setValue("addons", [...current, addonId]);
+      updateField("mainCTA", [...current, ctaId]);
     }
   };
 
-  const validateStep = async (currentStep: number) => {
-    switch (currentStep) {
-      case 1:
-        return await trigger(["name", "email", "phone", "businessName"]);
-      case 2:
-        return await trigger(["industry", "services", "targetArea", "hasExistingWebsite", "hasLogo"]);
-      case 3:
-        return await trigger(["confirmedPackage", "timeline", "contentReady"]);
-      default:
-        return true;
-    }
-  };
-
-  const nextStep = async () => {
-    const isValid = await validateStep(step);
-    if (isValid && step < totalSteps) {
-      setStep(step + 1);
-    }
+  const nextStep = () => {
+    if (step < totalSteps) setStep(step + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const prevStep = () => {
     if (step > 1) setStep(step - 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const onSubmit = async (data: OnboardFormData) => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -167,562 +172,847 @@ export default function Onboard() {
       const response = await fetch("/api/onboard-form", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit form");
-      }
-
+      if (!response.ok) throw new Error("Failed to submit");
       setIsSubmitted(true);
-    } catch (error) {
+    } catch {
       setSubmitError("Something went wrong. Please try again or call us on 01442 601387.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const progress = (step / totalSteps) * 100;
+
   if (isSubmitted) {
     return (
-      <Layout>
-        <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative min-h-[70vh] flex items-center">
-          <DottedGrid className="opacity-30" spacing={32} />
-          <div className="content-width relative z-10">
-            <motion.div
-              className="max-w-xl mx-auto text-center"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="w-16 h-16 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center mx-auto mb-6">
-                <Check className="w-8 h-8 text-primary" />
-              </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                All set, thank you!
-              </h1>
-              <p className="text-muted-foreground mb-6">
-                We've received your details and sent you a confirmation email.
-                We'll be in touch within 24 hours to get things moving.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Questions? Call us on{" "}
-                <a href="tel:01442601387" className="text-primary hover:underline">
-                  01442 601387
-                </a>
-              </p>
-            </motion.div>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <motion.div
+          className="max-w-md w-full text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="w-16 h-16 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center mx-auto mb-6">
+            <Check className="w-8 h-8 text-primary" />
           </div>
-        </section>
-      </Layout>
+          <h1 className="text-2xl font-bold mb-3">All done, thank you!</h1>
+          <p className="text-muted-foreground mb-6">
+            We've received everything we need and sent you a confirmation email.
+            We'll be in touch within 24 hours to get your project started.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Questions? Call{" "}
+            <a href="tel:01442601387" className="text-primary hover:underline">
+              01442 601387
+            </a>
+          </p>
+        </motion.div>
+      </div>
     );
   }
 
   return (
-    <Layout>
-      <section className="pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 relative">
-        <DottedGrid className="opacity-30" spacing={32} />
-        <div className="content-width relative z-10">
-          <motion.div
-            className="max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Header */}
-            <div className="text-center mb-8">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
-                Welcome aboard
-              </h1>
-              <p className="text-muted-foreground">
-                Let's get everything we need to build your website.
-              </p>
-            </div>
-
-            {/* Form Card */}
-            <div className="bordered-section p-5 sm:p-8">
-              <DottedGrid className="opacity-10" spacing={24} />
-              <div className="relative z-10">
-                <StepHeader step={step} totalSteps={totalSteps} />
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <AnimatePresence mode="wait">
-                    {/* Step 1: Your Details */}
-                    {step === 1 && (
-                      <motion.div
-                        key="step1"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-5"
-                      >
-                        <h2 className="text-lg font-semibold mb-4">Your Details</h2>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">Your Name</label>
-                          <input
-                            {...register("name")}
-                            type="text"
-                            className="input-field"
-                            placeholder="John Smith"
-                          />
-                          <FormError message={errors.name?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">Email Address</label>
-                          <input
-                            {...register("email")}
-                            type="email"
-                            className="input-field"
-                            placeholder="john@example.com"
-                          />
-                          <FormError message={errors.email?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">Phone Number</label>
-                          <input
-                            {...register("phone")}
-                            type="tel"
-                            className="input-field"
-                            placeholder="07123 456789"
-                          />
-                          <FormError message={errors.phone?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">Business Name</label>
-                          <input
-                            {...register("businessName")}
-                            type="text"
-                            className="input-field"
-                            placeholder="Smith Plumbing Ltd"
-                          />
-                          <FormError message={errors.businessName?.message} />
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Step 2: About Your Business */}
-                    {step === 2 && (
-                      <motion.div
-                        key="step2"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-5"
-                      >
-                        <h2 className="text-lg font-semibold mb-4">About Your Business</h2>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">Industry</label>
-                          <select {...register("industry")} className="input-field">
-                            <option value="">Select your industry</option>
-                            {industries.map((ind) => (
-                              <option key={ind} value={ind}>{ind}</option>
-                            ))}
-                          </select>
-                          <FormError message={errors.industry?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">
-                            What services do you offer?
-                          </label>
-                          <textarea
-                            {...register("services")}
-                            className="input-field min-h-[100px]"
-                            placeholder="e.g., Boiler installations, emergency repairs, bathroom fitting..."
-                          />
-                          <FormError message={errors.services?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">
-                            Target Area
-                          </label>
-                          <input
-                            {...register("targetArea")}
-                            type="text"
-                            className="input-field"
-                            placeholder="e.g., Hemel Hempstead and surrounding areas"
-                          />
-                          <FormError message={errors.targetArea?.message} />
-                        </div>
-
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium mb-2">
-                              Do you have an existing website?
-                            </label>
-                            <div className="flex gap-3">
-                              <button
-                                type="button"
-                                onClick={() => setValue("hasExistingWebsite", true)}
-                                className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
-                                  hasExistingWebsite
-                                    ? "border-primary bg-primary/10 text-primary"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setValue("hasExistingWebsite", false)}
-                                className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
-                                  !hasExistingWebsite
-                                    ? "border-primary bg-primary/10 text-primary"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-medium mb-2">
-                              Do you have a logo?
-                            </label>
-                            <div className="flex gap-3">
-                              <button
-                                type="button"
-                                onClick={() => setValue("hasLogo", true)}
-                                className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
-                                  watch("hasLogo")
-                                    ? "border-primary bg-primary/10 text-primary"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                Yes
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => setValue("hasLogo", false)}
-                                className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
-                                  !watch("hasLogo")
-                                    ? "border-primary bg-primary/10 text-primary"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                No
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-
-                        {hasExistingWebsite && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: "auto" }}
-                            exit={{ opacity: 0, height: 0 }}
-                          >
-                            <label className="block text-sm font-medium mb-2">
-                              Current website URL
-                            </label>
-                            <input
-                              {...register("existingWebsiteUrl")}
-                              type="url"
-                              className="input-field"
-                              placeholder="https://www.example.com"
-                            />
-                          </motion.div>
-                        )}
-                      </motion.div>
-                    )}
-
-                    {/* Step 3: Your Project */}
-                    {step === 3 && (
-                      <motion.div
-                        key="step3"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-5"
-                      >
-                        <h2 className="text-lg font-semibold mb-4">Your Project</h2>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-3">
-                            Confirmed Package
-                          </label>
-                          <div className="grid gap-3">
-                            {packages.map((pkg) => (
-                              <label
-                                key={pkg.id}
-                                className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                                  watch("confirmedPackage") === pkg.id
-                                    ? "border-primary bg-primary/5"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <input
-                                    {...register("confirmedPackage")}
-                                    type="radio"
-                                    value={pkg.id}
-                                    className="sr-only"
-                                  />
-                                  <div
-                                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                                      watch("confirmedPackage") === pkg.id
-                                        ? "border-primary bg-primary"
-                                        : "border-border"
-                                    }`}
-                                  >
-                                    {watch("confirmedPackage") === pkg.id && (
-                                      <Check className="w-3 h-3 text-white" />
-                                    )}
-                                  </div>
-                                  <span className="font-medium">{pkg.name}</span>
-                                </div>
-                                <span className="text-primary font-semibold">{pkg.price}</span>
-                              </label>
-                            ))}
-                          </div>
-                          <FormError message={errors.confirmedPackage?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-3">
-                            Any add-ons? (Optional)
-                          </label>
-                          <div className="grid gap-3">
-                            {availableAddons.map((addon) => (
-                              <button
-                                key={addon.id}
-                                type="button"
-                                onClick={() => toggleAddon(addon.id)}
-                                className={`flex items-center justify-between p-4 rounded-xl border-2 text-left transition-all ${
-                                  selectedAddons.includes(addon.id)
-                                    ? "border-primary bg-primary/5"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div
-                                    className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
-                                      selectedAddons.includes(addon.id)
-                                        ? "border-primary bg-primary"
-                                        : "border-border"
-                                    }`}
-                                  >
-                                    {selectedAddons.includes(addon.id) && (
-                                      <Check className="w-3 h-3 text-white" />
-                                    )}
-                                  </div>
-                                  <span className="font-medium">{addon.name}</span>
-                                </div>
-                                <span className="text-primary font-semibold">{addon.price}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-3">Timeline</label>
-                          <div className="grid gap-2">
-                            {timelines.map((t) => (
-                              <label
-                                key={t.id}
-                                className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                                  watch("timeline") === t.id
-                                    ? "border-primary bg-primary/5"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                <input
-                                  {...register("timeline")}
-                                  type="radio"
-                                  value={t.id}
-                                  className="sr-only"
-                                />
-                                <div
-                                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                                    watch("timeline") === t.id
-                                      ? "border-primary bg-primary"
-                                      : "border-border"
-                                  }`}
-                                >
-                                  {watch("timeline") === t.id && (
-                                    <div className="w-2 h-2 rounded-full bg-white" />
-                                  )}
-                                </div>
-                                <span className="text-sm">{t.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          <FormError message={errors.timeline?.message} />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-3">
-                            Content readiness
-                          </label>
-                          <div className="grid gap-2">
-                            {contentOptions.map((opt) => (
-                              <label
-                                key={opt.id}
-                                className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
-                                  watch("contentReady") === opt.id
-                                    ? "border-primary bg-primary/5"
-                                    : "border-border hover:border-muted-foreground"
-                                }`}
-                              >
-                                <input
-                                  {...register("contentReady")}
-                                  type="radio"
-                                  value={opt.id}
-                                  className="sr-only"
-                                />
-                                <div
-                                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                                    watch("contentReady") === opt.id
-                                      ? "border-primary bg-primary"
-                                      : "border-border"
-                                  }`}
-                                >
-                                  {watch("contentReady") === opt.id && (
-                                    <div className="w-2 h-2 rounded-full bg-white" />
-                                  )}
-                                </div>
-                                <span className="text-sm">{opt.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                          <FormError message={errors.contentReady?.message} />
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {/* Step 4: Review */}
-                    {step === 4 && (
-                      <motion.div
-                        key="step4"
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-5"
-                      >
-                        <h2 className="text-lg font-semibold mb-4">Almost done!</h2>
-
-                        <div>
-                          <label className="block text-sm font-medium mb-2">
-                            Anything else we should know? (Optional)
-                          </label>
-                          <textarea
-                            {...register("additionalNotes")}
-                            className="input-field min-h-[120px]"
-                            placeholder="Any specific requirements, preferences, or things you'd like us to know..."
-                          />
-                        </div>
-
-                        {/* Summary */}
-                        <div className="p-4 rounded-xl bg-secondary border border-border">
-                          <h3 className="font-semibold mb-3 text-sm uppercase tracking-wider text-muted-foreground">
-                            Summary
-                          </h3>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Name</span>
-                              <span className="font-medium">{watch("name")}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Business</span>
-                              <span className="font-medium">{watch("businessName")}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Package</span>
-                              <span className="font-medium text-primary">
-                                {packages.find((p) => p.id === watch("confirmedPackage"))?.name} (
-                                {packages.find((p) => p.id === watch("confirmedPackage"))?.price})
-                              </span>
-                            </div>
-                            {selectedAddons.length > 0 && (
-                              <div className="flex justify-between">
-                                <span className="text-muted-foreground">Add-ons</span>
-                                <span className="font-medium">
-                                  {selectedAddons.map((id) =>
-                                    availableAddons.find((a) => a.id === id)?.name
-                                  ).join(", ")}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {submitError && (
-                          <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
-                            {submitError}
-                          </div>
-                        )}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Navigation Buttons */}
-                  <div className="flex justify-between mt-8 pt-6 border-t border-border">
-                    {step > 1 ? (
-                      <button
-                        type="button"
-                        onClick={prevStep}
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        <ArrowLeft className="w-4 h-4" />
-                        Back
-                      </button>
-                    ) : (
-                      <div />
-                    )}
-
-                    {step < totalSteps ? (
-                      <button
-                        type="button"
-                        onClick={nextStep}
-                        className="btn-primary"
-                      >
-                        Continue
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </button>
-                    ) : (
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="btn-primary"
-                      >
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Submitting...
-                          </>
-                        ) : (
-                          <>
-                            Submit
-                            <Send className="w-4 h-4 ml-2" />
-                          </>
-                        )}
-                      </button>
-                    )}
-                  </div>
-                </form>
-              </div>
-            </div>
-
-            {/* Help text */}
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              Need help? Call us on{" "}
-              <a href="tel:01442601387" className="text-primary hover:underline">
-                01442 601387
-              </a>
-            </p>
-          </motion.div>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
+          <span className="text-lg font-bold tracking-tight">
+            one<span className="text-primary">simple</span>site
+          </span>
+          <span className="text-xs text-muted-foreground">Client Onboarding</span>
         </div>
-      </section>
-    </Layout>
+      </header>
+
+      {/* Progress Bar */}
+      <div className="sticky top-[57px] z-40 bg-background border-b border-border">
+        <div className="max-w-2xl mx-auto px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-muted-foreground">Step {step} of {totalSteps}</span>
+            <span className="text-xs font-medium">{Math.round(progress)}% complete</span>
+          </div>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-primary rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Form Content */}
+      <main className="max-w-2xl mx-auto px-4 py-8">
+        <AnimatePresence mode="wait">
+          {/* Step 1: Your Details */}
+          {step === 1 && (
+            <motion.div
+              key="step1"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Your Details</h2>
+                <p className="text-sm text-muted-foreground">Let's start with the basics.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Your Name *</label>
+                  <input
+                    type="text"
+                    value={formData.contactName}
+                    onChange={(e) => updateField("contactName", e.target.value)}
+                    className="input-field"
+                    placeholder="John Smith"
+                  />
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1.5">Email Address *</label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => updateField("email", e.target.value)}
+                      className="input-field"
+                      placeholder="john@example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1.5">Phone Number *</label>
+                    <input
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => updateField("phone", e.target.value)}
+                      className="input-field"
+                      placeholder="07123 456789"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Business Name *</label>
+                  <input
+                    type="text"
+                    value={formData.businessName}
+                    onChange={(e) => updateField("businessName", e.target.value)}
+                    className="input-field"
+                    placeholder="Smith Plumbing Ltd"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Trading Name (if different)</label>
+                  <input
+                    type="text"
+                    value={formData.tradingName}
+                    onChange={(e) => updateField("tradingName", e.target.value)}
+                    className="input-field"
+                    placeholder="Leave blank if same as above"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Business Type</label>
+                  <select
+                    value={formData.businessType}
+                    onChange={(e) => updateField("businessType", e.target.value)}
+                    className="input-field"
+                  >
+                    <option value="">Select...</option>
+                    {businessTypes.map((type) => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 2: Location & Contact */}
+          {step === 2 && (
+            <motion.div
+              key="step2"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Location & Contact</h2>
+                <p className="text-sm text-muted-foreground">Where you're based and how customers can reach you.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Business Address</label>
+                  <textarea
+                    value={formData.businessAddress}
+                    onChange={(e) => updateField("businessAddress", e.target.value)}
+                    className="input-field min-h-[80px]"
+                    placeholder="123 High Street, Hemel Hempstead, HP1 1AA"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Is your business location-based or mobile?</label>
+                  <div className="flex gap-3">
+                    {["Location-based", "Mobile/Travel to customers", "Both"].map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => updateField("isLocationBased", opt)}
+                        className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                          formData.isLocationBased === opt
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Service Areas *</label>
+                  <input
+                    type="text"
+                    value={formData.serviceAreas}
+                    onChange={(e) => updateField("serviceAreas", e.target.value)}
+                    className="input-field"
+                    placeholder="e.g., Hemel Hempstead, St Albans, Watford, and surrounding areas"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Show full address on website?</label>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => updateField("showAddressPublicly", true)}
+                      className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                        formData.showAddressPublicly
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-muted-foreground"
+                      }`}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateField("showAddressPublicly", false)}
+                      className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                        !formData.showAddressPublicly
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border hover:border-muted-foreground"
+                      }`}
+                    >
+                      No, just show area
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-border">
+                  <p className="text-sm font-medium mb-3">Contact details for your website</p>
+
+                  <div className="space-y-4">
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1.5">Public Phone Number *</label>
+                        <input
+                          type="tel"
+                          value={formData.publicPhone}
+                          onChange={(e) => updateField("publicPhone", e.target.value)}
+                          className="input-field"
+                          placeholder="01234 567890"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1.5">WhatsApp Number</label>
+                        <input
+                          type="tel"
+                          value={formData.whatsappNumber}
+                          onChange={(e) => updateField("whatsappNumber", e.target.value)}
+                          className="input-field"
+                          placeholder="Leave blank if not using"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-1.5">Public Email Address *</label>
+                      <input
+                        type="email"
+                        value={formData.publicEmail}
+                        onChange={(e) => updateField("publicEmail", e.target.value)}
+                        className="input-field"
+                        placeholder="info@yourbusiness.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Preferred contact method for enquiries</label>
+                      <select
+                        value={formData.preferredContact}
+                        onChange={(e) => updateField("preferredContact", e.target.value)}
+                        className="input-field"
+                      >
+                        <option value="">Select...</option>
+                        <option value="phone">Phone Call</option>
+                        <option value="email">Email</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="form">Contact Form</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 3: About Your Business */}
+          {step === 3 && (
+            <motion.div
+              key="step3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">About Your Business</h2>
+                <p className="text-sm text-muted-foreground">This helps us write great content for your site.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">What does your business do? *</label>
+                  <p className="text-xs text-muted-foreground mb-2">Explain as if to a new customer who's never heard of you.</p>
+                  <textarea
+                    value={formData.whatYouDo}
+                    onChange={(e) => updateField("whatYouDo", e.target.value)}
+                    className="input-field min-h-[100px]"
+                    placeholder="e.g., We provide emergency and scheduled plumbing services for homes across Hertfordshire. From leaky taps to full bathroom installations, we handle it all..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Who are your ideal customers? *</label>
+                  <textarea
+                    value={formData.idealCustomers}
+                    onChange={(e) => updateField("idealCustomers", e.target.value)}
+                    className="input-field min-h-[80px]"
+                    placeholder="e.g., Homeowners, landlords, letting agents, small businesses..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Why should someone choose you over competitors?</label>
+                  <p className="text-xs text-muted-foreground mb-2">Your unique selling points, guarantees, experience, etc.</p>
+                  <textarea
+                    value={formData.whyChooseYou}
+                    onChange={(e) => updateField("whyChooseYou", e.target.value)}
+                    className="input-field min-h-[100px]"
+                    placeholder="e.g., 20 years experience, same-day emergency callouts, no call-out charge, fully insured, 5-star Google reviews..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-3">What tone should your website have?</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {toneOptions.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => updateField("tonePreference", opt.id)}
+                        className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                          formData.tonePreference === opt.id
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 4: Services */}
+          {step === 4 && (
+            <motion.div
+              key="step4"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Your Services</h2>
+                <p className="text-sm text-muted-foreground">What do you offer to customers?</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">List all your services *</label>
+                  <p className="text-xs text-muted-foreground mb-2">Include a brief description for each if possible.</p>
+                  <textarea
+                    value={formData.services}
+                    onChange={(e) => updateField("services", e.target.value)}
+                    className="input-field min-h-[180px]"
+                    placeholder={`e.g.,
+• Boiler Installation & Replacement - New boiler fitting with up to 10 year warranty
+• Boiler Servicing - Annual servicing to keep your boiler running efficiently
+• Emergency Repairs - 24/7 callout for urgent plumbing issues
+• Bathroom Installation - Full bathroom design and fitting
+• General Plumbing - Taps, toilets, pipes, and all general repairs`}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Do you want pricing shown on your website?</label>
+                  <div className="flex gap-3">
+                    {["Yes", "No, enquiry-based", "Some services only"].map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => updateField("showPricing", opt)}
+                        className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                          formData.showPricing === opt
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {(formData.showPricing === "Yes" || formData.showPricing === "Some services only") && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                  >
+                    <label className="block text-sm font-medium mb-1.5">Pricing Information</label>
+                    <textarea
+                      value={formData.pricingInfo}
+                      onChange={(e) => updateField("pricingInfo", e.target.value)}
+                      className="input-field min-h-[100px]"
+                      placeholder={`e.g.,
+• Boiler Service: £79
+• Call-out fee: Free
+• Bathroom Installation: From £2,500`}
+                    />
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 5: Branding & Images */}
+          {step === 5 && (
+            <motion.div
+              key="step5"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Branding & Images</h2>
+                <p className="text-sm text-muted-foreground">Visual elements for your website.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Do you have a logo?</label>
+                  <div className="flex gap-3">
+                    {["Yes, I'll send it", "No, I need one", "No, just use text"].map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => updateField("hasLogo", opt)}
+                        className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                          formData.hasLogo === opt
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Brand Colours (if you have them)</label>
+                  <input
+                    type="text"
+                    value={formData.brandColors}
+                    onChange={(e) => updateField("brandColors", e.target.value)}
+                    className="input-field"
+                    placeholder="e.g., Blue and white, or #1E40AF"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-3">What style do you prefer?</label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {styleOptions.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => updateField("stylePreference", opt.id)}
+                        className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                          formData.stylePreference === opt.id
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-border">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Do you have professional photos of your work?</label>
+                    <div className="flex gap-3">
+                      {["Yes, I'll send them", "Some, not many", "No"].map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => updateField("hasPhotos", opt)}
+                          className={`flex-1 py-2.5 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
+                            formData.hasPhotos === opt
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border hover:border-muted-foreground"
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium mb-2">Can we use high-quality stock images if needed?</label>
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => updateField("useStockImages", true)}
+                        className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                          formData.useStockImages
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateField("useStockImages", false)}
+                        className={`flex-1 py-2.5 px-4 rounded-lg border-2 text-sm font-medium transition-all ${
+                          !formData.useStockImages
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        No, only my photos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 6: Trust & Proof */}
+          {step === 6 && (
+            <motion.div
+              key="step6"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Trust & Proof</h2>
+                <p className="text-sm text-muted-foreground">Reviews and credentials that build customer confidence.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Google Business Profile Link</label>
+                  <p className="text-xs text-muted-foreground mb-2">If you have one, we can pull in your reviews.</p>
+                  <input
+                    type="url"
+                    value={formData.googleBusinessLink}
+                    onChange={(e) => updateField("googleBusinessLink", e.target.value)}
+                    className="input-field"
+                    placeholder="https://g.page/yourbusiness or search link"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Testimonials to Include</label>
+                  <p className="text-xs text-muted-foreground mb-2">Paste any specific reviews or testimonials you want featured.</p>
+                  <textarea
+                    value={formData.testimonials}
+                    onChange={(e) => updateField("testimonials", e.target.value)}
+                    className="input-field min-h-[120px]"
+                    placeholder={`e.g.,
+"Fantastic service, arrived within an hour and fixed the leak quickly. Would definitely recommend!" - Sarah, Hemel Hempstead
+
+"Used them for our bathroom renovation. Great quality work and very professional." - Mike, St Albans`}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Certifications & Accreditations</label>
+                  <p className="text-xs text-muted-foreground mb-2">Any qualifications, memberships, or guarantees to display.</p>
+                  <textarea
+                    value={formData.certifications}
+                    onChange={(e) => updateField("certifications", e.target.value)}
+                    className="input-field min-h-[80px]"
+                    placeholder="e.g., Gas Safe Registered, NICEIC Approved, Checkatrade Member, Public Liability Insured..."
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 7: Website Preferences */}
+          {step === 7 && (
+            <motion.div
+              key="step7"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Website Preferences</h2>
+                <p className="text-sm text-muted-foreground">How your website should work and what it should rank for.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-3">What should visitors be encouraged to do? *</label>
+                  <p className="text-xs text-muted-foreground mb-2">Select all that apply.</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {ctaOptions.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => toggleCTA(opt.id)}
+                        className={`py-3 px-4 rounded-lg border-2 text-sm font-medium transition-all text-left flex items-center gap-2 ${
+                          formData.mainCTA.includes(opt.id)
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        <div className={`w-4 h-4 rounded border-2 flex items-center justify-center ${
+                          formData.mainCTA.includes(opt.id) ? "border-primary bg-primary" : "border-border"
+                        }`}>
+                          {formData.mainCTA.includes(opt.id) && <Check className="w-2.5 h-2.5 text-white" />}
+                        </div>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Primary Location for Google Searches *</label>
+                  <p className="text-xs text-muted-foreground mb-2">The main area you want to rank for.</p>
+                  <input
+                    type="text"
+                    value={formData.primaryLocation}
+                    onChange={(e) => updateField("primaryLocation", e.target.value)}
+                    className="input-field"
+                    placeholder="e.g., Hemel Hempstead"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Key Services to Rank For</label>
+                  <p className="text-xs text-muted-foreground mb-2">What searches should find your website?</p>
+                  <input
+                    type="text"
+                    value={formData.keyServices}
+                    onChange={(e) => updateField("keyServices", e.target.value)}
+                    className="input-field"
+                    placeholder="e.g., emergency plumber, boiler installation, bathroom fitter"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Any Extra Pages Needed?</label>
+                  <p className="text-xs text-muted-foreground mb-2">We include Home, About, Services, Contact by default.</p>
+                  <input
+                    type="text"
+                    value={formData.extraPages}
+                    onChange={(e) => updateField("extraPages", e.target.value)}
+                    className="input-field"
+                    placeholder="e.g., Gallery, FAQ, Areas We Cover, Testimonials"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 8: Final Details */}
+          {step === 8 && (
+            <motion.div
+              key="step8"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="space-y-6"
+            >
+              <div>
+                <h2 className="text-xl font-bold mb-1">Final Details</h2>
+                <p className="text-sm text-muted-foreground">Almost done! Just a few more things.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-3">Confirmed Package *</label>
+                  <div className="space-y-2">
+                    {packages.map((pkg) => (
+                      <button
+                        key={pkg.id}
+                        type="button"
+                        onClick={() => updateField("confirmedPackage", pkg.id)}
+                        className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
+                          formData.confirmedPackage === pkg.id
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:border-muted-foreground"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                            formData.confirmedPackage === pkg.id ? "border-primary bg-primary" : "border-border"
+                          }`}>
+                            {formData.confirmedPackage === pkg.id && <Check className="w-3 h-3 text-white" />}
+                          </div>
+                          <span className="font-medium">{pkg.name}</span>
+                        </div>
+                        <span className="text-primary font-semibold">{pkg.price}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Anything that MUST be included?</label>
+                  <textarea
+                    value={formData.mustInclude}
+                    onChange={(e) => updateField("mustInclude", e.target.value)}
+                    className="input-field min-h-[80px]"
+                    placeholder="e.g., Must mention 24/7 availability, must show Gas Safe registration number..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Anything that must NOT be included?</label>
+                  <textarea
+                    value={formData.mustNotInclude}
+                    onChange={(e) => updateField("mustNotInclude", e.target.value)}
+                    className="input-field min-h-[80px]"
+                    placeholder="e.g., Don't show my home address, don't mention old business name..."
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1.5">Any other notes or special requests?</label>
+                  <textarea
+                    value={formData.additionalNotes}
+                    onChange={(e) => updateField("additionalNotes", e.target.value)}
+                    className="input-field min-h-[100px]"
+                    placeholder="Anything else we should know..."
+                  />
+                </div>
+
+                {submitError && (
+                  <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                    {submitError}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Navigation */}
+        <div className="flex justify-between mt-8 pt-6 border-t border-border">
+          {step > 1 ? (
+            <button
+              type="button"
+              onClick={prevStep}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </button>
+          ) : (
+            <div />
+          )}
+
+          {step < totalSteps ? (
+            <button
+              type="button"
+              onClick={nextStep}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-primary-foreground font-medium hover:brightness-110 transition-all"
+            >
+              Continue
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={isSubmitting || !formData.confirmedPackage}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-primary-foreground font-medium hover:brightness-110 transition-all disabled:opacity-50"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  Submit
+                  <Send className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          )}
+        </div>
+      </main>
+
+      {/* Help Footer */}
+      <footer className="border-t border-border mt-8">
+        <div className="max-w-2xl mx-auto px-4 py-4 text-center">
+          <p className="text-sm text-muted-foreground">
+            Need help? Call{" "}
+            <a href="tel:01442601387" className="text-primary hover:underline">
+              01442 601387
+            </a>
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
