@@ -14,6 +14,7 @@ import Cookies from "./pages/Cookies";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Services from "./pages/Services";
+import Onboard from "./pages/Onboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,8 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/cookies" element={<Cookies />} />
+          {/* Hidden onboarding page - not in navigation */}
+          <Route path="/onboard" element={<Onboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
