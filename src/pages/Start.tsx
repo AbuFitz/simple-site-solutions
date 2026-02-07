@@ -2,12 +2,24 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ArrowRight, ArrowLeft, Send, Globe, X, Loader2 } from "lucide-react";
+import { Check, ArrowRight, ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { contactFormSchema, websiteUrlSchema, type ContactFormData } from "@/lib/validations";
+
+const formSchema = z.object({
+  businessName: z.string().min(2, "Business name is required"),
+  name: z.string().min(2, "Your name is required"),
+  email: z.string().email("Please enter a valid email"),
+  phone: z.string().optional(),
+  businessDescription: z.string().min(5, "Please tell us what your business does"),
+  websiteUrl: z.string().optional(),
+  details: z.string().optional(),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 function StepHeader({
   title,
@@ -53,51 +65,44 @@ function FormError({ message }: { message?: string }) {
 
 const packages = [
   {
-    id: "essential",
-    name: "Essential",
+    id: "starter",
+    name: "The Starter",
     price: "£199",
     description: "Everything you need to get online properly",
   },
   {
-    id: "business",
-    name: "Business",
+    id: "sorted",
+    name: "The Sorted",
     price: "£399",
     description: "Look established and win trust",
     popular: true,
   },
   {
-    id: "growth",
-    name: "Growth",
+    id: "works",
+    name: "The Works",
     price: "£649",
     description: "Compete seriously and scale",
   },
-];
-
-const industries = [
-  "Plumber",
-  "Electrician",
-  "Mechanic",
-  "Cleaner",
-  "Tutor",
-  "Barber/Salon",
-  "Builder",
-  "Decorator",
-  "Landscaper",
-  "Other",
+  {
+    id: "unsure",
+    name: "Not sure yet",
+    price: "",
+    description: "Help me choose the right package",
+  },
 ];
 
 const availableAddons = [
-  { id: "hosting", name: "Hosting + Maintenance", price: "£95/year", description: "Hosting, domain connection, updates, support — we handle it all" },
-  { id: "google-business", name: "Google Business Profile Setup", price: "£79", description: "Profile setup, optimisation, and local visibility boost" },
+  { id: "logo", name: "Logo Design", price: "£49" },
+  { id: "google-business", name: "Google Business Profile Setup", price: "£39" },
+  { id: "booking", name: "Booking System Setup", price: "£39" },
+  { id: "email-templates", name: "Extra Email Templates (×3)", price: "£29" },
+  { id: "seo-audit", name: "SEO Audit Report", price: "£59" },
+  { id: "legal-pages", name: "Legal Pages Pack", price: "£19" },
 ];
 
 export default function Start() {
   const [step, setStep] = useState(1);
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
-  const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
-  const [hasExistingWebsite, setHasExistingWebsite] = useState<boolean | null>(null);
-  const [existingWebsiteUrl, setExistingWebsiteUrl] = useState("");
-  const [urlError, setUrlError] = useState<string | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -106,21 +111,22 @@ export default function Start() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-    trigger,
-  } = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
       businessName: "",
       name: "",
       email: "",
       phone: "",
+      businessDescription: "",
+      websiteUrl: "",
       details: "",
     },
   });
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     setSubmitError(null);
 
@@ -133,9 +139,6 @@ export default function Start() {
         body: JSON.stringify({
           ...data,
           selectedPackage,
-          selectedIndustry,
-          hasExistingWebsite,
-          existingWebsiteUrl: hasExistingWebsite ? existingWebsiteUrl : undefined,
           selectedAddons,
         }),
       });
@@ -164,28 +167,12 @@ export default function Start() {
     );
   };
 
-  const validateUrl = (url: string): boolean => {
-    const result = websiteUrlSchema.safeParse(url);
-    if (!result.success) {
-      setUrlError(result.error.errors[0]?.message || "Invalid URL");
-      return false;
-    }
-    setUrlError(null);
-    return true;
-  };
-
   const canProceedStep1 = selectedPackage !== null;
-  const canProceedStep2 = selectedIndustry !== null;
-  const canProceedStep3 =
-    hasExistingWebsite !== null &&
-    (hasExistingWebsite === false || (existingWebsiteUrl.trim() !== "" && !urlError));
 
   const getProgressValue = () => {
     if (!selectedPackage) return 0;
-    if (step === 1) return 20;
-    if (step === 2) return 40;
-    if (step === 3) return 60;
-    if (step === 4) return 80;
+    if (step === 1) return 33;
+    if (step === 2) return 66;
     return 100;
   };
 
@@ -235,7 +222,7 @@ export default function Start() {
                               <span className="text-sm sm:text-base md:text-lg font-bold">{pkg.name}</span>
                               {pkg.popular && (
                                 <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[9px] sm:text-[10px] font-medium border border-primary/30">
-                                  Popular
+                                  Most Popular
                                 </span>
                               )}
                             </div>
@@ -244,16 +231,11 @@ export default function Start() {
                             </p>
                           </div>
                           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                            <div className="text-right flex items-baseline gap-1 sm:gap-2">
-                              {pkg.originalPrice && (
-                                <span className="text-[10px] sm:text-xs text-muted-foreground line-through">
-                                  {pkg.originalPrice}
-                                </span>
-                              )}
+                            {pkg.price && (
                               <span className="text-base sm:text-lg md:text-xl font-bold text-primary">
                                 {pkg.price}
                               </span>
-                            </div>
+                            )}
                             <div
                               className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                                 selectedPackage === pkg.id
@@ -281,7 +263,7 @@ export default function Start() {
                   </motion.div>
                 )}
 
-                {/* Step 2: Industry */}
+                {/* Step 2: Add-ons Selection */}
                 {step === 2 && (
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
@@ -291,243 +273,39 @@ export default function Start() {
                     <StepHeader
                       title={
                         <>
-                          What's your <span className="text-primary">industry?</span>
+                          Any <span className="text-primary">add-ons?</span>
                         </>
                       }
-                      description="This helps us apply the right proven layouts for your business."
+                      description="Optional extras to enhance your website. Select any or skip."
                       progress={getProgressValue()}
                     />
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-2 mb-6 sm:mb-8">
-                      {industries.map((industry) => (
-                        <button
-                          key={industry}
-                          onClick={() => setSelectedIndustry(industry)}
-                          className={`p-2.5 sm:p-3 rounded-lg text-center font-medium transition-all text-[11px] sm:text-xs md:text-sm border-2 ${
-                            selectedIndustry === industry
-                              ? "bg-primary text-primary-foreground border-primary"
-                              : "bg-card text-foreground border-border hover:border-muted-foreground/50"
-                          }`}
-                        >
-                          {industry}
-                        </button>
-                      ))}
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                      <button
-                        onClick={() => setStep(1)}
-                        className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
-                      >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back
-                      </button>
-                      <button
-                        onClick={() => setStep(3)}
-                        disabled={!canProceedStep2}
-                        className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Continue
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Step 3: Existing Website */}
-                {step === 3 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                  >
-                    <StepHeader
-                      title={
-                        <>
-                          Do you have an <span className="text-primary">existing website?</span>
-                        </>
-                      }
-                      description="This helps us understand where you're starting from."
-                      progress={getProgressValue()}
-                    />
-
-                    <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-                      <button
-                        onClick={() => setHasExistingWebsite(true)}
-                        className={`w-full p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all flex items-center gap-3 border-2 bg-card ${
-                          hasExistingWebsite === true
-                            ? "border-primary"
-                            : "border-border hover:border-muted-foreground/50"
-                        }`}
-                      >
-                        <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 ${
-                            hasExistingWebsite === true ? "bg-primary" : "bg-muted"
-                          }`}
-                        >
-                          <Globe
-                            className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                              hasExistingWebsite === true ? "text-primary-foreground" : "text-muted-foreground"
-                            }`}
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-sm sm:text-base font-semibold block">Yes, I have a website</span>
-                          <span className="text-[10px] sm:text-xs text-muted-foreground">
-                            We'll review it before we start
-                          </span>
-                        </div>
-                        <div
-                          className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
-                            hasExistingWebsite === true ? "border-primary bg-primary" : "border-muted-foreground/30"
-                          }`}
-                        >
-                          {hasExistingWebsite === true && (
-                            <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
-                          )}
-                        </div>
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setHasExistingWebsite(false);
-                          setExistingWebsiteUrl("");
-                          setUrlError(null);
-                        }}
-                        className={`w-full p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all flex items-center gap-3 border-2 bg-card ${
-                          hasExistingWebsite === false
-                            ? "border-primary"
-                            : "border-border hover:border-muted-foreground/50"
-                        }`}
-                      >
-                        <div
-                          className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 ${
-                            hasExistingWebsite === false ? "bg-primary" : "bg-muted"
-                          }`}
-                        >
-                          <X
-                            className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                              hasExistingWebsite === false ? "text-primary-foreground" : "text-muted-foreground"
-                            }`}
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-sm sm:text-base font-semibold block">No, starting fresh</span>
-                          <span className="text-[10px] sm:text-xs text-muted-foreground">
-                            We'll build everything from scratch
-                          </span>
-                        </div>
-                        <div
-                          className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${
-                            hasExistingWebsite === false ? "border-primary bg-primary" : "border-muted-foreground/30"
-                          }`}
-                        >
-                          {hasExistingWebsite === false && (
-                            <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
-                          )}
-                        </div>
-                      </button>
-                    </div>
-
-                    {/* URL Input - Only shows when "Yes" is selected */}
-                    <AnimatePresence>
-                      {hasExistingWebsite === true && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="mb-4 sm:mb-6"
-                        >
-                          <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                            Your website URL
-                          </label>
-                          <input
-                            type="url"
-                            value={existingWebsiteUrl}
-                            onChange={(e) => {
-                              setExistingWebsiteUrl(e.target.value);
-                              if (e.target.value) validateUrl(e.target.value);
-                              else setUrlError(null);
-                            }}
-                            onBlur={() => {
-                              if (existingWebsiteUrl) validateUrl(existingWebsiteUrl);
-                            }}
-                            placeholder="https://www.example.com"
-                            className={`input-base text-sm ${urlError ? "border-destructive focus:ring-destructive/50" : ""}`}
-                          />
-                          <FormError message={urlError || undefined} />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-
-                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                      <button
-                        onClick={() => setStep(2)}
-                        className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
-                      >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back
-                      </button>
-                      <button
-                        onClick={() => setStep(4)}
-                        disabled={!canProceedStep3}
-                        className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Continue
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Step 4: Add-ons Selection */}
-                {step === 4 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                  >
-                    <StepHeader
-                      title={
-                        <>
-                          Any <span className="text-primary">extras?</span>
-                        </>
-                      }
-                      description="Optional add-ons to enhance your website. Select any or skip."
-                      progress={getProgressValue()}
-                    />
-
-                    <div className="grid gap-1.5 sm:gap-2 mb-4 sm:mb-6">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
                       {availableAddons.map((addon) => (
                         <button
                           key={addon.id}
                           onClick={() => toggleAddon(addon.id)}
-                          className={`w-full p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all flex items-center justify-between border-2 bg-card ${
+                          className={`p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all border-2 bg-card ${
                             selectedAddons.includes(addon.id)
                               ? "border-primary"
                               : "border-border hover:border-muted-foreground/50"
                           }`}
                         >
-                          <div className="flex-1 min-w-0 mr-2">
-                            <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 flex-wrap">
-                              <span className="text-xs sm:text-sm font-semibold">{addon.name}</span>
-                              <span className="text-[10px] sm:text-xs text-primary font-medium">{addon.price}</span>
+                          <div className="flex items-start justify-between mb-1">
+                            <span className="text-xs sm:text-sm font-semibold leading-tight">{addon.name}</span>
+                            <div
+                              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${
+                                selectedAddons.includes(addon.id)
+                                  ? "border-primary bg-primary"
+                                  : "border-muted-foreground/30"
+                              }`}
+                            >
+                              {selectedAddons.includes(addon.id) && (
+                                <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
+                              )}
                             </div>
-                            <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
-                              {addon.description}
-                            </p>
                           </div>
-                          <div
-                            className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md border-2 flex items-center justify-center transition-colors shrink-0 ${
-                              selectedAddons.includes(addon.id)
-                                ? "border-primary bg-primary"
-                                : "border-muted-foreground/30"
-                            }`}
-                          >
-                            {selectedAddons.includes(addon.id) && (
-                              <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
-                            )}
-                          </div>
+                          <span className="text-[10px] sm:text-xs text-primary font-medium">{addon.price}</span>
                         </button>
                       ))}
                     </div>
@@ -545,14 +323,14 @@ export default function Start() {
 
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <button
-                        onClick={() => setStep(3)}
+                        onClick={() => setStep(1)}
                         className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
                       >
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back
                       </button>
                       <button
-                        onClick={() => setStep(5)}
+                        onClick={() => setStep(3)}
                         className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2"
                       >
                         {selectedAddons.length > 0 ? "Continue" : "Skip & Continue"}
@@ -562,8 +340,8 @@ export default function Start() {
                   </motion.div>
                 )}
 
-                {/* Step 5: Details */}
-                {step === 5 && (
+                {/* Step 3: Your Details */}
+                {step === 3 && (
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -572,7 +350,7 @@ export default function Start() {
                     <StepHeader
                       title={
                         <>
-                          Tell us about <span className="text-primary">your business</span>
+                          Tell us about <span className="text-primary">you</span>
                         </>
                       }
                       description="Just the basics. We'll take it from here."
@@ -591,6 +369,7 @@ export default function Start() {
                         />
                         <FormError message={errors.businessName?.message} />
                       </div>
+
                       <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
                         <div>
                           <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
@@ -605,7 +384,7 @@ export default function Start() {
                         </div>
                         <div>
                           <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                            Phone
+                            Phone Number
                           </label>
                           <input
                             {...register("phone")}
@@ -615,9 +394,10 @@ export default function Start() {
                           <FormError message={errors.phone?.message} />
                         </div>
                       </div>
+
                       <div>
                         <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          Email *
+                          Email Address *
                         </label>
                         <input
                           type="email"
@@ -627,13 +407,38 @@ export default function Start() {
                         />
                         <FormError message={errors.email?.message} />
                       </div>
+
                       <div>
                         <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          Anything else?
+                          What does your business do? *
+                        </label>
+                        <input
+                          {...register("businessDescription")}
+                          placeholder="e.g. Mobile mechanic, Hair salon, Personal trainer..."
+                          className={`input-base text-sm ${errors.businessDescription ? "border-destructive focus:ring-destructive/50" : ""}`}
+                        />
+                        <FormError message={errors.businessDescription?.message} />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
+                          Current website URL (if you have one)
+                        </label>
+                        <input
+                          {...register("websiteUrl")}
+                          placeholder="e.g. www.yourbusiness.co.uk"
+                          className={`input-base text-sm ${errors.websiteUrl ? "border-destructive focus:ring-destructive/50" : ""}`}
+                        />
+                        <FormError message={errors.websiteUrl?.message} />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
+                          Anything else we should know?
                         </label>
                         <textarea
                           {...register("details")}
-                          placeholder="Tell us about your services, target customers, or anything specific..."
+                          placeholder="Tell us anything — your goals, timeline, questions..."
                           rows={3}
                           className={`input-base resize-none text-sm ${errors.details ? "border-destructive focus:ring-destructive/50" : ""}`}
                         />
@@ -653,7 +458,7 @@ export default function Start() {
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
                         <button
                           type="button"
-                          onClick={() => setStep(4)}
+                          onClick={() => setStep(2)}
                           disabled={isSubmitting}
                           className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 disabled:opacity-50"
                         >
@@ -708,8 +513,8 @@ export default function Start() {
                   </p>
                   <div className="inline-block p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border text-left">
                     <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Package</div>
-                    <div className="text-base sm:text-lg font-bold capitalize">
-                      {packages.find((p) => p.id === selectedPackage)?.name || selectedPackage}
+                    <div className="text-base sm:text-lg font-bold">
+                      {packages.find((p) => p.id === selectedPackage)?.name || "Not sure yet"}
                     </div>
                     {selectedAddons.length > 0 && (
                       <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-border">

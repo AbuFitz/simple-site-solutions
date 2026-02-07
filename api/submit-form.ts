@@ -14,20 +14,20 @@ interface FormData {
   name: string;
   email: string;
   phone?: string;
+  businessDescription: string;
+  websiteUrl?: string;
   details?: string;
   selectedPackage: string;
-  selectedIndustry: string;
-  hasExistingWebsite: boolean;
-  existingWebsiteUrl?: string;
   selectedAddons: string[];
 }
 
 // Get package display info
 function getPackageInfo(packageId: string): { name: string; price: string } {
   const packages: Record<string, { name: string; price: string }> = {
-    essential: { name: "Essential", price: "£199" },
-    business: { name: "Business", price: "£399" },
-    growth: { name: "Growth", price: "£649" },
+    starter: { name: "The Starter", price: "£199" },
+    sorted: { name: "The Sorted", price: "£399" },
+    works: { name: "The Works", price: "£649" },
+    unsure: { name: "Not sure yet", price: "" },
   };
   return packages[packageId] || { name: packageId, price: "" };
 }
@@ -35,15 +35,29 @@ function getPackageInfo(packageId: string): { name: string; price: string } {
 // Get add-on display names
 function getAddonDisplayName(addonId: string): string {
   const addons: Record<string, string> = {
-    hosting: "Hosting + Maintenance (£95/year)",
-    "google-business": "Google Business Profile Setup (£79)",
+    logo: "Logo Design (£49)",
+    "google-business": "Google Business Profile Setup (£39)",
+    booking: "Booking System Setup (£39)",
+    "email-templates": "Extra Email Templates ×3 (£29)",
+    "seo-audit": "SEO Audit Report (£59)",
+    "legal-pages": "Legal Pages Pack (£19)",
   };
   return addons[addonId] || addonId;
 }
 
 // Format selected addons for display
 function formatAddons(addonIds: string[]): string {
-  return addonIds.map(id => getAddonDisplayName(id)).join(", ");
+  return addonIds.map((id) => getAddonDisplayName(id)).join(", ");
+}
+
+function escapeHtml(text: string): string {
+  if (!text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 // Customer confirmation email HTML
@@ -73,9 +87,9 @@ function customerEmailHtml(data: FormData): string {
           <!-- Body -->
           <tr>
             <td style="padding: 40px;">
-              <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">Thanks for getting in touch, ${data.name}!</h1>
+              <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">Thanks for getting in touch, ${escapeHtml(data.name)}!</h1>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                We've received your enquiry for the <strong>${pkg.name}</strong> package and we're excited to help get your business online.
+                We've received your enquiry${pkg.name !== "Not sure yet" ? ` for <strong>${pkg.name}</strong>` : ""} and we're excited to help get your business online.
               </p>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">Here's what happens next:</p>
               <ol style="font-size: 16px; line-height: 1.8; color: #374151; margin: 0 0 24px 0; padding-left: 20px;">
@@ -87,15 +101,15 @@ function customerEmailHtml(data: FormData): string {
                 <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Your Enquiry Summary</div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Package</div>
-                  <div style="font-size: 16px; color: #000000;">${pkg.name} (${pkg.price})</div>
+                  <div style="font-size: 16px; color: #000000;">${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Business</div>
-                  <div style="font-size: 16px; color: #000000;">${data.businessName}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessName)}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Industry</div>
-                  <div style="font-size: 16px; color: #000000;">${data.selectedIndustry}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">What You Do</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessDescription)}</div>
                 </div>
                 ${data.selectedAddons.length > 0 ? `
                 <div>
@@ -122,7 +136,7 @@ function customerEmailHtml(data: FormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">
-                <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> · <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
+                <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> · <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>
               </p>
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 16px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">© ${new Date().getFullYear()} OneSimpleSite. Made for local UK businesses.</p>
@@ -170,50 +184,52 @@ function adminEmailHtml(data: FormData): string {
             <td style="padding: 40px;">
               <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">New Enquiry Received</h1>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                You've received a new enquiry from <strong>${data.name}</strong> at <strong>${data.businessName}</strong>.
+                You've received a new enquiry from <strong>${escapeHtml(data.name)}</strong> at <strong>${escapeHtml(data.businessName)}</strong>.
               </p>
+              ${pkg.name !== "Not sure yet" ? `
               <div style="background-color: #ecfdf5; border: 1px solid #3BA875; border-radius: 8px; padding: 16px; margin: 24px 0;">
-                <div style="font-weight: 600; color: #3BA875; font-size: 14px;">${pkg.name} Package (${pkg.price})</div>
+                <div style="font-weight: 600; color: #3BA875; font-size: 14px;">${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}</div>
               </div>
+              ` : `
+              <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; margin: 24px 0;">
+                <div style="font-weight: 600; color: #92400e; font-size: 14px;">Not sure yet — needs help choosing</div>
+              </div>
+              `}
 
               <!-- Contact Details -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
                 <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Contact Details</div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Name</div>
-                  <div style="font-size: 16px; color: #000000;">${data.name}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.name)}</div>
                 </div>
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Email</div>
-                  <div style="font-size: 16px;"><a href="mailto:${data.email}" style="color: #3BA875;">${data.email}</a></div>
+                  <div style="font-size: 16px;"><a href="mailto:${escapeHtml(data.email)}" style="color: #3BA875;">${escapeHtml(data.email)}</a></div>
                 </div>
                 ${data.phone ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Phone</div>
-                  <div style="font-size: 16px;"><a href="tel:${data.phone}" style="color: #3BA875;">${data.phone}</a></div>
+                  <div style="font-size: 16px;"><a href="tel:${escapeHtml(data.phone)}" style="color: #3BA875;">${escapeHtml(data.phone)}</a></div>
                 </div>
                 ` : ""}
                 <div>
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Business Name</div>
-                  <div style="font-size: 16px; color: #000000;">${data.businessName}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessName)}</div>
                 </div>
               </div>
 
-              <!-- Project Details -->
+              <!-- Business Details -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Project Details</div>
+                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Business Details</div>
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Industry</div>
-                  <div style="font-size: 16px; color: #000000;">${data.selectedIndustry}</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">What They Do</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessDescription)}</div>
                 </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Existing Website</div>
-                  <div style="font-size: 16px; color: #000000;">${data.hasExistingWebsite ? "Yes" : "No"}</div>
-                </div>
-                ${data.hasExistingWebsite && data.existingWebsiteUrl ? `
+                ${data.websiteUrl ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Current Website</div>
-                  <div style="font-size: 16px;"><a href="${data.existingWebsiteUrl}" style="color: #3BA875;" target="_blank">${data.existingWebsiteUrl}</a></div>
+                  <div style="font-size: 16px;"><a href="${escapeHtml(data.websiteUrl.startsWith("http") ? data.websiteUrl : `https://${data.websiteUrl}`)}" style="color: #3BA875;" target="_blank">${escapeHtml(data.websiteUrl)}</a></div>
                 </div>
                 ` : ""}
                 ${data.selectedAddons.length > 0 ? `
@@ -225,12 +241,12 @@ function adminEmailHtml(data: FormData): string {
                 ${data.details ? `
                 <div>
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Additional Details</div>
-                  <div style="font-size: 16px; color: #000000;">${data.details}</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.details)}</div>
                 </div>
                 ` : ""}
               </div>
 
-              <a href="mailto:${data.email}?subject=Re: Your OneSimpleSite Enquiry - ${encodeURIComponent(data.businessName)}" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">Reply to ${data.name}</a>
+              <a href="mailto:${escapeHtml(data.email)}?subject=Re: Your OneSimpleSite Enquiry - ${encodeURIComponent(data.businessName)}" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">Reply to ${escapeHtml(data.name)}</a>
 
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">Received: ${timestamp}</p>
@@ -246,7 +262,7 @@ function adminEmailHtml(data: FormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0;">
-                01442 601387 · hello@onesimplesite.co.uk
+                01442 601387 · support@onesimplesite.co.uk
               </p>
             </td>
           </tr>
@@ -274,7 +290,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data: FormData = req.body;
 
     // Basic validation
-    if (!data.email || !data.name || !data.businessName) {
+    if (!data.email || !data.name || !data.businessName || !data.businessDescription) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -284,7 +300,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const customerEmail = await resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Thanks for your enquiry - ${pkg.name} Package`,
+      subject: `Thanks for your enquiry${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : ""}`,
       html: customerEmailHtml(data),
     });
 
@@ -293,7 +309,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: data.email,
-      subject: `New Enquiry: ${data.businessName} - ${pkg.name} Package`,
+      subject: `New Enquiry: ${data.businessName}${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : " (needs help choosing)"}`,
       html: adminEmailHtml(data),
     });
 
