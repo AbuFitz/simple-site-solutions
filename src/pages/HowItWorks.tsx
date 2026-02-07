@@ -9,7 +9,7 @@ const steps = [
     number: "01",
     title: "Choose Your Package",
     description:
-      "Essential, Business, or Growth. Pick what fits your business and budget. Clear pricing, no hidden costs.",
+      "The Starter, The Sorted, or The Works. Pick what fits your business and budget. Clear pricing, no hidden costs.",
   },
   {
     number: "02",

@@ -44,9 +44,9 @@ export default function Terms() {
                   We provide web design and development services as outlined in your selected package. All packages include local SEO foundations and speed optimisation:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Essential (£199):</strong> Complete website, mobile-first design, local SEO, contact setup</li>
-                  <li><strong>Business (£399):</strong> Everything in Essential, plus conversion-focused layout, trust positioning, refined messaging</li>
-                  <li><strong>Growth (£649):</strong> Everything in Business, plus deeper positioning, SEO-led structure, analytics</li>
+                  <li><strong>The Starter (£199):</strong> Complete website, mobile-first design, local SEO, contact setup</li>
+                  <li><strong>The Sorted (£399):</strong> Everything in The Starter, plus conversion-focused layout, trust positioning, refined messaging</li>
+                  <li><strong>The Works (£649):</strong> Everything in The Sorted, plus deeper positioning, SEO-led structure, analytics</li>
                 </ul>
               </section>
 
@@ -56,8 +56,8 @@ export default function Terms() {
                   Payment terms vary by package:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Essential:</strong> Full payment upfront before work begins</li>
-                  <li><strong>Business & Growth:</strong> 50% deposit upfront, 50% before launch</li>
+                  <li><strong>The Starter:</strong> Full payment upfront before work begins</li>
+                  <li><strong>The Sorted & The Works:</strong> 50% deposit upfront, 50% before launch</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
                   All prices are in GBP and inclusive of VAT where applicable.
@@ -109,10 +109,15 @@ export default function Terms() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting + Maintenance (Optional)</h2>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  If you opt for our Hosting + Maintenance service (£95/year), we will host, secure, and maintain your website.
-                  This includes reliable hosting, domain connection, SSL certificate, security updates, minor text changes throughout the year, and support when you need it.
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting Plans (Optional)</h2>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
+                  We offer two optional hosting plans:
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
+                  <li><strong>Keep It Live (£9/month):</strong> Domain, hosting, SSL, backups, and security updates</li>
+                  <li><strong>Keep It Fresh (£19/month):</strong> Everything in Keep It Live, plus monthly content updates</li>
+                </ul>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
                   Either party may terminate with 30 days' notice.
                 </p>
               </section>
@@ -123,7 +128,8 @@ export default function Terms() {
                   Post-launch support:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>With Hosting + Maintenance:</strong> Minor text changes, security updates, and support are included</li>
+                  <li><strong>With Keep It Fresh:</strong> Monthly content updates, security updates, and support included</li>
+                  <li><strong>With Keep It Live:</strong> Security updates and support included</li>
                   <li><strong>One-off changes:</strong> Quoted individually based on scope</li>
                 </ul>
               </section>

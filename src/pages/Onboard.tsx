@@ -20,6 +20,14 @@ interface FormData {
   publicEmail: string;
   whatsappNumber: string;
   preferredContact: string;
+  // Social media
+  facebookUrl: string;
+  instagramUrl: string;
+  tiktokUrl: string;
+  linkedinUrl: string;
+  youtubeUrl: string;
+  twitterUrl: string;
+  otherSocialUrl: string;
 
   // Step 3: About Your Business
   whatYouDo: string;
@@ -34,12 +42,18 @@ interface FormData {
 
   // Step 5: Branding & Images
   hasLogo: string;
+  wantsLogoDesign: string;
+  logoStyle: string;
+  logoInspiration: string;
+  logoColours: string;
   brandColors: string;
   stylePreference: string;
   hasPhotos: string;
   useStockImages: boolean;
 
   // Step 6: Trust & Proof
+  hasGoogleBusiness: string;
+  wantsGoogleBusinessSetup: string;
   googleBusinessLink: string;
   testimonials: string;
   certifications: string;
@@ -49,12 +63,21 @@ interface FormData {
   primaryLocation: string;
   keyServices: string;
   extraPages: string;
+  needsBookingSystem: string;
+  bookingDetails: string;
 
   // Step 8: Final Details
   mustInclude: string;
   mustNotInclude: string;
   additionalNotes: string;
   confirmedPackage: string;
+  selectedAddons: string[];
+  hasDomain: string;
+  domainName: string;
+  wantsDomain: string;
+  hasEmail: string;
+  wantsEmail: string;
+  hostingPlan: string;
 }
 
 const initialFormData: FormData = {
@@ -72,6 +95,13 @@ const initialFormData: FormData = {
   publicEmail: "",
   whatsappNumber: "",
   preferredContact: "",
+  facebookUrl: "",
+  instagramUrl: "",
+  tiktokUrl: "",
+  linkedinUrl: "",
+  youtubeUrl: "",
+  twitterUrl: "",
+  otherSocialUrl: "",
   whatYouDo: "",
   idealCustomers: "",
   whyChooseYou: "",
@@ -80,10 +110,16 @@ const initialFormData: FormData = {
   showPricing: "",
   pricingInfo: "",
   hasLogo: "",
+  wantsLogoDesign: "",
+  logoStyle: "",
+  logoInspiration: "",
+  logoColours: "",
   brandColors: "",
   stylePreference: "",
   hasPhotos: "",
   useStockImages: true,
+  hasGoogleBusiness: "",
+  wantsGoogleBusinessSetup: "",
   googleBusinessLink: "",
   testimonials: "",
   certifications: "",
@@ -91,10 +127,19 @@ const initialFormData: FormData = {
   primaryLocation: "",
   keyServices: "",
   extraPages: "",
+  needsBookingSystem: "",
+  bookingDetails: "",
   mustInclude: "",
   mustNotInclude: "",
   additionalNotes: "",
   confirmedPackage: "",
+  selectedAddons: [],
+  hasDomain: "",
+  domainName: "",
+  wantsDomain: "",
+  hasEmail: "",
+  wantsEmail: "",
+  hostingPlan: "",
 };
 
 const businessTypes = [
@@ -128,9 +173,31 @@ const ctaOptions = [
 ];
 
 const packages = [
-  { id: "essential", name: "Essential", price: "£199" },
-  { id: "business", name: "Business", price: "£399" },
-  { id: "growth", name: "Growth", price: "£649" },
+  { id: "starter", name: "The Starter", price: "£199" },
+  { id: "sorted", name: "The Sorted", price: "£399", popular: true },
+  { id: "works", name: "The Works", price: "£649" },
+];
+
+const addons = [
+  { id: "logo", name: "Logo Design", price: "£49" },
+  { id: "google-business", name: "Google Business Profile Setup", price: "£39" },
+  { id: "booking", name: "Booking System Setup", price: "£39" },
+  { id: "email-templates", name: "Extra Email Templates (×3)", price: "£29" },
+  { id: "seo-audit", name: "SEO Audit Report", price: "£59" },
+  { id: "legal-pages", name: "Legal Pages Pack", price: "£19" },
+];
+
+const hostingPlans = [
+  { id: "keep-it-live", name: "Keep It Live", price: "£9/month", description: "Domain, hosting, SSL, and backups" },
+  { id: "keep-it-fresh", name: "Keep It Fresh", price: "£19/month", description: "Everything above plus monthly content updates" },
+];
+
+const logoStyleOptions = [
+  { id: "modern", label: "Modern & Minimal" },
+  { id: "classic", label: "Classic & Traditional" },
+  { id: "bold", label: "Bold & Eye-catching" },
+  { id: "playful", label: "Playful & Friendly" },
+  { id: "no-preference", label: "No Preference" },
 ];
 
 // Shared input classes for consistent styling
@@ -156,6 +223,15 @@ export default function Onboard() {
       updateField("mainCTA", current.filter((id) => id !== ctaId));
     } else {
       updateField("mainCTA", [...current, ctaId]);
+    }
+  };
+
+  const toggleAddon = (addonId: string) => {
+    const current = formData.selectedAddons;
+    if (current.includes(addonId)) {
+      updateField("selectedAddons", current.filter((id) => id !== addonId));
+    } else {
+      updateField("selectedAddons", [...current, addonId]);
     }
   };
 
@@ -487,6 +563,93 @@ export default function Onboard() {
                     </div>
                   </div>
                 </div>
+
+                <div className="pt-5 border-t border-border">
+                  <p className="text-sm font-medium mb-2">Social Media Links</p>
+                  <p className="text-xs text-muted-foreground mb-4">Add any social profiles you want linked on your website.</p>
+
+                  <div className="space-y-4">
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Facebook</label>
+                        <input
+                          type="url"
+                          value={formData.facebookUrl}
+                          onChange={(e) => updateField("facebookUrl", e.target.value)}
+                          className={inputClasses}
+                          placeholder="https://facebook.com/yourbusiness"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Instagram</label>
+                        <input
+                          type="url"
+                          value={formData.instagramUrl}
+                          onChange={(e) => updateField("instagramUrl", e.target.value)}
+                          className={inputClasses}
+                          placeholder="https://instagram.com/yourbusiness"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">TikTok</label>
+                        <input
+                          type="url"
+                          value={formData.tiktokUrl}
+                          onChange={(e) => updateField("tiktokUrl", e.target.value)}
+                          className={inputClasses}
+                          placeholder="https://tiktok.com/@yourbusiness"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">LinkedIn</label>
+                        <input
+                          type="url"
+                          value={formData.linkedinUrl}
+                          onChange={(e) => updateField("linkedinUrl", e.target.value)}
+                          className={inputClasses}
+                          placeholder="https://linkedin.com/company/yourbusiness"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">YouTube</label>
+                        <input
+                          type="url"
+                          value={formData.youtubeUrl}
+                          onChange={(e) => updateField("youtubeUrl", e.target.value)}
+                          className={inputClasses}
+                          placeholder="https://youtube.com/@yourbusiness"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">X (Twitter)</label>
+                        <input
+                          type="url"
+                          value={formData.twitterUrl}
+                          onChange={(e) => updateField("twitterUrl", e.target.value)}
+                          className={inputClasses}
+                          placeholder="https://x.com/yourbusiness"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Other Social Media</label>
+                      <input
+                        type="url"
+                        value={formData.otherSocialUrl}
+                        onChange={(e) => updateField("otherSocialUrl", e.target.value)}
+                        className={inputClasses}
+                        placeholder="Any other social profile URL"
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           )}
@@ -668,6 +831,92 @@ export default function Onboard() {
                   </div>
                 </div>
 
+                {formData.hasLogo === "No, I need one" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-5 p-5 rounded-xl bg-card border border-border"
+                  >
+                    <div>
+                      <label className="block text-sm font-medium mb-3">Would you like us to design a logo for you?</label>
+                      <p className="text-xs text-muted-foreground mb-3">Logo Design add-on: £49</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => updateField("wantsLogoDesign", "Yes")}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                            formData.wantsLogoDesign === "Yes"
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border bg-secondary hover:border-muted-foreground"
+                          }`}
+                        >
+                          Yes please
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateField("wantsLogoDesign", "No")}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                            formData.wantsLogoDesign === "No"
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border bg-secondary hover:border-muted-foreground"
+                          }`}
+                        >
+                          No, just use text
+                        </button>
+                      </div>
+                    </div>
+
+                    {formData.wantsLogoDesign === "Yes" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="space-y-4"
+                      >
+                        <div>
+                          <label className="block text-sm font-medium mb-3">What style of logo do you prefer?</label>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {logoStyleOptions.map((opt) => (
+                              <button
+                                key={opt.id}
+                                type="button"
+                                onClick={() => updateField("logoStyle", opt.id)}
+                                className={`py-3.5 px-4 rounded-xl border text-sm font-medium transition-all ${
+                                  formData.logoStyle === opt.id
+                                    ? "border-primary bg-primary/10 text-primary"
+                                    : "border-border bg-secondary hover:border-muted-foreground"
+                                }`}
+                              >
+                                {opt.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Any logos you like for inspiration?</label>
+                          <textarea
+                            value={formData.logoInspiration}
+                            onChange={(e) => updateField("logoInspiration", e.target.value)}
+                            className={`${textareaClasses} min-h-[80px]`}
+                            placeholder="e.g., I like the Apple logo because it's simple, or Coca-Cola because it's classic..."
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium mb-2">What colours should the logo use?</label>
+                          <input
+                            type="text"
+                            value={formData.logoColours}
+                            onChange={(e) => updateField("logoColours", e.target.value)}
+                            className={inputClasses}
+                            placeholder="e.g., Blue and gold, or match my brand colours"
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                )}
+
                 <div>
                   <label className="block text-sm font-medium mb-2">Brand Colours (if you have them)</label>
                   <input
@@ -768,16 +1017,76 @@ export default function Onboard() {
 
               <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Google Business Profile Link</label>
-                  <p className="text-xs text-muted-foreground mb-3">If you have one, we can pull in your reviews.</p>
-                  <input
-                    type="url"
-                    value={formData.googleBusinessLink}
-                    onChange={(e) => updateField("googleBusinessLink", e.target.value)}
-                    className={inputClasses}
-                    placeholder="https://g.page/yourbusiness or search link"
-                  />
+                  <label className="block text-sm font-medium mb-3">Do you have a Google Business Profile?</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {["Yes", "No", "Not sure"].map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => updateField("hasGoogleBusiness", opt)}
+                        className={`py-3 px-3 rounded-xl border text-sm font-medium transition-all ${
+                          formData.hasGoogleBusiness === opt
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border bg-secondary hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
+                {formData.hasGoogleBusiness === "Yes" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                  >
+                    <label className="block text-sm font-medium mb-2">Google Business Profile Link</label>
+                    <p className="text-xs text-muted-foreground mb-3">We can pull in your reviews to display on your website.</p>
+                    <input
+                      type="url"
+                      value={formData.googleBusinessLink}
+                      onChange={(e) => updateField("googleBusinessLink", e.target.value)}
+                      className={inputClasses}
+                      placeholder="https://g.page/yourbusiness or search link"
+                    />
+                  </motion.div>
+                )}
+
+                {(formData.hasGoogleBusiness === "No" || formData.hasGoogleBusiness === "Not sure") && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="p-5 rounded-xl bg-card border border-border"
+                  >
+                    <label className="block text-sm font-medium mb-2">Would you like us to set one up for you?</label>
+                    <p className="text-xs text-muted-foreground mb-3">Google Business Profile Setup add-on: £39. Helps local customers find you on Google Maps and Search.</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => updateField("wantsGoogleBusinessSetup", "Yes")}
+                        className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                          formData.wantsGoogleBusinessSetup === "Yes"
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border bg-secondary hover:border-muted-foreground"
+                        }`}
+                      >
+                        Yes please
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => updateField("wantsGoogleBusinessSetup", "No")}
+                        className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                          formData.wantsGoogleBusinessSetup === "No"
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border bg-secondary hover:border-muted-foreground"
+                        }`}
+                      >
+                        No thanks
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Testimonials to Include</label>
@@ -883,6 +1192,43 @@ export default function Onboard() {
                     placeholder="e.g., Gallery, FAQ, Areas We Cover, Testimonials"
                   />
                 </div>
+
+                <div className="pt-5 border-t border-border">
+                  <label className="block text-sm font-medium mb-3">Do you need customers to book appointments online?</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {["Yes", "No", "Maybe later"].map((opt) => (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() => updateField("needsBookingSystem", opt)}
+                        className={`py-3 px-3 rounded-xl border text-sm font-medium transition-all ${
+                          formData.needsBookingSystem === opt
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border bg-secondary hover:border-muted-foreground"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {formData.needsBookingSystem === "Yes" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="p-5 rounded-xl bg-card border border-border"
+                  >
+                    <p className="text-sm font-medium mb-2">Booking System Setup: £39 add-on</p>
+                    <label className="block text-sm font-medium mb-2">Tell us about your booking needs</label>
+                    <textarea
+                      value={formData.bookingDetails}
+                      onChange={(e) => updateField("bookingDetails", e.target.value)}
+                      className={`${textareaClasses} min-h-[100px]`}
+                      placeholder="e.g., 30-minute consultations, available weekdays 9am-5pm, need to collect deposit..."
+                    />
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           )}
@@ -922,7 +1268,14 @@ export default function Onboard() {
                           }`}>
                             {formData.confirmedPackage === pkg.id && <Check className="w-3 h-3 text-white" />}
                           </div>
-                          <span className="font-medium">{pkg.name}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium">{pkg.name}</span>
+                            {pkg.popular && (
+                              <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
+                                Popular
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <span className="text-primary font-semibold">{pkg.price}</span>
                       </button>
@@ -931,6 +1284,232 @@ export default function Onboard() {
                 </div>
 
                 <div>
+                  <label className="block text-sm font-medium mb-3">Any Add-ons?</label>
+                  <p className="text-xs text-muted-foreground mb-3">Select any extras you'd like.</p>
+                  <div className="space-y-2">
+                    {addons.map((addon) => (
+                      <button
+                        key={addon.id}
+                        type="button"
+                        onClick={() => toggleAddon(addon.id)}
+                        className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${
+                          formData.selectedAddons.includes(addon.id)
+                            ? "border-primary bg-primary/10"
+                            : "border-border bg-secondary hover:border-muted-foreground"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 ${
+                            formData.selectedAddons.includes(addon.id) ? "border-primary bg-primary" : "border-border bg-muted"
+                          }`}>
+                            {formData.selectedAddons.includes(addon.id) && <Check className="w-3 h-3 text-white" />}
+                          </div>
+                          <span className="text-sm">{addon.name}</span>
+                        </div>
+                        <span className="text-primary font-medium text-sm">{addon.price}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-5 border-t border-border">
+                  <p className="text-sm font-medium mb-4">Domain & Email</p>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-3">Do you have a domain name?</label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => updateField("hasDomain", "Yes")}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                            formData.hasDomain === "Yes"
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border bg-secondary hover:border-muted-foreground"
+                          }`}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateField("hasDomain", "No")}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                            formData.hasDomain === "No"
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border bg-secondary hover:border-muted-foreground"
+                          }`}
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+
+                    {formData.hasDomain === "Yes" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                      >
+                        <label className="block text-sm font-medium mb-2">What is your domain name?</label>
+                        <input
+                          type="text"
+                          value={formData.domainName}
+                          onChange={(e) => updateField("domainName", e.target.value)}
+                          className={inputClasses}
+                          placeholder="e.g., yourbusiness.co.uk"
+                        />
+                      </motion.div>
+                    )}
+
+                    {formData.hasDomain === "No" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                      >
+                        <label className="block text-sm font-medium mb-3">Would you like us to help you get one?</label>
+                        <p className="text-xs text-muted-foreground mb-3">Domain registration is included in our hosting plans.</p>
+                        <div className="grid grid-cols-2 gap-3">
+                          <button
+                            type="button"
+                            onClick={() => updateField("wantsDomain", "Yes")}
+                            className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                              formData.wantsDomain === "Yes"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-secondary hover:border-muted-foreground"
+                            }`}
+                          >
+                            Yes please
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateField("wantsDomain", "No")}
+                            className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                              formData.wantsDomain === "No"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-secondary hover:border-muted-foreground"
+                            }`}
+                          >
+                            I'll sort it myself
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    <div>
+                      <label className="block text-sm font-medium mb-3">Do you have a professional email address?</label>
+                      <p className="text-xs text-muted-foreground mb-3">e.g., info@yourbusiness.co.uk</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => updateField("hasEmail", "Yes")}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                            formData.hasEmail === "Yes"
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border bg-secondary hover:border-muted-foreground"
+                          }`}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateField("hasEmail", "No")}
+                          className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                            formData.hasEmail === "No"
+                              ? "border-primary bg-primary/10 text-primary"
+                              : "border-border bg-secondary hover:border-muted-foreground"
+                          }`}
+                        >
+                          No
+                        </button>
+                      </div>
+                    </div>
+
+                    {formData.hasEmail === "No" && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                      >
+                        <label className="block text-sm font-medium mb-3">Would you like us to set one up?</label>
+                        <p className="text-xs text-muted-foreground mb-3">Basic email setup is included in hosting plans. Google Workspace available for an extra cost.</p>
+                        <div className="grid grid-cols-2 gap-3">
+                          <button
+                            type="button"
+                            onClick={() => updateField("wantsEmail", "Yes")}
+                            className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                              formData.wantsEmail === "Yes"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-secondary hover:border-muted-foreground"
+                            }`}
+                          >
+                            Yes please
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => updateField("wantsEmail", "No")}
+                            className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                              formData.wantsEmail === "No"
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-border bg-secondary hover:border-muted-foreground"
+                            }`}
+                          >
+                            No thanks
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pt-5 border-t border-border">
+                  <label className="block text-sm font-medium mb-3">Hosting Plan</label>
+                  <p className="text-xs text-muted-foreground mb-4">Choose how you'd like us to look after your website.</p>
+                  <div className="space-y-3">
+                    {hostingPlans.map((plan) => (
+                      <button
+                        key={plan.id}
+                        type="button"
+                        onClick={() => updateField("hostingPlan", plan.id)}
+                        className={`w-full text-left p-4 rounded-xl border transition-all ${
+                          formData.hostingPlan === plan.id
+                            ? "border-primary bg-primary/10"
+                            : "border-border bg-secondary hover:border-muted-foreground"
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                              formData.hostingPlan === plan.id ? "border-primary bg-primary" : "border-border bg-muted"
+                            }`}>
+                              {formData.hostingPlan === plan.id && <Check className="w-3 h-3 text-white" />}
+                            </div>
+                            <span className="font-medium">{plan.name}</span>
+                          </div>
+                          <span className="text-primary font-semibold">{plan.price}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground ml-8">{plan.description}</p>
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => updateField("hostingPlan", "self-host")}
+                      className={`w-full text-left p-4 rounded-xl border transition-all ${
+                        formData.hostingPlan === "self-host"
+                          ? "border-primary bg-primary/10"
+                          : "border-border bg-secondary hover:border-muted-foreground"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                          formData.hostingPlan === "self-host" ? "border-primary bg-primary" : "border-border bg-muted"
+                        }`}>
+                          {formData.hostingPlan === "self-host" && <Check className="w-3 h-3 text-white" />}
+                        </div>
+                        <span className="font-medium">I'll host it myself</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-5 border-t border-border">
                   <label className="block text-sm font-medium mb-2">Anything that MUST be included?</label>
                   <textarea
                     value={formData.mustInclude}

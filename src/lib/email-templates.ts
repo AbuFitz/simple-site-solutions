@@ -118,9 +118,9 @@ interface FormData {
 // Get package display info
 function getPackageInfo(packageId: string): { name: string; price: string } {
   const packages: Record<string, { name: string; price: string }> = {
-    essential: { name: "Essential", price: "£199" },
-    business: { name: "Business", price: "£399" },
-    growth: { name: "Growth", price: "£649" },
+    starter: { name: "The Starter", price: "£199" },
+    sorted: { name: "The Sorted", price: "£399" },
+    works: { name: "The Works", price: "£649" },
   };
   return packages[packageId] || { name: packageId, price: "" };
 }
@@ -128,8 +128,12 @@ function getPackageInfo(packageId: string): { name: string; price: string } {
 // Get add-on display names
 function getAddonDisplayName(addonId: string): string {
   const addons: Record<string, string> = {
-    hosting: "Hosting + Maintenance (£95/year)",
-    "google-business": "Google Business Profile Setup (£79)",
+    logo: "Logo Design (£49)",
+    "google-business": "Google Business Profile Setup (£39)",
+    booking: "Booking System Setup (£39)",
+    "email-templates": "Extra Email Templates ×3 (£29)",
+    "seo-audit": "SEO Audit Report (£59)",
+    "legal-pages": "Legal Pages Pack (£19)",
   };
   return addons[addonId] || addonId;
 }

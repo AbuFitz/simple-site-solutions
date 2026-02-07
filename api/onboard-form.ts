@@ -25,6 +25,14 @@ interface OnboardFormData {
   publicEmail: string;
   whatsappNumber: string;
   preferredContact: string;
+  // Social media
+  facebookUrl: string;
+  instagramUrl: string;
+  tiktokUrl: string;
+  linkedinUrl: string;
+  youtubeUrl: string;
+  twitterUrl: string;
+  otherSocialUrl: string;
 
   // Step 3: About Your Business
   whatYouDo: string;
@@ -39,12 +47,18 @@ interface OnboardFormData {
 
   // Step 5: Branding & Images
   hasLogo: string;
+  wantsLogoDesign: string;
+  logoStyle: string;
+  logoInspiration: string;
+  logoColours: string;
   brandColors: string;
   stylePreference: string;
   hasPhotos: string;
   useStockImages: boolean;
 
   // Step 6: Trust & Proof
+  hasGoogleBusiness: string;
+  wantsGoogleBusinessSetup: string;
   googleBusinessLink: string;
   testimonials: string;
   certifications: string;
@@ -54,21 +68,63 @@ interface OnboardFormData {
   primaryLocation: string;
   keyServices: string;
   extraPages: string;
+  needsBookingSystem: string;
+  bookingDetails: string;
 
   // Step 8: Final Details
   mustInclude: string;
   mustNotInclude: string;
   additionalNotes: string;
   confirmedPackage: string;
+  selectedAddons: string[];
+  hasDomain: string;
+  domainName: string;
+  wantsDomain: string;
+  hasEmail: string;
+  wantsEmail: string;
+  hostingPlan: string;
 }
 
 function getPackageInfo(packageId: string): { name: string; price: string } {
   const packages: Record<string, { name: string; price: string }> = {
-    essential: { name: "Essential", price: "£199" },
-    business: { name: "Business", price: "£399" },
-    growth: { name: "Growth", price: "£649" },
+    starter: { name: "The Starter", price: "£199" },
+    sorted: { name: "The Sorted", price: "£399" },
+    works: { name: "The Works", price: "£649" },
   };
   return packages[packageId] || { name: packageId, price: "" };
+}
+
+function getAddonNames(addonIds: string[]): string {
+  const addonMap: Record<string, string> = {
+    logo: "Logo Design (£49)",
+    "google-business": "Google Business Profile Setup (£39)",
+    booking: "Booking System Setup (£39)",
+    "email-templates": "Extra Email Templates ×3 (£29)",
+    "seo-audit": "SEO Audit Report (£59)",
+    "legal-pages": "Legal Pages Pack (£19)",
+  };
+  if (addonIds.length === 0) return "None";
+  return addonIds.map((id) => addonMap[id] || id).join(", ");
+}
+
+function getHostingPlanInfo(planId: string): string {
+  const plans: Record<string, string> = {
+    "keep-it-live": "Keep It Live (£9/month)",
+    "keep-it-fresh": "Keep It Fresh (£19/month)",
+    "self-host": "Self-hosting",
+  };
+  return plans[planId] || planId || "Not specified";
+}
+
+function getLogoStyleLabel(styleId: string): string {
+  const styles: Record<string, string> = {
+    modern: "Modern & Minimal",
+    classic: "Classic & Traditional",
+    bold: "Bold & Eye-catching",
+    playful: "Playful & Friendly",
+    "no-preference": "No Preference",
+  };
+  return styles[styleId] || styleId || "Not specified";
 }
 
 function getToneLabel(toneId: string): string {
@@ -158,9 +214,19 @@ function clientEmailHtml(data: OnboardFormData): string {
               </p>
 
               <div style="background-color: #ecfdf5; border: 1px solid #3BA875; border-radius: 8px; padding: 16px; margin: 24px 0;">
-                <div style="font-weight: 600; color: #3BA875; font-size: 16px;">
+                <div style="font-weight: 600; color: #3BA875; font-size: 16px; margin-bottom: 8px;">
                   ${pkg.name} Package (${pkg.price})
                 </div>
+                ${data.selectedAddons && data.selectedAddons.length > 0 ? `
+                <div style="font-size: 14px; color: #374151; margin-bottom: 4px;">
+                  <strong>Add-ons:</strong> ${getAddonNames(data.selectedAddons)}
+                </div>
+                ` : ""}
+                ${data.hostingPlan && data.hostingPlan !== "self-host" ? `
+                <div style="font-size: 14px; color: #374151;">
+                  <strong>Hosting:</strong> ${getHostingPlanInfo(data.hostingPlan)}
+                </div>
+                ` : ""}
               </div>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">Here's what happens next:</p>
@@ -330,10 +396,24 @@ function adminEmailHtml(data: OnboardFormData): string {
                   <div style="font-size: 16px; color: #000000;">${escapeHtml(data.whatsappNumber)}</div>
                 </div>
                 ` : ""}
-                <div>
+                <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Preferred Contact Method</div>
                   <div style="font-size: 16px; color: #000000;">${getPreferredContactLabel(data.preferredContact)}</div>
                 </div>
+                ${data.facebookUrl || data.instagramUrl || data.tiktokUrl || data.linkedinUrl || data.youtubeUrl || data.twitterUrl || data.otherSocialUrl ? `
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Social Media</div>
+                  <div style="font-size: 14px; color: #000000;">
+                    ${data.facebookUrl ? `Facebook: <a href="${escapeHtml(data.facebookUrl)}" style="color: #3BA875;">${escapeHtml(data.facebookUrl)}</a><br>` : ""}
+                    ${data.instagramUrl ? `Instagram: <a href="${escapeHtml(data.instagramUrl)}" style="color: #3BA875;">${escapeHtml(data.instagramUrl)}</a><br>` : ""}
+                    ${data.tiktokUrl ? `TikTok: <a href="${escapeHtml(data.tiktokUrl)}" style="color: #3BA875;">${escapeHtml(data.tiktokUrl)}</a><br>` : ""}
+                    ${data.linkedinUrl ? `LinkedIn: <a href="${escapeHtml(data.linkedinUrl)}" style="color: #3BA875;">${escapeHtml(data.linkedinUrl)}</a><br>` : ""}
+                    ${data.youtubeUrl ? `YouTube: <a href="${escapeHtml(data.youtubeUrl)}" style="color: #3BA875;">${escapeHtml(data.youtubeUrl)}</a><br>` : ""}
+                    ${data.twitterUrl ? `X (Twitter): <a href="${escapeHtml(data.twitterUrl)}" style="color: #3BA875;">${escapeHtml(data.twitterUrl)}</a><br>` : ""}
+                    ${data.otherSocialUrl ? `Other: <a href="${escapeHtml(data.otherSocialUrl)}" style="color: #3BA875;">${escapeHtml(data.otherSocialUrl)}</a>` : ""}
+                  </div>
+                </div>
+                ` : ""}
               </div>
 
               <!-- SECTION 3: About the Business -->
@@ -385,6 +465,30 @@ function adminEmailHtml(data: OnboardFormData): string {
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Logo</div>
                   <div style="font-size: 16px; color: #000000;">${escapeHtml(data.hasLogo) || "Not specified"}</div>
                 </div>
+                ${data.hasLogo === "No, I need one" ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Wants Logo Design</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.wantsLogoDesign) || "Not specified"}</div>
+                </div>
+                ${data.wantsLogoDesign === "Yes" ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Logo Style</div>
+                  <div style="font-size: 16px; color: #000000;">${getLogoStyleLabel(data.logoStyle)}</div>
+                </div>
+                ${data.logoInspiration ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Logo Inspiration</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.logoInspiration)}</div>
+                </div>
+                ` : ""}
+                ${data.logoColours ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Logo Colours</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.logoColours)}</div>
+                </div>
+                ` : ""}
+                ` : ""}
+                ` : ""}
                 ${data.brandColors ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Brand Colours</div>
@@ -408,17 +512,22 @@ function adminEmailHtml(data: OnboardFormData): string {
               <!-- SECTION 6: Trust & Proof -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
                 <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">6. Trust & Proof</div>
-                ${data.googleBusinessLink ? `
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Has Google Business Profile</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.hasGoogleBusiness) || "Not specified"}</div>
+                </div>
+                ${data.hasGoogleBusiness === "Yes" && data.googleBusinessLink ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Google Business Link</div>
                   <div style="font-size: 16px;"><a href="${escapeHtml(data.googleBusinessLink)}" style="color: #3BA875;" target="_blank">${escapeHtml(data.googleBusinessLink)}</a></div>
                 </div>
-                ` : `
+                ` : ""}
+                ${(data.hasGoogleBusiness === "No" || data.hasGoogleBusiness === "Not sure") && data.wantsGoogleBusinessSetup ? `
                 <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Google Business Link</div>
-                  <div style="font-size: 16px; color: #000000;">Not provided</div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Wants Google Business Setup</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.wantsGoogleBusinessSetup)}${data.wantsGoogleBusinessSetup === "Yes" ? " (£39 add-on)" : ""}</div>
                 </div>
-                `}
+                ` : ""}
                 ${data.testimonials ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Testimonials</div>
@@ -454,9 +563,19 @@ function adminEmailHtml(data: OnboardFormData): string {
                 </div>
                 ` : ""}
                 ${data.extraPages ? `
-                <div>
+                <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Extra Pages Requested</div>
                   <div style="font-size: 16px; color: #000000;">${escapeHtml(data.extraPages)}</div>
+                </div>
+                ` : ""}
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Needs Booking System</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.needsBookingSystem) || "Not specified"}${data.needsBookingSystem === "Yes" ? " (£39 add-on)" : ""}</div>
+                </div>
+                ${data.needsBookingSystem === "Yes" && data.bookingDetails ? `
+                <div>
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Booking Details</div>
+                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.bookingDetails)}</div>
                 </div>
                 ` : ""}
               </div>
@@ -464,6 +583,35 @@ function adminEmailHtml(data: OnboardFormData): string {
               <!-- SECTION 8: Final Details -->
               <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
                 <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">8. Final Details</div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Selected Add-ons</div>
+                  <div style="font-size: 16px; color: #000000;">${getAddonNames(data.selectedAddons || [])}</div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Domain</div>
+                  <div style="font-size: 16px; color: #000000;">
+                    ${data.hasDomain === "Yes" ? `Has domain: ${escapeHtml(data.domainName) || "Not provided"}` : ""}
+                    ${data.hasDomain === "No" ? `Needs domain: ${data.wantsDomain === "Yes" ? "Yes, help me get one" : "Will sort themselves"}` : ""}
+                    ${!data.hasDomain ? "Not specified" : ""}
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Professional Email</div>
+                  <div style="font-size: 16px; color: #000000;">
+                    ${data.hasEmail === "Yes" ? "Already has professional email" : ""}
+                    ${data.hasEmail === "No" ? `Needs email: ${data.wantsEmail === "Yes" ? "Yes, set one up" : "No thanks"}` : ""}
+                    ${!data.hasEmail ? "Not specified" : ""}
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Hosting Plan</div>
+                  <div style="font-size: 16px; color: #000000;">${getHostingPlanInfo(data.hostingPlan)}</div>
+                </div>
+
                 ${data.mustInclude ? `
                 <div style="margin-bottom: 12px;">
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">MUST Include</div>
@@ -481,9 +629,6 @@ function adminEmailHtml(data: OnboardFormData): string {
                   <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Additional Notes</div>
                   <div style="font-size: 16px; color: #000000;">${escapeHtml(data.additionalNotes)}</div>
                 </div>
-                ` : ""}
-                ${!data.mustInclude && !data.mustNotInclude && !data.additionalNotes ? `
-                <div style="font-size: 14px; color: #6b7280;">No additional details provided</div>
                 ` : ""}
               </div>
 

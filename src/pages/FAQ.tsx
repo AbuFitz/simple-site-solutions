@@ -13,12 +13,12 @@ const faqs = [
   {
     question: "How much does a website cost?",
     answer:
-      "We have three packages: Essential at £199 (for getting online properly), Business at £399 (our most popular — built to make you look established), and Growth at £649 (for businesses competing seriously). All packages include local SEO foundations, mobile-first design, speed optimisation, and everything you need. No hidden fees, no upsell traps.",
+      "We have three packages: The Starter at £199 (everything you need to get online properly), The Sorted at £399 (our most popular — look established and win trust), and The Works at £649 (compete seriously and scale). All packages include local SEO foundations, mobile-first design, speed optimisation, and everything you need. No hidden fees, no upsell traps.",
   },
   {
     question: "How long does it take to build my website?",
     answer:
-      "5-10 business days from when you submit your content. Essential sites are typically faster, while Growth packages with deeper positioning take a bit longer. We don't do endless timelines — you'll have your site live quickly.",
+      "5-10 business days from when you submit your content. Starter sites are typically faster, while The Works packages with deeper positioning take a bit longer. We don't do endless timelines — you'll have your site live quickly.",
   },
   {
     question: "What's included in every package?",
@@ -28,12 +28,12 @@ const faqs = [
   {
     question: "What's the difference between the packages?",
     answer:
-      "Essential (£199) gets you online properly — a clean, professional site with everything you need. Business (£399) adds conversion-focused layouts, trust positioning, and messaging that actually sells. Growth (£649) goes deeper with positioning, SEO-led structure, analytics, and multiple rounds of refinements.",
+      "The Starter (£199) gets you online properly — a clean, professional site with everything you need. The Sorted (£399) adds conversion-focused layouts, trust positioning, and messaging that actually sells. The Works (£649) goes deeper with positioning, SEO-led structure, analytics, and multiple rounds of refinements.",
   },
   {
     question: "Which package should I choose?",
     answer:
-      "Essential is perfect for new businesses and sole traders who need to get online fast. Business is our most popular — ideal for established businesses wanting clarity, trust positioning, and room to refine. Growth is for businesses investing seriously in competing and scaling.",
+      "The Starter is perfect for new businesses and sole traders who need to get online fast. The Sorted is our most popular — ideal for established businesses wanting clarity, trust positioning, and room to refine. The Works is for businesses investing seriously in competing and scaling.",
   },
   {
     question: "Is SEO included?",
@@ -53,7 +53,7 @@ const faqs = [
   {
     question: "What if I need changes after we launch?",
     answer:
-      "We're here to help. If you're on Hosting + Maintenance, minor text and image changes are included throughout the year. For bigger updates or changes outside of your package, we'll quote you fairly. Our goal is happy customers, not nickel-and-diming you.",
+      "We're here to help. If you're on our Keep It Fresh hosting plan, monthly content updates are included. For bigger updates or changes outside of your plan, we'll quote you fairly. Our goal is happy customers, not nickel-and-diming you.",
   },
   {
     question: "What do you need from me to get started?",
@@ -63,17 +63,17 @@ const faqs = [
   {
     question: "What about hosting?",
     answer:
-      "Hosting + Maintenance is optional at £95/year. This includes reliable hosting, domain connection, SSL certificate, security updates, minor text changes throughout the year, and support when you need it. It's everything in one simple package. You're also free to host it yourself — we'll hand over all the files.",
+      "We offer two hosting plans: Keep It Live (£9/month) includes domain, hosting, SSL, backups, and security updates. Keep It Fresh (£19/month) adds monthly content updates so your site stays current. You're also free to host it yourself — we'll hand over all the files.",
   },
   {
     question: "What are the payment terms?",
     answer:
-      "Essential: paid upfront in full. Business and Growth: 50% upfront to begin, 50% before we launch your site. We accept bank transfer and card payments.",
+      "The Starter: paid upfront in full. The Sorted and The Works: 50% upfront to begin, 50% before we launch your site. We accept bank transfer and card payments.",
   },
   {
     question: "What add-ons do you offer?",
     answer:
-      "Google Business Profile Setup (£79) — we'll create or clean up your profile, optimise your categories and business info, set up your service area, give you photo guidance, create your first posts, and provide review response templates. It's a proper local visibility boost. Speed and performance optimisation is already included in every package — we build fast sites by default.",
+      "Logo Design (£49), Google Business Profile Setup (£39), Booking System Setup (£39), Extra Email Templates ×3 (£29), SEO Audit Report (£59), and Legal Pages Pack (£19). These are optional extras you can add to any package. Speed and performance optimisation is already included in every package — we build fast sites by default.",
   },
   {
     question: "Do you offer refunds?",
