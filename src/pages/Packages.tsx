@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, X, ArrowUpRight, Globe, Mail, Server, Sparkles } from "lucide-react";
+import { Check, ArrowUpRight, Globe, Mail } from "lucide-react";
 
 const packages = [
   {
@@ -76,34 +76,6 @@ const packages = [
     payment: "50% upfront, 50% on completion",
     popular: false,
   },
-];
-
-const comparisonFeatures = [
-  { name: "Pages", starter: "Up to 3", sorted: "Up to 6", works: "Up to 10" },
-  { name: "Professional Copywriting", starter: true, sorted: true, works: true },
-  { name: "Mobile-First Design", starter: true, sorted: true, works: true },
-  { name: "Contact Form", starter: true, sorted: true, works: true },
-  { name: "Click-to-Call & WhatsApp", starter: true, sorted: true, works: true },
-  { name: "Social Media Links", starter: true, sorted: true, works: true },
-  { name: "Google Maps", starter: true, sorted: true, works: true },
-  { name: "Cookie Notice & Privacy Policy", starter: true, sorted: true, works: true },
-  { name: "SSL & Speed Optimised", starter: true, sorted: true, works: true },
-  { name: "Reviews/Testimonials Section", starter: false, sorted: true, works: true },
-  { name: "Trust Signals", starter: false, sorted: true, works: true },
-  { name: "Branded Email Templates", starter: false, sorted: "500/month", works: "3,000/month" },
-  { name: "Booking System", starter: false, sorted: "1 type", works: "Multiple types" },
-  { name: "SEO", starter: "Basic", sorted: "Full on-page", works: "SEO-led architecture" },
-  { name: "Email Signature Design", starter: false, sorted: true, works: true },
-  { name: "Free Domain (1st year)", starter: false, sorted: true, works: true },
-  { name: "Business Email Setup", starter: false, sorted: true, works: true },
-  { name: "Location/Area Pages", starter: false, sorted: false, works: true },
-  { name: "Blog Setup", starter: false, sorted: false, works: true },
-  { name: "Google Analytics & Search Console", starter: false, sorted: false, works: true },
-  { name: "Full Legal Pages (T&Cs, GDPR)", starter: false, sorted: false, works: true },
-  { name: "Appointment Reminders", starter: false, sorted: false, works: true },
-  { name: "Revision Rounds", starter: "1", sorted: "2", works: "3" },
-  { name: "Delivery Time", starter: "5–7 days", sorted: "7–10 days", works: "10–14 days" },
-  { name: "Payment", starter: "Upfront", sorted: "50/50", works: "50/50" },
 ];
 
 const addons = [
@@ -187,25 +159,6 @@ const everyPackageIncludes = [
   "Speed optimised",
   "Basic SEO",
 ];
-
-const whatWeDontDo = [
-  "Social media management or posting",
-  "Ongoing content writing or blog management",
-  "Google Ads or Facebook Ads",
-  "Photography or videography",
-  "Print design",
-  "App development",
-];
-
-function ComparisonCell({ value }: { value: boolean | string }) {
-  if (value === true) {
-    return <Check className="w-5 h-5 text-primary mx-auto" />;
-  }
-  if (value === false) {
-    return <X className="w-5 h-5 text-muted-foreground/50 mx-auto" />;
-  }
-  return <span className="text-sm">{value}</span>;
-}
 
 export default function Packages() {
   return (
@@ -338,70 +291,6 @@ export default function Packages() {
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section className="section relative">
-        <DottedGrid className="opacity-30" spacing={40} />
-        <div className="content-width relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-headline mb-4 text-center">
-              Compare <span className="text-primary">packages</span>
-            </h2>
-            <p className="text-body-lg text-center mb-10 sm:mb-12 max-w-2xl mx-auto">
-              See exactly what's included in each package.
-            </p>
-
-            <div className="overflow-x-auto -mx-4 px-4">
-              <table className="w-full min-w-[640px] border-collapse">
-                <thead>
-                  <tr className="border-b-2 border-border">
-                    <th className="text-left py-4 pr-4 font-semibold text-sm sm:text-base">Feature</th>
-                    <th className="text-center py-4 px-4 font-semibold text-sm sm:text-base">
-                      <div>The Starter</div>
-                      <div className="text-primary font-bold">£199</div>
-                    </th>
-                    <th className="text-center py-4 px-4 font-semibold text-sm sm:text-base bg-primary/5 rounded-t-xl">
-                      <div className="flex items-center justify-center gap-2">
-                        The Sorted
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground uppercase font-bold">Popular</span>
-                      </div>
-                      <div className="text-primary font-bold">£399</div>
-                    </th>
-                    <th className="text-center py-4 pl-4 font-semibold text-sm sm:text-base">
-                      <div>The Works</div>
-                      <div className="text-primary font-bold">£649</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonFeatures.map((feature, index) => (
-                    <tr
-                      key={feature.name}
-                      className={`border-b border-border ${index % 2 === 0 ? "bg-secondary/30" : ""}`}
-                    >
-                      <td className="py-3 pr-4 text-sm">{feature.name}</td>
-                      <td className="py-3 px-4 text-center">
-                        <ComparisonCell value={feature.starter} />
-                      </td>
-                      <td className="py-3 px-4 text-center bg-primary/5">
-                        <ComparisonCell value={feature.sorted} />
-                      </td>
-                      <td className="py-3 pl-4 text-center">
-                        <ComparisonCell value={feature.works} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Add-ons Section */}
       <section className="section relative">
         <div className="content-width">
@@ -411,21 +300,18 @@ export default function Packages() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <Sparkles className="w-6 h-6 text-primary" />
-              <h2 className="text-headline">
-                Make it even <span className="text-primary">better</span>
-              </h2>
-            </div>
+            <h2 className="text-headline mb-4">
+              Optional <span className="text-primary">extras</span>
+            </h2>
             <p className="text-body-lg mb-10 sm:mb-12 max-w-2xl">
-              Optional extras to enhance your website. Only add what you need.
+              Add only what you need. No pressure, no upsells.
             </p>
 
             <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {addons.map((addon, index) => (
                 <motion.div
                   key={addon.name}
-                  className="p-5 sm:p-6 rounded-xl bg-card border border-border hover:border-primary/50 transition-colors"
+                  className="p-5 sm:p-6 rounded-xl bg-card border border-border"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: index * 0.05 }}
@@ -456,12 +342,9 @@ export default function Packages() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <Server className="w-6 h-6 text-primary" />
-              <h2 className="text-headline">
-                Keep it <span className="text-primary">running</span>
-              </h2>
-            </div>
+            <h2 className="text-headline mb-4">
+              Keep it <span className="text-primary">running</span>
+            </h2>
             <p className="text-body-lg mb-10 sm:mb-12 max-w-2xl">
               Monthly hosting & care plans to keep your site secure, fast, and up-to-date.
             </p>
@@ -543,37 +426,6 @@ export default function Packages() {
                 </div>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* What We Don't Do */}
-      <section className="section-sm">
-        <div className="content-width">
-          <motion.div
-            className="max-w-2xl"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-headline mb-4">
-              We build websites. <span className="text-primary">That's it.</span>
-            </h2>
-            <p className="text-body-lg text-muted-foreground mb-6">
-              And we do it really well. But there are some things we don't do:
-            </p>
-            <ul className="space-y-2 mb-8">
-              {whatWeDontDo.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-muted-foreground">
-                  <X className="w-4 h-4 text-muted-foreground/50 shrink-0" />
-                  <span className="text-sm sm:text-base">{item}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="text-body text-muted-foreground">
-              If you want a professional site that makes you look established, ranks locally, and actually converts visitors into enquiries — that's exactly what we do.
-            </p>
           </motion.div>
         </div>
       </section>
