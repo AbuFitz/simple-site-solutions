@@ -3,430 +3,349 @@ import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
-import { Check, ArrowUpRight, Globe, Mail } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const packages = [
   {
     id: "starter",
     name: "The Starter",
-    price: "£199",
-    description: "Everything you need to get online properly. Clean, professional, done.",
+    price: "199",
+    tagline: "Get online properly",
+    ideal: "New businesses & sole traders",
     features: [
-      "Up to 3 pages (or 1 scrollable landing page)",
-      "Professional copywriting for all pages",
-      "Mobile-first responsive design",
-      "Contact form with email notifications",
-      "Click-to-call & WhatsApp buttons",
-      "Social media links (header & footer)",
-      "Google Maps embed",
-      "Basic SEO (titles, meta, headings)",
-      "Cookie notice + privacy policy page",
-      "SSL certificate included",
-      "Speed optimised",
-      "1 round of revisions",
+      "Up to 3 pages",
+      "Professional copywriting",
+      "Mobile-first design",
+      "Contact form + WhatsApp",
+      "Google Maps",
+      "Basic SEO",
+      "SSL + Speed optimised",
+      "1 revision round",
     ],
-    delivery: "5–7 working days",
-    payment: "Full amount upfront",
-    popular: false,
+    delivery: "5–7 days",
+    payment: "Upfront",
   },
   {
     id: "sorted",
     name: "The Sorted",
-    price: "£399",
-    description: "Our most popular. Built for businesses that want to look established and win trust.",
-    features: [
-      "Everything in The Starter, plus:",
-      "Up to 6 pages",
-      "Conversion-focused layout with clear CTAs",
-      "Reviews/testimonials section",
-      "Trust signals (accreditations, guarantees)",
-      "Service hierarchy (organised service pages)",
-      "Branded email templates (500/month)",
-      "Booking system (1 type via Cal.com)",
-      "Full on-page SEO (keywords, internal links)",
-      "Custom email signature design",
-      "Free domain (first year)",
-      "Business email setup included",
-      "2 rounds of revisions",
-    ],
-    delivery: "7–10 working days",
-    payment: "50% upfront, 50% on completion",
+    price: "399",
+    tagline: "Look established, win trust",
+    ideal: "Growing businesses",
     popular: true,
+    features: [
+      "Up to 6 pages",
+      "Everything in Starter, plus:",
+      "Conversion-focused layout",
+      "Reviews & trust signals",
+      "Booking system included",
+      "Full on-page SEO",
+      "Free domain (1st year)",
+      "Business email setup",
+      "2 revision rounds",
+    ],
+    delivery: "7–10 days",
+    payment: "50% upfront",
   },
   {
     id: "works",
     name: "The Works",
-    price: "£649",
-    description: "For businesses investing seriously in standing out and scaling.",
+    price: "649",
+    tagline: "Compete seriously, scale",
+    ideal: "Established businesses",
     features: [
-      "Everything in The Sorted, plus:",
       "Up to 10 pages",
-      "SEO-led site architecture",
-      "Location/area pages for local SEO",
-      "Blog section (styled + 1 starter post)",
-      "Google Analytics & Search Console setup",
-      "Full email template suite (3,000/month)",
-      "Advanced booking (multiple types)",
-      "Full legal pages (T&Cs, GDPR, cookies)",
-      "Automated appointment reminders",
-      "Free domain (first year)",
-      "3 rounds of revisions",
+      "Everything in Sorted, plus:",
+      "SEO-led architecture",
+      "Location pages for local SEO",
+      "Blog setup + 1 post",
+      "Google Analytics setup",
+      "Advanced booking",
+      "Full legal pages",
+      "3 revision rounds",
     ],
-    delivery: "10–14 working days",
-    payment: "50% upfront, 50% on completion",
-    popular: false,
+    delivery: "10–14 days",
+    payment: "50% upfront",
   },
 ];
 
 const addons = [
-  {
-    name: "Logo Design",
-    price: "£49",
-    description: "2 logo concepts, 1 round of revisions. Delivered as PNG, SVG + social media sizes.",
-    availableFor: "All packages",
-  },
-  {
-    name: "Google Business Profile Setup",
-    price: "£39",
-    description: "Full profile creation & optimisation, 3 initial posts, review response templates, and a quick management guide.",
-    availableFor: "All packages",
-  },
-  {
-    name: "Booking System Setup",
-    price: "£39",
-    description: "Cal.com booking widget embedded on your site with calendar sync and confirmation emails.",
-    availableFor: "Starter only",
-  },
-  {
-    name: "Extra Email Templates (×3)",
-    price: "£29",
-    description: "3 additional branded HTML email templates (e.g. quote follow-up, thank you, promotional) uploaded to Resend.",
-    availableFor: "All packages",
-  },
-  {
-    name: "SEO Audit Report",
-    price: "£59",
-    description: "Full technical, on-page, local SEO and competitor audit. Delivered as a branded PDF with a prioritised action plan.",
-    availableFor: "All packages",
-  },
-  {
-    name: "Legal Pages Pack",
-    price: "£19",
-    description: "Terms & Conditions, detailed cookie policy, and GDPR compliance check.",
-    availableFor: "Starter & Sorted",
-  },
+  { name: "Logo Design", price: "49" },
+  { name: "Google Business Setup", price: "39" },
+  { name: "Booking System", price: "39" },
+  { name: "Email Templates ×3", price: "29" },
+  { name: "SEO Audit Report", price: "59" },
+  { name: "Legal Pages Pack", price: "19" },
 ];
 
-const hostingPlans = [
-  {
-    name: "Keep It Live",
-    price: "£9",
-    period: "/month",
-    features: [
-      "Website hosting",
-      "SSL certificate maintained",
-      "Weekly backups",
-      "Security monitoring",
-      "Up to 2 small content changes/month",
-      "Email support",
-    ],
-  },
-  {
-    name: "Keep It Fresh",
-    price: "£19",
-    period: "/month",
-    popular: true,
-    features: [
-      "Everything in Keep It Live, plus:",
-      "Up to 5 content changes/month",
-      "Quarterly website health check",
-      "Priority email & WhatsApp support",
-      "Minor design tweaks included",
-    ],
-  },
+const hosting = [
+  { name: "Keep It Live", price: "9", features: "Hosting, SSL, backups, security" },
+  { name: "Keep It Fresh", price: "19", features: "Everything above + monthly updates", recommended: true },
 ];
 
-const everyPackageIncludes = [
-  "Mobile-first responsive design",
-  "Professional copywriting",
-  "Contact form with email notifications",
-  "Click-to-call button",
-  "WhatsApp button",
-  "Social media links",
-  "Google Maps embed",
-  "Cookie notice & privacy policy",
-  "SSL certificate",
-  "Speed optimised",
-  "Basic SEO",
-];
+// JSON-LD structured data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Web Design Packages & Pricing | OneSimpleSite",
+  description: "Professional website packages for UK local businesses. The Starter £199, The Sorted £399, The Works £649. No hidden fees.",
+  url: "https://onesimplesite.co.uk/packages",
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: packages.map((pkg, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        name: pkg.name,
+        description: pkg.tagline,
+        offers: {
+          "@type": "Offer",
+          price: pkg.price,
+          priceCurrency: "GBP",
+          availability: "https://schema.org/InStock",
+        },
+      },
+    })),
+  },
+  provider: {
+    "@type": "LocalBusiness",
+    name: "OneSimpleSite",
+    url: "https://onesimplesite.co.uk",
+    telephone: "01442601387",
+    email: "support@onesimplesite.co.uk",
+    areaServed: {
+      "@type": "Country",
+      name: "United Kingdom",
+    },
+    priceRange: "£199 - £649",
+  },
+};
 
 export default function Packages() {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
-        <DottedGrid className="opacity-40" spacing={36} />
+      <Helmet>
+        <title>Web Design Packages & Pricing | From £199 | OneSimpleSite</title>
+        <meta
+          name="description"
+          content="Affordable web design packages for UK local businesses. The Starter £199, The Sorted £399, The Works £649. Professional websites with SEO, mobile-first design, and no hidden fees. Get online in 5-14 days."
+        />
+        <meta
+          name="keywords"
+          content="web design prices UK, website cost small business, affordable web design, local business website, website packages UK, cheap website design, professional website cost, web design pricing, small business website cost, tradesman website"
+        />
+        <link rel="canonical" href="https://onesimplesite.co.uk/packages" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="Web Design Packages | From £199 | OneSimpleSite" />
+        <meta property="og:description" content="Professional websites for UK local businesses. Simple pricing, no hidden fees. Get online in days, not months." />
+        <meta property="og:url" content="https://onesimplesite.co.uk/packages" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Web Design Packages | From £199" />
+        <meta name="twitter:description" content="Professional websites for UK local businesses. Simple pricing, no hidden fees." />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+
+      {/* Hero - Clean & Direct */}
+      <section className="pt-24 pb-8 sm:pt-32 sm:pb-12 md:pt-36 md:pb-16 relative">
+        <DottedGrid className="opacity-30" spacing={40} />
         <div className="content-width relative z-10">
           <motion.div
-            className="max-w-3xl"
-            initial={{ opacity: 0, y: 30 }}
+            className="text-center max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
-            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Pricing
-              </span>
-            </div>
-            <h1 className="text-display mb-6 sm:mb-8">
-              Simple pricing. <span className="text-primary">No surprises.</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+              Simple pricing for <span className="text-primary">local businesses</span>
             </h1>
-            <p className="text-body-lg max-w-2xl">
-              Pick a package. Get your site. Everything you need included — no hidden fees, no upsell traps.
+            <p className="text-base sm:text-lg text-muted-foreground">
+              One-time payment. No monthly fees for the website itself. No surprises.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Packages Grid */}
-      <section className="section-sm">
+      {/* Packages - Clean Cards */}
+      <section className="pb-16 sm:pb-20 md:pb-24">
         <div className="content-width">
-          <div className="grid gap-6 lg:gap-8 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
             {packages.map((pkg, index) => (
-              <motion.div
+              <motion.article
                 key={pkg.id}
-                className={`relative rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col border-2 bg-card ${
+                className={`relative rounded-2xl p-6 sm:p-8 flex flex-col ${
                   pkg.popular
-                    ? "border-primary lg:scale-105 lg:-my-4"
-                    : "border-border"
+                    ? "bg-primary/5 border-2 border-primary"
+                    : "bg-card border border-border"
                 }`}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                itemScope
+                itemType="https://schema.org/Product"
               >
-                {/* Popular badge */}
                 {pkg.popular && (
-                  <div className="absolute -top-3 left-4 sm:left-6">
-                    <span className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider border-2 border-primary">
+                  <div className="absolute -top-3 left-6">
+                    <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground rounded-full">
                       Most Popular
                     </span>
                   </div>
                 )}
 
-                <div className="mb-6 sm:mb-8 pt-2">
-                  <h3 className="text-xl sm:text-2xl font-bold mb-3">{pkg.name}</h3>
-                  <div className="flex items-baseline gap-2 mb-3 sm:mb-4">
-                    <span className="text-3xl sm:text-4xl font-bold text-primary">
-                      {pkg.price}
-                    </span>
-                    <span className="text-muted-foreground text-xs sm:text-sm">one-time</span>
+                <header className="mb-6">
+                  <h2 className="text-xl font-bold mb-1" itemProp="name">{pkg.name}</h2>
+                  <p className="text-sm text-muted-foreground mb-4" itemProp="description">{pkg.tagline}</p>
+                  <div className="flex items-baseline gap-1" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                    <span className="text-4xl font-bold text-primary" itemProp="price">£{pkg.price}</span>
+                    <meta itemProp="priceCurrency" content="GBP" />
+                    <span className="text-muted-foreground text-sm">one-time</span>
                   </div>
-                  <p className="text-sm sm:text-base text-muted-foreground">{pkg.description}</p>
-                </div>
+                </header>
 
-                <ul className="space-y-2.5 sm:space-y-3 flex-1 mb-6">
+                <ul className="space-y-2.5 flex-1 mb-6" role="list">
                   {pkg.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 sm:gap-3">
-                      <div className="check-icon w-4 h-4 sm:w-5 sm:h-5 shrink-0 mt-0.5">
-                        <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                      </div>
-                      <span className="text-xs sm:text-sm">{feature}</span>
+                    <li key={feature} className="flex items-start gap-2.5 text-sm">
+                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* Delivery & Payment */}
-                <div className="mb-6 p-3 sm:p-4 rounded-xl bg-secondary/50 border border-border space-y-2">
-                  <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="text-muted-foreground">Delivery</span>
-                    <span className="font-medium">{pkg.delivery}</span>
-                  </div>
-                  <div className="flex justify-between text-xs sm:text-sm">
-                    <span className="text-muted-foreground">Payment</span>
-                    <span className="font-medium">{pkg.payment}</span>
-                  </div>
+                <div className="text-xs text-muted-foreground mb-4 flex justify-between border-t border-border pt-4">
+                  <span>Delivery: <strong className="text-foreground">{pkg.delivery}</strong></span>
+                  <span>Payment: <strong className="text-foreground">{pkg.payment}</strong></span>
                 </div>
 
                 <Link
                   to="/start"
-                  className={`w-full flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-4 rounded-full text-sm sm:text-base font-semibold transition-all border-2 ${
+                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-semibold transition-all ${
                     pkg.popular
-                      ? "bg-primary text-primary-foreground border-primary hover:brightness-110"
-                      : "bg-card text-foreground border-border hover:bg-muted"
+                      ? "bg-primary text-primary-foreground hover:brightness-110"
+                      : "bg-secondary text-foreground border border-border hover:bg-muted"
                   }`}
+                  aria-label={`Get started with ${pkg.name} package for £${pkg.price}`}
                 >
                   Get Started
-                  <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
-              </motion.div>
+
+                <p className="text-xs text-center text-muted-foreground mt-3">
+                  Ideal for: {pkg.ideal}
+                </p>
+              </motion.article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Every Package Includes */}
-      <section className="section-sm">
+      {/* Add-ons - Compact Grid */}
+      <section className="py-12 sm:py-16 bg-secondary/30 border-y border-border">
         <div className="content-width">
           <motion.div
-            className="bordered-section p-6 sm:p-8 md:p-10"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-lg sm:text-xl font-bold mb-6 text-center">Every package includes</h3>
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
-              {everyPackageIncludes.map((item) => (
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                Optional <span className="text-primary">extras</span>
+              </h2>
+              <p className="text-muted-foreground text-sm">Add what you need. Skip what you don't.</p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {addons.map((addon) => (
                 <div
-                  key={item}
-                  className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-secondary border border-border text-xs sm:text-sm"
-                >
-                  <Check className="w-3.5 h-3.5 text-primary shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Add-ons Section */}
-      <section className="section relative">
-        <div className="content-width">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-headline mb-4">
-              Optional <span className="text-primary">extras</span>
-            </h2>
-            <p className="text-body-lg mb-10 sm:mb-12 max-w-2xl">
-              Add only what you need. No pressure, no upsells.
-            </p>
-
-            <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {addons.map((addon, index) => (
-                <motion.div
                   key={addon.name}
-                  className="p-5 sm:p-6 rounded-xl bg-card border border-border"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  viewport={{ once: true }}
+                  className="bg-card border border-border rounded-xl p-4 text-center"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <h4 className="font-semibold text-base sm:text-lg">{addon.name}</h4>
-                    <span className="text-primary font-bold text-lg">{addon.price}</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{addon.description}</p>
-                  <div className="text-xs text-muted-foreground border-t border-border pt-3">
-                    Available for: <span className="text-foreground">{addon.availableFor}</span>
-                  </div>
-                </motion.div>
+                  <div className="text-lg font-bold text-primary mb-1">£{addon.price}</div>
+                  <div className="text-xs text-muted-foreground">{addon.name}</div>
+                </div>
               ))}
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Hosting Section */}
-      <section className="section relative">
-        <DottedGrid className="opacity-30" spacing={40} />
-        <div className="content-width relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-headline mb-4">
-              Keep it <span className="text-primary">running</span>
-            </h2>
-            <p className="text-body-lg mb-10 sm:mb-12 max-w-2xl">
-              Monthly hosting & care plans to keep your site secure, fast, and up-to-date.
-            </p>
-
-            <div className="grid gap-6 md:grid-cols-2 max-w-3xl">
-              {hostingPlans.map((plan, index) => (
-                <motion.div
-                  key={plan.name}
-                  className={`p-6 sm:p-8 rounded-xl border-2 ${
-                    plan.popular ? "border-primary bg-primary/5" : "border-border bg-card"
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-bold text-lg sm:text-xl">{plan.name}</h4>
-                    {plan.popular && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground uppercase font-bold">
-                        Recommended
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-3xl sm:text-4xl font-bold text-primary">{plan.price}</span>
-                    <span className="text-muted-foreground">{plan.period}</span>
-                  </div>
-                  <ul className="space-y-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm">
-                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-            </div>
-
-            <p className="text-sm text-muted-foreground mt-6 text-center max-w-3xl mx-auto">
-              No contract. Cancel anytime. <span className="text-primary font-medium">First month free with any website package.</span>
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Domain & Email Section */}
-      <section className="section-sm">
+      {/* Hosting - Side by Side */}
+      <section className="py-12 sm:py-16 md:py-20">
         <div className="content-width">
           <motion.div
-            className="bordered-section p-6 sm:p-8 md:p-10"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
-                  <Globe className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Domain Registration</h4>
-                  <p className="text-sm text-muted-foreground">
-                    £12/year (.co.uk or .com) — <span className="text-primary font-medium">free first year on The Sorted & The Works</span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
-                  <Mail className="w-5 h-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-1">Business Email Setup</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Included on The Sorted & The Works (Zoho Mail free tier — up to 5 users)
-                  </p>
-                </div>
-              </div>
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                Keep it <span className="text-primary">running</span>
+              </h2>
+              <p className="text-muted-foreground text-sm">Optional monthly care plans</p>
             </div>
+
+            <div className="grid sm:grid-cols-2 gap-4 max-w-xl mx-auto">
+              {hosting.map((plan) => (
+                <div
+                  key={plan.name}
+                  className={`rounded-xl p-5 text-center ${
+                    plan.recommended
+                      ? "bg-primary/5 border-2 border-primary"
+                      : "bg-card border border-border"
+                  }`}
+                >
+                  {plan.recommended && (
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2 block">
+                      Recommended
+                    </span>
+                  )}
+                  <div className="text-2xl font-bold mb-1">
+                    <span className="text-primary">£{plan.price}</span>
+                    <span className="text-sm text-muted-foreground font-normal">/mo</span>
+                  </div>
+                  <div className="font-semibold mb-2">{plan.name}</div>
+                  <div className="text-xs text-muted-foreground">{plan.features}</div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-center text-xs text-muted-foreground mt-4">
+              No contract. Cancel anytime. First month free with any package.
+            </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Trust Banner */}
+      <section className="py-8 sm:py-10 border-y border-border bg-card">
+        <div className="content-width">
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> No hidden fees
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> SEO included
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> Mobile-first
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> Fast delivery
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> UK-based
+            </span>
+          </div>
         </div>
       </section>
 
@@ -434,8 +353,8 @@ export default function Packages() {
       <CTASection
         title="Ready to get"
         highlightedText="started?"
-        description="Most businesses go with The Sorted — it's everything you need to look established and win trust. But if you just need to get online, The Starter does the job."
-        primaryButtonText="Get Started"
+        description="Most businesses choose The Sorted. Not sure? We'll help you pick."
+        primaryButtonText="Start Your Project"
         primaryButtonLink="/start"
         showPhone={true}
       />
