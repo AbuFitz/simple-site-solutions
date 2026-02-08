@@ -78,10 +78,18 @@ const addons = [
   { name: "Legal Pages Pack", price: "19" },
 ];
 
-const hosting = [
-  { name: "Keep It Live", price: "9", features: "Hosting, SSL, backups, security" },
-  { name: "Keep It Fresh", price: "19", features: "Everything above + monthly updates", recommended: true },
-];
+const hosting = {
+  name: "Keep It Running",
+  price: "19",
+  features: [
+    "Website hosting & domain",
+    "SSL certificate",
+    "Weekly backups",
+    "Security monitoring",
+    "Up to 5 content updates/month",
+    "Priority support",
+  ],
+};
 
 // JSON-LD structured data for SEO
 const structuredData = {
@@ -112,7 +120,6 @@ const structuredData = {
     "@type": "LocalBusiness",
     name: "OneSimpleSite",
     url: "https://onesimplesite.co.uk",
-    telephone: "01442601387",
     email: "support@onesimplesite.co.uk",
     areaServed: {
       "@type": "Country",
@@ -278,7 +285,7 @@ export default function Packages() {
         </div>
       </section>
 
-      {/* Hosting - Side by Side */}
+      {/* Hosting */}
       <section className="py-12 sm:py-16 md:py-20">
         <div className="content-width">
           <motion.div
@@ -286,40 +293,30 @@ export default function Packages() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
+            className="max-w-md mx-auto text-center"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                Keep it <span className="text-primary">running</span>
-              </h2>
-              <p className="text-muted-foreground text-sm">Optional monthly care plans</p>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+              Keep it <span className="text-primary">running</span>
+            </h2>
+            <p className="text-muted-foreground text-sm mb-6">Optional monthly care</p>
+
+            <div className="rounded-xl p-6 bg-card border border-border">
+              <div className="text-3xl font-bold mb-1">
+                <span className="text-primary">£{hosting.price}</span>
+                <span className="text-base text-muted-foreground font-normal">/month</span>
+              </div>
+              <div className="font-semibold mb-4">{hosting.name}</div>
+              <ul className="text-sm text-muted-foreground space-y-2 text-left">
+                {hosting.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-primary shrink-0" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4 max-w-xl mx-auto">
-              {hosting.map((plan) => (
-                <div
-                  key={plan.name}
-                  className={`rounded-xl p-5 text-center ${
-                    plan.recommended
-                      ? "bg-primary/5 border-2 border-primary"
-                      : "bg-card border border-border"
-                  }`}
-                >
-                  {plan.recommended && (
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-primary mb-2 block">
-                      Recommended
-                    </span>
-                  )}
-                  <div className="text-2xl font-bold mb-1">
-                    <span className="text-primary">£{plan.price}</span>
-                    <span className="text-sm text-muted-foreground font-normal">/mo</span>
-                  </div>
-                  <div className="font-semibold mb-2">{plan.name}</div>
-                  <div className="text-xs text-muted-foreground">{plan.features}</div>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-center text-xs text-muted-foreground mt-4">
+            <p className="text-xs text-muted-foreground mt-4">
               No contract. Cancel anytime. First month free with any package.
             </p>
           </motion.div>
@@ -356,7 +353,6 @@ export default function Packages() {
         description="Most businesses choose The Sorted. Not sure? We'll help you pick."
         primaryButtonText="Start Your Project"
         primaryButtonLink="/start"
-        showPhone={true}
       />
     </Layout>
   );

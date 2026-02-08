@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Mail, Phone, MapPin, Clock, Check } from "lucide-react";
+import { Mail, MapPin, Clock, Check } from "lucide-react";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -137,18 +137,6 @@ export default function Contact() {
                       <div className="font-medium">Email</div>
                       <a href="mailto:hello@onesimplesite.co.uk" className="text-muted-foreground hover:text-primary">
                         hello@onesimplesite.co.uk
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <Phone className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Phone</div>
-                      <a href="tel:08001234567" className="text-muted-foreground hover:text-primary">
-                        0800 123 4567
                       </a>
                     </div>
                   </div>

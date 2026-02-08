@@ -215,7 +215,7 @@ export function customerConfirmationEmail(data: FormData): string {
               </div>
 
               <p style="${styles.text}">
-                In the meantime, feel free to check out our FAQ if you have any questions, or give us a call on <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a>.
+                In the meantime, feel free to check out our FAQ if you have any questions, or email us at <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>.
               </p>
 
               <a href="${baseUrl}/faq" style="${styles.button}">
@@ -242,7 +242,7 @@ export function customerConfirmationEmail(data: FormData): string {
                 <a href="${baseUrl}/cookies" style="${styles.footerLink}">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 16px 0 0 0;">
-                <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> · <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
+                <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
               </p>
               <hr style="${styles.divider}">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">
@@ -394,7 +394,7 @@ export function adminNotificationEmail(data: FormData): string {
                 <a href="${baseUrl}/cookies" style="${styles.footerLink}">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 16px 0 0 0;">
-                01442 601387 · hello@onesimplesite.co.uk
+                hello@onesimplesite.co.uk
               </p>
             </td>
           </tr>

@@ -109,8 +109,7 @@ function getAddonNames(addonIds: string[]): string {
 
 function getHostingPlanInfo(planId: string): string {
   const plans: Record<string, string> = {
-    "keep-it-live": "Keep It Live (£9/month)",
-    "keep-it-fresh": "Keep It Fresh (£19/month)",
+    "keep-it-running": "Keep It Running (£19/month)",
     "self-host": "Self-hosting",
   };
   return plans[planId] || planId || "Not specified";
@@ -254,7 +253,7 @@ function clientEmailHtml(data: OnboardFormData): string {
               </div>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                If you need to add anything or have questions, give us a call on <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> or email us at <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>.
+                If you need to add anything or have questions, email us at <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>.
               </p>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 32px 0 0 0;">
@@ -273,7 +272,7 @@ function clientEmailHtml(data: OnboardFormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">
-                <a href="tel:01442601387" style="color: #3BA875; text-decoration: none;">01442 601387</a> · <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>
+                <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>
               </p>
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 16px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">© ${new Date().getFullYear()} OneSimpleSite. Made for local UK businesses.</p>
@@ -648,7 +647,7 @@ function adminEmailHtml(data: OnboardFormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0;">
-                01442 601387 · hello@onesimplesite.co.uk
+                hello@onesimplesite.co.uk
               </p>
             </td>
           </tr>

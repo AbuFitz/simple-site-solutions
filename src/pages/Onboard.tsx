@@ -187,10 +187,12 @@ const addons = [
   { id: "legal-pages", name: "Legal Pages Pack", price: "£19" },
 ];
 
-const hostingPlans = [
-  { id: "keep-it-live", name: "Keep It Live", price: "£9/month", description: "Domain, hosting, SSL, and backups" },
-  { id: "keep-it-fresh", name: "Keep It Fresh", price: "£19/month", description: "Everything above plus monthly content updates" },
-];
+const hostingPlan = {
+  id: "keep-it-running",
+  name: "Keep It Running",
+  price: "£19/month",
+  description: "Hosting, domain, SSL, backups, security, and up to 5 content updates/month",
+};
 
 const logoStyleOptions = [
   { id: "modern", label: "Modern & Minimal" },
@@ -259,7 +261,7 @@ export default function Onboard() {
       if (!response.ok) throw new Error("Failed to submit");
       setIsSubmitted(true);
     } catch {
-      setSubmitError("Something went wrong. Please try again or call us on 01442 601387.");
+      setSubmitError("Something went wrong. Please try again or email us at hello@onesimplesite.co.uk");
     } finally {
       setIsSubmitting(false);
     }
@@ -284,9 +286,9 @@ export default function Onboard() {
             We'll be in touch within 24 hours to get your project started.
           </p>
           <p className="text-sm text-muted-foreground">
-            Questions? Call{" "}
-            <a href="tel:01442601387" className="text-primary hover:underline">
-              01442 601387
+            Questions? Email{" "}
+            <a href="mailto:hello@onesimplesite.co.uk" className="text-primary hover:underline">
+              hello@onesimplesite.co.uk
             </a>
           </p>
         </motion.div>
@@ -1460,51 +1462,39 @@ export default function Onboard() {
                 </div>
 
                 <div className="pt-5 border-t border-border">
-                  <label className="block text-sm font-medium mb-3">Hosting Plan</label>
-                  <p className="text-xs text-muted-foreground mb-4">Choose how you'd like us to look after your website.</p>
-                  <div className="space-y-3">
-                    {hostingPlans.map((plan) => (
-                      <button
-                        key={plan.id}
-                        type="button"
-                        onClick={() => updateField("hostingPlan", plan.id)}
-                        className={`w-full text-left p-4 rounded-xl border transition-all ${
-                          formData.hostingPlan === plan.id
-                            ? "border-primary bg-primary/10"
-                            : "border-border bg-secondary hover:border-muted-foreground"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-1">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                              formData.hostingPlan === plan.id ? "border-primary bg-primary" : "border-border bg-muted"
-                            }`}>
-                              {formData.hostingPlan === plan.id && <Check className="w-3 h-3 text-white" />}
-                            </div>
-                            <span className="font-medium">{plan.name}</span>
-                          </div>
-                          <span className="text-primary font-semibold">{plan.price}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground ml-8">{plan.description}</p>
-                      </button>
-                    ))}
+                  <label className="block text-sm font-medium mb-3">Monthly Hosting & Care</label>
+                  <p className="text-xs text-muted-foreground mb-4">Would you like us to look after your website?</p>
+
+                  <div className="p-4 rounded-xl bg-card border border-border mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium">{hostingPlan.name}</span>
+                      <span className="text-primary font-semibold">{hostingPlan.price}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{hostingPlan.description}</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
-                      onClick={() => updateField("hostingPlan", "self-host")}
-                      className={`w-full text-left p-4 rounded-xl border transition-all ${
-                        formData.hostingPlan === "self-host"
-                          ? "border-primary bg-primary/10"
+                      onClick={() => updateField("hostingPlan", hostingPlan.id)}
+                      className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                        formData.hostingPlan === hostingPlan.id
+                          ? "border-primary bg-primary/10 text-primary"
                           : "border-border bg-secondary hover:border-muted-foreground"
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
-                          formData.hostingPlan === "self-host" ? "border-primary bg-primary" : "border-border bg-muted"
-                        }`}>
-                          {formData.hostingPlan === "self-host" && <Check className="w-3 h-3 text-white" />}
-                        </div>
-                        <span className="font-medium">I'll host it myself</span>
-                      </div>
+                      Yes please
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => updateField("hostingPlan", "self-host")}
+                      className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
+                        formData.hostingPlan === "self-host"
+                          ? "border-primary bg-primary/10 text-primary"
+                          : "border-border bg-secondary hover:border-muted-foreground"
+                      }`}
+                    >
+                      No, I'll host it myself
                     </button>
                   </div>
                 </div>
@@ -1600,9 +1590,9 @@ export default function Onboard() {
       <footer className="border-t border-border mt-8">
         <div className="max-w-2xl mx-auto px-4 py-4 text-center">
           <p className="text-sm text-muted-foreground">
-            Need help? Call{" "}
-            <a href="tel:01442601387" className="text-primary hover:underline">
-              01442 601387
+            Need help? Email{" "}
+            <a href="mailto:hello@onesimplesite.co.uk" className="text-primary hover:underline">
+              hello@onesimplesite.co.uk
             </a>
           </p>
         </div>
