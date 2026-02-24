@@ -6,6 +6,7 @@ import { DottedGrid } from "@/components/ui/DottedGrid";
 import fixnowScreenshot from "@/assets/portfolio/fixnowmechanics.png";
 import arfmodsScreenshot from "@/assets/portfolio/arfmods.png";
 import readysoldScreenshot from "@/assets/portfolio/readysold.png";
+import stonebridgeScreenshot from "@/assets/portfolio/stonebridge.png";
 
 interface PortfolioItem {
   id: number;
@@ -40,6 +41,14 @@ const portfolioItems: PortfolioItem[] = [
     description: "Sell your car stress-free with full market value",
     url: "https://readysold.vercel.app",
     screenshot: readysoldScreenshot,
+  },
+  {
+    id: 4,
+    title: "Stonebridge",
+    industry: "Construction",
+    description: "Quality construction services for residential and commercial projects",
+    url: "https://stonebridge-pi.vercel.app",
+    screenshot: stonebridgeScreenshot,
   },
 ];
 
