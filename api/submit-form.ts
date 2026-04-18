@@ -297,15 +297,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const pkg = getPackageInfo(data.selectedPackage);
 
     // Send customer confirmation email
-    const customerEmail = await resend.emails.send({
+    const { data: customerEmailData, error: customerEmailError } = await resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
       subject: `Thanks for your enquiry${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : ""}`,
       html: customerEmailHtml(data),
     });
 
+    if (customerEmailError) {
+      console.error("Failed to send customer confirmation email:", customerEmailError);
+      return res.status(500).json({ error: "Failed to send confirmation email", details: customerEmailError.message });
+    }
+
     // Send admin notification email
-    const adminEmail = await resend.emails.send({
+    const { data: adminEmailData, error: adminEmailError } = await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: data.email,
@@ -313,11 +318,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       html: adminEmailHtml(data),
     });
 
+    if (adminEmailError) {
+      console.error("Failed to send admin notification email:", adminEmailError);
+      return res.status(500).json({ error: "Failed to send admin notification", details: adminEmailError.message });
+    }
+
     return res.status(200).json({
       success: true,
       message: "Emails sent successfully",
-      customerEmailId: customerEmail.data?.id,
-      adminEmailId: adminEmail.data?.id,
+      customerEmailId: customerEmailData?.id,
+      adminEmailId: adminEmailData?.id,
     });
   } catch (error) {
     console.error("Error sending emails:", error);

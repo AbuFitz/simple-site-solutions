@@ -680,15 +680,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const pkg = getPackageInfo(data.confirmedPackage);
 
     // Send client confirmation email
-    const clientEmail = await resend.emails.send({
+    const { data: clientEmailData, error: clientEmailError } = await resend.emails.send({
       from: FROM_EMAIL,
       to: data.email,
       subject: `All done - ${pkg.name} Package`,
       html: clientEmailHtml(data),
     });
 
+    if (clientEmailError) {
+      console.error("Failed to send client confirmation email:", clientEmailError);
+      return res.status(500).json({ error: "Failed to send confirmation email", details: clientEmailError.message });
+    }
+
     // Send admin notification email with full details
-    const adminEmail = await resend.emails.send({
+    const { data: adminEmailData, error: adminEmailError } = await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: data.email,
@@ -696,11 +701,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       html: adminEmailHtml(data),
     });
 
+    if (adminEmailError) {
+      console.error("Failed to send admin notification email:", adminEmailError);
+      return res.status(500).json({ error: "Failed to send admin notification", details: adminEmailError.message });
+    }
+
     return res.status(200).json({
       success: true,
       message: "Onboarding complete",
-      clientEmailId: clientEmail.data?.id,
-      adminEmailId: adminEmail.data?.id,
+      clientEmailId: clientEmailData?.id,
+      adminEmailId: adminEmailData?.id,
     });
   } catch (error) {
     console.error("Error processing onboard form:", error);
