@@ -4,7 +4,7 @@
  * are our own or sister businesses, so they are described as projects.
  */
 
-type WorkAsset = { d: string; m: string; t: string };
+type WorkAsset = { d: string; m: string; t: string; dh: number };
 
 const assets = import.meta.glob("/src/assets/work/*.webp", {
   eager: true,
@@ -12,13 +12,19 @@ const assets = import.meta.glob("/src/assets/work/*.webp", {
   import: "default",
 }) as Record<string, string>;
 
+const TALL: Record<string, number> = {"fixnow-mechanics": 2560, "fixnow-shop": 2322, "readysold": 2560, "stonebridge": 2560, "true-to-detail": 2560, "brightlearn-tutoring": 2560, "quantum-biotesting": 2560, "arf-mods": 2560};
+
 const asset = (slug: string): WorkAsset => ({
   d: assets[`/src/assets/work/${slug}-d.webp`],
   m: assets[`/src/assets/work/${slug}-m.webp`],
   t: assets[`/src/assets/work/${slug}-t.webp`],
+  dh: TALL[slug],
 });
 
 export type WorkStatus = "Live" | "Preview build";
+
+/** Intrinsic sizes of the captures, so media can reserve space. */
+export const DIMS = { d: { w: 1024 }, m: { w: 520, h: 1126 }, t: { w: 800, h: 500 } } as const;
 
 export interface WorkProject {
   slug: string;

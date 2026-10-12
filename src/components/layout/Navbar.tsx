@@ -1,188 +1,155 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
+import { Pill } from "@/components/oss/Pill";
 
-const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/how-it-works", label: "Process" },
+export const navItems = [
+  { path: "/work", label: "Work" },
+  { path: "/services", label: "Services" },
   { path: "/packages", label: "Pricing" },
+  { path: "/how-it-works", label: "Process" },
+  { path: "/about", label: "About" },
   { path: "/faq", label: "FAQ" },
 ];
 
+export function Wordmark({ className = "" }: { className?: string }) {
+  return (
+    <span className={`font-display font-bold ${className}`} style={{ letterSpacing: "-0.04em" }}>
+      one<span className="text-primary">simple</span>site
+    </span>
+  );
+}
+
+const active = (current: string, path: string) => current === path || current.startsWith(path + "/");
+
 export function Navbar() {
-  const location = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const { pathname } = useLocation();
+  const [open, setOpen] = useState(false);
+  const first = useRef<HTMLAnchorElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const t = window.setTimeout(() => first.current?.focus(), 60);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        toggle.current?.focus();
+      }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Close menu on route change
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [location.pathname]);
-
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    window.addEventListener("keydown", onKey);
     return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [menuOpen]);
+  }, [open]);
 
   return (
     <>
-      {/* Floating Navigation Pill */}
-      <motion.header
-        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[120] focus:rounded-full focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-background"
       >
-        <nav
-          className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
-            scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
-          }`}
-        >
-          {/* Mobile/Tablet Menu Button - Moved before logo */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden flex-shrink-0 inline-flex items-center justify-center p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-full transition-all hover:brightness-110"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? (
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
-            ) : (
-              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-            )}
-          </button>
+        Skip to content
+      </a>
 
-          {/* Brand */}
-          <Link
-            to="/"
-            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-lg font-bold tracking-tight truncate"
-          >
-            one<span className="text-primary">simple</span>site
+      <header className="sticky top-0 z-50 border-b border-transparent bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/80">
+        <nav aria-label="Main" className="content-width flex h-[68px] items-center justify-between gap-6 md:h-[76px]">
+          <Link to="/" aria-label="OneSimpleSite home" className="text-[1.45rem]">
+            <Wordmark />
           </Link>
 
-          {/* Desktop Links - hidden on mobile/tablet */}
-          <div className="hidden lg:flex items-center gap-0.5 flex-1">
+          <ul className="hidden items-center gap-1 lg:flex">
             {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
-                  location.pathname === item.path
-                    ? "bg-secondary text-foreground border-border"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
-                }`}
-              >
-                {item.label}
-              </Link>
+              <li key={item.path}>
+                <Link
+                  to={item.path}
+                  aria-current={active(pathname, item.path) ? "page" : undefined}
+                  className={`relative rounded-full px-3.5 py-2 text-[0.9375rem] font-medium transition-colors hover:text-primary ${
+                    active(pathname, item.path) ? "text-foreground" : "text-foreground/70"
+                  }`}
+                >
+                  {item.label}
+                  {active(pathname, item.path) && (
+                    <span aria-hidden="true" className="absolute -bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 rounded-[1px] bg-[hsl(var(--brand))]" />
+                  )}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          {/* Desktop CTA */}
-          <Link
-            to="/start"
-            className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
-          >
-            Get Started
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
-        </nav>
-      </motion.header>
-
-      {/* Mobile Menu Dropdown */}
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 z-[75] bg-black/20 backdrop-blur-sm lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setMenuOpen(false)}
-            />
-
-            {/* Menu Panel */}
-            <motion.div
-              className="fixed top-[4.5rem] left-3 right-3 sm:left-6 sm:right-6 z-[85] lg:hidden"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
+          <div className="flex items-center gap-3">
+            <Pill to="/start" className="hidden sm:inline-flex">
+              Start a project
+            </Pill>
+            <button
+              ref={toggle}
+              type="button"
+              onClick={() => setOpen((o) => !o)}
+              aria-expanded={open}
+              aria-controls="site-menu"
+              className="inline-flex h-12 items-center gap-2 rounded-full border-[1.5px] border-foreground/80 px-5 text-[0.9375rem] font-semibold lg:hidden"
             >
-              <div className="bg-background border-2 border-border rounded-2xl shadow-2xl overflow-hidden">
-                {/* Dotted grid background */}
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    backgroundImage: `radial-gradient(circle, hsl(var(--muted-foreground) / 0.3) 1px, transparent 1px)`,
-                    backgroundSize: "20px 20px",
-                  }}
-                />
+              {open ? "Close" : "Menu"}
+            </button>
+          </div>
+        </nav>
+      </header>
 
-                <nav className="relative z-10 p-4 sm:p-5">
-                  <div className="space-y-1">
-                    {navItems.map((item, index) => (
-                      <motion.div
-                        key={item.path}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ delay: 0.05 + index * 0.05, duration: 0.2 }}
-                      >
-                        <Link
-                          to={item.path}
-                          className={`block px-4 py-3 text-base font-semibold rounded-lg transition-colors border-2 ${
-                            location.pathname === item.path
-                              ? "text-primary border-primary"
-                              : "text-foreground border-transparent hover:bg-secondary"
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.2, duration: 0.2 }}
-                    className="mt-4 pt-4 border-t border-border"
+      {open && (
+        <div
+          id="site-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          className="theme-ink fixed inset-0 z-[60] flex flex-col overflow-y-auto"
+        >
+          <div className="content-width flex h-[68px] shrink-0 items-center justify-between">
+            <Link to="/" className="text-[1.3rem] sm:text-[1.45rem]" aria-label="OneSimpleSite home">
+              <Wordmark />
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setOpen(false);
+                toggle.current?.focus();
+              }}
+              className="inline-flex h-12 items-center gap-2 rounded-full border-[1.5px] border-foreground/80 px-4 text-[0.9375rem] font-semibold"
+            >
+              <X className="h-4 w-4" /> Close
+            </button>
+          </div>
+          <div className="content-width flex flex-1 flex-col justify-between pb-10 pt-8">
+            <ul>
+              {navItems.map((item, i) => (
+                <li key={item.path} className="border-b border-border">
+                  <Link
+                    ref={i === 0 ? first : undefined}
+                    to={item.path}
+                    className="flex items-baseline justify-between py-4 font-display text-[2.6rem] font-bold leading-none"
+                    style={{ letterSpacing: "-0.045em", paddingLeft: i % 2 ? "1.5rem" : 0 }}
                   >
-                    <Link
-                      to="/start"
-                      className="flex items-center justify-center gap-2 w-full px-5 py-3 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:brightness-110 transition-all"
-                    >
-                      Get Started
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </motion.div>
-                </nav>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+                    {item.label}
+                    <span className="text-sm font-medium text-muted-foreground nums">0{i + 1}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-10 space-y-5">
+              <Pill to="/start">Start a project</Pill>
+              <p>
+                <a href="mailto:hello@onesimplesite.co.uk" className="link-line text-base">
+                  hello@onesimplesite.co.uk
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

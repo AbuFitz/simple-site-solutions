@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function Cookies() {
   return (
     <Layout>
-      <section className="pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 relative">
+      <section className="pt-12 pb-24 md:pt-20 md:pb-36 relative">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10">
           <motion.div
@@ -14,7 +14,7 @@ export default function Cookies() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-headline mb-6 sm:mb-8">
+            <h1 className="t-display mb-8" style={{ fontSize: "clamp(2.7rem, 7vw, 5.5rem)" }}>
               Cookie <span className="text-primary">Policy</span>
             </h1>
             <p className="text-body-lg mb-8 sm:mb-12 max-w-2xl">
@@ -23,7 +23,7 @@ export default function Cookies() {
           </motion.div>
 
           <motion.div
-            className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
+            className="max-w-3xl space-y-8 lg:ml-[25%]"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -31,7 +31,7 @@ export default function Cookies() {
             <DottedGrid className="opacity-10" spacing={24} />
             <div className="relative z-10 space-y-6 sm:space-y-8">
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">1. What Are Cookies?</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">1. What Are Cookies?</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Cookies are small text files that are placed on your device when you visit a website.
                   They are widely used to make websites work more efficiently and to provide information
@@ -41,7 +41,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">2. How We Use Cookies</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">2. How We Use Cookies</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   OneSimpleSite uses cookies for the following purposes:
                 </p>
@@ -53,7 +53,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">3. Types of Cookies We Use</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">3. Types of Cookies We Use</h2>
                 <div className="space-y-4">
                   <div className="p-4 rounded-lg bg-muted/30 border border-border">
                     <div className="flex items-center gap-2 mb-2">
@@ -114,7 +114,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">4. Third-Party Cookies</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">4. Third-Party Cookies</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Our website does not set third-party cookies. We do not embed content from social
                   media platforms or advertising networks that would place tracking cookies on your device.
@@ -122,7 +122,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">5. Managing Your Cookie Preferences</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">5. Managing Your Cookie Preferences</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   You can manage your cookie preferences in the following ways:
                 </p>
@@ -137,7 +137,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">6. Browser Cookie Settings</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">6. Browser Cookie Settings</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   You can control cookies through your browser settings. Here are links to instructions for common browsers:
                 </p>
@@ -166,7 +166,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">7. Updates to This Policy</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">7. Updates to This Policy</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   We may update this Cookie Policy from time to time to reflect changes in our practices
                   or for legal, regulatory, or operational reasons. We encourage you to review this page
@@ -175,7 +175,7 @@ export default function Cookies() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. More Information</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">8. More Information</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   For more information about how we handle your personal data, please see our{" "}
                   <Link to="/privacy" className="text-primary hover:underline">

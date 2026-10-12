@@ -9,17 +9,25 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
-  // Scroll to top on route change
   useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1));
+      if (el) {
+        el.scrollIntoView();
+        return;
+      }
+    }
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, hash]);
 
   return (
-    <div className="page-container overflow-x-hidden">
+    <div className="page-container">
       <Navbar />
-      <main>{children}</main>
+      <main id="main" tabIndex={-1} className="outline-none">
+        {children}
+      </main>
       <CookieConsent />
       <Footer />
     </div>

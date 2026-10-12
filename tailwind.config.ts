@@ -18,7 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['"Inter"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['var(--font-body)'],
+        display: ['var(--font-display)'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -328,6 +328,7 @@ export default function Onboard() {
 
       {/* Form Content */}
       <main className="max-w-2xl mx-auto px-4 py-8">
+        <h1 className="sr-only">Client onboarding</h1>
         <AnimatePresence mode="wait">
           {/* Step 1: Your Details */}
           {step === 1 && (
@@ -404,6 +405,7 @@ export default function Onboard() {
                   <label className="block text-sm font-medium mb-2">Business Type</label>
                   <div className="relative">
                     <select
+                      aria-label="Business type"
                       value={formData.businessType}
                       onChange={(e) => updateField("businessType", e.target.value)}
                       className={selectClasses}
@@ -548,6 +550,7 @@ export default function Onboard() {
                       <label className="block text-sm font-medium mb-2">Preferred contact method for enquiries</label>
                       <div className="relative">
                         <select
+                          aria-label="Preferred contact method for enquiries"
                           value={formData.preferredContact}
                           onChange={(e) => updateField("preferredContact", e.target.value)}
                           className={selectClasses}

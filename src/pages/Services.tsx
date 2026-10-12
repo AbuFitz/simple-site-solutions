@@ -1,202 +1,213 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { Check } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
-import {
-  Wrench,
-  Zap,
-  Scissors,
-  Car,
-  Sparkles,
-  GraduationCap,
-  ShoppingBag,
-  Hammer,
-  ArrowRight,
-  Check,
-} from "lucide-react";
+import { Pill } from "@/components/oss/Pill";
+import { Shot } from "@/components/oss/Shot";
+import { FaqList } from "@/components/oss/Accordion";
+import { getProject, WorkProject } from "@/data/work";
+import { addons, hosting, packages } from "@/data/packages";
+import { faqs } from "@/data/faq";
 
-const industries = [
-  { icon: Wrench, name: "Plumbers" },
-  { icon: Zap, name: "Electricians" },
-  { icon: Car, name: "Mechanics" },
-  { icon: Sparkles, name: "Cleaners" },
-  { icon: Scissors, name: "Barbers & Salons" },
-  { icon: GraduationCap, name: "Tutors" },
-  { icon: ShoppingBag, name: "Small Shops" },
-  { icon: Hammer, name: "Builders & Trades" },
-];
+const P = (slug: string) => getProject(slug) as WorkProject;
 
-const services = [
-  {
-    title: "Custom Website Design",
-    description: "A bespoke website designed specifically for your business, brand, and customers. No templates, no cookie-cutter solutions.",
-    features: [
-      "Unique design tailored to your brand",
-      "Up to 5 custom pages",
-      "Professional copywriting assistance",
-      "High-quality stock images included",
-    ],
-  },
-  {
-    title: "Mobile-First Development",
-    description: "Your website will look and work perfectly on every device. Because most of your customers are searching on their phones.",
-    features: [
-      "Responsive design for all screen sizes",
-      "Fast loading speeds",
-      "Touch-friendly navigation",
-      "Tested on all major devices",
-    ],
-  },
-  {
-    title: "SEO Foundation",
-    description: "Built from the ground up to help you rank higher in Google searches. Get found by local customers looking for your services.",
-    features: [
-      "Local SEO optimization",
-      "Google Business Profile setup",
-      "Meta tags and structured data",
-      "Site speed optimization",
-    ],
-  },
-  {
-    title: "Lead Capture & Forms",
-    description: "Turn website visitors into paying customers with strategic contact forms and calls-to-action.",
-    features: [
-      "Custom quote request forms",
-      "Contact forms with spam protection",
-      "Click-to-call buttons",
-      "WhatsApp integration available",
-    ],
-  },
-  {
-    title: "Hosting & Security",
-    description: "Reliable, fast, and secure hosting included. Your site is always online and protected.",
-    features: [
-      "SSL certificate included",
-      "99.9% uptime guarantee",
-      "Daily backups",
-      "DDoS protection",
-    ],
-  },
-  {
-    title: "Ongoing Support",
-    description: "Need to make changes? Add new services? We're here to help with affordable maintenance plans.",
-    features: [
-      "Content updates on request",
-      "Technical support via email",
-      "Monthly performance reports",
-      "Priority response times",
-    ],
-  },
-];
+function Ticks({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-3">
+      {items.map((i) => (
+        <li key={i} className="flex items-start gap-3">
+          <Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+          <span>{i}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Meta({ rows }: { rows: [string, string][] }) {
+  return (
+    <dl className="mt-10 divide-y divide-border border-y border-border text-sm">
+      {rows.map(([k, v]) => (
+        <div key={k} className="grid grid-cols-[8rem_1fr] gap-4 py-3.5">
+          <dt className="font-semibold">{k}</dt>
+          <dd className="text-muted-foreground">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export default function Services() {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary/50 to-background py-20">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-              Website Services for <span className="gradient-text">Local Businesses</span>
+      <Helmet>
+        <title>Website Services for Local UK Businesses | OneSimpleSite</title>
+        <meta
+          name="description"
+          content="Website build, local SEO, enquiry and booking forms, hosting and care for local UK businesses. Prices from £199, listed upfront."
+        />
+        <link rel="canonical" href="https://onesimplesite.co.uk/services" />
+      </Helmet>
+
+      {/* Opening */}
+      <section className="pb-16 pt-12 md:pb-28 md:pt-20">
+        <div className="content-width grid gap-10 lg:grid-cols-12">
+          <p className="t-label lg:col-span-3">Services</p>
+          <div className="lg:col-span-9">
+            <h1 className="t-display" style={{ fontSize: "clamp(2.7rem, 7vw, 6.25rem)" }}>
+              Everything your business needs online,
+              <span className="block md:pl-[12%]">in one simple service.</span>
             </h1>
-            <p className="text-lg text-muted-foreground md:text-xl">
-              Everything you need to establish a professional online presence and start getting more customers.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Industries */}
-      <section className="border-b border-border py-12">
-        <div className="container">
-          <p className="mb-6 text-center text-sm font-medium text-muted-foreground">
-            TRUSTED BY BUSINESSES ACROSS ALL TRADES
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8">
-            {industries.map((industry) => (
-              <div key={industry.name} className="flex items-center gap-2 text-muted-foreground">
-                <industry.icon className="h-5 w-5" />
-                <span className="text-sm font-medium">{industry.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="section">
-        <div className="container">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <div key={service.title} className="card-elevated flex flex-col">
-                <h3 className="mb-3 text-xl font-semibold">{service.title}</h3>
-                <p className="mb-4 text-muted-foreground">{service.description}</p>
-                <ul className="mt-auto space-y-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2 text-sm">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What You Get */}
-      <section className="section bg-muted/30">
-        <div className="container">
-          <div className="mx-auto max-w-3xl">
-            <div className="section-header">
-              <h2 className="section-title">What's Included in Every Project</h2>
-              <p className="section-description">
-                No hidden costs. No surprises. Here's exactly what you get.
+            <div className="mt-10 grid gap-10 md:ml-[12%] md:grid-cols-2">
+              <p className="t-lead max-w-md">
+                We are a productised service, not a custom agency: a fixed scope, fixed prices and layouts researched for local trades. That is what keeps it fast and affordable.
               </p>
+              <ul className="space-y-2.5 text-sm" aria-label="What is included">
+                {["Website build, from 3 to 10 pages", "Local SEO foundations in every package", "Contact forms, WhatsApp and click-to-call", "Optional hosting and care"].map((x) => (
+                  <li key={x} className="flex items-center gap-3 border-b border-border pb-2.5">
+                    <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+                    {x}
+                  </li>
+                ))}
+              </ul>
             </div>
-            
-            <div className="grid gap-4 sm:grid-cols-2">
-              {[
-                "Custom responsive design",
-                "Up to 5 pages included",
-                "Contact & quote forms",
-                "Mobile optimization",
-                "Basic SEO setup",
-                "SSL security certificate",
-                "Google Analytics setup",
-                "1 year hosting included",
-                "2 rounds of revisions",
-                "Social media links",
-                "Map integration",
-                "Fast loading speed",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-3 rounded-lg bg-background p-4">
-                  <Check className="h-5 w-5 text-success" />
-                  <span className="font-medium">{item}</span>
+          </div>
+        </div>
+      </section>
+
+      {/* 01 Website build: image-led, text beside */}
+      <section id="website-build" className="scroll-mt-24 pb-24 md:pb-36" aria-labelledby="build-title">
+        <div className="content-width grid items-start gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-6 lg:sticky lg:top-28">
+            <Link to="/work/stonebridge" className="block" aria-label="Stonebridge Construction case study">
+              <Shot project={P("stonebridge")} kind="t" contour="notch-br" ratio="5 / 4" radius={32} sizes="(min-width:1024px) 45vw, 95vw" alt="Stonebridge Construction homepage" />
+            </Link>
+            <p className="mt-3 text-sm text-muted-foreground">Stonebridge Construction, a service site we built.</p>
+          </div>
+          <div className="lg:col-span-5 lg:col-start-8">
+            <p className="t-label">01 · Website build</p>
+            <h2 id="build-title" className="t-h2 mt-5">A complete site on a layout that already works.</h2>
+            <p className="t-lead mt-6">
+              Mobile-first design, professional copywriting help, speed and SSL, built from what converts in your industry.
+            </p>
+            <div className="mt-10 space-y-3">
+              {packages.map((p) => (
+                <div key={p.id} className="flex items-baseline justify-between gap-4 rounded-2xl border border-border bg-card px-5 py-4">
+                  <div>
+                    <p className="font-display text-xl font-bold" style={{ letterSpacing: "-0.03em" }}>{p.name}</p>
+                    <p className="text-sm text-muted-foreground">Up to {p.pages} pages · {p.delivery} · {p.ideal.toLowerCase()}</p>
+                  </div>
+                  <p className="font-display text-3xl font-bold nums" style={{ letterSpacing: "-0.04em" }}>£{p.price}</p>
                 </div>
               ))}
             </div>
+            <div className="mt-8 flex flex-wrap items-center gap-6">
+              <Pill to="/packages">Compare packages</Pill>
+              <Link to="/start" className="link-line">Start a project</Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="section">
-        <div className="container">
-          <div className="mx-auto max-w-3xl rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12">
-            <h2 className="mb-4 text-2xl font-bold md:text-3xl">
-              Ready to Get Started?
-            </h2>
-            <p className="mb-6 opacity-90">
-              Book a free 15-minute call to discuss your project. No obligation, no pressure.
-            </p>
-            <Button size="lg" variant="secondary" asChild>
-              <Link to="/contact">
-                Get Your Free Quote
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+      {/* 02 Local SEO: type-led, with an oversized number */}
+      <section id="local-seo" className="scroll-mt-24 pb-24 md:pb-36" aria-labelledby="seo-title">
+        <div className="content-width">
+          <div className="grid gap-10 lg:grid-cols-12">
+            <p className="font-display font-bold leading-none text-primary lg:col-span-3" style={{ fontSize: "clamp(5rem, 14vw, 12rem)", letterSpacing: "-0.06em" }} aria-hidden="true">02</p>
+            <div className="lg:col-span-8 lg:col-start-5">
+              <p className="t-label">Local SEO</p>
+              <h2 id="seo-title" className="t-h2 mt-5">Found by the people searching near you.</h2>
+              <div className="mt-10 grid gap-12 md:grid-cols-2">
+                <div>
+                  <p className="text-body">
+                    Every site is built with proper structure, meta tags and local optimisation from day one. There is no separate SEO add-on to buy for the basics.
+                  </p>
+                  <Meta rows={[["Who for", "Any local business that wants to be found"], ["Included", "Every package"], ["Add-ons", "Google Business Profile setup £39 · SEO audit report £59"]]} />
+                </div>
+                <div>
+                  <p className="mb-4 font-semibold">What you get</p>
+                  <Ticks items={["Basic on-page SEO (The Starter)", "Full on-page SEO (The Sorted)", "SEO-led architecture and location pages (The Works)", "Google Analytics setup (The Works)"]} />
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* 03 Enquiries and booking: black panel */}
+      <section id="enquiries-and-booking" className="scroll-mt-24 px-3 pb-24 md:px-5 md:pb-36" aria-labelledby="enq-title">
+        <div className="theme-ink overflow-hidden rounded-[28px] md:rounded-[48px]">
+          <div className="content-width grid gap-12 py-16 md:py-28 lg:grid-cols-12">
+            <div className="lg:col-span-6">
+              <p className="t-label">03 · Enquiries &amp; booking</p>
+              <h2 id="enq-title" className="t-h2 mt-5">Make it easy to get in touch.</h2>
+              <p className="mt-6 max-w-md text-body">
+                A visitor should be able to call, message or book in one tap. Contact forms, click-to-call and WhatsApp come with every package.
+              </p>
+              <div className="mt-10"><Ticks items={["Contact form with click-to-call and WhatsApp", "Google Maps", "Booking system included (The Sorted)", "Advanced booking (The Works)"]} /></div>
+              <Meta rows={[["Who for", "Trades and services that take bookings or quote requests"], ["Add-on", "Booking system setup £39"]]} />
+            </div>
+            <div className="relative lg:col-span-5 lg:col-start-8">
+              <Link to="/work/true-to-detail" className="block" aria-label="True To Detail case study">
+                <Shot project={P("true-to-detail")} kind="t" contour="notch-tl" ratio="4 / 3" radius={30} sizes="(min-width:1024px) 40vw, 90vw" alt="True To Detail homepage" />
+              </Link>
+              <div className="absolute -bottom-6 right-4 w-[34%]">
+                <Shot project={P("fixnow-mechanics")} kind="m" contour="leaf" ratio="9 / 17" sizes="15vw" alt="FixNow Mechanics on a phone" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 04 Hosting and care */}
+      <section id="hosting-and-care" className="scroll-mt-24 pb-24 md:pb-36" aria-labelledby="host-title">
+        <div className="content-width grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <p className="t-label">04 · Hosting &amp; care</p>
+            <h2 id="host-title" className="t-h2 mt-5">Keep it running.</h2>
+            <p className="mt-6 max-w-md text-body">
+              Optional monthly care so your site stays online, backed up and current. No contract, cancel anytime, first month free with any package.
+            </p>
+            <p className="mt-10 font-display font-bold" style={{ fontSize: "clamp(4rem, 8vw, 7rem)", letterSpacing: "-0.05em", lineHeight: 1 }}>
+              £{hosting.price}<span className="text-2xl font-semibold text-muted-foreground">/month</span>
+            </p>
+          </div>
+          <div className="lg:col-span-6 lg:col-start-7 lg:pt-10">
+            <Ticks items={hosting.features} />
+            <div className="mt-10 w-[46%]">
+              <Shot project={P("brightlearn-tutoring")} kind="t" contour="pebble" ratio="1 / 1" sizes="30vw" decorative />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 05 Extras */}
+      <section id="extras" className="scroll-mt-24 pb-24 md:pb-36" aria-labelledby="extras-title">
+        <div className="content-width grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <p className="t-label">05 · Extras</p>
+            <h2 id="extras-title" className="t-h2 mt-5">Add what you need.</h2>
+            <p className="mt-5 text-body">Skip what you do not.</p>
+          </div>
+          <ul className="border-t border-border lg:col-span-7 lg:col-start-6">
+            {addons.map((a) => (
+              <li key={a.name} className="flex items-baseline justify-between gap-6 border-b border-border py-5">
+                <span className="font-display text-2xl font-semibold md:text-3xl" style={{ letterSpacing: "-0.03em" }}>{a.name}</span>
+                <span className="nums text-xl font-semibold">£{a.price}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* FAQ and CTA */}
+      <section className="pb-28 md:pb-40" aria-labelledby="svc-faq">
+        <div className="content-width grid gap-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <h2 id="svc-faq" className="t-h2">Common questions.</h2>
+            <div className="mt-8"><Pill to="/start">Start your project</Pill></div>
+          </div>
+          <div className="lg:col-span-7 lg:col-start-6"><FaqList items={faqs.slice(0, 4)} /></div>
         </div>
       </section>
     </Layout>

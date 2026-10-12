@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function Privacy() {
   return (
     <Layout>
-      <section className="pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 relative">
+      <section className="pt-12 pb-24 md:pt-20 md:pb-36 relative">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10">
           <motion.div
@@ -14,7 +14,7 @@ export default function Privacy() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-headline mb-6 sm:mb-8">
+            <h1 className="t-display mb-8" style={{ fontSize: "clamp(2.7rem, 7vw, 5.5rem)" }}>
               Privacy <span className="text-primary">Policy</span>
             </h1>
             <p className="text-body-lg mb-8 sm:mb-12 max-w-2xl">
@@ -23,7 +23,7 @@ export default function Privacy() {
           </motion.div>
 
           <motion.div
-            className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
+            className="max-w-3xl space-y-8 lg:ml-[25%]"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
@@ -31,7 +31,7 @@ export default function Privacy() {
             <DottedGrid className="opacity-10" spacing={24} />
             <div className="relative z-10 space-y-6 sm:space-y-8">
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">1. Who We Are</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">1. Who We Are</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   OneSimpleSite ("we", "our", "us") is a UK-based web design service for local businesses. 
                   We are committed to protecting your privacy and handling your data in an open and transparent manner.
@@ -39,7 +39,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">2. Information We Collect</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">2. Information We Collect</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   We collect information you provide directly to us, including:
                 </p>
@@ -53,7 +53,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">3. How We Use Your Information</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">3. How We Use Your Information</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   We use the information we collect to:
                 </p>
@@ -67,7 +67,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">4. Data Sharing</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">4. Data Sharing</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   We do not sell, trade, or rent your personal information to third parties. 
                   We may share information with trusted service providers who assist us in operating our business 
@@ -76,7 +76,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">5. Data Retention</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">5. Data Retention</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   We retain your personal information for as long as necessary to fulfil the purposes for which 
                   it was collected, including to satisfy legal, accounting, or reporting requirements. 
@@ -85,7 +85,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">6. Your Rights</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">6. Your Rights</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   Under UK GDPR, you have the right to:
                 </p>
@@ -100,7 +100,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">7. Cookies</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">7. Cookies</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
                   Our website uses essential cookies to ensure proper functionality.
                   We do not use tracking or advertising cookies.
@@ -116,7 +116,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Contact Us</h2>
+                <h2 className="font-display text-2xl font-bold mb-3">8. Contact Us</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   If you have any questions about this Privacy Policy or wish to exercise your rights,
                   please contact us at{" "}
