@@ -13,7 +13,7 @@ export function LogoMark({ className }: { className?: string }) {
 
 export function Wordmark({ className }: { className?: string }) {
   return (
-    <span className={cn("font-display font-bold tracking-tight", className)} style={{ letterSpacing: "-0.035em" }}>
+    <span className={cn("font-bold tracking-tight", className)}>
       one<span className="text-primary">simple</span>site
     </span>
   );

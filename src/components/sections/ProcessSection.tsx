@@ -9,14 +9,9 @@ import { PagePoster } from "./PagePoster";
 export function ProcessSection() {
   return (
     <section className="chapter chapter-paper chapter-sheet" aria-labelledby="process-title">
-      <div className="content-width pb-6 pt-16 sm:pt-20 md:pt-28 lg:pb-0">
+      <div className="content-width pb-6 pt-14 sm:pt-20 md:pt-24 lg:pb-0">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="eyebrow mb-4 flex items-center gap-3">
-              <span className="mono text-signal">03</span>
-              <span className="h-px w-8 bg-foreground/30" />
-              The process
-            </p>
             <h2 id="process-title" className="text-headline max-w-3xl">
               Simple. <span className="text-signal">Straightforward.</span>
             </h2>
@@ -34,8 +29,8 @@ export function ProcessSection() {
       <div className="content-width">
         <ChapterStage
           count={steps.length}
-          stageClassName="h-[42svh] lg:h-screen -mx-5 sm:-mx-8 md:-mx-12 lg:mx-0"
-          chapterClassName="min-h-[40svh] lg:min-h-[64vh]"
+          stageClassName="hidden lg:block lg:h-screen"
+          chapterClassName="py-2 lg:min-h-[64vh]"
           stage={(chapter) => (
             <PathStage chapter={chapter} />
           )}
@@ -50,7 +45,7 @@ export function ProcessSection() {
                 <div className="flex items-start gap-5">
                   <div className="step-number shrink-0">{s.number}</div>
                   <div>
-                    <h3 className="font-display text-2xl font-bold sm:text-3xl" style={{ letterSpacing: "-0.035em" }}>
+                    <h3 className="text-2xl font-bold sm:text-3xl">
                       {s.title}
                     </h3>
                     <p className="mt-2 text-base leading-relaxed text-muted-foreground">{s.description}</p>
@@ -73,6 +68,7 @@ function PathStage({ chapter }: { chapter: import("framer-motion").MotionValue<n
       scene="path"
       sceneProps={{ progress }}
       label="A route with five stops: choose a package, send your details, we build, you review, and you go live."
+      desktopOnly
       className="h-full w-full"
       poster={<PagePoster tilt={false} />}
     />

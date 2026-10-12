@@ -18,7 +18,7 @@ const asset = (slug: string): WorkAsset => ({
   t: assets[`/src/assets/work/${slug}-t.webp`],
 });
 
-export type WorkStatus = "Live" | "Preview build" | "Private app";
+export type WorkStatus = "Live" | "Preview build";
 
 export interface WorkProject {
   slug: string;
@@ -78,25 +78,6 @@ export const projects: WorkProject[] = [
     stack: ["Next.js", "TypeScript", "Shopify"],
     tint: "#f5b800",
     img: asset("fixnow-shop"),
-  },
-  {
-    slug: "fixnow-track",
-    name: "FixNow Track",
-    sector: "Live job tracking",
-    kind: "Web app",
-    place: "Customer and engineer phones",
-    status: "Private app",
-    domain: "track.fixnowmechanics.co.uk",
-    summary: "A private tracking page for each appointment: the customer gets a link, then watches the engineer set off and arrive.",
-    built: [
-      "Private, expiring tracking link per appointment",
-      "Live map with the engineer's position",
-      "Engineer job links that share GPS from a phone",
-      "Staff console that installs as an app",
-    ],
-    stack: ["React", "Supabase", "MapLibre"],
-    tint: "#f5b800",
-    img: asset("fixnow-track"),
   },
   {
     slug: "readysold",

@@ -42,7 +42,7 @@ export function ChapterStage({ count, stage, chapters, stageClassName = "", chap
           className="pointer-events-none absolute inset-x-0 -bottom-8 h-8 bg-gradient-to-b from-background to-transparent lg:hidden"
         />
       </div>
-      <div ref={list}>
+      <div ref={list} className="space-y-3 lg:space-y-0">
         {chapters(active).map((c, i) => (
           <div key={i} className={`flex items-center ${chapterClassName}`}>
             {c}

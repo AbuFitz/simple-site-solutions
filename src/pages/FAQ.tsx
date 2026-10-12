@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
-import { Helmet } from "react-helmet-async";
-import { Finale } from "@/components/sections/Finale";
+import { DottedGrid } from "@/components/ui/DottedGrid";
+import { CTASection } from "@/components/CTASection";
+import { motion } from "framer-motion";
 import {
   Accordion,
   AccordionContent,
@@ -87,46 +88,82 @@ const faqs = [
   {
     question: "Can I see examples of your work?",
     answer:
-      "Yes! Check out our Work page. We've built sites for businesses like FixNow Mechanics, ARF Mods, and ReadySold. Each site follows our proven layout approach tailored to their industry.",
+      "Yes! Check out our portfolio on the homepage. We've built sites for businesses like FixNow Mechanics, ARF Mods, and ReadySold. Each site follows our proven layout approach tailored to their industry.",
   },
 ];
 
 export default function FAQ() {
   return (
     <Layout>
-      <Helmet>
-        <title>FAQ | Web Design for Local UK Businesses | OneSimpleSite</title>
-        <link rel="canonical" href="https://onesimplesite.co.uk/faq" />
-      </Helmet>
-      <section className="relative pb-16 pt-32 sm:pt-40 md:pb-24">
+      {/* Hero */}
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
+        <DottedGrid className="opacity-40" spacing={36} />
+        <div className="content-width relative z-10">
+          <motion.div
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                FAQ
+              </span>
+            </div>
+            <h1 className="text-display mb-6 sm:mb-8">
+              Straight <span className="text-primary">answers.</span>
+            </h1>
+            <p className="text-body-lg max-w-2xl">
+              No jargon. No runaround. Everything you need to know before
+              getting started.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* FAQ List */}
+      <section className="section-sm">
         <div className="content-width">
-          <p className="eyebrow mb-5 flex items-center gap-3">
-            <span className="h-px w-8 bg-primary" />
-            FAQ
-          </p>
-          <h1 className="text-display">
-            Straight <span className="text-signal">answers.</span>
-          </h1>
-          <p className="text-body-lg mt-6 max-w-xl">No jargon. No runaround. Everything you need to know before getting started.</p>
+          <motion.div
+            className="bordered-section-lg p-4 sm:p-6 md:p-8 max-w-3xl relative"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-15" spacing={24} />
+            <div className="relative z-10">
+              <Accordion type="single" collapsible className="space-y-2 sm:space-y-3">
+                {faqs.map((faq, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="bg-secondary rounded-lg sm:rounded-xl px-4 sm:px-6 border border-border"
+                  >
+                    <AccordionTrigger className="text-left text-sm sm:text-base font-semibold hover:no-underline py-4 sm:py-5">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-4 sm:pb-5 text-sm sm:text-base leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="chapter chapter-paper chapter-sheet">
-        <div className="content-width section">
-          <Accordion type="single" collapsible className="mx-auto max-w-3xl divide-y divide-border border-y border-border">
-            {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="border-0">
-                <AccordionTrigger className="py-6 text-left font-display text-lg font-semibold hover:no-underline sm:text-xl" style={{ letterSpacing: "-0.02em" }}>
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="pb-6 text-base leading-relaxed text-muted-foreground">{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      <Finale title="Still have" highlighted="questions?" description="The best way to learn more is to start. Fill out the form, choose your package, and we'll take it from there." primaryText="Get Started" secondaryText="View Pricing" />
+      {/* CTA */}
+      <CTASection
+        title="Still have"
+        highlightedText="questions?"
+        description="The best way to learn more is to start. Fill out the form, choose your package, and we'll take it from there."
+        primaryButtonText="Get Started"
+        primaryButtonLink="/start"
+        secondaryButtonText="View Pricing"
+        secondaryButtonLink="/packages"
+      />
     </Layout>
   );
 }

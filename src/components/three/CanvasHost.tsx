@@ -7,11 +7,8 @@ import { disposeSlabCache } from "./kit/slab";
 const scenes: Record<SceneName, React.LazyExoticComponent<React.ComponentType<never>>> = {
   hero: lazy(() => import("./scenes/HeroScene")) as never,
   work: lazy(() => import("./scenes/WorkScene")) as never,
-  core: lazy(() => import("./scenes/CoreScene")) as never,
   path: lazy(() => import("./scenes/PathScene")) as never,
   towers: lazy(() => import("./scenes/TowersScene")) as never,
-  finale: lazy(() => import("./scenes/FinaleScene")) as never,
-  device: lazy(() => import("./scenes/DeviceScene")) as never,
 };
 
 const EnvContext = createContext<SceneEnv | null>(null);

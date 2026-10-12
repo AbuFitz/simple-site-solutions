@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ArrowRight, Check } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import { Finale } from "@/components/sections/Finale";
+import { CTASection } from "@/components/CTASection";
 import { PricingStage, TierPicker } from "@/components/sections/PricingSection";
 import { packages, addons, hosting } from "@/data/packages";
 
@@ -62,26 +62,24 @@ export default function Packages() {
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Helmet>
 
-      <section className="pb-6 pt-32 sm:pt-40">
-        <div className="content-width">
-          <p className="eyebrow mb-5 flex items-center gap-3">
-            <span className="h-px w-8 bg-primary" />
-            Pricing
-          </p>
-          <h1 className="text-display max-w-5xl">
-            Simple pricing for <span className="text-signal">local businesses</span>
-          </h1>
-          <p className="text-body-lg mt-6 max-w-xl">One-time payment. No monthly fees for the website itself. No surprises.</p>
-        </div>
-        <div className="content-width mt-8">
-          <PricingStage selected={selected} onSelect={setSelected} className="h-[min(48svh,460px)] w-full md:h-[min(56vh,520px)]" />
-          <div className="mx-auto mt-4 max-w-xl">
-            <TierPicker selected={selected} onSelect={setSelected} id="pk" />
+      <section className="pb-10 pt-28 sm:pt-32 lg:pb-0">
+        <div className="content-width lg:grid lg:grid-cols-12 lg:items-center lg:gap-10">
+          <div className="lg:col-span-6">
+            <h1 className="text-headline">
+              Simple pricing for <span className="text-primary">local businesses</span>
+            </h1>
+            <p className="text-body-lg mt-4 max-w-lg">One-time payment. No monthly fees for the website itself. No surprises.</p>
+            <div className="mt-6 max-w-xl">
+              <TierPicker selected={selected} onSelect={setSelected} id="pk" />
+            </div>
+          </div>
+          <div className="hidden lg:col-span-6 lg:block">
+            <PricingStage selected={selected} onSelect={setSelected} className="h-[420px] w-full" />
           </div>
         </div>
       </section>
 
-      <section className="chapter chapter-paper chapter-sheet mt-16">
+      <section className="chapter chapter-paper chapter-sheet mt-10">
         <div className="content-width section">
           <div className="grid gap-5 lg:grid-cols-3">
             {packages.map((pkg, i) => (
@@ -93,14 +91,14 @@ export default function Packages() {
               >
                 {pkg.popular && <span className="badge-primary absolute -top-3 left-6 !bg-primary !text-primary-foreground">Most Popular</span>}
                 <header className="mb-6">
-                  <h2 className="font-display text-2xl font-bold" style={{ letterSpacing: "-0.035em" }} itemProp="name">
+                  <h2 className="text-2xl font-bold" itemProp="name">
                     {pkg.name}
                   </h2>
                   <p className="mb-4 mt-1 text-sm text-muted-foreground" itemProp="description">
                     {pkg.tagline}
                   </p>
                   <div className="flex items-baseline gap-1" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                    <span className="font-display text-6xl font-extrabold text-signal" style={{ letterSpacing: "-0.05em" }}>
+                    <span className="text-6xl font-bold text-signal">
                       £<span itemProp="price">{pkg.price}</span>
                     </span>
                     <meta itemProp="priceCurrency" content="GBP" />
@@ -135,7 +133,7 @@ export default function Packages() {
             <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {addons.map((a) => (
                 <div key={a.name} className="slab-flat p-4">
-                  <div className="font-display text-2xl font-bold text-signal">£{a.price}</div>
+                  <div className="text-2xl font-bold text-signal">£{a.price}</div>
                   <div className="mt-1 text-xs text-muted-foreground">{a.name}</div>
                 </div>
               ))}
@@ -145,10 +143,10 @@ export default function Packages() {
           <div className="slab mt-16 grid gap-8 p-6 sm:p-10 md:grid-cols-2">
             <div>
               <p className="eyebrow mb-3">Optional monthly care</p>
-              <h2 className="font-display text-3xl font-bold" style={{ letterSpacing: "-0.04em" }}>
+              <h2 className="text-3xl font-bold">
                 {hosting.name}
               </h2>
-              <p className="mt-4 font-display text-5xl font-extrabold text-signal" style={{ letterSpacing: "-0.05em" }}>
+              <p className="mt-4 text-5xl font-bold text-signal">
                 £{hosting.price}
                 <span className="text-base font-normal text-muted-foreground">/month</span>
               </p>
@@ -166,7 +164,13 @@ export default function Packages() {
         </div>
       </section>
 
-      <Finale title="Ready to get" highlighted="started?" description="Most businesses choose The Sorted. Not sure? We'll help you pick." primaryText="Start Your Project" secondaryText="" />
+      <CTASection
+        title="Ready to get"
+        highlightedText="started?"
+        description="Most businesses choose The Sorted. Not sure? We'll help you pick."
+        primaryButtonText="Start Your Project"
+        primaryButtonLink="/start"
+      />
     </Layout>
   );
 }

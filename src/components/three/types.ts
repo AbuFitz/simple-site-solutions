@@ -1,6 +1,6 @@
 import type { MotionValue } from "framer-motion";
 
-export type SceneName = "hero" | "work" | "core" | "path" | "towers" | "finale" | "device";
+export type SceneName = "hero" | "work" | "path" | "towers";
 
 export interface HeroSceneProps {
   /** 0 at the top of the page, 1 once the hero has scrolled away. */
@@ -14,11 +14,6 @@ export interface WorkSceneProps {
   onPick?: (index: number) => void;
 }
 
-export interface CoreSceneProps {
-  /** 0..3 across the four chapters. */
-  chapter: MotionValue<number>;
-}
-
 export interface PathSceneProps {
   /** 0..1 across the five steps. */
   progress: MotionValue<number>;
@@ -29,22 +24,11 @@ export interface TowersSceneProps {
   onSelect?: (index: number) => void;
 }
 
-export interface FinaleSceneProps {
-  progress?: MotionValue<number>;
-}
-
-export interface DeviceSceneProps {
-  slug: string;
-}
-
 export interface SceneProps {
   hero: HeroSceneProps;
   work: WorkSceneProps;
-  core: CoreSceneProps;
   path: PathSceneProps;
   towers: TowersSceneProps;
-  finale: FinaleSceneProps;
-  device: DeviceSceneProps;
 }
 
 /** Context handed to every scene by CanvasHost. */

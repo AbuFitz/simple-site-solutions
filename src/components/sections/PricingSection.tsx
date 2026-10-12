@@ -11,6 +11,7 @@ export function PricingStage({ selected, onSelect, className = "" }: { selected:
     <Scene3D
       scene="towers"
       sceneProps={{ selected, onSelect }}
+      desktopOnly
       label="Three stacks of pages. The Starter is three pages high, The Sorted six, and The Works ten."
       className={className}
       poster={<PagePoster tilt={false} />}
@@ -37,7 +38,7 @@ export function TierPicker({ selected, onSelect, id }: { selected: number; onSel
           }`}
         >
           <span className="mono block text-[10px] tracking-[0.14em] text-muted-foreground">{p.pages} PAGES</span>
-          <span className="mt-1 block font-display text-xl font-bold sm:text-2xl" style={{ letterSpacing: "-0.04em" }}>
+          <span className="mt-1 block text-xl font-bold sm:text-2xl">
             £{p.price}
           </span>
           <span className="block truncate text-xs text-muted-foreground">{p.name}</span>
@@ -56,19 +57,10 @@ export function PricingSection() {
       <div className="content-width pb-16 pt-16 sm:pt-20 md:pb-24 md:pt-28">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-5">
-            <p className="eyebrow mb-4 flex items-center gap-3">
-              <span className="mono text-signal">04</span>
-              <span className="h-px w-8 bg-foreground/30" />
-              Pricing
-            </p>
             <h2 id="pricing-title" className="text-headline">
               Simple pricing for <span className="text-signal">local businesses</span>
             </h2>
             <p className="text-body-lg mt-5 max-w-md">One-time payment. No monthly fees for the website itself. No surprises.</p>
-
-            <div className="mt-8 lg:hidden">
-              <PricingStage selected={selected} onSelect={setSelected} className="h-[40svh] min-h-[260px] w-full" />
-            </div>
 
             <div className="mt-8">
               <TierPicker selected={selected} onSelect={setSelected} id="home" />
@@ -85,7 +77,7 @@ export function PricingSection() {
                   className="slab p-5 sm:p-6"
                 >
                   <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-display text-2xl font-bold" style={{ letterSpacing: "-0.035em" }}>
+                    <h3 className="text-2xl font-bold">
                       {pkg.name}
                     </h3>
                     {pkg.popular && <span className="badge-primary">Most popular</span>}

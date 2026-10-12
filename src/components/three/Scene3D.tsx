@@ -1,6 +1,7 @@
 import { Component, lazy, ReactNode, Suspense, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { getQuality, Quality } from "@/lib/device";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import type { SceneName, SceneProps } from "./types";
 
 /**
@@ -36,6 +37,8 @@ interface Scene3DProps<S extends SceneName> {
   eager?: boolean;
   /** Pixels beyond the viewport at which the engine mounts. */
   mountMargin?: number;
+  /** Phones get the poster only (render nothing 3D below 1024px). */
+  desktopOnly?: boolean;
 }
 
 export function Scene3D<S extends SceneName>({
@@ -46,7 +49,9 @@ export function Scene3D<S extends SceneName>({
   label,
   eager = false,
   mountMargin = 600,
+  desktopOnly = false,
 }: Scene3DProps<S>) {
+  const wide = useMediaQuery("(min-width: 1024px)");
   const host = useRef<HTMLDivElement>(null);
   const reduced = !!useReducedMotion();
   const [quality] = useState<Quality>(() => getQuality());
@@ -83,7 +88,7 @@ export function Scene3D<S extends SceneName>({
     };
   }, [eager]);
 
-  const shouldMount = quality !== "off" && !failed && (eager ? idle || near : near);
+  const shouldMount = quality !== "off" && !failed && (!desktopOnly || wide) && (eager ? idle || near : near);
 
   // When the engine unmounts, the poster returns
   useEffect(() => {
@@ -91,7 +96,7 @@ export function Scene3D<S extends SceneName>({
   }, [shouldMount]);
 
   return (
-    <div ref={host} className={`stage ${className}`} role="img" aria-label={label}>
+    <div ref={host} className={`stage ${className.includes("absolute") ? "" : "relative"} ${className}`} role="img" aria-label={label}>
       <div
         aria-hidden="true"
         className="poster-fade absolute inset-0"

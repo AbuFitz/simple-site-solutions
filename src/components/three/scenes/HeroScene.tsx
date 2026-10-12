@@ -32,7 +32,7 @@ export default function HeroScene({ progress }: HeroSceneProps) {
   const t0 = useRef<number | null>(null);
   const invalidate = useThree((s) => s.invalidate);
 
-  useFitCamera(3.9, PAGE_HEIGHT, env.compact ? 1.2 : 1.3, 0, env.compact ? 0.5 : 0.9);
+  useFitCamera(3.9, PAGE_HEIGHT, env.compact ? 1.2 : 1.5, 0, env.compact ? 0.5 : 0.9);
 
   useEffect(() => {
     if (env.reduced) {

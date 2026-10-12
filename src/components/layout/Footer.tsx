@@ -1,61 +1,13 @@
-import { forwardRef, useRef } from "react";
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { LogoMark } from "./Logo";
 
 const nav = [
   { to: "/", label: "Home" },
-  { to: "/work", label: "Work" },
   { to: "/how-it-works", label: "Process" },
   { to: "/packages", label: "Pricing" },
   { to: "/faq", label: "FAQ" },
 ];
-
-/** Giant wordmark that tips toward the pointer on desktop. Pure CSS 3D, no WebGL needed. */
-function TiltWordmark() {
-  const ref = useRef<HTMLDivElement>(null);
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 120, damping: 18 });
-  const sy = useSpring(py, { stiffness: 120, damping: 18 });
-  const rotateY = useTransform(sx, [-1, 1], [-9, 9]);
-  const rotateX = useTransform(sy, [-1, 1], [8, -8]);
-
-  return (
-    <div
-      ref={ref}
-      className="perspective-1000 select-none overflow-hidden pt-6"
-      onPointerMove={(e) => {
-        if (e.pointerType !== "mouse" || !ref.current) return;
-        const r = ref.current.getBoundingClientRect();
-        px.set(((e.clientX - r.left) / r.width) * 2 - 1);
-        py.set(((e.clientY - r.top) / r.height) * 2 - 1);
-      }}
-      onPointerLeave={() => {
-        px.set(0);
-        py.set(0);
-      }}
-      aria-hidden="true"
-    >
-      <motion.div
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="origin-bottom whitespace-nowrap pb-3 text-center font-display font-extrabold leading-[1]"
-      >
-        <span
-          className="block text-[clamp(2.4rem,11.6vw,14rem)] text-transparent"
-          style={{
-            letterSpacing: "-0.06em",
-            WebkitTextStroke: "1px hsl(var(--foreground) / 0.18)",
-            textShadow:
-              "0 1px 0 hsl(158 64% 42% / 0.32), 0 2px 0 hsl(158 64% 42% / 0.26), 0 3px 0 hsl(158 64% 42% / 0.2), 0 4px 0 hsl(158 64% 42% / 0.14), 0 5px 0 hsl(158 64% 42% / 0.1), 0 6px 0 hsl(158 64% 42% / 0.06)",
-          }}
-        >
-          onesimplesite
-        </span>
-      </motion.div>
-    </div>
-  );
-}
 
 const linkCls = "text-sm text-muted-foreground transition-colors hover:text-foreground";
 
@@ -67,7 +19,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
           <div className="md:col-span-5">
             <Link to="/" className="inline-flex items-center gap-2.5" aria-label="OneSimpleSite home">
               <LogoMark className="h-8 w-8 text-foreground" />
-              <span className="font-display text-2xl font-bold" style={{ letterSpacing: "-0.04em" }}>
+              <span className="text-2xl font-bold">
                 one<span className="text-primary">simple</span>site
               </span>
             </Link>
@@ -127,7 +79,6 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
           <p className="mono text-[11px] tracking-wide text-muted-foreground">Made for local UK businesses</p>
         </div>
 
-        <TiltWordmark />
       </div>
     </footer>
   );

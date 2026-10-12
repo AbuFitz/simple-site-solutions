@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { Scene3D } from "@/components/three/Scene3D";
 import { projects } from "@/data/work";
 
@@ -120,19 +119,10 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
       <div className="content-width pb-10 pt-16 sm:pt-20 md:pb-14 md:pt-28">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="eyebrow mb-4 flex items-center gap-3">
-              <span className="mono text-signal">01</span>
-              <span className="h-px w-8 bg-foreground/30" />
-              Our work
-            </p>
-            <h2 id="work-title" className="text-headline max-w-3xl">
+                        <h2 id="work-title" className="text-headline max-w-3xl">
               Websites that <span className="text-signal">deliver</span>
             </h2>
           </div>
-          <Link to="/work" className="btn-outline btn-md gap-2 self-start md:self-auto">
-            All {N} projects
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
         </div>
       </div>
 
@@ -165,7 +155,7 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <p className="mono mb-2 text-[11px] tracking-[0.14em] text-muted-foreground">
-              {pad(index + 1)} / {pad(N)} · {project.kind.toUpperCase()} · {project.status.toUpperCase()}
+              {pad(index + 1)} / {pad(N)} · {project.kind}
             </p>
             <h3 className="font-display text-3xl font-bold sm:text-4xl" style={{ letterSpacing: "-0.04em" }}>
               {project.name}
@@ -179,12 +169,8 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
           </motion.div>
 
           <div className="flex flex-wrap items-center gap-3 md:col-span-5 md:justify-end">
-            <Link to={`/work/${project.slug}`} className="btn-primary btn-md gap-2">
-              Case study
-              <ArrowUpRight className="h-4 w-4" />
-            </Link>
             {project.url && (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-outline btn-md gap-2">
+              <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-md gap-2">
                 Visit site
                 <ExternalLink className="h-4 w-4" />
                 <span className="sr-only">(opens in a new tab)</span>
