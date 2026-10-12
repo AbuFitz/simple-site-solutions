@@ -1,4 +1,4 @@
-# One Simple Site
+# One Simple SitE
 
 Websites for local UK businesses using proven layouts that work.
 
