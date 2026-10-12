@@ -1,69 +1,106 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
-import { Pill } from "@/components/oss/Pill";
-import { Wordmark, navItems } from "./Navbar";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 
-const legal = [
-  { to: "/privacy", label: "Privacy" },
-  { to: "/terms", label: "Terms" },
-  { to: "/cookies", label: "Cookies" },
-];
-
-export const Footer = forwardRef<HTMLElement>((_, ref) => (
-  <footer ref={ref} className="theme-ink mt-auto rounded-t-[28px] md:rounded-t-[44px]">
-    <div className="content-width pb-8 pt-16 md:pt-24">
-      <div className="grid gap-12 lg:grid-cols-12">
-        <div className="lg:col-span-8">
-          <p className="t-label mb-6">Next step</p>
-          <h2 className="t-mega" style={{ fontSize: "clamp(3rem, 10vw, 9rem)" }}>
-            Let&rsquo;s make
-            <span className="block pl-[8vw]">your site.</span>
-          </h2>
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5 pl-0 md:pl-[8vw]">
-            <Pill to="/start">Start your project</Pill>
-            <a href="mailto:hello@onesimplesite.co.uk" className="link-line text-lg">
-              hello@onesimplesite.co.uk
-            </a>
+export const Footer = forwardRef<HTMLElement>((_, ref) => {
+  return (
+    <footer ref={ref} className="border-t-2 border-border relative mt-auto">
+      <DottedGrid className="opacity-15" spacing={28} />
+      <div className="content-width py-8 sm:py-10 md:py-12 lg:py-16 relative z-10">
+        {/* Footer Grid */}
+        <div className="grid gap-6 sm:gap-8 md:grid-cols-4 pb-6 sm:pb-8 border-b border-border">
+          {/* Brand */}
+          <div className="md:col-span-2">
+            <Link to="/" className="text-base sm:text-lg md:text-2xl lg:text-3xl font-bold tracking-tight">
+              one<span className="text-primary">simple</span>site
+            </Link>
+            <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xs">
+              Fast, proven websites for local UK businesses. No drama, just results.
+            </p>
           </div>
-        </div>
 
-        <div className="grid grid-cols-2 gap-8 lg:col-span-4 lg:pl-6">
-          <nav aria-label="Footer">
-            <p className="mb-4 text-sm font-semibold text-muted-foreground">Explore</p>
-            <ul className="space-y-2.5">
-              {navItems.map((n) => (
-                <li key={n.path}>
-                  <Link to={n.path} className="text-base hover:text-primary">
-                    {n.label}
+          {/* Links */}
+          <div>
+            <h4 className="font-semibold mb-2 sm:mb-3 text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">
+              Navigate
+            </h4>
+            <ul className="space-y-1.5 sm:space-y-2">
+              {[
+                { to: "/", label: "Home" },
+                { to: "/how-it-works", label: "Process" },
+                { to: "/packages", label: "Pricing" },
+                { to: "/faq", label: "FAQ" },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </nav>
+          </div>
+
+          {/* Contact */}
           <div>
-            <p className="mb-4 text-sm font-semibold text-muted-foreground">Start</p>
-            <ul className="space-y-2.5">
-              <li><Link to="/start" className="text-base hover:text-primary">Start a project</Link></li>
-              <li><Link to="/packages" className="text-base hover:text-primary">From £199</Link></li>
-              <li><Link to="/contact" className="text-base hover:text-primary">Contact</Link></li>
+            <h4 className="font-semibold mb-2 sm:mb-3 text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">
+              Contact
+            </h4>
+            <ul className="space-y-1.5 sm:space-y-2">
+              <li>
+                <Link
+                  to="/start"
+                  className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Start a Project
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="mailto:hello@onesimplesite.co.uk"
+                  className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  hello@onesimplesite.co.uk
+                </a>
+              </li>
             </ul>
           </div>
         </div>
-      </div>
 
-      <div className="mt-20 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/" aria-label="OneSimpleSite home" className="text-lg text-foreground"><Wordmark /></Link>
-          <span>© {new Date().getFullYear()}</span>
+        {/* Bottom */}
+        <div className="pt-4 sm:pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
+          <p className="text-[10px] sm:text-xs text-muted-foreground">
+            © {new Date().getFullYear()} OneSimpleSite
+          </p>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <Link
+              to="/privacy"
+              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Terms of Service
+            </Link>
+            <Link
+              to="/cookies"
+              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Cookie Policy
+            </Link>
+          </div>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">
+            Made for local UK businesses
+          </p>
         </div>
-        <ul className="flex gap-6">
-          {legal.map((l) => (
-            <li key={l.to}><Link to={l.to} className="hover:text-foreground">{l.label}</Link></li>
-          ))}
-        </ul>
-        <p>Made for local UK businesses</p>
       </div>
-    </div>
-  </footer>
-));
+    </footer>
+  );
+});
+
 Footer.displayName = "Footer";

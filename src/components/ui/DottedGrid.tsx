@@ -1,4 +1,3 @@
-/** Retired decoration: the editorial system uses whitespace instead of dotted backgrounds. Kept so existing imports render nothing. */
 import { forwardRef } from "react";
 
 interface DottedGridProps {
@@ -8,5 +7,27 @@ interface DottedGridProps {
   spacing?: number;
 }
 
-export const DottedGrid = forwardRef<HTMLDivElement, DottedGridProps>(() => null);
+export const DottedGrid = forwardRef<HTMLDivElement, DottedGridProps>(
+  (
+    {
+      className = "",
+      dotColor = "hsl(var(--muted-foreground) / 0.15)",
+      dotSize = 1,
+      spacing = 24,
+    },
+    ref
+  ) => {
+    return (
+      <div
+        ref={ref}
+        className={`absolute inset-0 pointer-events-none ${className}`}
+        style={{
+          backgroundImage: `radial-gradient(circle, ${dotColor} ${dotSize}px, transparent ${dotSize}px)`,
+          backgroundSize: `${spacing}px ${spacing}px`,
+        }}
+      />
+    );
+  }
+);
+
 DottedGrid.displayName = "DottedGrid";

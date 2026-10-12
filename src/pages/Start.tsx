@@ -32,7 +32,7 @@ function StepHeader({
 }) {
   return (
     <div className="mb-5 sm:mb-7">
-      <h1 className="t-h2 mb-3">
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
         {title}
       </h1>
       <p className="text-sm sm:text-base md:text-lg text-muted-foreground">{description}</p>
@@ -44,7 +44,7 @@ function StepHeader({
           </span>
           <span className="text-[10px] sm:text-xs font-semibold text-foreground">{progress}%</span>
         </div>
-        <Progress value={progress} aria-label="Form progress" className="h-1 sm:h-1.5" />
+        <Progress value={progress} className="h-1 sm:h-1.5" />
       </div>
     </div>
   );
@@ -149,7 +149,6 @@ export default function Start() {
       }
 
       setIsSubmitted(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Form submission error:", error);
       setSubmitError(
@@ -179,7 +178,7 @@ export default function Start() {
 
   return (
     <Layout>
-      <section className="pt-10 pb-16 md:pt-16 relative flex flex-col justify-start">
+      <section className="pt-20 pb-4 sm:pt-20 sm:pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 relative min-h-[calc(100dvh-3.5rem)] flex flex-col justify-start">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10 flex-1 flex flex-col mx-auto">
           <AnimatePresence mode="wait">

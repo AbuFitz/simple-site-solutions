@@ -1,14 +1,97 @@
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import { Check } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import { Pill } from "@/components/oss/Pill";
-import { Shot } from "@/components/oss/Shot";
-import { getProject, WorkProject } from "@/data/work";
-import { addons, hosting, packages } from "@/data/packages";
+import { DottedGrid } from "@/components/ui/DottedGrid";
+import { CTASection } from "@/components/CTASection";
+import { motion } from "framer-motion";
+import { Check, ArrowRight } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
-const P = (slug: string) => getProject(slug) as WorkProject;
+const packages = [
+  {
+    id: "starter",
+    name: "The Starter",
+    price: "199",
+    tagline: "Get online properly",
+    ideal: "New businesses & sole traders",
+    features: [
+      "Up to 3 pages",
+      "Professional copywriting",
+      "Mobile-first design",
+      "Contact form + WhatsApp",
+      "Google Maps",
+      "Basic SEO",
+      "SSL + Speed optimised",
+      "1 revision round",
+    ],
+    delivery: "5–7 days",
+    payment: "Upfront",
+  },
+  {
+    id: "sorted",
+    name: "The Sorted",
+    price: "399",
+    tagline: "Look established, win trust",
+    ideal: "Growing businesses",
+    popular: true,
+    features: [
+      "Up to 6 pages",
+      "Everything in Starter, plus:",
+      "Conversion-focused layout",
+      "Reviews & trust signals",
+      "Booking system included",
+      "Full on-page SEO",
+      "Free domain (1st year)",
+      "Business email setup",
+      "2 revision rounds",
+    ],
+    delivery: "7–10 days",
+    payment: "50% upfront",
+  },
+  {
+    id: "works",
+    name: "The Works",
+    price: "649",
+    tagline: "Compete seriously, scale",
+    ideal: "Established businesses",
+    features: [
+      "Up to 10 pages",
+      "Everything in Sorted, plus:",
+      "SEO-led architecture",
+      "Location pages for local SEO",
+      "Blog setup + 1 post",
+      "Google Analytics setup",
+      "Advanced booking",
+      "Full legal pages",
+      "3 revision rounds",
+    ],
+    delivery: "10–14 days",
+    payment: "50% upfront",
+  },
+];
 
+const addons = [
+  { name: "Logo Design", price: "49" },
+  { name: "Google Business Setup", price: "39" },
+  { name: "Booking System", price: "39" },
+  { name: "Email Templates ×3", price: "29" },
+  { name: "SEO Audit Report", price: "59" },
+  { name: "Legal Pages Pack", price: "19" },
+];
+
+const hosting = {
+  name: "Keep It Running",
+  price: "19",
+  features: [
+    "Website hosting & domain",
+    "SSL certificate",
+    "Weekly backups",
+    "Security monitoring",
+    "Up to 5 content updates/month",
+    "Priority support",
+  ],
+};
+
+// JSON-LD structured data for SEO
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -24,7 +107,12 @@ const structuredData = {
         "@type": "Product",
         name: pkg.name,
         description: pkg.tagline,
-        offers: { "@type": "Offer", price: pkg.price, priceCurrency: "GBP", availability: "https://schema.org/InStock" },
+        offers: {
+          "@type": "Offer",
+          price: pkg.price,
+          priceCurrency: "GBP",
+          availability: "https://schema.org/InStock",
+        },
       },
     })),
   },
@@ -33,18 +121,13 @@ const structuredData = {
     name: "OneSimpleSite",
     url: "https://onesimplesite.co.uk",
     email: "support@onesimplesite.co.uk",
-    areaServed: { "@type": "Country", name: "United Kingdom" },
+    areaServed: {
+      "@type": "Country",
+      name: "United Kingdom",
+    },
     priceRange: "£199 - £649",
   },
 };
-
-const compare: [string, (p: (typeof packages)[number]) => string][] = [
-  ["Pages", (p) => `Up to ${p.pages}`],
-  ["Delivery", (p) => p.delivery],
-  ["Payment", (p) => p.payment],
-  ["Revision rounds", (p) => p.features.find((f) => f.includes("revision"))?.split(" ")[0] ?? ""],
-  ["Ideal for", (p) => p.ideal],
-];
 
 export default function Packages() {
   return (
@@ -55,132 +138,222 @@ export default function Packages() {
           name="description"
           content="Affordable web design packages for UK local businesses. The Starter £199, The Sorted £399, The Works £649. Professional websites with SEO, mobile-first design, and no hidden fees. Get online in 5-14 days."
         />
+        <meta
+          name="keywords"
+          content="web design prices UK, website cost small business, affordable web design, local business website, website packages UK, cheap website design, professional website cost, web design pricing, small business website cost, tradesman website"
+        />
         <link rel="canonical" href="https://onesimplesite.co.uk/packages" />
+
+        {/* Open Graph */}
         <meta property="og:title" content="Web Design Packages | From £199 | OneSimpleSite" />
+        <meta property="og:description" content="Professional websites for UK local businesses. Simple pricing, no hidden fees. Get online in days, not months." />
         <meta property="og:url" content="https://onesimplesite.co.uk/packages" />
         <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Web Design Packages | From £199" />
+        <meta name="twitter:description" content="Professional websites for UK local businesses. Simple pricing, no hidden fees." />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       </Helmet>
 
-      <section className="pb-14 pt-12 md:pb-24 md:pt-20">
-        <div className="content-width grid gap-10 lg:grid-cols-12">
-          <p className="t-label lg:col-span-3">Pricing</p>
-          <div className="lg:col-span-9">
-            <h1 className="t-display" style={{ fontSize: "clamp(2.7rem, 7vw, 6.25rem)" }}>
-              Simple pricing,
-              <span className="block md:pl-[14%]">for local businesses.</span>
+      {/* Hero - Clean & Direct */}
+      <section className="pt-24 pb-8 sm:pt-32 sm:pb-12 md:pt-36 md:pb-16 relative">
+        <DottedGrid className="opacity-30" spacing={40} />
+        <div className="content-width relative z-10">
+          <motion.div
+            className="text-center max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+              Simple pricing for <span className="text-primary">local businesses</span>
             </h1>
-            <p className="t-lead mt-8 max-w-md md:ml-[14%]">One-time payment. No monthly fees for the website itself. No surprises.</p>
+            <p className="text-base sm:text-lg text-muted-foreground">
+              One-time payment. No monthly fees for the website itself. No surprises.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Packages - Clean Cards */}
+      <section className="pb-16 sm:pb-20 md:pb-24">
+        <div className="content-width">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-3">
+            {packages.map((pkg, index) => (
+              <motion.article
+                key={pkg.id}
+                className={`relative rounded-2xl p-6 sm:p-8 flex flex-col ${
+                  pkg.popular
+                    ? "bg-primary/5 border-2 border-primary"
+                    : "bg-card border border-border"
+                }`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                itemScope
+                itemType="https://schema.org/Product"
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-3 left-6">
+                    <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground rounded-full">
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+
+                <header className="mb-6">
+                  <h2 className="text-xl font-bold mb-1" itemProp="name">{pkg.name}</h2>
+                  <p className="text-sm text-muted-foreground mb-4" itemProp="description">{pkg.tagline}</p>
+                  <div className="flex items-baseline gap-1" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                    <span className="text-4xl font-bold text-primary" itemProp="price">£{pkg.price}</span>
+                    <meta itemProp="priceCurrency" content="GBP" />
+                    <span className="text-muted-foreground text-sm">one-time</span>
+                  </div>
+                </header>
+
+                <ul className="space-y-2.5 flex-1 mb-6" role="list">
+                  {pkg.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5 text-sm">
+                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="text-xs text-muted-foreground mb-4 flex justify-between border-t border-border pt-4">
+                  <span>Delivery: <strong className="text-foreground">{pkg.delivery}</strong></span>
+                  <span>Payment: <strong className="text-foreground">{pkg.payment}</strong></span>
+                </div>
+
+                <Link
+                  to="/start"
+                  className={`w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-semibold transition-all ${
+                    pkg.popular
+                      ? "bg-primary text-primary-foreground hover:brightness-110"
+                      : "bg-secondary text-foreground border border-border hover:bg-muted"
+                  }`}
+                  aria-label={`Get started with ${pkg.name} package for £${pkg.price}`}
+                >
+                  Get Started
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <p className="text-xs text-center text-muted-foreground mt-3">
+                  Ideal for: {pkg.ideal}
+                </p>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Three tiers: staggered, the popular one in black */}
-      <section className="pb-20 md:pb-28" aria-label="Packages">
-        <div className="content-width grid gap-5 lg:grid-cols-12 lg:items-start">
-          {packages.map((p, i) => (
-            <article
-              key={p.id}
-              className={`flex flex-col rounded-[28px] p-7 md:p-10 lg:col-span-4 ${p.popular ? "theme-ink lg:-mt-8 lg:pb-14" : "border border-border bg-card"} ${i === 2 ? "lg:mt-16" : ""}`}
-              itemScope
-              itemType="https://schema.org/Product"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h2 className="t-h3" itemProp="name">{p.name}</h2>
-                {p.popular && <span className="badge-primary">Most popular</span>}
+      {/* Add-ons - Compact Grid */}
+      <section className="py-12 sm:py-16 bg-secondary/30 border-y border-border">
+        <div className="content-width">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <div className="text-center mb-8">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+                Optional <span className="text-primary">extras</span>
+              </h2>
+              <p className="text-muted-foreground text-sm">Add what you need. Skip what you don't.</p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+              {addons.map((addon) => (
+                <div
+                  key={addon.name}
+                  className="bg-card border border-border rounded-xl p-4 text-center"
+                >
+                  <div className="text-lg font-bold text-primary mb-1">£{addon.price}</div>
+                  <div className="text-xs text-muted-foreground">{addon.name}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Hosting */}
+      <section className="py-12 sm:py-16 md:py-20">
+        <div className="content-width">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="max-w-md mx-auto text-center"
+          >
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+              Keep it <span className="text-primary">running</span>
+            </h2>
+            <p className="text-muted-foreground text-sm mb-6">Optional monthly care</p>
+
+            <div className="rounded-xl p-6 bg-card border border-border">
+              <div className="text-3xl font-bold mb-1">
+                <span className="text-primary">£{hosting.price}</span>
+                <span className="text-base text-muted-foreground font-normal">/month</span>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground" itemProp="description">{p.tagline}</p>
-              <p className="mt-8 flex items-baseline gap-2" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                <span className="font-display font-bold" style={{ fontSize: "clamp(3.75rem, 6vw, 5.5rem)", letterSpacing: "-0.05em", lineHeight: 1 }}>
-                  £<span itemProp="price">{p.price}</span>
-                </span>
-                <meta itemProp="priceCurrency" content="GBP" />
-                <span className="text-sm text-muted-foreground">one-time</span>
-              </p>
-              <ul className="mt-8 flex-1 space-y-2.5 text-[0.9375rem]" role="list">
-                {p.features.map((f) => (
-                  <li key={f} className="flex gap-2.5">
-                    <Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                    {f}
+              <div className="font-semibold mb-4">{hosting.name}</div>
+              <ul className="text-sm text-muted-foreground space-y-2 text-left">
+                {hosting.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-primary shrink-0" />
+                    {feature}
                   </li>
                 ))}
               </ul>
-              <div className="mt-8">
-                <Pill to="/start" variant={p.popular ? "ink" : "outline"}>Choose {p.name.replace("The ", "")}</Pill>
-              </div>
-              <p className="mt-4 text-xs text-muted-foreground">Ideal for: {p.ideal}</p>
-            </article>
-          ))}
+            </div>
+
+            <p className="text-xs text-muted-foreground mt-4">
+              No contract. Cancel anytime. First month free with any package.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Side by side */}
-      <section className="pb-24 md:pb-36" aria-labelledby="compare-title">
+      {/* Trust Banner */}
+      <section className="py-8 sm:py-10 border-y border-border bg-card">
         <div className="content-width">
-          <h2 id="compare-title" className="t-h2">Side by side.</h2>
-          <div className="mt-10">
-            <table className="w-full border-collapse text-left">
-              <caption className="sr-only">Comparison of the three packages</caption>
-              <thead>
-                <tr className="border-b-2 border-foreground">
-                  <th scope="col" className="py-4 pr-4 text-sm font-semibold"><span className="sr-only">Feature</span></th>
-                  {packages.map((p) => (
-                    <th key={p.id} scope="col" className="py-4 pr-3 align-bottom font-display text-base font-bold md:text-xl" style={{ letterSpacing: "-0.03em" }}>
-                      {p.name.replace("The ", "")}<span className="block text-primary">£{p.price}</span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {compare.map(([label, fn]) => (
-                  <tr key={label} className="border-b border-border">
-                    <th scope="row" className="w-[26%] py-4 pr-3 align-top text-sm font-semibold">{label}</th>
-                    {packages.map((p) => (
-                      <td key={p.id} className="py-4 pr-3 align-top text-sm md:text-[0.9375rem]">{fn(p)}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> No hidden fees
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> SEO included
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> Mobile-first
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> Fast delivery
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4 text-primary" /> UK-based
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Extras and hosting */}
-      <section className="pb-28 md:pb-40">
-        <div className="content-width grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-6">
-            <h2 className="t-h2">Optional extras.</h2>
-            <ul className="mt-10 border-t border-border">
-              {addons.map((a) => (
-                <li key={a.name} className="flex items-baseline justify-between border-b border-border py-4">
-                  <span className="font-display text-xl font-semibold" style={{ letterSpacing: "-0.025em" }}>{a.name}</span>
-                  <span className="nums font-semibold">£{a.price}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lg:col-span-5 lg:col-start-8">
-            <div className="theme-ink rounded-[28px] p-8 md:p-10">
-              <p className="t-label">Optional monthly care</p>
-              <h2 className="t-h3 mt-4">{hosting.name}</h2>
-              <p className="mt-6 font-display font-bold" style={{ fontSize: "4.5rem", letterSpacing: "-0.05em", lineHeight: 1 }}>
-                £{hosting.price}<span className="text-xl font-semibold text-muted-foreground">/month</span>
-              </p>
-              <ul className="mt-8 space-y-2.5 text-[0.9375rem]">
-                {hosting.features.map((f) => (
-                  <li key={f} className="flex gap-2.5"><Check className="mt-1 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />{f}</li>
-                ))}
-              </ul>
-              <p className="mt-6 text-xs text-muted-foreground">No contract. Cancel anytime. First month free with any package.</p>
-            </div>
-            <div className="mt-8 flex items-center gap-5">
-              <div className="w-28 shrink-0"><Shot project={P("quantum-biotesting")} kind="t" contour="pebble" ratio="1 / 1" sizes="120px" decorative /></div>
-              <p className="text-sm text-muted-foreground">Not sure which package? <Link to="/start" className="link-line text-foreground">Choose &ldquo;Not sure yet&rdquo; on the form</Link> and we will help you pick.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* CTA */}
+      <CTASection
+        title="Ready to get"
+        highlightedText="started?"
+        description="Most businesses choose The Sorted. Not sure? We'll help you pick."
+        primaryButtonText="Start Your Project"
+        primaryButtonLink="/start"
+      />
     </Layout>
   );
 }

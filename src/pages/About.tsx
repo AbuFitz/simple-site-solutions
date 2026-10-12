@@ -1,85 +1,174 @@
-import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { Pill } from "@/components/oss/Pill";
-import { Shot } from "@/components/oss/Shot";
-import { getProject, WorkProject } from "@/data/work";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Heart, Target, Users, Award } from "lucide-react";
 
-const P = (slug: string) => getProject(slug) as WorkProject;
+const values = [
+  {
+    icon: Heart,
+    title: "Simplicity First",
+    description: "We believe great websites don't need to be complicated. Clean, clear, and effective.",
+  },
+  {
+    icon: Target,
+    title: "Results-Focused",
+    description: "Every design decision we make is aimed at getting you more customers.",
+  },
+  {
+    icon: Users,
+    title: "Personal Service",
+    description: "You're not a ticket number. You'll work directly with our team.",
+  },
+  {
+    icon: Award,
+    title: "Quality Always",
+    description: "We take pride in every website we build. Your success is our reputation.",
+  },
+];
 
-const principles = [
-  { t: "Simplicity first", d: "Great websites do not need to be complicated. Clean, clear and effective beats clever." },
-  { t: "Results over opinions", d: "Every layout decision is aimed at getting you enquiries, based on what already works in your industry." },
-  { t: "Quality, always", d: "Every site is mobile-first, fast, SEO-ready and checked before it goes live." },
+const team = [
+  {
+    name: "Alex Thompson",
+    role: "Founder & Lead Developer",
+    bio: "Former agency developer who saw too many local businesses being overcharged for simple websites. Started OneSimpleSite to change that.",
+  },
+  {
+    name: "Emma Williams",
+    role: "Design Lead",
+    bio: "10 years of experience in web design. Passionate about creating beautiful, user-friendly experiences that convert visitors into customers.",
+  },
+  {
+    name: "Marcus Chen",
+    role: "SEO Specialist",
+    bio: "Helps local businesses get found online. Has helped over 200 businesses improve their Google rankings.",
+  },
 ];
 
 export default function About() {
   return (
     <Layout>
-      <Helmet>
-        <title>About | OneSimpleSite</title>
-        <meta name="description" content="OneSimpleSite builds fast, proven websites for local UK businesses on layouts that already work in their industry." />
-        <link rel="canonical" href="https://onesimplesite.co.uk/about" />
-      </Helmet>
-
-      <section className="pb-16 pt-12 md:pb-28 md:pt-20">
-        <div className="content-width grid gap-10 lg:grid-cols-12">
-          <p className="t-label lg:col-span-3">About</p>
-          <div className="lg:col-span-9">
-            <h1 className="t-display" style={{ fontSize: "clamp(2.7rem, 7vw, 6.25rem)" }}>
-              A simple way to get
-              <span className="block md:pl-[12%]">a proper website.</span>
+      {/* Hero */}
+      <section className="bg-gradient-to-b from-secondary/50 to-background py-20">
+        <div className="container">
+          <div className="mx-auto max-w-3xl text-center">
+            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
+              We're on a Mission to Help{" "}
+              <span className="gradient-text">Local Businesses Thrive</span>
             </h1>
+            <p className="text-lg text-muted-foreground md:text-xl">
+              OneSimpleSite was founded with one goal: make professional websites accessible to every local business in the UK.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="pb-24 md:pb-36">
-        <div className="content-width grid items-start gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5" data-rise>
-            <Shot project={P("fixnow-mechanics")} kind="t" contour="notch-br" ratio="4 / 3" radius={32} sizes="(min-width:1024px) 40vw, 95vw" alt="FixNow Mechanics homepage, a site we built" />
-          </div>
-          <div className="lg:col-span-6 lg:col-start-7 lg:pt-16">
-            <p className="t-h3 !font-semibold" style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.4rem)", lineHeight: 1.15 }}>
-              A plumber should not have to become a web developer, and no local business should pay agency prices for a simple, effective website.
-            </p>
-            <div className="mt-8 space-y-5 text-body">
+      {/* Story */}
+      <section className="section">
+        <div className="container">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="mb-6 text-2xl font-bold md:text-3xl">Our Story</h2>
+            <div className="space-y-4 text-muted-foreground">
               <p>
-                OneSimpleSite is a productised service rather than a custom agency. We do not offer unlimited revisions, moodboards or design by committee. We look at what already works in your industry and build you a proven layout.
+                We started OneSimpleSite after seeing the same problem over and over: talented tradespeople and local business owners being quoted thousands of pounds for basic websites, or worse, ending up with terrible DIY sites that hurt their credibility.
               </p>
-              <p>It is faster and more affordable, and it keeps the focus on the thing that matters: customers getting in touch.</p>
-            </div>
-            <div className="mt-8 flex flex-wrap items-center gap-6">
-              <Pill to="/work">See our work</Pill>
-              <Link to="/how-it-works" className="link-line">How it works</Link>
+              <p>
+                A plumber shouldn't have to become a web developer. An electrician shouldn't need to understand SEO. And no local business should pay agency prices for a simple, effective website.
+              </p>
+              <p>
+                That's why we created a straightforward service: professional websites at fair prices, delivered fast, with no technical jargon or hidden costs. Since launching in 2019, we've helped over 500 UK businesses establish their online presence and grow.
+              </p>
+              <p className="font-medium text-foreground">
+                We believe every local business deserves a website they can be proud of.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="theme-ink mx-3 mb-24 rounded-[28px] md:mx-5 md:mb-36 md:rounded-[48px]" aria-labelledby="principles-title">
-        <div className="content-width py-16 md:py-28">
-          <h2 id="principles-title" className="t-h2 max-w-2xl">What we stand for.</h2>
-          <ul className="mt-14 grid gap-px overflow-hidden rounded-3xl bg-border lg:grid-cols-3">
-            {principles.map((p, i) => (
-              <li key={p.t} className="bg-background p-8 md:p-10" style={{ paddingTop: `${2.5 + i * 1.25}rem` }}>
-                <p className="nums text-sm font-semibold text-primary">0{i + 1}</p>
-                <h3 className="t-h3 mt-4">{p.t}</h3>
-                <p className="mt-3 text-body">{p.d}</p>
-              </li>
+      {/* Values */}
+      <section className="section bg-muted/30">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">What We Stand For</h2>
+          </div>
+          
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {values.map((value) => (
+              <div key={value.title} className="text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                  <value.icon className="h-7 w-7 text-primary" />
+                </div>
+                <h3 className="mb-2 text-lg font-semibold">{value.title}</h3>
+                <p className="text-sm text-muted-foreground">{value.description}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
-      <section className="pb-28 md:pb-40">
-        <div className="content-width grid gap-10 lg:grid-cols-12">
-          <p className="t-label lg:col-span-3">Who we build for</p>
-          <div className="lg:col-span-8">
-            <p className="t-h2">
-              Plumbers, electricians, mechanics, cleaners, barbers and salons, tutors, small shops, builders and other local trades.
+      {/* Team */}
+      <section className="section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Meet the Team</h2>
+            <p className="section-description">
+              A small, dedicated team focused on delivering exceptional results.
             </p>
-            <div className="mt-10"><Pill to="/start">Start your project</Pill></div>
+          </div>
+          
+          <div className="grid gap-8 md:grid-cols-3">
+            {team.map((member) => (
+              <div key={member.name} className="card-elevated text-center">
+                <div className="mx-auto mb-4 h-24 w-24 rounded-full bg-muted" />
+                <h3 className="text-lg font-semibold">{member.name}</h3>
+                <p className="mb-3 text-sm text-primary">{member.role}</p>
+                <p className="text-sm text-muted-foreground">{member.bio}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="border-y border-border bg-muted/30 py-12">
+        <div className="container">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary md:text-4xl">500+</div>
+              <div className="mt-1 text-sm text-muted-foreground">Websites Built</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary md:text-4xl">5</div>
+              <div className="mt-1 text-sm text-muted-foreground">Years Experience</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary md:text-4xl">98%</div>
+              <div className="mt-1 text-sm text-muted-foreground">Client Satisfaction</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary md:text-4xl">100+</div>
+              <div className="mt-1 text-sm text-muted-foreground">5-Star Reviews</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section">
+        <div className="container">
+          <div className="mx-auto max-w-3xl rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12">
+            <h2 className="mb-4 text-2xl font-bold md:text-3xl">
+              Ready to Work With Us?
+            </h2>
+            <p className="mb-6 opacity-90">
+              Let's chat about your business and how we can help you grow online.
+            </p>
+            <Button size="lg" variant="secondary" asChild>
+              <Link to="/contact">
+                Get in Touch
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
