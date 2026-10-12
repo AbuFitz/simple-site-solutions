@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { WorkShowcase } from "@/components/sections/WorkShowcase";
+import { TypewriterText } from "@/components/ui/TypewriterText";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
-import { Hero } from "@/components/sections/Hero";
-import { ProcessSection } from "@/components/sections/ProcessSection";
-import { PricingSection } from "@/components/sections/PricingSection";
+import { TrustStrip } from "@/components/TrustStrip";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, X } from "lucide-react";
 
@@ -52,7 +51,73 @@ const forYou = [
 export default function Index() {
   return (
     <Layout>
-      <Hero />
+      {/* Hero Section */}
+      <section className="min-h-[70vh] sm:min-h-[80vh] flex items-center pt-20 pb-4 sm:pt-24 sm:pb-8 md:pt-28 md:pb-12 relative">
+        <DottedGrid className="opacity-40" spacing={24} dotSize={1.5} />
+        <div className="content-width relative z-10">
+          <div className="max-w-4xl">
+            <motion.div
+              className="bordered-section inline-block px-3 py-1.5 sm:px-4 sm:py-2 mb-4 sm:mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                Websites for Local UK Businesses
+              </span>
+            </motion.div>
+
+            <motion.h1
+              className="text-display mb-4 sm:mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <span className="block">
+                Websites that{" "}
+                <span className="text-primary">
+                  <TypewriterText texts={typewriterWords} speed={120} />
+                </span>
+              </span>
+              <span className="block">Not just impress.</span>
+            </motion.h1>
+
+            <motion.p
+              className="text-body-lg max-w-2xl mb-6 sm:mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              Fast, proven websites for local businesses using layouts that
+              already work in your industry.
+            </motion.p>
+
+            <motion.div
+              className="flex flex-col sm:flex-row gap-3"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Link
+                to="/start"
+                className="btn-primary btn-lg w-full sm:w-auto justify-center"
+              >
+                Get Started
+                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
+              </Link>
+              <Link
+                to="/packages"
+                className="btn-outline btn-lg w-full sm:w-auto justify-center"
+              >
+                View Pricing
+              </Link>
+            </motion.div>
+
+            {/* Trust strip */}
+            <TrustStrip />
+          </div>
+        </div>
+      </section>
 
       {/* Portfolio */}
       <WorkShowcase />
@@ -99,9 +164,6 @@ export default function Index() {
           </div>
         </div>
       </section>
-
-      <ProcessSection />
-      <PricingSection />
 
       {/* Is This For You - Compact */}
       <section className="py-8 sm:py-12 md:py-16">

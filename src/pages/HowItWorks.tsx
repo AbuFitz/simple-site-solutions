@@ -1,131 +1,226 @@
-import { Helmet } from "react-helmet-async";
-import { Check, Clock, Target, Users, Zap } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
-import { steps } from "@/data/process";
-import { Scene3D } from "@/components/three/Scene3D";
-import { PagePoster } from "@/components/sections/PagePoster";
-import { ChapterStage } from "@/components/sections/ChapterStage";
-import { useTransform, MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
+import { Check, Clock, Zap, Users, Target } from "lucide-react";
+
+const steps = [
+  {
+    number: "01",
+    title: "Choose Your Package",
+    description:
+      "The Starter, The Sorted, or The Works. Pick what fits your business and budget. Clear pricing, no hidden costs.",
+  },
+  {
+    number: "02",
+    title: "Tell Us About Your Business",
+    description:
+      "Fill out a simple form with your details, services, and goals. Don't worry if you don't have everything — we'll guide you.",
+  },
+  {
+    number: "03",
+    title: "We Research & Build",
+    description:
+      "We look at what works in your industry and build you a site designed to convert. No guesswork, just proven layouts.",
+  },
+  {
+    number: "04",
+    title: "Review & Refine",
+    description:
+      "We'll share your site for feedback. Need changes? We'll work with you to get it right.",
+  },
+  {
+    number: "05",
+    title: "Go Live",
+    description:
+      "Your site launches. Fast, mobile-first, SEO-ready, and built to get you customers.",
+  },
+];
 
 const benefits = [
-  { icon: Clock, title: "5-10 Days", description: "Not months. You'll have your site live quickly." },
-  { icon: Zap, title: "No Back-and-Forth", description: "We've streamlined the process. No endless meetings or emails." },
-  { icon: Target, title: "Built to Convert", description: "Every layout is designed to turn visitors into customers." },
-  { icon: Users, title: "We Handle It", description: "Just provide your content. We do the rest." },
+  {
+    icon: Clock,
+    title: "5-10 Days",
+    description: "Not months. You'll have your site live quickly.",
+  },
+  {
+    icon: Zap,
+    title: "No Back-and-Forth",
+    description: "We've streamlined the process. No endless meetings or emails.",
+  },
+  {
+    icon: Target,
+    title: "Built to Convert",
+    description: "Every layout is designed to turn visitors into customers.",
+  },
+  {
+    icon: Users,
+    title: "We Handle It",
+    description: "Just provide your content. We do the rest.",
+  },
 ];
-
-const needs = [
-  "Your business name and contact details",
-  "A list of your services",
-  "Any images or logos you want to use",
-  "A rough idea of what you want to say",
-];
-
-function PathStage({ chapter }: { chapter: MotionValue<number> }) {
-  const progress = useTransform(chapter, (c) => Math.min(1, Math.max(0, c / (steps.length - 1))));
-  return (
-    <Scene3D scene="path" sceneProps={{ progress }} label="A route with five stops from choosing a package to going live." desktopOnly className="h-full w-full" poster={<PagePoster tilt={false} />} />
-  );
-}
 
 export default function HowItWorks() {
   return (
     <Layout>
-      <Helmet>
-        <title>How It Works | Website in 5-10 Days | OneSimpleSite</title>
-        <link rel="canonical" href="https://onesimplesite.co.uk/how-it-works" />
-      </Helmet>
-      <section className="pb-10 pt-28 sm:pt-32 md:pb-14">
-        <div className="content-width">
-          <h1 className="text-headline max-w-3xl">
-            Simple. <span className="text-primary">Straightforward.</span>
-          </h1>
-          <p className="text-body-lg mt-4 max-w-xl">
-            No discovery calls. No moodboards. No endless revision cycles. Just a clear process that gets your site live fast.
-          </p>
+      {/* Hero */}
+      <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
+        <DottedGrid className="opacity-40" spacing={36} />
+        <div className="content-width relative z-10">
+          <motion.div
+            className="max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
+              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                The Process
+              </span>
+            </div>
+            <h1 className="text-display mb-6 sm:mb-8">
+              Simple. <span className="text-primary">Straightforward.</span>
+            </h1>
+            <p className="text-body-lg max-w-2xl">
+              No discovery calls. No moodboards. No endless revision cycles.
+              Just a clear process that gets your site live fast.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      <section className="chapter chapter-paper chapter-sheet">
-        <div className="content-width pt-10 md:pt-16">
-          <ChapterStage
-            count={steps.length}
-            stageClassName="hidden lg:block lg:h-screen"
-            chapterClassName="py-2 lg:min-h-[64vh]"
-            stage={(chapter) => <PathStage chapter={chapter} />}
-            chapters={(active) =>
-              steps.map((s, i) => (
-                <article
-                  key={s.number}
-                  className="slab w-full p-6 transition-all duration-500 sm:p-8"
-                  style={{ borderColor: active === i ? "hsl(var(--primary) / 0.6)" : undefined, opacity: active === i ? 1 : 0.55 }}
+      {/* Steps */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="bordered-section-lg p-4 sm:p-8 md:p-12 relative"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-20" spacing={28} />
+            <div className="relative z-10 max-w-3xl mx-auto">
+              {steps.map((step, index) => (
+                <motion.div
+                  key={step.number}
+                  className="relative flex gap-4 sm:gap-6 md:gap-8 pb-8 sm:pb-12 last:pb-0"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
                 >
-                  <div className="flex items-start gap-5">
-                    <div className="step-number shrink-0">{s.number}</div>
-                    <div>
-                      <h2 className="text-2xl font-bold sm:text-3xl">
-                        {s.title}
-                      </h2>
-                      <p className="mt-2 text-base leading-relaxed text-muted-foreground">{s.description}</p>
+                  {/* Line */}
+                  {index < steps.length - 1 && (
+                    <div className="absolute left-5 sm:left-6 top-12 sm:top-14 bottom-0 w-px bg-border" />
+                  )}
+
+                  {/* Number */}
+                  <div className="shrink-0">
+                    <div className="step-number">
+                      {step.number}
                     </div>
                   </div>
-                </article>
-              ))
-            }
-          />
+
+                  {/* Content */}
+                  <div className="pt-1 sm:pt-2">
+                    <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">{step.title}</h3>
+                    <p className="text-body">{step.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
-        <div className="h-16" />
       </section>
 
-      <section className="chapter chapter-sheet bg-background">
-        <div className="content-width section">
-          <h2 className="text-headline max-w-2xl">
-            Why this <span className="text-primary">works</span>
-          </h2>
-          <p className="text-body-lg mt-4 max-w-2xl">We've stripped out everything that makes traditional web projects drag on. Here's what you get instead.</p>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((b) => (
-              <div key={b.title} className="slab p-6">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-primary/40 bg-primary/10">
-                  <b.icon className="h-5 w-5 text-primary" />
+      {/* Why This Works */}
+      <section className="section relative">
+        <DottedGrid className="opacity-30" spacing={40} />
+        <div className="content-width relative z-10">
+          <motion.div
+            className="mb-8 sm:mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-headline max-w-2xl">
+              Why this <span className="text-primary">works</span>
+            </h2>
+            <p className="text-body-lg max-w-2xl mt-3 sm:mt-4">
+              We've stripped out everything that makes traditional web projects drag on.
+              Here's what you get instead.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl">
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={benefit.title}
+                className="p-5 sm:p-6 rounded-xl bg-secondary border border-border"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mb-4">
+                  <benefit.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold">
-                  {b.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground">{b.description}</p>
-              </div>
+                <h3 className="text-base sm:text-lg font-bold mb-2">{benefit.title}</h3>
+                <p className="text-sm text-muted-foreground">{benefit.description}</p>
+              </motion.div>
             ))}
           </div>
-
-          <div className="slab mt-16 max-w-3xl p-6 sm:p-10">
-            <h2 className="text-2xl font-bold sm:text-3xl">
-              What we need from you
-            </h2>
-            <p className="mt-3 text-muted-foreground">
-              The more you can provide upfront, the faster we can build. But don't worry — we'll help if you're missing anything.
-            </p>
-            <ul className="mt-6 space-y-4">
-              {needs.map((n) => (
-                <li key={n} className="flex items-start gap-3">
-                  <span className="check-icon">
-                    <Check className="h-3 w-3" />
-                  </span>
-                  {n}
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </section>
 
+      {/* What We Need From You */}
+      <section className="section-sm">
+        <div className="content-width">
+          <motion.div
+            className="bordered-section p-5 sm:p-8 md:p-10 max-w-3xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <DottedGrid className="opacity-15" spacing={24} />
+            <div className="relative z-10">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
+                What we need from you
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                The more you can provide upfront, the faster we can build. But don't worry — we'll help if you're missing anything.
+              </p>
+              <ul className="space-y-3 sm:space-y-4">
+                {[
+                  "Your business name and contact details",
+                  "A list of your services",
+                  "Any images or logos you want to use",
+                  "A rough idea of what you want to say",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <div className="check-icon w-5 h-5 mt-0.5">
+                      <Check className="w-3 h-3" />
+                    </div>
+                    <span className="text-sm sm:text-base">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
       <CTASection
-        title="Let's build something"
-        highlightedText="that converts."
-        description="Pick your package. Send your details. Get a website in days, not months."
-        primaryButtonText="Start Your Project"
+        title="Ready to skip the"
+        highlightedText="drama?"
+        description="Pick your package, send us your details, and get a website that actually works for your business."
+        primaryButtonText="Get Started"
         primaryButtonLink="/start"
-        secondaryButtonText="See Pricing"
+        secondaryButtonText="View Pricing"
         secondaryButtonLink="/packages"
       />
     </Layout>
