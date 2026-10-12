@@ -7,6 +7,12 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://onesimplesite.co.uk/work</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://onesimplesite.co.uk/how-it-works</loc>
     <lastmod>2026-01-25</lastmod>
     <changefreq>monthly</changefreq>
@@ -31,22 +37,10 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://onesimplesite.co.uk/about</loc>
-    <lastmod>2026-01-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://onesimplesite.co.uk/contact</loc>
     <lastmod>2026-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://onesimplesite.co.uk/services</loc>
-    <lastmod>2026-01-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://onesimplesite.co.uk/privacy</loc>

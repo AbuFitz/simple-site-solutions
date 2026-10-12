@@ -1,27 +1,24 @@
-import { ReactNode, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { ScrollProgress } from "./ScrollProgress";
 import { CookieConsent } from "@/components/CookieConsent";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-export function Layout({ children }: LayoutProps) {
-  const { pathname } = useLocation();
-
-  // Scroll to top on route change
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
+/** Persistent chrome around the routed page: nav, progress line, footer, consent. */
+export function SiteChrome({ children, bare = false }: { children: ReactNode; bare?: boolean }) {
+  if (bare) return <>{children}</>;
   return (
-    <div className="page-container overflow-x-hidden">
+    <div className="page-container overflow-x-clip">
+      <ScrollProgress />
       <Navbar />
-      <main>{children}</main>
+      {children}
       <CookieConsent />
       <Footer />
     </div>
   );
+}
+
+/** Pages wrap their content in Layout; the chrome itself lives in SiteChrome (see App). */
+export function Layout({ children }: { children: ReactNode }) {
+  return <main id="main">{children}</main>;
 }
