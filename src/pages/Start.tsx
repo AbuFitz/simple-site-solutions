@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -101,8 +101,10 @@ const availableAddons = [
 ];
 
 export default function Start() {
+  const [params] = useSearchParams();
+  const prefillPackage = params.get("package");
   const [step, setStep] = useState(1);
-  const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(["starter", "sorted", "works"].includes(prefillPackage ?? "") ? prefillPackage : null);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -116,11 +118,11 @@ export default function Start() {
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      businessName: "",
+      businessName: (params.get("business") ?? "").slice(0, 100),
       name: "",
       email: "",
       phone: "",
-      businessDescription: "",
+      businessDescription: (params.get("type") ?? "").slice(0, 200),
       websiteUrl: "",
       details: "",
     },

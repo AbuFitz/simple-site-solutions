@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Services from "./pages/Services";
 import Onboard from "./pages/Onboard";
+import Preview from "./pages/Preview";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/packages" element={<Packages />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/preview" element={<Preview />} />
           <Route path="/start" element={<Start />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

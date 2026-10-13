@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { WorkShowcase } from "@/components/sections/WorkShowcase";
+import { PreviewTeaser } from "@/components/sections/PreviewTeaser";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
@@ -121,6 +122,8 @@ export default function Index() {
 
       {/* Portfolio */}
       <WorkShowcase />
+
+      <PreviewTeaser />
 
       {/* Why Us - Redesigned */}
       <section className="py-10 sm:py-14 md:py-20 relative">

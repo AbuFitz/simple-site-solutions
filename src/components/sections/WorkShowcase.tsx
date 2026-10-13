@@ -208,7 +208,7 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
           </div>
           {project.url && (
-            <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-md shrink-0 gap-2 self-start sm:self-auto">
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-md shrink-0 gap-2 self-start !text-background sm:self-auto">
               Visit site
               <ExternalLink className="h-4 w-4" />
               <span className="sr-only"> (opens in a new tab)</span>
