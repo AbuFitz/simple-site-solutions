@@ -2,7 +2,7 @@
 
 Websites for local UK businesses using proven layouts that work.
 
-## Technologies
+## TechnologieS
 
 This project is built with:
 
