@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { FlowPreview } from "@/components/preview/FlowPreview";
+import { encodeInput, mergeFlowInput, recallPreview } from "@/lib/preview/generate";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -109,10 +111,13 @@ export default function Start() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [attachPreview, setAttachPreview] = useState(true);
+  const stored = useMemo(() => recallPreview(), []);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -120,13 +125,22 @@ export default function Start() {
     defaultValues: {
       businessName: (params.get("business") ?? "").slice(0, 100),
       name: "",
-      email: "",
-      phone: "",
+      email: stored?.email ?? "",
+      phone: stored?.phone ?? "",
       businessDescription: (params.get("type") ?? "").slice(0, 200),
       websiteUrl: "",
       details: "",
     },
   });
+
+  const [liveName, liveDescription, livePhone, liveEmail] = watch(["businessName", "businessDescription", "phone", "email"]);
+  const previewInput = useMemo(
+    () => mergeFlowInput(stored, { name: liveName ?? "", description: liveDescription ?? "", phone: livePhone ?? "", email: liveEmail ?? "" }),
+    [stored, liveName, liveDescription, livePhone, liveEmail]
+  );
+  // The preview appears once there is something to show: from step 2, or straight away when it came from the preview page
+  const showPreview = step >= 2 || Boolean(stored) || Boolean(params.get("business"));
+  const previewLink = `/preview?${encodeInput(previewInput)}`;
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -140,6 +154,9 @@ export default function Start() {
         },
         body: JSON.stringify({
           ...data,
+          details: attachPreview && showPreview
+            ? `${(data.details ?? "").trim()}${data.details ? "\n\n" : ""}Preview they saw: ${window.location.origin}${previewLink}`.slice(0, 1900)
+            : data.details,
           selectedPackage,
           selectedAddons,
         }),
@@ -182,7 +199,7 @@ export default function Start() {
     <Layout>
       <section className="pt-20 pb-4 sm:pt-20 sm:pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 relative min-h-[calc(100dvh-3.5rem)] flex flex-col justify-start">
         <DottedGrid className="opacity-30" spacing={32} />
-        <div className="content-width max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl relative z-10 flex-1 flex flex-col mx-auto">
+        <div className={`content-width relative z-10 flex-1 flex flex-col mx-auto max-w-xl sm:max-w-2xl ${showPreview && !isSubmitted ? "lg:max-w-6xl" : "lg:max-w-3xl xl:max-w-4xl"}`}>
           <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.div
@@ -190,7 +207,14 @@ export default function Start() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
+                className={showPreview ? "lg:grid lg:grid-cols-12 lg:items-start lg:gap-10" : ""}
               >
+                {showPreview && (
+                  <div className="mb-5 lg:order-2 lg:col-span-7 lg:mb-0">
+                    <FlowPreview input={previewInput} />
+                  </div>
+                )}
+                <div className={showPreview ? "lg:order-1 lg:col-span-5" : ""}>
                 {/* Step 1: Package Selection */}
                 {step === 1 && (
                   <motion.div
@@ -447,6 +471,18 @@ export default function Start() {
                         <FormError message={errors.details?.message} />
                       </div>
 
+                      {showPreview && (
+                        <label className="flex cursor-pointer items-start gap-3 text-xs text-muted-foreground sm:text-sm">
+                          <input
+                            type="checkbox"
+                            className="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]"
+                            checked={attachPreview}
+                            onChange={(e) => setAttachPreview(e.target.checked)}
+                          />
+                          <span>Include a link to my preview, so you can see what I saw.</span>
+                        </label>
+                      )}
+
                       {submitError && (
                         <motion.div
                           initial={{ opacity: 0, y: -8 }}
@@ -488,6 +524,7 @@ export default function Start() {
                     </form>
                   </motion.div>
                 )}
+                </div>
               </motion.div>
             ) : (
               // Success State
@@ -527,7 +564,12 @@ export default function Start() {
                       </div>
                     )}
                   </div>
-                  <div className="mt-4 sm:mt-6">
+                  <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:mt-6 sm:flex-row">
+                    {previewInput.name && (
+                      <Link to={previewLink} className="btn-primary btn-md sm:btn-lg !text-background">
+                        See your preview again
+                      </Link>
+                    )}
                     <Link to="/" className="btn-outline btn-md sm:btn-lg">
                       Back to Home
                     </Link>

@@ -9,7 +9,9 @@ import {
   encodeInput,
   hash,
   inferCategory,
+  mergeFlowInput,
   monogram,
+  parseTown,
   normaliseUkPhone,
   recommendPackage,
   resolvePalette,
@@ -175,5 +177,41 @@ describe("shareable state", () => {
   it("hash is stable", () => {
     expect(hash("abc")).toBe(hash("abc"));
     expect(hash("abc")).not.toBe(hash("abd"));
+  });
+});
+
+describe("carrying a preview into the project form", () => {
+  it("finds a town in a description", () => {
+    expect(parseTown("Mechanic in Hemel Hempstead")).toBe("Hemel Hempstead");
+    expect(parseTown("Plumber in Watford.")).toBe("Watford");
+    expect(parseTown("We fix boilers")).toBe("");
+    expect(parseTown("Barber near St Albans")).toBe("St Albans");
+  });
+
+  it("lets typing win and earlier choices fill gaps", () => {
+    const base = { ...defaultInput(), name: "Old", category: "mechanic" as const, town: "Luton", phone: "07123456789", services: ["MOT"], action: "book" as const };
+    const m = mergeFlowInput(base, { name: "Hemel Motor Garage", description: "Car garage", phone: "", email: "a@b.co" });
+    expect(m.name).toBe("Hemel Motor Garage");
+    expect(m.category).toBe("mechanic");
+    expect(m.town).toBe("Luton");
+    expect(m.phone).toBe("07123456789");
+    expect(m.email).toBe("a@b.co");
+    expect(m.services).toEqual(["MOT"]);
+    expect(m.action).toBe("book");
+  });
+
+  it("re-infers the category and resets style when the business changes type", () => {
+    const base = { ...defaultInput(), category: "mechanic" as const, seed: 3 };
+    const m = mergeFlowInput(base, { name: "Bright Spark", description: "Electrician in Luton", phone: "", email: "" });
+    expect(m.category).toBe("electrical");
+    expect(m.seed).toBe(0);
+    expect(m.town).toBe("Luton");
+    expect(m.action).toBe("quote");
+  });
+
+  it("works with no earlier preview and no match", () => {
+    const m = mergeFlowInput(null, { name: "Zxq", description: "", phone: "", email: "" });
+    expect(m.category).toBe("other");
+    expect(buildPreview(m).headline.length).toBeGreaterThan(3);
   });
 });

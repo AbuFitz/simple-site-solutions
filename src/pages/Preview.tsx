@@ -15,6 +15,7 @@ import {
   inferCategory,
   normaliseUkPhone,
   recommendPackage,
+  rememberPreview,
   startHref,
 } from "@/lib/preview/generate";
 import type { ActionKind, CategoryId, PreviewInput } from "@/lib/preview/types";
@@ -308,7 +309,7 @@ export default function Preview() {
                   ))}
                 </ul>
                 <div className="mt-5 flex flex-wrap gap-3">
-                  <Link to={startHref(input, rec.id)} className="btn-primary btn-md gap-2 !text-background">
+                  <Link to={startHref(input, rec.id)} onClick={() => rememberPreview(input)} className="btn-primary btn-md gap-2 !text-background">
                     Start this project
                     <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                   </Link>

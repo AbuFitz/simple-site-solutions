@@ -314,3 +314,59 @@ export function startHref(input: PreviewInput, pkg: PackageRecommendation["id"])
   p.set("type", `${cat.describe}${town ? ` in ${town}` : ""}`);
   return `/start?${p.toString()}`;
 }
+
+/* ---------- Carrying a preview through the project form ---------- */
+
+const STORE_KEY = "oss_preview_input";
+
+/** Pulls a town out of text like "Mechanic in Hemel Hempstead". Returns "" when there is no clear town. */
+export function parseTown(text: string): string {
+  const m = text.match(/\b(?:in|near|around|based in)\s+([A-Z][A-Za-z'’.-]*(?:\s+[A-Z][A-Za-z'’.-]*){0,2})\s*[.,;]?\s*$/);
+  return m ? cleanTown(m[1].replace(/[.,;]+$/, "")) : "";
+}
+
+export interface FlowFields {
+  name: string;
+  description: string;
+  phone: string;
+  email: string;
+}
+
+/**
+ * Combines what the owner chose on the preview page with what they are typing into the project form.
+ * Typing wins, the earlier choices fill the gaps, and the category is re-inferred as the description changes.
+ */
+export function mergeFlowInput(base: PreviewInput | null, f: FlowFields): PreviewInput {
+  const start = base ?? defaultInput();
+  const guessed = inferCategory(`${f.name} ${f.description}`);
+  const category = guessed ?? (base ? base.category : "other");
+  const catChanged = category !== start.category;
+  return {
+    ...start,
+    name: f.name,
+    category,
+    town: start.town || parseTown(f.description),
+    phone: f.phone.trim() || start.phone,
+    email: f.email.trim() || start.email,
+    action: catChanged || !base ? categoryById(category).defaultAction : start.action,
+    seed: catChanged ? 0 : start.seed,
+  };
+}
+
+/** The preview a visitor was looking at, remembered for this browser tab only (never sent anywhere). */
+export function rememberPreview(input: PreviewInput): void {
+  try {
+    window.sessionStorage.setItem(STORE_KEY, encodeInput(input));
+  } catch {
+    /* storage unavailable: the project form simply starts without a preview */
+  }
+}
+
+export function recallPreview(): PreviewInput | null {
+  try {
+    const raw = window.sessionStorage.getItem(STORE_KEY);
+    return raw ? decodeInput(raw) : null;
+  } catch {
+    return null;
+  }
+}

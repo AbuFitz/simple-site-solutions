@@ -12,6 +12,7 @@ Sources are the live code in this repo. Nothing here has been changed on the sit
 | "Satisfaction Guarantee" | Home hero strip | A guarantee | Terms say deposits are non-refundable once work starts. No guarantee is defined anywhere |
 | Support email | `index.html` structured data | hello@onesimplesite.co.uk | Packages structured data uses support@onesimplesite.co.uk |
 | Review rating | `index.html` structured data | aggregateRating 4.9 from 100 reviews | No reviews are shown anywhere. This is invented markup and a search-penalty risk |
+| Response promise | Project form confirmation (`/start`) | "We'll be in touch within 24 hours" | Not stated anywhere else. Confirm you can always keep it |
 
 ## 2. Unlinked pages that still contain old or invented offers
 
