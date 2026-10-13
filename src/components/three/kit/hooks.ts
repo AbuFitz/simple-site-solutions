@@ -40,7 +40,7 @@ export function useImageTexture(url: string | null | undefined, enabled = true):
         return;
       }
       t.colorSpace = SRGBColorSpace;
-      t.anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
+      t.anisotropy = Math.min(4, gl.capabilities.getMaxAnisotropy());
       loaded = t;
       setTex(t);
       invalidate();

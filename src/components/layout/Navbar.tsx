@@ -45,7 +45,8 @@ export function Navbar() {
     <>
       {/* Floating Navigation Pill */}
       <motion.header
-        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
+        className="fixed top-3 sm:top-4 md:top-6 left-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl lg:max-w-3xl"
+        style={{ x: "-50%" }}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
@@ -73,7 +74,7 @@ export function Navbar() {
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 lg:flex-shrink px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-lg font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 lg:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-2xl lg:pl-5 lg:pr-6 font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>

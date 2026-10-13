@@ -8,6 +8,8 @@ const scenes: Record<SceneName, React.LazyExoticComponent<React.ComponentType<ne
   work: lazy(() => import("./scenes/WorkScene")) as never,
 };
 
+const DEBUG = typeof window !== "undefined" && window.location.search.includes("debug3d");
+
 const EnvContext = createContext<SceneEnv | null>(null);
 export const useSceneEnv = () => {
   const env = useContext(EnvContext);
@@ -18,6 +20,7 @@ export const useSceneEnv = () => {
 /** Reads pointer / touch-drag over the stage and smooths it into env.pointer. */
 function InputRig({ env, visible }: { env: SceneEnv; visible: boolean }) {
   const gl = useThree((s) => s.gl);
+  const invalidate = useThree((s) => s.invalidate);
   const target = useRef({ x: 0, y: 0 });
   const touching = useRef(false);
 
@@ -31,6 +34,8 @@ function InputRig({ env, visible }: { env: SceneEnv; visible: boolean }) {
     const move = (e: PointerEvent) => {
       if (e.pointerType === "mouse") set(e);
       else if (touching.current) set(e);
+      else return;
+      invalidate();
     };
     const down = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") {
@@ -58,13 +63,15 @@ function InputRig({ env, visible }: { env: SceneEnv; visible: boolean }) {
       window.removeEventListener("pointercancel", up);
       el.removeEventListener("pointerleave", leave);
     };
-  }, [gl]);
+  }, [gl, invalidate]);
 
   useFrame((_, dt) => {
     if (!visible || env.reduced) return;
     const k = 1 - Math.pow(0.001, dt);
     env.pointer.x += (target.current.x - env.pointer.x) * k * 0.35;
     env.pointer.y += (target.current.y - env.pointer.y) * k * 0.35;
+    // On-demand scenes only keep drawing while the tilt is still settling
+    if (Math.abs(target.current.x - env.pointer.x) + Math.abs(target.current.y - env.pointer.y) > 0.004) invalidate();
   });
   return null;
 }
@@ -109,9 +116,9 @@ export default function CanvasHost<S extends SceneName>({
       <Canvas
         className="!absolute inset-0"
         flat
-        dpr={[1, quality === "high" ? 2 : 1.5]}
+        dpr={[1, quality === "high" ? 1.75 : 1.25]}
         // Static composition for reduced motion: draw on demand, never loop
-        frameloop={!visible ? "never" : reduced ? "demand" : "always"}
+        frameloop={!visible ? "never" : reduced || scene === "work" ? "demand" : "always"}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         camera={{ fov: 28, near: 0.1, far: 80, position: [0, 0, 14] }}
         onCreated={({ gl, invalidate }) => {
@@ -150,6 +157,7 @@ export default function CanvasHost<S extends SceneName>({
 /** Keeps on-demand (reduced motion) canvases drawing, and fires once real frames have landed. */
 function Lifecycle({ visible, onReady }: { visible: boolean; onReady: () => void }) {
   const invalidate = useThree((s) => s.invalidate);
+  const gl = useThree((s) => s.gl);
   const frames = useRef(0);
   useEffect(() => {
     if (!visible) return;
@@ -163,6 +171,7 @@ function Lifecycle({ visible, onReady }: { visible: boolean; onReady: () => void
   useFrame(() => {
     frames.current += 1;
     if (frames.current === 4) onReady();
+    if (DEBUG) (window as unknown as { __oss3d: unknown }).__oss3d = { frames: frames.current, calls: gl.info.render.calls, tris: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures };
   });
   return null;
 }

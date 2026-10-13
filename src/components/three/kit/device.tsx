@@ -1,6 +1,6 @@
 import { forwardRef, MutableRefObject, useMemo, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import { Group, MeshBasicMaterial, SRGBColorSpace, Texture } from "three";
+import { useFrame } from "@react-three/fiber";
+import { Group, MeshBasicMaterial, Texture } from "three";
 import { getSlabGeometry, Slab } from "./slab";
 import { clamp, useDrawnTexture, useImageTexture } from "./hooks";
 import type { WorkProject } from "@/data/work";
@@ -11,27 +11,32 @@ export const CHROME_H = 0.17;
 const PH_H = 2.08;
 const PH_W = PH_H * (520 / 1126);
 
+/** Same palette as the site's original browser frame: secondary bar, muted dots, background-coloured address pill. */
+const C = { bar: "#1a1a1a", edge: "#2b2b2b", dot: "rgba(115,115,115,0.45)", pill: "#0a0a0a", pillEdge: "#2b2b2b", text: "#8a8a8a" };
+
 function ChromeBar({ domain }: { domain: string }) {
   const tex = useDrawnTexture(
-    1024,
-    54,
+    768,
+    41,
     (ctx, w, h) => {
-      ctx.fillStyle = "#101412";
+      ctx.fillStyle = C.bar;
       ctx.fillRect(0, 0, w, h);
-      ["#ff5f57", "#febc2e", "#28c840"].forEach((c, i) => {
-        ctx.fillStyle = c;
-        ctx.globalAlpha = 0.85;
+      ctx.fillStyle = C.dot;
+      [0, 1, 2].forEach((i) => {
         ctx.beginPath();
-        ctx.arc(30 + i * 24, h / 2, 7, 0, Math.PI * 2);
+        ctx.arc(22 + i * 18, h / 2, 5, 0, Math.PI * 2);
         ctx.fill();
       });
-      ctx.globalAlpha = 1;
-      ctx.fillStyle = "rgba(255,255,255,0.09)";
+      const pw = 340;
+      ctx.fillStyle = C.pill;
       ctx.beginPath();
-      ctx.roundRect(w / 2 - 230, 10, 460, h - 20, (h - 20) / 2);
+      ctx.roundRect(w / 2 - pw / 2, 8, pw, h - 16, 9);
       ctx.fill();
-      ctx.fillStyle = "rgba(255,255,255,0.62)";
-      ctx.font = '500 20px "Inter", system-ui, sans-serif';
+      ctx.strokeStyle = C.pillEdge;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = C.text;
+      ctx.font = '500 15px "Inter", system-ui, sans-serif';
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(domain, w / 2, h / 2 + 1);
@@ -65,29 +70,26 @@ function Screen({
   z: number;
 }) {
   const geo = useMemo(() => getSlabGeometry(w, h, r, 0.05).face, [w, h, r]);
-  const mat = useMemo(() => new MeshBasicMaterial({ color: 0x151a18, toneMapped: false }), []);
-  const invalidate = useThree((s) => s.invalidate);
+  const mat = useMemo(() => new MeshBasicMaterial({ color: 0x151515, toneMapped: false }), []);
   const last = useRef(-1);
 
   useFrame(() => {
     const map = tall ?? thumb;
     if (mat.map !== map) {
       mat.map = map;
-      mat.color.set(map ? 0xffffff : 0x151a18);
+      mat.color.set(map ? 0xffffff : 0x151515);
       mat.needsUpdate = true;
       last.current = -1;
     }
     if (!tall) return;
     const img = tall.image as { width: number; height: number };
-    const aspect = w / h;
-    const visFrac = clamp(img.width / aspect / img.height, 0.0001, 1);
+    const visFrac = clamp(img.width / (w / h) / img.height, 0.0001, 1);
     const s = clamp(scroll.current, 0, 1);
     if (Math.abs(last.current - s) < 1e-4) return;
     last.current = s;
     tall.repeat.set(1, visFrac);
     tall.offset.set(0, (1 - visFrac) * (1 - s));
     tall.wrapS = tall.wrapT = 1001; // ClampToEdge
-    invalidate();
   });
 
   return <mesh geometry={geo} material={mat} position={[0, 0, z]} dispose={null} />;
@@ -95,7 +97,9 @@ function Screen({
 
 export interface DevicePairProps {
   project: WorkProject;
+  /** Load the long full-page capture (only for the settled, active project). */
   wantTall: boolean;
+  /** Load the phone capture. */
   wantPhone: boolean;
   /** 0 top → 1 bottom of the desktop screenshot. */
   scroll: MutableRefObject<number>;
@@ -126,17 +130,15 @@ export const DevicePair = forwardRef<Group, DevicePairProps>(function DevicePair
   return (
     <group ref={ref}>
       <group position={[0, CHROME_H / 2, 0]}>
-        <Slab w={PANE_W + 0.09} h={PANE_H + CHROME_H + 0.09} r={0.1} t={0.08} color="#0c0f0e" faceColor="#0c0f0e" />
+        <Slab w={PANE_W + 0.09} h={PANE_H + CHROME_H + 0.09} r={0.1} t={0.08} color={C.edge} faceColor={C.edge} roughness={0.8} />
       </group>
       <ChromeBar domain={project.domain} />
       <Screen w={PANE_W} h={PANE_H} r={0.0} thumb={thumb} tall={tall} scroll={scroll} z={0.0135} />
 
       <group ref={phone} position={phoneOffset as [number, number, number]} rotation={[0, -0.12, 0.02]}>
-        <Slab w={PH_W + 0.1} h={PH_H + 0.1} r={0.17} t={0.09} color="#0a0c0b" faceColor="#0a0c0b" />
+        <Slab w={PH_W + 0.1} h={PH_H + 0.1} r={0.17} t={0.09} color={C.edge} faceColor={C.edge} roughness={0.8} />
         <Screen w={PH_W} h={PH_H} r={0.12} thumb={phoneTex} tall={null} scroll={scroll} z={0.0135} />
       </group>
     </group>
   );
 });
-
-export { SRGBColorSpace };

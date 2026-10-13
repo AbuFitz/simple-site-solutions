@@ -1,33 +1,32 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 import { Scene3D } from "@/components/three/Scene3D";
 import { projects } from "@/data/work";
 
 const N = projects.length;
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/** Poster shown before 3D, or instead of it: a calm 2D stack of the active project's captures. */
+/** The same browser frame as the original carousel: shown first, and kept if 3D is unavailable. */
 function WorkPoster({ index }: { index: number }) {
   const p = projects[index];
   return (
-    <div className="flex h-full items-center justify-center px-6">
-      <div className="relative w-full max-w-3xl">
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[0_30px_60px_-30px_rgb(0_0_0/0.5)]">
-          <div className="flex items-center gap-1.5 border-b border-border bg-secondary px-3 py-2">
-            <span className="h-2 w-2 rounded-full bg-muted-foreground/40" />
-            <span className="h-2 w-2 rounded-full bg-muted-foreground/40" />
-            <span className="h-2 w-2 rounded-full bg-muted-foreground/40" />
-            <span className="mono ml-3 truncate text-[10px] text-muted-foreground">{p.domain}</span>
+    <div className="flex h-full items-center justify-center px-4 sm:px-6">
+      <div className="relative w-full max-w-2xl">
+        <div className="overflow-hidden rounded-xl border-2 border-border bg-card sm:rounded-2xl">
+          <div className="flex items-center gap-2 border-b border-border bg-secondary px-3 py-2 sm:px-4 sm:py-3">
+            <div className="flex gap-1 sm:gap-1.5">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="h-2 w-2 rounded-full bg-muted-foreground/30 sm:h-3 sm:w-3" />
+              ))}
+            </div>
+            <div className="mx-2 flex h-5 flex-1 items-center rounded-md border border-border bg-background px-2 sm:mx-4 sm:h-6 sm:rounded-lg sm:px-3">
+              <span className="truncate text-[10px] text-muted-foreground sm:text-xs">{p.domain}</span>
+            </div>
           </div>
-          <img src={p.img.t} alt="" className="aspect-[16/10] w-full object-cover object-top" loading="lazy" />
+          <img src={p.img.t} width={800} height={500} alt="" className="aspect-[16/10] w-full object-cover object-top" decoding="async" />
         </div>
-        <img
-          src={p.img.m}
-          alt=""
-          className="absolute -bottom-6 -right-2 hidden w-[22%] rounded-2xl border border-border object-cover shadow-xl sm:block"
-          loading="lazy"
-        />
       </div>
     </div>
   );
@@ -36,13 +35,13 @@ function WorkPoster({ index }: { index: number }) {
 export function WorkShowcase({ id = "work" }: { id?: string }) {
   const [index, setIndex] = useState(0);
   const drag = useRef(0);
+  const wake = useRef<(() => void) | null>(null);
   const stage = useRef<HTMLDivElement>(null);
-  const live = useRef<HTMLParagraphElement>(null);
-
-  const go = useCallback((n: number) => setIndex((((n % N) + N) % N)), []);
   const project = projects[index];
 
-  // Horizontal drag on the stage, with vertical page scroll left to the browser (touch-action: pan-y)
+  const go = useCallback((n: number) => setIndex(((n % N) + N) % N), []);
+
+  // Drag, flick, trackpad swipe and keys. Vertical page scroll is left to the browser (touch-action: pan-y).
   useEffect(() => {
     const el = stage.current;
     if (!el) return;
@@ -53,6 +52,8 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
     let down = false;
     let moved = false;
     let unit = 520;
+    let wheelAcc = 0;
+    let wheelLock = 0;
 
     const onDown = (e: PointerEvent) => {
       if (e.pointerType === "mouse" && e.button !== 0) return;
@@ -61,7 +62,7 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
       startX = lastX = e.clientX;
       lastT = performance.now();
       vel = 0;
-      unit = Math.max(280, el.clientWidth * 0.34);
+      unit = Math.max(260, el.clientWidth * 0.3);
     };
     const onMove = (e: PointerEvent) => {
       if (!down) return;
@@ -71,7 +72,7 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
         try {
           el.setPointerCapture(e.pointerId);
         } catch {
-          /* pointer already gone */
+          /* pointer already released */
         }
       }
       if (!moved) return;
@@ -80,24 +81,39 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
       lastX = e.clientX;
       lastT = now;
       drag.current = dx / unit;
+      wake.current?.();
     };
     const onUp = () => {
       if (!down) return;
       down = false;
       if (moved) {
-        const flick = -vel * 0.9;
-        const delta = Math.round(-drag.current + flick);
+        // A drag moves roughly as far as it travelled; a flick adds at most one more, never a long jump
+        const delta = Math.max(-2, Math.min(2, Math.round(-drag.current - Math.max(-1, Math.min(1, vel * 0.3)))));
         setIndex((i) => (((i + delta) % N) + N) % N);
       }
       drag.current = 0;
+      wake.current?.();
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        e.preventDefault();
-        setIndex((i) => (i + 1) % N);
-      } else if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        setIndex((i) => (i - 1 + N) % N);
+      const k = e.key;
+      if (k === "ArrowRight") setIndex((i) => (i + 1) % N);
+      else if (k === "ArrowLeft") setIndex((i) => (i - 1 + N) % N);
+      else if (k === "Home") setIndex(0);
+      else if (k === "End") setIndex(N - 1);
+      else return;
+      e.preventDefault();
+    };
+    // Horizontal trackpad swipes step through projects; vertical scrolling is never intercepted
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now < wheelLock) return;
+      wheelAcc += e.deltaX;
+      if (Math.abs(wheelAcc) > 70) {
+        setIndex((i) => (((i + (wheelAcc > 0 ? 1 : -1)) % N) + N) % N);
+        wheelAcc = 0;
+        wheelLock = now + 420;
       }
     };
     el.addEventListener("pointerdown", onDown);
@@ -105,108 +121,121 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
     el.addEventListener("pointerup", onUp);
     el.addEventListener("pointercancel", onUp);
     el.addEventListener("keydown", onKey);
+    el.addEventListener("wheel", onWheel, { passive: false });
     return () => {
       el.removeEventListener("pointerdown", onDown);
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerup", onUp);
       el.removeEventListener("pointercancel", onUp);
       el.removeEventListener("keydown", onKey);
+      el.removeEventListener("wheel", onWheel);
     };
   }, []);
 
   return (
-    <section id={id} className="chapter chapter-paper chapter-sheet" aria-labelledby="work-title">
-      <div className="content-width pb-10 pt-16 sm:pt-20 md:pb-14 md:pt-28">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-                        <h2 id="work-title" className="text-headline max-w-3xl">
-              Websites that <span className="text-signal">deliver</span>
-            </h2>
+    <section id={id} className="relative overflow-hidden py-8 sm:py-12 md:py-16" aria-labelledby="work-title">
+      <div className="content-width">
+        <motion.div
+          className="bordered-section relative mb-5 p-3 sm:mb-8 sm:p-5 md:p-6"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <DottedGrid className="opacity-20" spacing={20} />
+          <div className="relative z-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+            <div>
+              <span className="badge-primary mb-2 inline-block text-[9px] sm:mb-3 sm:text-xs">Our Work</span>
+              <h2 id="work-title" className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl lg:text-4xl">
+                Websites that <span className="text-primary">deliver</span>
+              </h2>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => go(index - 1)}
+                className="rounded-full border border-border bg-secondary p-2.5 text-foreground transition-colors hover:bg-muted sm:p-3"
+                aria-label="Previous project"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => go(index + 1)}
+                className="rounded-full border border-border bg-secondary p-2.5 text-foreground transition-colors hover:bg-muted sm:p-3"
+                aria-label="Next project"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* The rack */}
       <div
         ref={stage}
         tabIndex={0}
         role="group"
         aria-roledescription="carousel"
-        aria-label="Project captures. Use the arrow keys, drag, or the buttons to browse."
-        className="relative cursor-grab touch-pan-y select-none outline-none active:cursor-grabbing focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="Project captures. Drag, swipe, or use the arrow keys to browse."
+        className="relative cursor-grab touch-pan-y select-none rounded-sm outline-none active:cursor-grabbing focus-visible:ring-2 focus-visible:ring-primary/60"
       >
         <Scene3D
           scene="work"
-          sceneProps={{ index, drag, onPick: go }}
-          label={`Browser and phone captures of ${project.name}, one of ${N} projects`}
-          className="h-[min(58svh,460px)] w-full sm:h-[min(64vh,600px)] lg:h-[min(70vh,680px)]"
+          sceneProps={{ index, drag, onPick: go, wake }}
+          label={`Browser and phone captures of ${project.name}, project ${index + 1} of ${N}`}
+          className="h-[min(54svh,400px)] w-full sm:h-[440px] lg:h-[540px]"
           poster={<WorkPoster index={index} />}
         />
       </div>
 
-      {/* Info + controls */}
-      <div className="content-width pb-16 pt-6 md:pb-24 md:pt-8">
-        <div className="grid items-end gap-6 md:grid-cols-12">
-          <motion.div
-            key={project.slug}
-            className="md:col-span-7"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="mono mb-2 text-[11px] tracking-[0.14em] text-muted-foreground">
-              {pad(index + 1)} / {pad(N)} · {project.kind}
+      <div className="content-width">
+        <motion.div
+          key={project.slug}
+          className="mt-4 flex flex-col gap-4 px-1 sm:mt-6 sm:flex-row sm:items-end sm:justify-between sm:px-2"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="max-w-2xl" aria-live="polite">
+            <p className="mb-1 text-xs text-muted-foreground nums">
+              {pad(index + 1)} / {pad(N)}
             </p>
-            <h3 className="font-display text-3xl font-bold sm:text-4xl" style={{ letterSpacing: "-0.04em" }}>
-              {project.name}
-            </h3>
-            <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+            <h3 className="mb-1 text-lg font-bold sm:text-xl">{project.name}</h3>
+            <p className="text-sm text-muted-foreground sm:text-base">
               {project.sector} · {project.place}
             </p>
-            <p ref={live} aria-live="polite" className="mt-3 max-w-xl text-sm leading-relaxed text-foreground/80 sm:text-base">
-              {project.summary}
-            </p>
-          </motion.div>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
+          </div>
+          {project.url && (
+            <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-md shrink-0 gap-2 self-start sm:self-auto">
+              Visit site
+              <ExternalLink className="h-4 w-4" />
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          )}
+        </motion.div>
 
-          <div className="flex flex-wrap items-center gap-3 md:col-span-5 md:justify-end">
-            {project.url && (
-              <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-md gap-2">
-                Visit site
-                <ExternalLink className="h-4 w-4" />
-                <span className="sr-only">(opens in a new tab)</span>
-              </a>
-            )}
-          </div>
-        </div>
-
-        <div className="mt-8 flex items-center justify-between gap-4 border-t border-border pt-5">
-          <div className="flex items-center gap-1.5" role="tablist" aria-label="Choose a project">
-            {projects.map((p, i) => (
-              <button
-                key={p.slug}
-                type="button"
-                role="tab"
-                aria-selected={i === index}
-                aria-label={p.name}
-                onClick={() => go(i)}
-                className="group flex h-8 items-center px-0.5"
-              >
-                <span
-                  className={`block h-1.5 rounded-full transition-all duration-300 ${
-                    i === index ? "w-7 bg-primary" : "w-1.5 bg-foreground/25 group-hover:bg-foreground/50"
-                  }`}
-                />
-              </button>
-            ))}
-          </div>
-          <div className="flex gap-2">
-            <button type="button" onClick={() => go(index - 1)} className="btn-outline h-11 w-11 !p-0" aria-label="Previous project">
-              <ArrowLeft className="h-4 w-4" />
+        <div className="mt-5 flex justify-center gap-1.5 sm:mt-8" role="tablist" aria-label="Choose a project">
+          {projects.map((p, i) => (
+            <button
+              key={p.slug}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              aria-label={p.name}
+              onClick={() => go(i)}
+              className="flex h-6 items-center px-0.5"
+            >
+              <span
+                className={`block h-1.5 rounded-full border transition-all duration-300 sm:h-2 ${
+                  i === index
+                    ? "w-5 border-primary bg-primary sm:w-6"
+                    : "w-1.5 border-transparent bg-muted-foreground/30 hover:bg-muted-foreground/50 sm:w-2"
+                }`}
+              />
             </button>
-            <button type="button" onClick={() => go(index + 1)} className="btn-outline h-11 w-11 !p-0" aria-label="Next project">
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>

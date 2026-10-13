@@ -5,6 +5,8 @@ export interface WorkSceneProps {
   /** Live drag offset in item units, written by the DOM layer. */
   drag: { current: number };
   onPick?: (index: number) => void;
+  /** The scene registers a function here that requests a redraw; the DOM layer calls it while dragging. */
+  wake?: { current: (() => void) | null };
 }
 
 export interface SceneProps {

@@ -1,140 +1,147 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import type { Group } from "three";
 import { useSceneEnv } from "../CanvasHost";
 import { DevicePair } from "../kit/device";
-import { SoftShadow, Studio } from "../kit/stage";
+import { Studio } from "../kit/stage";
 import { clamp, damp, smooth, useFitCamera } from "../kit/hooks";
 import { projects } from "@/data/work";
 import type { WorkSceneProps } from "../types";
 
 const N = projects.length;
+const SETTLE_MS = 420;
+/** The auto-scroll through the full-page capture runs once per visit, then the scene goes fully idle. */
+const SCROLL_SECONDS = 9;
 
 const wrapDelta = (i: number, pos: number) => {
   const d = i - pos;
   return ((((d + N / 2) % N) + N) % N) - N / 2;
 };
 
-function Item({
-  i,
-  posRef,
-  indexRef,
-  onPick,
-}: {
-  i: number;
-  posRef: React.MutableRefObject<number>;
-  indexRef: React.MutableRefObject<number>;
-  onPick?: (i: number) => void;
-}) {
+/** Work: the projects on a rack. Renders only while something moves; loads big captures only for the settled project. */
+export default function WorkScene({ index, drag, onPick, wake }: WorkSceneProps) {
   const env = useSceneEnv();
   const gl = useThree((s) => s.gl);
-  const root = useRef<Group>(null);
-  const scroll = useRef(0);
-  const phoneVis = useRef(0);
-  const since = useRef<number | null>(null);
-  const [want, setWant] = useState({ tall: false, phone: false });
+  const invalidate = useThree((s) => s.invalidate);
 
-  useFrame(({ clock }) => {
-    const g = root.current;
-    if (!g) return;
-    const d = wrapDelta(i, posRef.current);
-    const ad = Math.abs(d);
-    const side = Math.sign(d);
-    const compact = env.compact;
-
-    const x = side * Math.pow(ad, 0.9) * (compact ? 3.05 : 3.55) - (compact ? 0.38 : 0.5) * (1 - Math.min(ad, 1));
-    const z = -Math.min(ad, 2.6) * 1.25;
-    g.position.set(x + env.pointer.x * 0.12 * (1 - Math.min(ad, 1)), 0.12 + (ad < 0.5 ? Math.sin(clock.elapsedTime * 0.8) * 0.025 : 0), z);
-    g.rotation.set(0, clamp(-d * 0.36, -0.85, 0.85) + env.pointer.x * 0.07, 0);
-    g.scale.setScalar(1 - Math.min(ad, 2.6) * 0.055);
-    g.visible = ad < 3.4;
-
-    const idxDelta = Math.abs(wrapDelta(i, indexRef.current));
-    const near = idxDelta <= 1.5;
-    if (want.tall !== near) setWant({ tall: near, phone: near });
-
-    // Auto-scroll the real site inside the active pane
-    const active = idxDelta < 0.01 && ad < 0.25;
-    if (active) {
-      if (since.current === null) since.current = clock.elapsedTime;
-      if (!env.reduced) {
-        const w = (clock.elapsedTime - since.current - 1.4) / 9;
-        scroll.current = w < 0 ? 0 : 0.5 - 0.5 * Math.cos(Math.PI * w);
-      }
-    } else {
-      since.current = null;
-      scroll.current += (0 - scroll.current) * 0.08;
-    }
-    phoneVis.current = smooth(clamp(1 - ad * 1.15, 0, 1));
-  });
-
-  useEffect(() => {
-    // Pointer cursor affordance on side items
-    return () => {
-      gl.domElement.style.cursor = "";
-    };
-  }, [gl]);
-
-  return (
-    <group
-      ref={root}
-      onClick={(e) => {
-        if (e.delta > 6) return;
-        const d = wrapDelta(i, posRef.current);
-        if (Math.abs(d) > 0.3) {
-          e.stopPropagation();
-          onPick?.(i);
-        }
-      }}
-      onPointerOver={() => {
-        if (Math.abs(wrapDelta(i, posRef.current)) > 0.3) gl.domElement.style.cursor = "pointer";
-      }}
-      onPointerOut={() => {
-        gl.domElement.style.cursor = "";
-      }}
-    >
-      <SoftShadow w={4.8} h={3.6} opacity={0.34} position={[0.3, -0.45, -0.3]} />
-      <DevicePair
-        project={projects[i]}
-        wantTall={want.tall}
-        wantPhone={want.phone}
-        scroll={scroll}
-        phoneVis={phoneVis}
-        compact={env.compact}
-      />
-    </group>
-  );
-}
-
-/** Work: nine real projects on a rack. Each shows a live-scrolling capture and a phone capture. */
-export default function WorkScene({ index, drag, onPick }: WorkSceneProps) {
-  const env = useSceneEnv();
+  const groups = useRef<(Group | null)[]>([]);
+  const scrolls = useMemo(() => projects.map(() => ({ current: 0 })), []);
+  const phoneVis = useMemo(() => projects.map(() => ({ current: 0 })), []);
   const posRef = useRef(index);
   const cont = useRef(index);
-  const indexRef = useRef(index);
+  const settledAt = useRef<number | null>(null);
+  const scrollDone = useRef(false);
 
-  useFitCamera(env.compact ? 5.3 : 9.4, 3.5, 1.0, 0.08);
+  // Only the project that has stopped moving loads its heavy captures
+  const [settled, setSettled] = useState(index);
+  useEffect(() => {
+    const t = window.setTimeout(() => setSettled(index), SETTLE_MS);
+    return () => window.clearTimeout(t);
+  }, [index]);
+
+  useFitCamera(env.compact ? 4.3 : 9.4, env.compact ? 3.2 : 3.5, 1.0, 0.08);
 
   useEffect(() => {
-    indexRef.current = index;
+    if (wake) wake.current = invalidate;
+    return () => {
+      if (wake) wake.current = null;
+    };
+  }, [wake, invalidate]);
+
+  useEffect(() => {
     const cur = ((cont.current % N) + N) % N;
     let d = index - cur;
     d = ((((d + N / 2) % N) + N) % N) - N / 2;
     cont.current += d;
-  }, [index]);
+    settledAt.current = null;
+    scrollDone.current = false;
+    invalidate();
+  }, [index, invalidate]);
 
-  useFrame((_, dt) => {
+  useEffect(() => () => void (gl.domElement.style.cursor = ""), [gl]);
+
+  useFrame(({ clock }, dt) => {
+    const compact = env.compact;
     const target = cont.current - drag.current;
-    if (env.reduced) posRef.current = target;
-    else posRef.current += (target - posRef.current) * damp(6.5, dt);
+    const diff = target - posRef.current;
+    if (env.reduced || Math.abs(diff) < 0.0008) posRef.current = target;
+    else posRef.current += diff * damp(7, dt);
+    const moving = Math.abs(target - posRef.current) > 0.0008 || drag.current !== 0;
+
+    // Auto-scroll of the active project, once, after it settles
+    const activeIdx = ((index % N) + N) % N;
+    let scrolling = false;
+    if (!moving && !env.reduced && !scrollDone.current && settled === index) {
+      if (settledAt.current === null) settledAt.current = clock.elapsedTime;
+      const w = (clock.elapsedTime - settledAt.current - 1.2) / SCROLL_SECONDS;
+      if (w >= 1) {
+        scrollDone.current = true;
+        scrolls[activeIdx].current = 0;
+      } else if (w >= 0) {
+        scrolls[activeIdx].current = (0.5 - 0.5 * Math.cos(2 * Math.PI * w)) * 0.9; // down, then back up, once
+        scrolling = true;
+      } else scrolling = true;
+    }
+    if (moving) settledAt.current = null;
+
+    projects.forEach((_, i) => {
+      const g = groups.current[i];
+      if (!g) return;
+      const d = wrapDelta(i, posRef.current);
+      const ad = Math.abs(d);
+      const side = Math.sign(d);
+      g.visible = ad < 3.4;
+      if (!g.visible) return;
+      const x = side * Math.pow(ad, 0.9) * (compact ? 3.05 : 3.55) - (compact ? 0.38 : 0.5) * (1 - Math.min(ad, 1));
+      g.position.set(x + env.pointer.x * 0.1 * (1 - Math.min(ad, 1)), 0.12, -Math.min(ad, 2.6) * 1.25);
+      g.rotation.set(0, clamp(-d * 0.36, -0.85, 0.85) + env.pointer.x * 0.05, 0);
+      g.scale.setScalar(1 - Math.min(ad, 2.6) * 0.055);
+      phoneVis[i].current = smooth(clamp(1 - ad * 1.15, 0, 1));
+      if (i !== activeIdx) scrolls[i].current += (0 - scrolls[i].current) * 0.2;
+    });
+
+    // Keep drawing only while something is actually changing (the auto-scroll at ~30fps)
+    if (moving) invalidate();
+    else if (scrolling) window.setTimeout(invalidate, 30);
   });
 
   return (
     <>
       <Studio rim={false} />
-      {projects.map((_, i) => (
-        <Item key={i} i={i} posRef={posRef} indexRef={indexRef} onPick={onPick} />
-      ))}
+      {projects.map((p, i) => {
+        const isSettled = wrapDelta(i, settled) === 0;
+        const nearSettled = Math.abs(wrapDelta(i, settled)) <= 1;
+        return (
+          <group
+            key={p.slug}
+            ref={(el) => {
+              groups.current[i] = el;
+            }}
+            onClick={(e) => {
+              if (e.delta > 6) return;
+              if (Math.abs(wrapDelta(i, posRef.current)) > 0.3) {
+                e.stopPropagation();
+                onPick?.(i);
+              }
+            }}
+            onPointerOver={() => {
+              if (Math.abs(wrapDelta(i, posRef.current)) > 0.3) gl.domElement.style.cursor = "pointer";
+            }}
+            onPointerOut={() => {
+              gl.domElement.style.cursor = "";
+            }}
+          >
+            <DevicePair
+              project={p}
+              wantTall={isSettled}
+              wantPhone={nearSettled}
+              scroll={scrolls[i]}
+              phoneVis={phoneVis[i]}
+              compact={env.compact}
+            />
+          </group>
+        );
+      })}
     </>
   );
 }
