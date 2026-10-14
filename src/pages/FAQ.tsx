@@ -30,9 +30,9 @@ export default function FAQ() {
         <div className="content-width relative z-10">
           <motion.div
             className="max-w-3xl"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
             <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
               <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">

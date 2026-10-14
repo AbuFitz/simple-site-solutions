@@ -73,9 +73,9 @@ export default function Index() {
 
             <motion.h1
               className="text-display mb-4 sm:mb-6"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
             >
               <span className="block">
                 Websites that{" "}
@@ -88,9 +88,9 @@ export default function Index() {
 
             <motion.p
               className="text-body-lg max-w-2xl mb-6 sm:mb-8"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.4, delay: 0.1 }}
             >
               Fixed-price websites for local businesses, built from layouts
               planned for your kind of business.
@@ -98,9 +98,9 @@ export default function Index() {
 
             <motion.div
               className="flex flex-col sm:flex-row gap-3"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
             >
               <Link
                 to="/start"
@@ -133,9 +133,9 @@ export default function Index() {
         <div className="content-width relative z-10">
           <motion.div
             className="mb-6 sm:mb-10"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
             <span className="badge-primary mb-3 inline-block">Why Us</span>
@@ -180,9 +180,9 @@ export default function Index() {
         <div className="content-width">
           <motion.div
             className="bordered-section-lg p-4 sm:p-6 md:p-10 relative"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
             <DottedGrid className="opacity-20" spacing={24} />
@@ -197,9 +197,9 @@ export default function Index() {
                 {/* Not For You */}
                 <motion.div
                   className="card-dark p-4 sm:p-5 md:p-6"
-                  initial={{ opacity: 0, x: -30 }}
+                  initial={{ opacity: 0, x: -14 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.4 }}
                   viewport={{ once: true }}
                 >
                   <h3 className="text-sm sm:text-base font-bold mb-3 sm:mb-4 text-muted-foreground">
@@ -220,9 +220,9 @@ export default function Index() {
                 {/* For You */}
                 <motion.div
                   className="card-base border-primary/30 p-4 sm:p-5 md:p-6"
-                  initial={{ opacity: 0, x: 30 }}
+                  initial={{ opacity: 0, x: 14 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.4 }}
                   viewport={{ once: true }}
                 >
                   <h3 className="text-sm sm:text-base font-bold mb-3 sm:mb-4">

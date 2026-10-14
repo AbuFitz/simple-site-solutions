@@ -72,9 +72,9 @@ export default function HowItWorks() {
         <div className="content-width relative z-10">
           <motion.div
             className="max-w-3xl"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
             <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
               <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
@@ -97,9 +97,9 @@ export default function HowItWorks() {
         <div className="content-width">
           <motion.div
             className="bordered-section-lg p-4 sm:p-8 md:p-12 relative"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
             <DottedGrid className="opacity-20" spacing={28} />
@@ -143,9 +143,9 @@ export default function HowItWorks() {
         <div className="content-width relative z-10">
           <motion.div
             className="mb-8 sm:mb-12"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
             <h2 className="text-headline max-w-2xl">
@@ -183,9 +183,9 @@ export default function HowItWorks() {
         <div className="content-width">
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 max-w-3xl"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
             viewport={{ once: true }}
           >
             <DottedGrid className="opacity-15" spacing={24} />

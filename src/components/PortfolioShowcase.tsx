@@ -91,9 +91,9 @@ export function PortfolioShowcase() {
         {/* Header - Compact */}
         <motion.div
           className="bordered-section p-3 sm:p-5 md:p-6 mb-5 sm:mb-8 relative"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
         >
           <DottedGrid className="opacity-20" spacing={20} />

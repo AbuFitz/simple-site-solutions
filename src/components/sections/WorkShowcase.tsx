@@ -137,9 +137,9 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
       <div className="content-width">
         <motion.div
           className="bordered-section relative mb-5 p-3 sm:mb-8 sm:p-5 md:p-6"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
         >
           <DottedGrid className="opacity-20" spacing={20} />

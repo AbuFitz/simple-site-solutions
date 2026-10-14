@@ -13,9 +13,9 @@ export default function Cookies() {
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
             <h1 className="text-headline mb-6 sm:mb-8">
               Cookie <span className="text-primary">Policy</span>
@@ -29,9 +29,9 @@ export default function Cookies() {
 
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
           >
             <DottedGrid className="opacity-10" spacing={24} />
             <div className="relative z-10 space-y-6 sm:space-y-8">

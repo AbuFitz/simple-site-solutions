@@ -16,6 +16,14 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
+  // From lg up the pill keeps its original position; on phones and tablets it is centred so it fits the screen.
+  const [wide, setWide] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
 
 
   useEffect(() => {
@@ -61,10 +69,10 @@ export function Navbar() {
       {/* Floating Navigation Pill */}
       <motion.header
         className="fixed top-3 sm:top-4 md:top-6 left-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
-        style={{ x: "-50%" }}
-        initial={{ y: -100, opacity: 0 }}
+        style={{ x: wide ? 0 : "-50%" }}
+        initial={{ y: -10, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
       >
         <nav
           className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
@@ -185,7 +193,7 @@ export function Navbar() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.2, duration: 0.2 }}
+                    transition={{ delay: 0.1, duration: 0.2 }}
                     className="mt-4 pt-4 border-t border-border"
                   >
                     <Link

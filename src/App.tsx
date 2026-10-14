@@ -2,7 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { MotionConfig } from "framer-motion";
+import { RouteFallback } from "@/components/RouteFallback";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import { ChatWidget } from "@/components/chat/ChatWidget";
@@ -31,13 +33,34 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
-const App = () => (
+/** After the first page is up, fetch the other main pages in the background so moving around feels instant. */
+const prefetch = () => {
+  const run = () => {
+    void import("./pages/Packages");
+    void import("./pages/HowItWorks");
+    void import("./pages/FAQ");
+    void import("./pages/Start");
+    void import("./pages/Preview");
+    void import("./pages/Work");
+  };
+  const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+  if (w.requestIdleCallback) w.requestIdleCallback(run, { timeout: 4000 });
+  else setTimeout(run, 2500);
+};
+
+const App = () => {
+  useEffect(() => {
+    const conn = (navigator as unknown as { connection?: { saveData?: boolean } }).connection;
+    if (!conn?.saveData) prefetch();
+  }, []);
+  return (
+  <MotionConfig reducedMotion="user">
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Suspense fallback={<div className="min-h-screen bg-background" aria-hidden="true" />}>
+        <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
@@ -70,6 +93,8 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  </MotionConfig>
+  );
+};
 
 export default App;

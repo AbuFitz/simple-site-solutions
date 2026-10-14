@@ -31,9 +31,9 @@ export function PreviewTeaser() {
       <div className="content-width">
         <motion.div
           className="bordered-section-lg relative p-5 sm:p-8 md:p-12"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
         >
           <DottedGrid className="opacity-20" spacing={24} />

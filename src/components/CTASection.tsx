@@ -26,9 +26,9 @@ export function CTASection({
       <div className="content-width">
         <motion.div
           className="text-center max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           viewport={{ once: true }}
         >
           {/* Decorative element */}
