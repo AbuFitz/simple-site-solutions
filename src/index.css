@@ -398,3 +398,9 @@
   .animation-delay-400 { animation-delay: 400ms; }
   .animation-delay-500 { animation-delay: 500ms; }
 }
+
+/* ---- Additive styles for the 3D Our Work section only (no existing rule changed) ---- */
+.stage { isolation: isolate; touch-action: pan-y; }
+.stage > canvas { touch-action: pan-y; }
+.poster-fade { transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.nums { font-variant-numeric: tabular-nums; }
