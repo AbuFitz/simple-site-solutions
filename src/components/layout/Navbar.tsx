@@ -16,14 +16,6 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
-  // From lg up the pill keeps its original position; on phones and tablets it is centred so it fits the screen.
-  const [wide, setWide] = useState(() => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
-    const on = () => setWide(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
 
 
   useEffect(() => {
@@ -39,7 +31,7 @@ export function Navbar() {
     setMenuOpen(false);
   }, [location.pathname]);
 
-  // Escape closes the menu and returns focus to the button that opened it
+  // Escape closes the menu and returns focus to the button that opened it (no visual change)
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -68,15 +60,14 @@ export function Navbar() {
     <>
       {/* Floating Navigation Pill */}
       <motion.header
-        className="fixed top-3 sm:top-4 md:top-6 left-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
-        style={{ x: wide ? 0 : "-50%" }}
-        initial={{ y: -10, opacity: 0 }}
+        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
+        initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
       >
         <nav
           className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
-            scrolled ? "bg-background shadow-lg" : "bg-background"
+            scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
           }`}
         >
           {/* Mobile/Tablet Menu Button - Moved before logo */}
@@ -99,7 +90,7 @@ export function Navbar() {
           {/* Brand */}
           <Link
             to="/"
-            className="flex-1 min-w-0 lg:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-2xl lg:pl-4 lg:pr-4 font-bold tracking-tight truncate"
+            className="flex-1 min-w-0 lg:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-2xl lg:pl-5 lg:pr-6 font-bold tracking-tight truncate"
           >
             one<span className="text-primary">simple</span>site
           </Link>
@@ -110,7 +101,7 @@ export function Navbar() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-2.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
+                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
                   location.pathname === item.path
                     ? "bg-secondary text-foreground border-border"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
@@ -124,7 +115,7 @@ export function Navbar() {
           {/* Desktop CTA */}
           <Link
             to="/start"
-            className="hidden lg:inline-flex items-center gap-1.5 whitespace-nowrap px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
+            className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
           >
             Get Started
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -193,7 +184,7 @@ export function Navbar() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.1, duration: 0.2 }}
+                    transition={{ delay: 0.2, duration: 0.2 }}
                     className="mt-4 pt-4 border-t border-border"
                   >
                     <Link
