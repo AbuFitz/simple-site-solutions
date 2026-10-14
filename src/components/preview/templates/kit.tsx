@@ -170,10 +170,10 @@ export function ServiceCards({ model, compact, head, radius = 10, cols = 3, coun
 }
 
 /** Towns covered, written out as a plain list. */
-export function AreasList({ model, head, fallback }: { model: PreviewModel; head: CSSProperties; fallback?: string }) {
+export function AreasList({ model, head, fallback, onDark = false }: { model: PreviewModel; head: CSSProperties; fallback?: string; onDark?: boolean }) {
   const towns = [model.contact.town, ...model.areas].filter(Boolean) as string[];
   const p = model.palette;
-  if (!towns.length) return <p className="text-[1rem]" style={{ color: p.muted }}>{fallback ?? "Your town and the surrounding area"}</p>;
+  if (!towns.length) return <p className="text-[1rem]" style={{ color: onDark ? `${p.bg}d9` : p.muted }}>{fallback ?? "Your town and the surrounding area"}</p>;
   return (
     <p className="text-[1.15rem] leading-relaxed" style={head}>
       {towns.join("  ·  ")}
@@ -366,3 +366,34 @@ export function FooterCols({ model, compact, head, dark = true }: { model: Previ
 }
 
 export const ctaHeading = (m: PreviewModel) => (m.cta.kind === "book" ? "Ready to book?" : m.cta.kind === "visit" ? "Come and see us" : m.cta.kind === "call" ? "Give us a call" : "Tell us about the job");
+
+/* ---------- Pattern and layout helpers (CSS only: no images, no drawn art) ---------- */
+
+export const patterns = {
+  grid: (c: string, s = 40) => `linear-gradient(${c} 1px, transparent 1px) 0 0/${s}px ${s}px, linear-gradient(90deg, ${c} 1px, transparent 1px) 0 0/${s}px ${s}px`,
+  dots: (c: string, s = 22) => `radial-gradient(${c} 1.5px, transparent 1.6px) 0 0/${s}px ${s}px`,
+  stripes: (a: string, b: string, w = 14) => `repeating-linear-gradient(-45deg, ${a} 0 ${w}px, ${b} ${w}px ${w * 2}px)`,
+  lines: (c: string, s = 34) => `repeating-linear-gradient(0deg, transparent 0 ${s - 1}px, ${c} ${s - 1}px ${s}px)`,
+  rings: (c: string, at = "88% 18%") => `repeating-radial-gradient(circle at ${at}, transparent 0 34px, ${c} 34px 36px)`,
+};
+
+/** Small label above a heading. */
+export function Kicker({ children, color, className = "" }: { children: ReactNode; color: string; className?: string }) {
+  return (
+    <p className={`text-[0.78rem] font-bold uppercase tracking-[0.16em] ${className}`} style={{ color }}>
+      {children}
+    </p>
+  );
+}
+
+/** Rounded or square tag, used for service chips and subject tags. */
+export function Chip({ children, bg, fg, ring, radius = 999, size = "base" }: { children: ReactNode; bg?: string; fg: string; ring?: string; radius?: number; size?: "sm" | "base" }) {
+  return (
+    <span className={`inline-flex items-center font-semibold ${size === "sm" ? "px-3 py-1 text-[0.8rem]" : "px-4 py-2 text-[0.92rem]"}`} style={{ borderRadius: radius, background: bg, color: fg, boxShadow: ring ? `inset 0 0 0 1.5px ${ring}` : undefined }}>
+      {children}
+    </span>
+  );
+}
+
+/** The trade's first headline word set in a highlighter swipe, for hero headlines. */
+export const swipe = (color: string) => ({ backgroundImage: `linear-gradient(${color}, ${color})`, backgroundSize: "100% 38%", backgroundPosition: "0 88%", backgroundRepeat: "no-repeat" } as CSSProperties);

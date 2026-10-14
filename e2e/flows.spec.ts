@@ -82,7 +82,9 @@ test.describe("3D Our Work fallbacks", () => {
     await page.locator("#work").scrollIntoViewIfNeeded();
     await page.waitForTimeout(1500);
     await expect(page.locator("#work")).toBeVisible();
-    await expect(page.getByText("Visit site").first()).toBeVisible();
+    await expect(page.getByRole("button", { name: "Previous project" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Next project" })).toBeVisible();
+    await expect(page.locator("#work").getByText("Visit site")).toHaveCount(0);
     expect(errors.filter((e) => !/WebGL|webgl|context/i.test(e))).toEqual([]);
     await ctx.close();
   });
@@ -296,5 +298,16 @@ test.describe("accessibility (axe, WCAG 2.x A/AA)", () => {
         await ctx.close();
       });
     }
+  }
+});
+
+test("work pages never link out to the example sites", async ({ page }) => {
+  for (const path of ["/", "/work", "/work/fixnow-mechanics"]) {
+    await page.goto(path);
+    await settle(page);
+    const hrefs = await page.locator('a[href^="http"]').evaluateAll((els) => els.map((e) => (e as HTMLAnchorElement).href));
+    const own = ["fixnowmechanics.co.uk", "readysold.vercel.app", "stonebridge-construction.co.uk", "truetodetail.co.uk", "brightlearntutoring.co.uk", "arfmods.vercel.app"];
+    for (const h of hrefs) expect(own.some((d) => h.includes(d)), `${path} links to ${h}`).toBe(false);
+    await expect(page.getByText(/^Visit (site|\w+\.)/)).toHaveCount(0);
   }
 });

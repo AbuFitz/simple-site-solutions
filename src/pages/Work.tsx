@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -50,18 +49,6 @@ export default function Work() {
                     <span className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary">View project details</span>
                   </div>
                 </Link>
-                {p.url && (
-                  <a
-                    href={p.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mx-5 mb-5 inline-flex min-h-[44px] items-center gap-2 self-start text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
-                  >
-                    Visit {p.domain}
-                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                    <span className="sr-only">(opens in a new tab)</span>
-                  </a>
-                )}
               </li>
             ))}
           </ul>

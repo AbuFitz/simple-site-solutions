@@ -43,3 +43,8 @@ The templates never state facts about the customer's business: no reviews, ratin
 ## Development
 
 `npm run dev` registers `/__tpl?c=<trade>&v=<palette 0-2>&compact=1&n=<name>&t=<town>&z=<postcode>&k=1`, which renders one template at its design width (1200px, or 390px compact) for visual review. It is not included in production builds. (Map iframes load lazily, so scroll to them before taking a screenshot.)
+
+
+## Template redesign (richer, more distinct)
+
+Each trade now has its own structure and one signature device, all CSS only (no images, no drawn art): plumbing a "what do you need help with?" triage card and pipe-line steps; electrical a blueprint grid, boxed service index and circuit-line process; mechanic hazard-stripe bands and a job-sheet checklist; cleaning bubbles, a "choose your clean" picker and pill services; barber a pole-stripe edge, a menu with dotted leaders and a booking card; tutoring ruled exercise-book paper with tilted lesson notes; shop a storefront with department tiles; builder drawing-paper lines, a ruled index of work and a project-stage rail; other a bento grid. None uses green or the near-black/green look of the OneSimpleSite site itself.

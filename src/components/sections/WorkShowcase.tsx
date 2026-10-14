@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { Scene3D } from "@/components/three/Scene3D";
@@ -150,28 +150,11 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
                 Websites that <span className="text-primary">deliver</span>
               </h2>
             </div>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => go(index - 1)}
-                className="rounded-full border border-border bg-secondary p-2.5 text-foreground transition-colors hover:bg-muted sm:p-3"
-                aria-label="Previous project"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => go(index + 1)}
-                className="rounded-full border border-border bg-secondary p-2.5 text-foreground transition-colors hover:bg-muted sm:p-3"
-                aria-label="Next project"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
           </div>
         </motion.div>
       </div>
 
+      <div className="relative">
       <div
         ref={stage}
         tabIndex={0}
@@ -187,6 +170,17 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
           className="h-[min(54svh,400px)] w-full sm:h-[440px] lg:h-[540px]"
           poster={<WorkPoster index={index} />}
         />
+      </div>
+      {(
+        [
+          ["Previous project", index - 1, ChevronLeft, "left-2 sm:left-5"],
+          ["Next project", index + 1, ChevronRight, "right-2 sm:right-5"],
+        ] as const
+      ).map(([label, to, Icon, pos]) => (
+        <button key={label} type="button" onClick={() => go(to)} aria-label={label} className={`absolute top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/85 text-foreground shadow-lg backdrop-blur transition-colors hover:bg-background sm:h-12 sm:w-12 ${pos}`}>
+          <Icon className="h-5 w-5" aria-hidden="true" />
+        </button>
+      ))}
       </div>
 
       <div className="content-width">
@@ -207,13 +201,6 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
             </p>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.summary}</p>
           </div>
-          {project.url && (
-            <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-md shrink-0 gap-2 self-start !text-background sm:self-auto">
-              Visit site
-              <ExternalLink className="h-4 w-4" />
-              <span className="sr-only"> (opens in a new tab)</span>
-            </a>
-          )}
         </motion.div>
 
         <div className="mt-3 flex justify-center sm:mt-6" role="tablist" aria-label="Choose a project">

@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -36,13 +36,6 @@ export default function WorkDetail() {
           </p>
           <h1 className="text-headline mt-2">{project.name}</h1>
           <p className="text-body-lg mt-4 max-w-2xl">{project.summary}</p>
-          {project.url && (
-            <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-primary btn-lg mt-6 min-h-[44px] gap-2 !text-background">
-              Visit {project.domain}
-              <ExternalLink className="h-4 w-4" aria-hidden="true" />
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
-          )}
         </div>
       </section>
 
