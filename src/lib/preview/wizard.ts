@@ -24,36 +24,40 @@ export interface Flags {
   categoryChosen: boolean;
 }
 
-/** Why a step is incomplete, or null if it's done. Messages are written to be shown to the visitor. */
-export function stepProblem(step: StepId, input: PreviewInput, flags: Flags): string | null {
+/** Whether a step still has no answer. Nothing is mandatory: this only decides where the guide starts. */
+export function stepEmpty(step: StepId, input: PreviewInput, flags: Flags): boolean {
   switch (step) {
     case "name":
-      return cleanName(input.name) ? null : "Tell us what your business is called.";
+      return !cleanName(input.name);
     case "trade":
-      return flags.categoryChosen ? null : "Choose the type of business that fits best.";
-    case "place": {
-      if (input.postcode.trim() && !normalisePostcode(input.postcode)) return "That postcode doesn't look right. Check it, or leave it out.";
-      return cleanTown(input.town) || normalisePostcode(input.postcode) ? null : "Add your town, or a postcode, so we can show where you work.";
-    }
+      return !flags.categoryChosen;
+    case "place":
+      return !cleanTown(input.town) && !normalisePostcode(input.postcode);
     case "services":
-      return null;
-    case "contact": {
-      const phone = normaliseUkPhone(input.phone);
-      if (input.phone.trim() && !phone) return "Enter a UK phone number, like 07123 456789 or 01923 456789.";
-      if (input.email.trim() && !validEmail(input.email)) return "That email address doesn't look right.";
-      if (input.action === "call") return phone ? null : "You chose phone calls, so add the number customers should ring.";
-      return phone || validEmail(input.email) ? null : "Add a phone number or an email address so customers can reach you.";
-    }
+      return input.services.length === 0;
+    case "contact":
+      return !normaliseUkPhone(input.phone) && !validEmail(input.email);
     case "review":
-      return null;
+      return false;
   }
 }
 
-export const isComplete = (input: PreviewInput, flags: Flags) => STEPS.every((s) => stepProblem(s, input, flags) === null);
+/** A gentle, non-blocking note when something was typed but can't be used as it is. Never stops the visitor continuing. */
+export function stepHint(step: StepId, input: PreviewInput): string | null {
+  if (step === "place" && input.postcode.trim() && !normalisePostcode(input.postcode)) return "That postcode doesn't look right, so we'll leave it out for now.";
+  if (step === "contact") {
+    if (input.phone.trim() && !normaliseUkPhone(input.phone)) return "That doesn't look like a UK phone number, so we'll leave it out for now.";
+    if (input.email.trim() && !validEmail(input.email)) return "That email address doesn't look right, so we'll leave it out for now.";
+  }
+  return null;
+}
 
-/** The first step still needing an answer, or "review" when everything required is filled in. */
+/** True when every question has an answer (a shared, finished link opens straight on the preview). */
+export const isComplete = (input: PreviewInput, flags: Flags) => STEPS.every((s) => s === "services" || !stepEmpty(s, input, flags));
+
+/** The first unanswered step, or "review". Services are always optional and never hold the guide back. */
 export function firstIncomplete(input: PreviewInput, flags: Flags): StepId {
-  return STEPS.find((s) => s !== "review" && stepProblem(s, input, flags) !== null) ?? "review";
+  return STEPS.find((s) => s !== "review" && s !== "services" && stepEmpty(s, input, flags)) ?? "review";
 }
 
 /** Example services for the chosen trade, used as suggestions in the services step. */

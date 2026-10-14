@@ -2,11 +2,11 @@
 
 ## The guided flow (`/preview`)
 
-Visitors answer six short steps, one question per screen, built for a phone first: name, type of business, where they work, what they offer, how customers reach them, then a review. The preview is only built once every required answer is in, so "Show my preview" always leads through whatever is missing (a partly filled link, such as the one from the home page, resumes at the first gap). On desktop a live preview builds alongside the questions. Afterwards the preview page offers Desktop and Phone views, "Try another style", "Edit details" (back to the review step), "Copy link", the suggested package and what is still to add.
+Visitors move through six short steps, one question per screen, built for a phone first: name, type of business, where they work, what they offer, how customers reach them, then a review. **Nothing is mandatory.** Every step can be skipped ("Skip" replaces "Continue" when a step is empty), "Skip to my preview" is available throughout, and anything left blank is shown as sample wording. A partly filled link (such as the one from the home page) resumes at the first unanswered step. On desktop a live preview builds alongside the questions. Afterwards the preview page offers Desktop and Phone views, "Try another style", "Edit details" (back to the review step), "Copy link", the suggested package and what is still to add.
 
 Rules and messages live in `src/lib/preview/wizard.ts` (unit-tested); the screens are `src/components/preview/Wizard.tsx`; the page that switches between the guide and the result is `src/pages/Preview.tsx`.
 
-Required: business name, a trade the visitor actively chose, a town or valid postcode, and a way to be reached (a phone number for "phone calls", otherwise a phone number or an email). Services are optional (examples are used). Everything stays in the browser; the preview URL carries the answers so it can be shared.
+Unusable entries (a malformed postcode, phone number or email) show a gentle note and are left out of the preview; they never block. If the trade is skipped the general-purpose template is used. Everything stays in the browser; the preview URL carries the answers so it can be shared.
 
 ## Maps
 

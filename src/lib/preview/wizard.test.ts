@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { defaultInput } from "./generate";
-import { firstIncomplete, isComplete, stepProblem, suggestedServices } from "./wizard";
+import { firstIncomplete, isComplete, stepEmpty, stepHint, suggestedServices } from "./wizard";
 
 const base = { ...defaultInput(), name: "Smith & Sons", category: "plumbing" as const, town: "Watford", phone: "07123456789" };
 const chosen = { categoryChosen: true };
 
 describe("guided steps", () => {
-  it("starts at the name and walks forward as answers arrive", () => {
+  it("starts at the first unanswered step and walks forward as answers arrive", () => {
     expect(firstIncomplete(defaultInput(), { categoryChosen: false })).toBe("name");
     expect(firstIncomplete({ ...defaultInput(), name: "Smith" }, { categoryChosen: false })).toBe("trade");
     expect(firstIncomplete({ ...defaultInput(), name: "Smith" }, chosen)).toBe("place");
@@ -14,28 +14,31 @@ describe("guided steps", () => {
     expect(firstIncomplete(base, chosen)).toBe("review");
   });
 
-  it("a default trade isn't an answer", () => {
-    expect(stepProblem("trade", base, { categoryChosen: false })).toBeTruthy();
-    expect(stepProblem("trade", base, chosen)).toBeNull();
+  it("a default trade isn't an answer, but nothing is mandatory", () => {
+    expect(stepEmpty("trade", base, { categoryChosen: false })).toBe(true);
+    expect(stepEmpty("trade", base, chosen)).toBe(false);
   });
 
-  it("place needs a town or a valid postcode, and rejects a bad postcode even with a town", () => {
-    expect(stepProblem("place", { ...base, town: "" }, chosen)).toBeTruthy();
-    expect(stepProblem("place", { ...base, town: "", postcode: "WD17 1AA" }, chosen)).toBeNull();
-    expect(stepProblem("place", { ...base, postcode: "nonsense" }, chosen)).toMatch(/postcode/);
+  it("place counts a town or a valid postcode", () => {
+    expect(stepEmpty("place", { ...base, town: "" }, chosen)).toBe(true);
+    expect(stepEmpty("place", { ...base, town: "", postcode: "WD17 1AA" }, chosen)).toBe(false);
+    expect(stepEmpty("place", { ...base, town: "", postcode: "nonsense" }, chosen)).toBe(true);
   });
 
-  it("contact depends on the chosen action and validates both fields", () => {
-    expect(stepProblem("contact", { ...base, phone: "" }, chosen)).toMatch(/phone/i);
-    expect(stepProblem("contact", { ...base, phone: "", email: "a@b.co", action: "quote" }, chosen)).toBeNull();
-    expect(stepProblem("contact", { ...base, phone: "", email: "a@b.co", action: "call" }, chosen)).toBeTruthy();
-    expect(stepProblem("contact", { ...base, phone: "12" }, chosen)).toMatch(/UK phone/);
-    expect(stepProblem("contact", { ...base, email: "nope" }, chosen)).toMatch(/email/);
-    expect(stepProblem("contact", { ...base, phone: "", email: "", action: "visit" }, chosen)).toBeTruthy();
+  it("malformed entries get a hint, never a block", () => {
+    expect(stepHint("place", { ...base, postcode: "nonsense" })).toMatch(/postcode/);
+    expect(stepHint("place", { ...base, postcode: "" })).toBeNull();
+    expect(stepHint("contact", { ...base, phone: "12" })).toMatch(/UK phone/);
+    expect(stepHint("contact", { ...base, email: "nope" })).toMatch(/email/);
+    expect(stepHint("contact", { ...base, phone: "", email: "" })).toBeNull();
   });
 
-  it("services are optional, and completeness needs everything else", () => {
-    expect(stepProblem("services", defaultInput(), chosen)).toBeNull();
+  it("contact is answered by a valid phone or email", () => {
+    expect(stepEmpty("contact", { ...base, phone: "" }, chosen)).toBe(true);
+    expect(stepEmpty("contact", { ...base, phone: "", email: "a@b.co" }, chosen)).toBe(false);
+  });
+
+  it("completeness ignores services", () => {
     expect(isComplete(base, chosen)).toBe(true);
     expect(isComplete({ ...base, name: "  " }, chosen)).toBe(false);
     expect(isComplete(base, { categoryChosen: false })).toBe(false);

@@ -99,7 +99,7 @@ export const categories: CategoryConfig[] = [
     defaultAction: "book",
     palettes: [
       { id: "garage", name: "Garage", bg: "#F2F2F0", surface: "#FFFFFF", ink: "#111111", muted: "#555555", accent: "#D93D0E" },
-      { id: "racing", name: "Racing", bg: "#101010", surface: "#1B1B1B", ink: "#F4F1EA", muted: "#A8A8A8", accent: "#F2B705", accentInk: "#101010", dark: true },
+      { id: "racing", name: "Racing", bg: "#12161B", surface: "#1C222A", ink: "#F4F1EA", muted: "#A8A8A8", accent: "#F2B705", accentInk: "#101010", dark: true },
       { id: "steel", name: "Steel", bg: "#EEF1F4", surface: "#FFFFFF", ink: "#14202B", muted: "#4B5C6B", accent: "#2457D6" },
     ],
     headlines: [
@@ -139,7 +139,7 @@ export const categories: CategoryConfig[] = [
     type: "sans",
     defaultAction: "quote",
     palettes: [
-      { id: "fresh", name: "Fresh", bg: "#F2FBF8", surface: "#FFFFFF", ink: "#0F2B26", muted: "#44625B", accent: "#0B7A66" },
+      { id: "lilac", name: "Lilac", bg: "#F8F5FF", surface: "#FFFFFF", ink: "#241545", muted: "#5B4D80", accent: "#6A3FD0" },
       { id: "sky", name: "Sky", bg: "#F1F8FF", surface: "#FFFFFF", ink: "#0C2540", muted: "#46607B", accent: "#1768C4" },
       { id: "lemon", name: "Lemon", bg: "#FFFDF0", surface: "#FFFFFF", ink: "#25220A", muted: "#5E5A33", accent: "#F0C400", accentInk: "#25220A" },
     ],
@@ -181,7 +181,7 @@ export const categories: CategoryConfig[] = [
     defaultAction: "book",
     palettes: [
       { id: "classic", name: "Classic", bg: "#F6F1EA", surface: "#FFFFFF", ink: "#1B1411", muted: "#5E5048", accent: "#8C2A2A" },
-      { id: "noir", name: "Noir", bg: "#0C0C0C", surface: "#181818", ink: "#F5EFE6", muted: "#ADA79D", accent: "#C9A24D", accentInk: "#0C0C0C", dark: true },
+      { id: "noir", name: "Noir", bg: "#16110E", surface: "#211A15", ink: "#F5EFE6", muted: "#ADA79D", accent: "#C9A24D", accentInk: "#0C0C0C", dark: true },
       { id: "pole", name: "Pole", bg: "#FFFFFF", surface: "#F6F7F9", ink: "#101828", muted: "#4B5565", accent: "#C41E3A" },
     ],
     headlines: [
@@ -223,7 +223,7 @@ export const categories: CategoryConfig[] = [
     palettes: [
       { id: "chalk", name: "Chalk", bg: "#F7F9FF", surface: "#FFFFFF", ink: "#121A3A", muted: "#475079", accent: "#4452D6" },
       { id: "notebook", name: "Notebook", bg: "#FFFBF2", surface: "#FFFFFF", ink: "#2B2113", muted: "#6B5A43", accent: "#B45710" },
-      { id: "forest", name: "Forest", bg: "#F1F7F3", surface: "#FFFFFF", ink: "#10281C", muted: "#436253", accent: "#17724A" },
+      { id: "plum", name: "Plum", bg: "#FBF5FA", surface: "#FFFFFF", ink: "#2C1030", muted: "#6C4A70", accent: "#8E2F9A" },
     ],
     headlines: [
       "Tuition{inTown} that builds confidence.",
@@ -263,7 +263,7 @@ export const categories: CategoryConfig[] = [
     defaultAction: "visit",
     palettes: [
       { id: "boutique", name: "Boutique", bg: "#FBF5F7", surface: "#FFFFFF", ink: "#2A1520", muted: "#6B4A5A", accent: "#B52B60" },
-      { id: "market", name: "Market", bg: "#F6F4EE", surface: "#FFFFFF", ink: "#1F2A1C", muted: "#50604A", accent: "#2F7A2B" },
+      { id: "denim", name: "Denim", bg: "#F3F5F9", surface: "#FFFFFF", ink: "#14213D", muted: "#4A5878", accent: "#1F3F8F" },
       { id: "mono", name: "Mono", bg: "#F5F5F5", surface: "#FFFFFF", ink: "#111111", muted: "#555555", accent: "#111111", accentInk: "#FFFFFF" },
     ],
     headlines: [
@@ -304,7 +304,7 @@ export const categories: CategoryConfig[] = [
     defaultAction: "quote",
     palettes: [
       { id: "brick", name: "Brick", bg: "#F5F0EB", surface: "#FFFFFF", ink: "#201813", muted: "#5F5249", accent: "#A9461F" },
-      { id: "stone", name: "Stone", bg: "#EFEFEA", surface: "#FFFFFF", ink: "#1A1D1A", muted: "#505650", accent: "#566847" },
+      { id: "slate", name: "Slate", bg: "#EEF0F2", surface: "#FFFFFF", ink: "#171C22", muted: "#505A64", accent: "#44586B" },
       { id: "gold", name: "Gold", bg: "#12110F", surface: "#1D1B17", ink: "#F2EDE4", muted: "#B0A99C", accent: "#C8A24A", accentInk: "#12110F", dark: true },
     ],
     headlines: [
@@ -344,8 +344,8 @@ export const categories: CategoryConfig[] = [
     type: "sans",
     defaultAction: "quote",
     palettes: [
-      { id: "neutral", name: "Neutral", bg: "#F6F6F4", surface: "#FFFFFF", ink: "#111111", muted: "#555555", accent: "#1B7A58" },
-      { id: "ink", name: "Ink", bg: "#0C0F0E", surface: "#161B19", ink: "#F2F1EA", muted: "#A6ADA9", accent: "#3DBE8B", accentInk: "#0C0F0E", dark: true },
+      { id: "terracotta", name: "Terracotta", bg: "#FAF4EF", surface: "#FFFFFF", ink: "#241812", muted: "#62503F", accent: "#B5472A" },
+      { id: "ink", name: "Ink", bg: "#14120F", surface: "#1E1B17", ink: "#F4EFE6", muted: "#B3AB9E", accent: "#F2A33A", accentInk: "#14120F", dark: true },
       { id: "blue", name: "Blue", bg: "#F3F6FB", surface: "#FFFFFF", ink: "#0E1B33", muted: "#485673", accent: "#2457D6" },
     ],
     headlines: ["{name}{inTown}.", "Local {trade}{inTown}.", "Get in touch with {name}."],

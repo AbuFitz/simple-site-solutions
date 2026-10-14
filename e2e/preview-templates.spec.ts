@@ -27,7 +27,7 @@ async function scrollFrame(page: Page) {
   await page.waitForTimeout(400);
 }
 
-const next = (page: Page) => page.getByRole("button", { name: /^(Continue|Skip, use examples)$/ }).click();
+const next = (page: Page) => page.getByRole("button", { name: /^(Continue|Skip)$/ }).click();
 
 async function walk(page: Page, opts: { name?: string; trade?: RegExp; town?: string; postcode?: string; pin?: boolean; phone?: string; email?: string; action?: RegExp } = {}) {
   await page.getByLabel("Business name").fill(opts.name ?? "Smith & Sons");
@@ -69,27 +69,42 @@ for (const width of [390, 1440]) {
       expect(errors).toEqual([]);
     });
 
-    test("Show my preview can't be reached with missing details: the guide asks for each in turn", async ({ page }) => {
+    test("nothing is mandatory: every step can be skipped and the preview still builds", async ({ page }) => {
+      await mockGeo(page);
+      await page.goto("/preview");
+      await settle(page);
+      for (let i = 0; i < 5; i++) {
+        await expect(page.getByRole("button", { name: "Skip", exact: true })).toBeVisible();
+        await next(page);
+      }
+      await expect(page.getByRole("heading", { name: "Ready to build your preview" })).toBeVisible();
+      await page.getByRole("button", { name: "Show my preview" }).click();
+      await expect(page.getByRole("heading", { level: 1 })).toContainText("Your website preview");
+      await expect(page.locator(FRAME)).toBeVisible();
+      await expectNoHorizontalOverflow(page);
+    });
+
+    test("Skip to my preview works from the very first screen", async ({ page }) => {
+      await mockGeo(page);
+      await page.goto("/preview");
+      await settle(page);
+      await page.getByRole("button", { name: "Skip to my preview" }).click();
+      await expect(page.getByRole("heading", { level: 1 })).toContainText("website preview");
+      await expect(page.locator(FRAME)).toBeVisible();
+    });
+
+    test("unusable entries get a gentle note and never block", async ({ page }) => {
       await mockGeo(page);
       await page.goto("/preview?n=Smith+%26+Sons&c=plumbing");
       await settle(page);
       await expect(page.getByRole("heading", { name: "Where do you work?" })).toBeVisible();
-      await next(page);
-      await expect(page.getByRole("alert")).toContainText("Add your town, or a postcode");
-      await page.getByLabel("Town or area").fill("Watford");
       await page.getByLabel(/Postcode/).fill("nonsense");
-      await next(page);
-      await expect(page.getByRole("alert")).toContainText("postcode doesn't look right");
-      await page.getByLabel(/Postcode/).fill("");
+      await expect(page.getByRole("status").filter({ hasText: "postcode doesn't look right" })).toBeVisible();
       await next(page);
       await next(page);
       await expect(page.getByRole("heading", { name: /get in touch/i })).toBeVisible();
-      await next(page);
-      await expect(page.getByRole("alert")).toContainText("add the number customers should ring");
       await page.getByLabel(/^Phone/).fill("12");
-      await next(page);
-      await expect(page.getByRole("alert")).toContainText("UK phone number");
-      await page.getByLabel(/^Phone/).fill("07123 456789");
+      await expect(page.getByRole("status").filter({ hasText: "UK phone number" })).toBeVisible();
       await next(page);
       await page.getByRole("button", { name: "Show my preview" }).click();
       await expect(page.locator(FRAME)).toBeVisible();
@@ -257,8 +272,11 @@ for (const width of [390, 1440]) {
         await page.getByRole("button", { name: "Edit details" }).click();
         await page.getByRole("button", { name: /Change location/ }).click();
         await page.getByLabel("Town or area").fill("");
-        await page.getByRole("button", { name: "Continue" }).click();
-        await expect(page.getByRole("alert")).toContainText("Add your town");
+        await page.getByRole("button", { name: "Skip to my preview" }).click();
+        await page.locator(FRAME).waitFor();
+        await settle(page);
+        await scrollFrame(page);
+        await expect(page.locator(FRAME).getByText("Add your town and your area map appears here.")).toBeVisible();
       });
     }
 

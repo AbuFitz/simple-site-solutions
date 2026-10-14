@@ -27,6 +27,8 @@ export default function Preview() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
 
+  // Nothing is mandatory: if the trade was skipped the preview uses the general-purpose template.
+  const effective = (i: PreviewInput): PreviewInput => (categoryChosen ? i : { ...i, category: "other" });
   const update = (patch: Partial<PreviewInput>) => setInput((i) => ({ ...i, ...patch }));
 
   // Keep the address bar shareable, and remember the preview for the project form (this tab only)
@@ -35,10 +37,11 @@ export default function Preview() {
     const t = window.setTimeout(() => {
       const qs = encodeInput(deferred);
       window.history.replaceState(null, "", `${window.location.pathname}?${categoryChosen ? qs : qs.replace(/(^|&)c=[^&]*/, "").replace(/^&/, "")}`);
-      if (isComplete(deferred, { categoryChosen })) rememberPreview(deferred);
+      if (stage === "result") rememberPreview(effective(deferred));
     }, 350);
     return () => window.clearTimeout(t);
-  }, [deferred, categoryChosen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deferred, categoryChosen, stage]);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -49,14 +52,14 @@ export default function Preview() {
     if (stage === "result") headingRef.current?.focus();
   }, [stage]);
 
-  const model = useMemo(() => buildPreview(deferred), [deferred]);
-  const rec = useMemo(() => recommendPackage(deferred), [deferred]);
+  const model = useMemo(() => buildPreview(effective(deferred)), [deferred, categoryChosen]);
+  const rec = useMemo(() => recommendPackage(effective(deferred)), [deferred, categoryChosen]);
   const pkg = packages.find((p) => p.id === rec.id)!;
   const domain = domainFor(model.name);
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/preview?${encodeInput(input)}`);
+      await navigator.clipboard.writeText(`${window.location.origin}/preview?${encodeInput(effective(input))}`);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2200);
     } catch {
@@ -75,10 +78,10 @@ export default function Preview() {
               <div className="lg:col-span-5">
                 <div className={step === "name" ? "" : "hidden lg:block"}>
                   <span className="badge-primary mb-3 inline-block text-[9px] sm:text-xs">Website preview</span>
-                  <h1 className="text-xl font-bold tracking-tight sm:text-3xl md:text-4xl">
+                  <h1 className="mb-5 text-xl font-bold tracking-tight sm:mb-0 sm:text-3xl md:text-4xl">
                     See what your website <span className="text-primary">could look like</span>
                   </h1>
-                  <p className="text-body mb-8 mt-3 max-w-md">Answer a few quick questions and we'll build a sample website for your trade, with your name, your area on a real map and your services. It takes about a minute.</p>
+                  <p className="text-body mb-8 mt-3 hidden max-w-md sm:block">Answer a few quick questions and we'll build a sample website for your trade, with your name, your area on a real map and your services. It takes about a minute.</p>
                 </div>
                 <div className="rounded-2xl border border-border bg-background/60 p-4 sm:p-6">
                   <Wizard
@@ -194,7 +197,7 @@ export default function Preview() {
                 ))}
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Link to={startHref(input, rec.id)} onClick={() => rememberPreview(input)} className="btn-primary btn-md min-h-[48px] gap-2 !text-background">
+                <Link to={startHref(effective(input), rec.id)} onClick={() => rememberPreview(effective(input))} className="btn-primary btn-md min-h-[48px] gap-2 !text-background">
                   Start this project
                   <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
