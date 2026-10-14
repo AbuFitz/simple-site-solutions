@@ -87,7 +87,7 @@ export const categories: CategoryConfig[] = [
     ],
     about: [
       "A local electrical business for homes and small commercial premises. Ask for a quote and we will explain the work in plain English.",
-      "From a single socket to a full rewire, every job is tested before we leave.",
+      "From a single socket to a full rewire, explained in plain English before work begins.",
     ],
   },
   {

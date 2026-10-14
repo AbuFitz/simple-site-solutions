@@ -1,4 +1,5 @@
-import { CSSProperties } from "react";
+import { CSSProperties, Suspense } from "react";
+import { templates } from "./templates";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
 import type { PreviewModel } from "@/lib/preview/types";
 import { Art } from "./Art";
@@ -19,7 +20,7 @@ function Placeholder({ children, p }: { children: string; p: PreviewModel["palet
   );
 }
 
-export function SitePreview({ model, compact }: { model: PreviewModel; compact: boolean }) {
+function LegacyPreview({ model, compact }: { model: PreviewModel; compact: boolean }) {
   const { palette: p, layout, type } = model;
   const display: CSSProperties = type === "serif" ? { fontFamily: serif, letterSpacing: "-0.02em", fontWeight: 600 } : { letterSpacing: "-0.035em", fontWeight: 800 };
   const pad = compact ? "px-5" : "px-12";
@@ -292,3 +293,14 @@ export function SitePreview({ model, compact }: { model: PreviewModel; compact: 
     </div>
   );
 }
+
+export function SitePreview({ model, compact }: { model: PreviewModel; compact: boolean }) {
+  const T = templates[model.category.id];
+  return (
+    <Suspense fallback={<div style={{ background: model.palette.bg, minHeight: 640 }} aria-hidden="true" />}>
+      <T model={model} compact={compact} />
+    </Suspense>
+  );
+}
+
+export { LegacyPreview };

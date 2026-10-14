@@ -134,6 +134,12 @@ export default function Cookies() {
                   Our website does not set third-party cookies. We do not embed content from social
                   media platforms or advertising networks that would place tracking cookies on your device.
                 </p>
+                <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
+                  One exception to be aware of: when you type a town into the website preview, the page shows a map from
+                  OpenStreetMap (a community mapping project, not an advertising network). Your browser contacts
+                  openstreetmap.org to load it, so OpenStreetMap receives your IP address and the town name. We
+                  do not add any cookies for it.
+                </p>
               </section>
 
               <section>

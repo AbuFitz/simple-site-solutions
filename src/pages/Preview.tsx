@@ -6,6 +6,7 @@ import { ArrowUpRight, Check, Copy, Monitor, RefreshCw, Smartphone } from "lucid
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { DeviceFrame } from "@/components/preview/DeviceFrame";
+import { PhotoCredits } from "@/components/preview/PhotoCredits";
 import { SitePreview } from "@/components/preview/SitePreview";
 import { categories, categoryById } from "@/lib/preview/categories";
 import {
@@ -266,6 +267,8 @@ export default function Preview() {
                 <SitePreview model={model} compact={device === "phone"} />
               </DeviceFrame>
             </motion.div>
+
+            <PhotoCredits category={model.category.id} />
 
             <p className="text-xs text-muted-foreground">
               This is a preview with sample wording. Your real site uses your own details, photos and text, and the address shown is an example.

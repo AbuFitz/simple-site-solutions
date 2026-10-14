@@ -21,6 +21,7 @@ const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const CheckoutCancel = lazy(() => import("./pages/CheckoutCancel"));
 const Onboard = lazy(() => import("./pages/Onboard"));
 const Preview = lazy(() => import("./pages/Preview"));
+const DevTemplate = import.meta.env.DEV ? lazy(() => import("./pages/DevTemplate")) : null;
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => (
           <Route path="/cookies" element={<Cookies />} />
           {/* Hidden onboarding page - not in navigation */}
           <Route path="/onboard" element={<Onboard />} />
+          {DevTemplate && <Route path="/__tpl" element={<DevTemplate />} />}
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
