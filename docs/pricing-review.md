@@ -1,7 +1,9 @@
 # Pricing and offer review
 
 A working agenda for deciding prices, inclusions and promises, and for removing the places where the site contradicts itself.
-Sources are the live code in this repo. Nothing here has been changed on the site.
+Sources are the live code in this repo.
+
+> **Update 2026-10-14:** the contradictions in section 1 and the stale pages in section 2 have been resolved in code (hosting is one £19 plan, delivery is per package, the guarantee, 24-hour promise, fake rating and invented about/case-study content are gone, `/services` redirects to `/packages`, the unrouted Pricing/CaseStudies pages were deleted). Section 3 decisions are still open, and package data now lives only in `src/data/packages.ts`. See `docs/fact-ledger.md`.
 
 ## 1. Contradictions to fix (the site disagrees with itself)
 
@@ -52,4 +54,4 @@ They live in `recommendPackage()` in `src/lib/preview/generate.ts` and are cover
 
 ## 5. Keep in sync
 
-Package data now exists in two places: `src/pages/Packages.tsx` (the page) and `src/data/packages.ts` (used by the preview recommendation). Change both, or ask for the page to be switched to read from the data file.
+Package data lives only in `src/data/packages.ts`; the Packages page, Start form, preview recommendation and the server's expected Stripe amounts all read it.
