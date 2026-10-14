@@ -14,21 +14,32 @@ const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g
 
 function render(path, m) {
   const url = SITE + (path === "/" ? "/" : path);
-  let html = template;
-  const set = (re, replacement) => {
-    if (!re.test(html)) throw new Error(`prerender: pattern not found in index.html: ${re}`);
-    html = html.replace(re, replacement);
-  };
-  set(/<title>[^<]*<\/title>/, `<title>${esc(m.title)}</title>`);
-  set(/<meta name="title" content="[^"]*" \/>/, `<meta name="title" content="${esc(m.title)}" />`);
-  set(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${esc(m.description)}" />`);
-  set(/<meta name="robots" content="[^"]*" \/>/, `<meta name="robots" content="${m.noindex ? "noindex, nofollow" : "index, follow"}" />`);
-  set(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${esc(m.title)}" />`);
-  set(/<meta property="og:description" content="[^"]*" \/>/, `<meta property="og:description" content="${esc(m.description)}" />`);
-  set(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${esc(m.title)}" />`);
-  set(/<meta name="twitter:description" content="[^"]*" \/>/, `<meta name="twitter:description" content="${esc(m.description)}" />`);
-  html = html.replace("</head>", `    <link rel="canonical" href="${url}" data-rh="true" />\n    <meta property="og:url" content="${url}" />\n    <meta name="twitter:url" content="${url}" />\n  </head>`);
-  return html;
+  const image = `${SITE}/og-image.png`;
+  // data-rh marks these as owned by react-helmet-async, so the <Seo> component replaces them on hydration instead of duplicating them.
+  const tag = (t) => t.replace(/ \/>$/, ' data-rh="true" />');
+  const head = [
+    tag(`<meta name="description" content="${esc(m.description)}" />`),
+    tag(`<meta name="robots" content="${m.noindex ? "noindex, nofollow" : "index, follow"}" />`),
+    tag(`<link rel="canonical" href="${url}" />`),
+    tag(`<meta property="og:type" content="website" />`),
+    tag(`<meta property="og:site_name" content="OneSimpleSite" />`),
+    tag(`<meta property="og:locale" content="en_GB" />`),
+    tag(`<meta property="og:url" content="${url}" />`),
+    tag(`<meta property="og:title" content="${esc(m.title)}" />`),
+    tag(`<meta property="og:description" content="${esc(m.description)}" />`),
+    tag(`<meta property="og:image" content="${image}" />`),
+    tag(`<meta property="og:image:width" content="1200" />`),
+    tag(`<meta property="og:image:height" content="630" />`),
+    tag(`<meta name="twitter:card" content="summary_large_image" />`),
+    tag(`<meta name="twitter:title" content="${esc(m.title)}" />`),
+    tag(`<meta name="twitter:description" content="${esc(m.description)}" />`),
+    tag(`<meta name="twitter:image" content="${image}" />`),
+  ].join("\n    ");
+  if (!template.includes("<!--oss-head-->")) throw new Error("prerender: <!--oss-head--> marker missing from index.html");
+  if (!/<title>[^<]*<\/title>/.test(template)) throw new Error("prerender: <title> missing from index.html");
+  return template
+    .replace("<!--oss-head-->", head)
+    .replace(/<title>[^<]*<\/title>/, `<title>${esc(m.title)}</title>`);
 }
 
 let count = 0;

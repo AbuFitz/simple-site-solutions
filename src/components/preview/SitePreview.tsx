@@ -78,9 +78,9 @@ export function SitePreview({ model, compact }: { model: PreviewModel; compact: 
         {model.category.label}
         {model.town ? ` · ${model.town}` : ""}
       </p>
-      <h1 className={h1Size} style={display}>
+      <h2 className={h1Size} style={display}>
         {model.headline}
-      </h1>
+      </h2>
       <p className={`mt-5 ${compact ? "text-[1rem]" : "text-[1.15rem]"} leading-relaxed ${layout === "centered" && !compact ? "mx-auto max-w-xl" : "max-w-lg"}`} style={{ color: p.muted }}>
         {model.subhead}
       </p>
@@ -123,9 +123,9 @@ export function SitePreview({ model, compact }: { model: PreviewModel; compact: 
     hero = (
       <section className="relative">
         <div className={`${pad} pb-12 pt-16`} style={{ background: p.accent, color: p.accentInk }}>
-          <h1 className={h1Size} style={{ ...display, maxWidth: "52rem" }}>
+          <h2 className={h1Size} style={{ ...display, maxWidth: "52rem" }}>
             {model.headline}
-          </h1>
+          </h2>
           <p className="mt-5 max-w-xl text-[1.15rem] leading-relaxed opacity-90">{model.subhead}</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a href={model.cta.href} onClick={(e) => e.preventDefault()} tabIndex={-1} className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-[0.95rem] font-semibold" style={{ background: p.accentInk, color: p.accent }}>

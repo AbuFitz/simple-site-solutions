@@ -13,7 +13,8 @@
   },
   "/checkout/cancel": {
     "title": "Payment cancelled | OneSimpleSite",
-    "description": "You left checkout before paying. Nothing was charged."
+    "description": "You left checkout before paying, so nothing was charged. Choose a package or send a project brief instead.",
+    "noindex": true
   },
   "/start": {
     "title": "Start your project | OneSimpleSite",
@@ -25,7 +26,8 @@
   },
   "/checkout/success": {
     "title": "Payment status | OneSimpleSite",
-    "description": "Checking your payment."
+    "description": "See the status of your OneSimpleSite payment after checkout. Nothing shows as paid until Stripe confirms it.",
+    "noindex": true
   },
   "/about": {
     "title": "About OneSimpleSite | Fixed-Price Websites for UK Businesses",

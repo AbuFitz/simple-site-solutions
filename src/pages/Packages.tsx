@@ -108,7 +108,7 @@ export default function Packages() {
                 </div>
 
                 <Link
-                  to="/start"
+                  to={`/start?package=${pkg.id}`}
                   className={`w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-semibold transition-all ${
                     pkg.recommended
                       ? "bg-primary text-primary-foreground hover:brightness-110"
@@ -136,7 +136,7 @@ export default function Packages() {
             Compare <span className="text-primary">packages</span>
           </h2>
           <p className="text-muted-foreground text-sm text-center mb-6">A dash means it isn't included. Anything not listed isn't included either; ask if you're unsure.</p>
-          <div role="region" aria-label="Package comparison table" tabIndex={0} className="overflow-x-auto rounded-xl border border-border">
+          <div role="region" aria-label="Package comparison table" tabIndex={0} className="relative overflow-x-auto rounded-xl border border-border">
             <table className="w-full min-w-[34rem] text-sm">
               <caption className="sr-only">What each package includes</caption>
               <thead>

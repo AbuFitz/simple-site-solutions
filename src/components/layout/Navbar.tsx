@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Home" },
+  { path: "/work", label: "Work" },
   { path: "/how-it-works", label: "Process" },
   { path: "/packages", label: "Pricing" },
   { path: "/faq", label: "FAQ" },
@@ -14,6 +15,7 @@ export function Navbar() {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
 
   useEffect(() => {
@@ -28,6 +30,19 @@ export function Navbar() {
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
+
+  // Escape closes the menu and returns focus to the button that opened it
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -58,7 +73,9 @@ export function Navbar() {
         >
           {/* Mobile/Tablet Menu Button - Moved before logo */}
           <button
+            ref={menuButton}
             type="button"
+            aria-controls="mobile-menu"
             onClick={() => setMenuOpen(!menuOpen)}
             className="lg:hidden flex-shrink-0 inline-flex items-center justify-center p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-full transition-all hover:brightness-110"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -123,6 +140,7 @@ export function Navbar() {
 
             {/* Menu Panel */}
             <motion.div
+              id="mobile-menu"
               className="fixed top-[4.5rem] left-3 right-3 sm:left-6 sm:right-6 z-[85] lg:hidden"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}

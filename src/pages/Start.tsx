@@ -105,7 +105,7 @@ export default function Start() {
   const [params] = useSearchParams();
   const prefillPackage = params.get("package");
   const draft = useMemo(() => loadDraft(), []);
-  const [step, setStep] = useState(() => (draft && !prefillPackage ? draft.step : 1));
+  const [step, setStep] = useState(() => (draft && (!prefillPackage || prefillPackage === draft.selectedPackage) ? draft.step : 1));
   const [selectedPackage, setSelectedPackage] = useState<string | null>(
     packages.some((p) => p.id === prefillPackage) ? prefillPackage : draft?.selectedPackage ?? null
   );

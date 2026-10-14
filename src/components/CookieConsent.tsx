@@ -80,7 +80,7 @@ export function CookieConsent() {
                     <button
                       type="button"
                       onClick={acceptCookies}
-                      className="inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold bg-primary text-white hover:brightness-110 transition-all shadow-sm"
+                      className="inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold bg-primary text-primary-foreground min-h-[44px] hover:brightness-110 transition-all shadow-sm"
                     >
                       Got it
                     </button>

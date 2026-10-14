@@ -39,7 +39,7 @@ export default function CheckoutSuccess() {
 
   return (
     <Layout>
-      <Seo path="/checkout/success" noindex />
+      <Seo path="/checkout/success" />
       <section className="content-width mx-auto max-w-xl pt-28 pb-16 sm:pt-36" aria-live="polite">
         {state.kind === "checking" && <h1 className="text-headline">Checking your payment…</h1>}
         {state.kind === "paid" && (

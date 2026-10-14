@@ -1,25 +1,28 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
+
+/**
+ * Runs against the production build served by `vite preview` (run `npm run build` first).
+ * Set PW_CHROMIUM to a Chromium binary when the Playwright-managed browser isn't installed.
+ */
+const executablePath = process.env.PW_CHROMIUM || undefined;
+const PORT = 4173;
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  workers: process.env.CI ? 2 : 4,
+  reporter: [["list"]],
   use: {
-    baseURL: 'http://localhost:8080',
-    trace: 'on-first-retry',
+    baseURL: `http://127.0.0.1:${PORT}`,
+    trace: "on-first-retry",
+    launchOptions: { executablePath, args: ["--use-gl=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] },
   },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-  ],
+  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:8080',
+    command: `npx vite preview --host 127.0.0.1 --port ${PORT} --strictPort`,
+    url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: !process.env.CI,
   },
 });

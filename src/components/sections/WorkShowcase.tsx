@@ -216,7 +216,7 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
           )}
         </motion.div>
 
-        <div className="mt-5 flex justify-center gap-1.5 sm:mt-8" role="tablist" aria-label="Choose a project">
+        <div className="mt-3 flex justify-center sm:mt-6" role="tablist" aria-label="Choose a project">
           {projects.map((p, i) => (
             <button
               key={p.slug}
@@ -225,7 +225,7 @@ export function WorkShowcase({ id = "work" }: { id?: string }) {
               aria-selected={i === index}
               aria-label={p.name}
               onClick={() => go(i)}
-              className="flex h-6 items-center px-0.5"
+              className="flex min-h-[44px] min-w-[36px] items-center justify-center"
             >
               <span
                 className={`block h-1.5 rounded-full border transition-all duration-300 sm:h-2 ${

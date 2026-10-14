@@ -70,7 +70,7 @@ export default function Cookies() {
                     <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed mb-2">
                       These cookies are necessary for the website to function and cannot be switched off in our systems.
                     </p>
-                    <div className="overflow-x-auto">
+                    <div role="region" aria-label="Cookies and browser storage we use" tabIndex={0} className="relative overflow-x-auto">
                       <table className="w-full text-xs sm:text-sm">
                         <thead>
                           <tr className="border-b border-border">
@@ -84,6 +84,16 @@ export default function Cookies() {
                             <td className="py-2 pr-4 font-mono text-xs">oss_cookie_consent</td>
                             <td className="py-2 pr-4">Stores your cookie consent preference</td>
                             <td className="py-2">Persistent (localStorage)</td>
+                          </tr>
+                          <tr className="border-b border-border/50">
+                            <td className="py-2 pr-4 font-mono text-xs">oss_brief_draft_v1</td>
+                            <td className="py-2 pr-4">Keeps your project brief draft in this browser until you submit it</td>
+                            <td className="py-2">Up to 7 days (localStorage)</td>
+                          </tr>
+                          <tr className="border-b border-border/50">
+                            <td className="py-2 pr-4 font-mono text-xs">oss_preview_input</td>
+                            <td className="py-2 pr-4">Carries your website preview details into the project brief</td>
+                            <td className="py-2">Until you close the tab (sessionStorage)</td>
                           </tr>
                         </tbody>
                       </table>
