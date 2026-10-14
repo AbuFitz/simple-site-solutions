@@ -160,7 +160,7 @@ describe("recommendPackage", () => {
 
 describe("shareable state", () => {
   it("round-trips through the URL", () => {
-    const i = { ...defaultInput(), name: "A & B Garage", category: "mechanic" as const, town: "Hemel Hempstead", phone: "01923 456789", email: "a@b.co.uk", action: "book" as const, services: ["MOT", "Brakes"], multiArea: true, seed: 3 };
+    const i = { ...defaultInput(), name: "A & B Garage", category: "mechanic" as const, town: "Hemel Hempstead", phone: "01923 456789", email: "a@b.co.uk", action: "book" as const, services: ["MOT", "Brakes"], multiArea: true, seed: 3, postcode: "WD17 1AA", pin: true, areas: ["Bushey", "Rickmansworth"] };
     expect(decodeInput(encodeInput(i))).toEqual(i);
   });
 

@@ -14,7 +14,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["plumb", "heating", "boiler", "gas safe", "drain", "bathroom", "pipe", "radiator", "leak"],
     layouts: ["split", "centered"],
     type: "sans",
-    art: "pipes",
     defaultAction: "call",
     palettes: [
       { id: "tide", name: "Tide", bg: "#F4F8FA", surface: "#FFFFFF", ink: "#0B2230", muted: "#43606F", accent: "#0A6E91" },
@@ -56,7 +55,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["electric", "spark", "wiring", "rewire", "fuse", "ev charg", "lighting", "volt"],
     layouts: ["bold", "split"],
     type: "sans",
-    art: "circuit",
     defaultAction: "quote",
     palettes: [
       { id: "volt", name: "Volt", bg: "#FFFBEA", surface: "#FFFFFF", ink: "#1A1700", muted: "#5B5530", accent: "#F2C100", accentInk: "#1A1700" },
@@ -98,7 +96,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["mechanic", "garage", "motor", "auto", "mot ", "tyre", "tire", "car ", "vehicle", "brake", "service centre"],
     layouts: ["bold", "split"],
     type: "sans",
-    art: "gears",
     defaultAction: "book",
     palettes: [
       { id: "garage", name: "Garage", bg: "#F2F2F0", surface: "#FFFFFF", ink: "#111111", muted: "#555555", accent: "#D93D0E" },
@@ -140,7 +137,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["clean", "maid", "valet", "detail", "sparkle", "domestic", "janitor", "wash", "tidy"],
     layouts: ["centered", "split"],
     type: "sans",
-    art: "bubbles",
     defaultAction: "quote",
     palettes: [
       { id: "fresh", name: "Fresh", bg: "#F2FBF8", surface: "#FFFFFF", ink: "#0F2B26", muted: "#44625B", accent: "#0B7A66" },
@@ -182,7 +178,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["barber", "salon", "hair", "cuts", "fade", "beauty", "nails", "lash", "style", "trim"],
     layouts: ["editorial", "bold"],
     type: "serif",
-    art: "stripes",
     defaultAction: "book",
     palettes: [
       { id: "classic", name: "Classic", bg: "#F6F1EA", surface: "#FFFFFF", ink: "#1B1411", muted: "#5E5048", accent: "#8C2A2A" },
@@ -224,7 +219,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["tutor", "tuition", "lesson", "maths", "math", "english", "gcse", "a-level", "teach", "learn", "school", "academy"],
     layouts: ["split", "editorial"],
     type: "sans",
-    art: "notebook",
     defaultAction: "book",
     palettes: [
       { id: "chalk", name: "Chalk", bg: "#F7F9FF", surface: "#FFFFFF", ink: "#121A3A", muted: "#475079", accent: "#4452D6" },
@@ -266,7 +260,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["shop", "store", "boutique", "gifts", "florist", "flowers", "bakery", "deli", "market", "emporium", "supply"],
     layouts: ["centered", "editorial"],
     type: "sans",
-    art: "tiles",
     defaultAction: "visit",
     palettes: [
       { id: "boutique", name: "Boutique", bg: "#FBF5F7", surface: "#FFFFFF", ink: "#2A1520", muted: "#6B4A5A", accent: "#B52B60" },
@@ -308,7 +301,6 @@ export const categories: CategoryConfig[] = [
     keywords: ["build", "construct", "extension", "loft", "renovat", "roof", "joiner", "carpent", "plaster", "landscap", "paving", "decorat", "brick", "kitchen"],
     layouts: ["editorial", "split"],
     type: "serif",
-    art: "bricks",
     defaultAction: "quote",
     palettes: [
       { id: "brick", name: "Brick", bg: "#F5F0EB", surface: "#FFFFFF", ink: "#201813", muted: "#5F5249", accent: "#A9461F" },
@@ -350,7 +342,6 @@ export const categories: CategoryConfig[] = [
     keywords: [],
     layouts: ["split", "centered"],
     type: "sans",
-    art: "rings",
     defaultAction: "quote",
     palettes: [
       { id: "neutral", name: "Neutral", bg: "#F6F6F4", surface: "#FFFFFF", ink: "#111111", muted: "#555555", accent: "#1B7A58" },

@@ -55,3 +55,12 @@ Status of every business fact the site relies on. Accessed 2026-10-14. Research 
 ## Preview generator
 
 Recommendation thresholds (`recommendPackage()`) are INFERRED business rules awaiting owner approval (`docs/pricing-review.md` §4).
+
+## Website preview (updated)
+
+| Fact | Status | Note |
+|---|---|---|
+| Preview maps are live OpenStreetMap views of the town/postcode entered, looked up with Nominatim and postcodes.io | VERIFIED | Open data services reachable from the browser; no keys. Disclosed in the cookie and privacy pages and under the preview. |
+| A pin is shown only when the visitor opts in, and only for a valid postcode | INFERRED | Design choice to avoid publishing a home address by accident. |
+| Template wording (headlines, service names, process steps, about text) | PROVISIONAL | Generic sample copy per trade in `src/lib/preview/categories.ts`; the preview says it is sample wording. |
+| The previews contain no photographs | INFERRED | Owner decision: no images unless they are genuinely good. Openly licensed trade photos found on Wikimedia Commons were not of a standard worth shipping. |

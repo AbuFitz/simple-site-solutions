@@ -1,9 +1,9 @@
 import "@fontsource-variable/manrope";
-import { AreaMap, Btn, ContactList, EnquiryForm, FooterCols, Header, Photo, ServiceRows, ServiceTiles, Steps, TopBar, ctaHeading, tokens, type TProps } from "./kit";
+import { AreaMap, AreasList, Btn, ContactList, EnquiryForm, FooterCols, Header, ServiceCards, ServiceRows, Steps, TopBar, ctaHeading, tokens, type TProps } from "./kit";
 
-/** Plumbers & heating: a classic, trustworthy trade layout. Phone first, photo hero with an offer panel, clear services, area and enquiry form. */
+/** Plumbers & heating: the classic trusted-local-trade layout. Phone first, a request-a-visit form in the hero, clear services, areas on a real map. */
 export default function Plumbing({ model, compact }: TProps) {
-  const t = tokens(model, compact, { head: "'Manrope Variable', Inter, sans-serif", body: "Inter, system-ui, sans-serif", headWeight: 800, headTracking: "-0.03em", btn: 8, card: 10 });
+  const t = tokens(model, compact, { head: "'Manrope Variable', Inter, sans-serif", body: "Inter, system-ui, sans-serif", headWeight: 800, headTracking: "-0.03em", btn: 8, card: 12 });
   const { p, c, head, pad, y } = t;
   const h2 = c("text-[1.65rem] leading-tight", "text-[2.35rem] leading-tight");
 
@@ -12,28 +12,39 @@ export default function Plumbing({ model, compact }: TProps) {
       <TopBar model={model} compact={compact} pad={pad} />
       <Header model={model} compact={compact} pad={pad} head={head} />
 
-      <section className="relative" style={{ minHeight: c(520, 560) }}>
-        <Photo model={model} i={0} className="absolute inset-0" />
-        <div className="absolute inset-0" style={{ background: c(`linear-gradient(0deg, ${p.ink}cc, ${p.ink}33)`, `linear-gradient(90deg, ${p.ink}99, transparent 70%)`) }} />
-        <div className={`relative ${pad} ${c("flex min-h-[520px] items-end py-6", "py-16")}`}>
-          <div className="w-full p-7" style={{ background: p.bg, borderRadius: 12, maxWidth: c("100%", "31rem"), boxShadow: `0 24px 60px -24px ${p.ink}88` }}>
-            <h2 className={c("text-[1.9rem] leading-[1.08]", "text-[2.6rem] leading-[1.05]")} style={head}>
-              {model.headline}
-            </h2>
-            <p className="mt-4 text-[1rem] leading-relaxed" style={{ color: p.muted }}>
-              {model.subhead}
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Btn model={model}>{model.cta.label}</Btn>
-              {model.secondaryCta && (
-                <Btn model={model} kind="ghost">
-                  {model.secondaryCta.label}
-                </Btn>
-              )}
-            </div>
+      <section className={`${pad} ${c("pb-10 pt-8", "pb-16 pt-14")} ${c("", "grid grid-cols-12 items-center gap-12")}`} style={{ background: p.surface }}>
+        <div className={c("", "col-span-7")}>
+          <p className="mb-3 text-[0.85rem] font-bold uppercase tracking-[0.14em]" style={{ color: p.accentText }}>
+            {model.category.label}
+            {model.town ? ` · ${model.town}` : ""}
+          </p>
+          <h2 className={c("text-[2.2rem] leading-[1.05]", "text-[3.8rem] leading-[1.02]")} style={head}>
+            {model.headline}
+          </h2>
+          <p className={`mt-5 max-w-xl leading-relaxed ${c("text-[1rem]", "text-[1.2rem]")}`} style={{ color: p.muted }}>
+            {model.subhead}
+          </p>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <Btn model={model}>{model.cta.label}</Btn>
+            {model.secondaryCta && (
+              <Btn model={model} kind="ghost">
+                {model.secondaryCta.label}
+              </Btn>
+            )}
           </div>
         </div>
+        <div className={c("mt-8", "col-span-5")}>
+          <EnquiryForm model={model} head={head} radius={14} title="Request a visit" fields={[{ label: "Your name" }, { label: "Phone" }, { label: "What's the problem?", wide: true, tall: true }]} button="Send request" />
+        </div>
       </section>
+
+      <div className={`flex ${c("flex-col gap-1.5 py-4", "items-center justify-between py-5")} ${pad}`} style={{ background: p.accent, color: p.accentInk }}>
+        {model.services.slice(0, 4).map((s) => (
+          <span key={s.title} className="text-[0.98rem] font-bold">
+            {s.title}
+          </span>
+        ))}
+      </div>
 
       <section className={`${pad} ${y}`}>
         <h2 className={h2} style={head}>
@@ -43,7 +54,7 @@ export default function Plumbing({ model, compact }: TProps) {
           From emergency repairs to planned installs, here is what we can help with.
         </p>
         <div className="mt-8">
-          <ServiceTiles model={model} compact={compact} head={head} radius={10} start={1} count={3} />
+          <ServiceCards model={model} compact={compact} head={head} radius={12} count={3} />
         </div>
         <div className="mt-6">
           <ServiceRows model={model} compact={compact} head={head} from={3} />
@@ -63,21 +74,18 @@ export default function Plumbing({ model, compact }: TProps) {
       </section>
 
       <section className={`${pad} ${y} ${c("", "grid grid-cols-12 items-center gap-12")}`}>
-        <Photo model={model} i={2} size="md" className={`${c("mb-8 aspect-[4/3]", "col-span-5 aspect-[4/5]")}`} style={{ borderRadius: 12 }} />
-        <div className={c("", "col-span-7")}>
+        <div className={c("mb-8", "col-span-5")}>
           <h2 className={h2} style={head}>
-            {model.aboutHeading}
+            Areas we cover
           </h2>
-          <p className="mt-4 text-[1.05rem] leading-relaxed" style={{ color: p.muted }}>
+          <div className="mt-4">
+            <AreasList model={model} head={head} />
+          </div>
+          <p className="mt-6 text-[1.02rem] leading-relaxed" style={{ color: p.muted }}>
             {model.aboutBody}
           </p>
-          <p className="mt-6 text-[0.8rem] font-bold uppercase tracking-[0.14em]" style={{ color: p.accentText }}>
-            Areas covered
-          </p>
-          <p className="mt-1 text-[1.1rem]" style={head}>
-            {model.town ? `${model.town} and the surrounding area` : "Your town and the surrounding area"}
-          </p>
         </div>
+        <AreaMap model={model} className={c("aspect-[4/3]", "col-span-7 aspect-[4/3]")} style={{ borderRadius: 12 }} />
       </section>
 
       <section className={`${pad} ${y}`} style={{ background: p.surface }}>
@@ -90,18 +98,17 @@ export default function Plumbing({ model, compact }: TProps) {
       </section>
 
       <section id="contact" className={`${pad} ${y}`}>
-        <div className={`grid gap-10 ${c("grid-cols-1", "grid-cols-12")}`}>
-          <div className={c("", "col-span-5")}>
+        <div className={`grid items-center gap-8 ${c("grid-cols-1", "grid-cols-12")}`}>
+          <div className={c("", "col-span-7")}>
             <h2 className={h2} style={head}>
               {ctaHeading(model)}
             </h2>
-            <div className="mt-6">
-              <ContactList model={model} />
-            </div>
-            <AreaMap model={model} className="mt-8 aspect-[16/10]" style={{ borderRadius: 10 }} />
+            <p className={`mt-4 ${c("text-[1.8rem]", "text-[2.6rem]")}`} style={{ ...head, color: p.accentText }}>
+              {model.contact.phone ?? "Get in touch"}
+            </p>
           </div>
-          <div className={c("", "col-span-6 col-start-7")}>
-            <EnquiryForm model={model} head={head} title="Request a visit" fields={[{ label: "Your name" }, { label: "Phone" }, { label: "Address or postcode", wide: true }, { label: "What's the problem?", wide: true, tall: true }]} button="Send request" />
+          <div className={c("", "col-span-5")}>
+            <ContactList model={model} />
           </div>
         </div>
       </section>

@@ -12,7 +12,6 @@ export type CategoryId =
 export type ActionKind = "call" | "quote" | "book" | "visit";
 export type LayoutId = "split" | "bold" | "editorial" | "centered";
 export type TypeStyle = "sans" | "serif";
-export type ArtId = "pipes" | "circuit" | "gears" | "bubbles" | "stripes" | "notebook" | "tiles" | "bricks" | "rings";
 
 export interface Palette {
   id: string;
@@ -48,7 +47,6 @@ export interface CategoryConfig {
   keywords: string[];
   layouts: [LayoutId, LayoutId];
   type: TypeStyle;
-  art: ArtId;
   defaultAction: ActionKind;
   palettes: Palette[];
   /** Templates: {name}, {town}, {inTown} (" in Watford" or ""), {trade}. */
@@ -63,6 +61,12 @@ export interface PreviewInput {
   name: string;
   category: CategoryId;
   town: string;
+  /** Optional UK postcode. When it resolves to a real place the map can show it. */
+  postcode: string;
+  /** Put a pin at the postcode. Off by default: many trades work from home and shouldn't publish an address. */
+  pin: boolean;
+  /** Other towns covered, listed on the page (up to six). */
+  areas: string[];
   phone: string;
   email: string;
   action: ActionKind;
@@ -92,7 +96,8 @@ export interface PreviewModel {
   steps: ServiceItem[];
   aboutHeading: string;
   aboutBody: string;
-  contact: { phone?: string; phoneHref?: string; email?: string; town?: string };
+  contact: { phone?: string; phoneHref?: string; email?: string; town?: string; postcode?: string; pin: boolean };
+  areas: string[];
   /** Plain-English list of what in this preview is placeholder, so nothing sample is mistaken for fact. */
   placeholders: string[];
 }

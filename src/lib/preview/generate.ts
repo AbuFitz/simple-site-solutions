@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { categories, categoryById } from "./categories";
+import { normalisePostcode } from "./geo";
 import type {
   ActionKind,
   CategoryConfig,
@@ -130,6 +131,9 @@ export const defaultInput = (): PreviewInput => ({
   name: "",
   category: "plumbing",
   town: "",
+  postcode: "",
+  pin: false,
+  areas: [],
   phone: "",
   email: "",
   action: "call",
@@ -192,6 +196,7 @@ export function buildPreview(input: PreviewInput): PreviewModel {
   const placeholders: string[] = [];
   if (!hasName) placeholders.push("Business name (shown as a placeholder)");
   if (!town) placeholders.push("Your town or area");
+  if (!normalisePostcode(input.postcode)) placeholders.push("Your postcode (puts a pin on your map)");
   if (!phone) placeholders.push("Phone number");
   if (!email) placeholders.push("Email address");
   if (servicesAreExamples) placeholders.push("Services (examples for your trade, easy to change)");
@@ -216,7 +221,8 @@ export function buildPreview(input: PreviewInput): PreviewModel {
     steps: cat.steps,
     aboutHeading: `About ${name}`,
     aboutBody,
-    contact: { phone: phone?.display, phoneHref: phone?.href, email: email || undefined, town: town || undefined },
+    contact: { phone: phone?.display, phoneHref: phone?.href, email: email || undefined, town: town || undefined, postcode: normalisePostcode(input.postcode) || undefined, pin: Boolean(input.pin && normalisePostcode(input.postcode)) },
+    areas: input.areas.map((a) => cleanTown(a)).filter(Boolean).slice(0, 6),
     placeholders,
   };
 }
@@ -261,6 +267,9 @@ const paramsSchema = z.object({
   n: z.string().max(60).default(""),
   c: z.enum(ids).default("plumbing"),
   t: z.string().max(40).default(""),
+  z: z.string().max(10).default(""),
+  k: z.enum(["0", "1"]).default("0"),
+  ar: z.string().max(240).default(""),
   p: z.string().max(20).default(""),
   e: z.string().max(80).default(""),
   a: z.enum(["call", "quote", "book", "visit"]).optional(),
@@ -274,6 +283,9 @@ export function encodeInput(i: PreviewInput): string {
   if (i.name) p.set("n", i.name);
   p.set("c", i.category);
   if (i.town) p.set("t", i.town);
+  if (normalisePostcode(i.postcode)) p.set("z", normalisePostcode(i.postcode));
+  if (i.pin) p.set("k", "1");
+  if (i.areas.length) p.set("ar", i.areas.join("|"));
   if (i.phone) p.set("p", i.phone);
   if (i.email) p.set("e", i.email);
   p.set("a", i.action);
@@ -294,11 +306,14 @@ export function decodeInput(search: string): PreviewInput {
     name: v.n,
     category: v.c,
     town: v.t,
+    postcode: normalisePostcode(v.z),
+    pin: v.k === "1",
+    areas: v.ar ? v.ar.split("|").map((a) => cleanTown(a)).filter(Boolean).slice(0, 6) : [],
     phone: v.p,
     email: v.e,
     action: v.a ?? cat.defaultAction,
     services: v.s ? v.s.split("|").slice(0, 6) : [],
-    multiArea: v.m === "1",
+    multiArea: v.m === "1" || Boolean(v.ar),
     seed: v.v,
   };
 }

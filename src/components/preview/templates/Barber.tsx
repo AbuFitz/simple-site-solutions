@@ -1,8 +1,8 @@
 import "@fontsource/playfair-display/600.css";
 import "@fontsource/playfair-display/700.css";
-import { AreaMap, Btn, ContactList, FooterCols, Photo, ctaHeading, tokens, type TProps } from "./kit";
+import { AreaMap, AreasList, Btn, ContactList, FooterCols, ctaHeading, tokens, type TProps } from "./kit";
 
-/** Barbers & salons: dark and editorial. Centred serif identity, full-bleed photography, a clean services menu and a find-us block. */
+/** Barbers & salons: dark and editorial. Centred serif identity, a typographic hero, a services menu and a find-us map. */
 export default function Barber({ model, compact }: TProps) {
   const t = tokens(model, compact, { head: "'Playfair Display', Georgia, serif", body: "Inter, system-ui, sans-serif", headWeight: 700, headTracking: "-0.01em", btn: 2, card: 2 });
   const { p, c, head, pad, y } = t;
@@ -11,7 +11,7 @@ export default function Barber({ model, compact }: TProps) {
 
   return (
     <div style={t.root}>
-      <header className={`flex items-center justify-between py-6 ${pad}`}>
+      <header className={`flex items-center justify-between py-6 ${pad}`} style={{ borderBottom: `1px solid ${p.ink}1f` }}>
         {!compact ? (
           <nav className="flex w-1/3 gap-7 text-[0.78rem] font-semibold uppercase tracking-[0.2em]" style={{ color: p.muted }} aria-label="Preview navigation">
             {model.nav.slice(0, 2).map((n) => (
@@ -35,27 +35,24 @@ export default function Barber({ model, compact }: TProps) {
         )}
       </header>
 
-      <section className="relative" style={{ minHeight: c(520, 640) }}>
-        <Photo model={model} i={0} className="absolute inset-0" />
-        <div className="absolute inset-0" style={{ background: `linear-gradient(0deg, ${p.bg} 0%, ${p.bg}99 30%, ${p.bg}55 100%)` }} />
-        <div className={`relative flex flex-col items-center justify-end text-center ${pad} ${c("pb-12 pt-40", "pb-20 pt-64")}`} style={{ minHeight: c(520, 640) }}>
-          <p className="text-[0.78rem] font-semibold uppercase tracking-[0.3em]" style={{ color: p.accent }}>
-            {model.category.label}
-            {model.town ? ` · ${model.town}` : ""}
-          </p>
-          <h2 className={`mt-5 ${c("text-[2.3rem] leading-[1.08]", "text-[4.2rem] leading-[1.04]")}`} style={{ ...head, maxWidth: "46rem" }}>
-            {model.headline}
-          </h2>
-          <p className="mt-5 max-w-lg text-[1.05rem] leading-relaxed" style={{ color: p.muted }}>
-            {model.subhead}
-          </p>
-          <div className="mt-8">
-            <Btn model={model} radius={2}>{model.cta.label}</Btn>
-          </div>
+      <section className={`${pad} text-center ${c("py-16", "py-28")}`} style={{ background: `radial-gradient(ellipse at 50% 0%, ${p.surface}, ${p.bg} 70%)` }}>
+        <p className="text-[0.78rem] font-semibold uppercase tracking-[0.3em]" style={{ color: p.accent }}>
+          {model.category.label}
+          {model.town ? ` · ${model.town}` : ""}
+        </p>
+        <h2 className={`mx-auto mt-5 ${c("text-[2.4rem] leading-[1.08]", "text-[4.6rem] leading-[1.04]")}`} style={{ ...head, maxWidth: "48rem" }}>
+          {model.headline}
+        </h2>
+        {rule}
+        <p className="mx-auto mt-6 max-w-lg text-[1.05rem] leading-relaxed" style={{ color: p.muted }}>
+          {model.subhead}
+        </p>
+        <div className="mt-8">
+          <Btn model={model} radius={2}>{model.cta.label}</Btn>
         </div>
       </section>
 
-      <section className={`${pad} ${y} text-center`}>
+      <section className={`${pad} ${y} text-center`} style={{ background: p.surface }}>
         <h2 className={h2} style={head}>
           Services
         </h2>
@@ -79,13 +76,7 @@ export default function Barber({ model, compact }: TProps) {
         </div>
       </section>
 
-      <section className={`grid ${c("grid-cols-2", "grid-cols-4")}`}>
-        {[1, 2, 3, 0].map((i, k) => (
-          <Photo key={k} model={model} i={i} size="md" className={c("aspect-square", "aspect-[4/5]")} />
-        ))}
-      </section>
-
-      <section className={`${pad} ${y} ${c("", "grid grid-cols-12 gap-14")}`} style={{ background: p.surface }}>
+      <section className={`${pad} ${y} ${c("", "grid grid-cols-12 gap-14")}`}>
         <div className={c("mb-8", "col-span-5")}>
           <h2 className={h2} style={head}>
             {model.aboutHeading}
@@ -113,7 +104,7 @@ export default function Barber({ model, compact }: TProps) {
         </ol>
       </section>
 
-      <section id="contact" className={`${pad} ${y}`}>
+      <section id="contact" className={`${pad} ${y}`} style={{ background: p.surface }}>
         <div className={`grid gap-10 ${c("grid-cols-1", "grid-cols-12")}`}>
           <div className={c("", "col-span-5")}>
             <h2 className={h2} style={head}>
@@ -125,11 +116,14 @@ export default function Barber({ model, compact }: TProps) {
             <div className="mt-6">
               <ContactList model={model} />
             </div>
+            <div className="mt-5">
+              <AreasList model={model} head={head} fallback="" />
+            </div>
             <div className="mt-8">
               <Btn model={model} radius={2}>{model.cta.label}</Btn>
             </div>
           </div>
-          <AreaMap model={model} className={c("aspect-[4/3]", "col-span-7 aspect-[16/10]")} style={{ borderRadius: 2 }} />
+          <AreaMap model={model} className={c("aspect-[4/3]", "col-span-7 aspect-[16/11]")} style={{ borderRadius: 2 }} />
         </div>
       </section>
       <FooterCols model={model} compact={compact} head={head} dark={false} />

@@ -68,7 +68,7 @@ export function Navbar() {
       >
         <nav
           className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
-            scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
+            scrolled ? "bg-background shadow-lg" : "bg-background"
           }`}
         >
           {/* Mobile/Tablet Menu Button - Moved before logo */}

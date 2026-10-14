@@ -1,8 +1,7 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Mail, MapPin, Phone } from "lucide-react";
 import type { PreviewModel, ResolvedPalette } from "@/lib/preview/types";
-import photosData from "@/lib/preview/photos.json";
-import { Art } from "../Art";
+import { embedUrl, lookupPlace, normalisePostcode, type Place } from "@/lib/preview/geo";
 
 /**
  * Shared building blocks for the trade templates. Colours come from the model's palette so every template
@@ -16,45 +15,6 @@ export interface TProps {
   model: PreviewModel;
   /** Phone composition (the design is laid out at a fixed width, see DeviceFrame). */
   compact: boolean;
-}
-
-export interface PhotoMeta {
-  file: string;
-  alt: string;
-  focal?: string;
-  width: number;
-  height: number;
-  credit: string;
-  source: string;
-  licence: string;
-  licenceUrl?: string;
-}
-
-const urls = import.meta.glob("/src/assets/preview/*.webp", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
-const hasFile = (m: PhotoMeta) => Boolean(urls[`/src/assets/preview/${m.file}-lg.webp`]);
-
-export const photosFor = (category: string): PhotoMeta[] => ((photosData as Record<string, PhotoMeta[]>)[category] ?? []).filter(hasFile);
-export const allPhotos = (): { category: string; meta: PhotoMeta }[] =>
-  Object.entries(photosData as Record<string, PhotoMeta[]>).flatMap(([category, list]) => list.filter(hasFile).map((meta) => ({ category, meta })));
-
-/**
- * A photograph filling its parent (the parent supplies shape and size). Falls back to the trade's vector motif
- * only when no photo exists for the category.
- */
-export function Photo({ model, i = 0, size = "lg", className = "", style, pos }: { model: PreviewModel; i?: number; size?: "lg" | "md"; className?: string; style?: CSSProperties; pos?: string }) {
-  const list = photosFor(model.category.id);
-  const meta = list.length ? list[i % list.length] : undefined;
-  const src = meta ? urls[`/src/assets/preview/${meta.file}-${size}.webp`] ?? urls[`/src/assets/preview/${meta.file}-lg.webp`] : undefined;
-  const p = model.palette;
-  return (
-    <div className={`relative overflow-hidden ${className}`} style={{ background: p.surface, ...style }}>
-      {meta && src ? (
-        <img src={src} alt={meta.alt} width={meta.width} height={meta.height} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full" style={{ objectFit: "cover", objectPosition: pos ?? meta.focal ?? "50% 50%" }} />
-      ) : (
-        <Art id={model.category.art} palette={p} className="absolute inset-0 h-full w-full" />
-      )}
-    </div>
-  );
 }
 
 /** Understated stand-in text for details we don't have yet. The preview page explains what is still to add. */
@@ -187,25 +147,38 @@ export function Header({
   );
 }
 
-/** Service cards led by a photograph, the way a real trade site shows its main jobs. */
-export function ServiceTiles({ model, compact, head, radius = 10, start = 0, cols = 3, ratio = "aspect-[4/3]", count = 3 }: { model: PreviewModel; compact: boolean; head: CSSProperties; radius?: number; start?: number; cols?: number; ratio?: string; count?: number }) {
+/** Service cards: an index, a title and a line of explanation, with a coloured rule on top. */
+export function ServiceCards({ model, compact, head, radius = 10, cols = 3, count = 3, from = 0 }: { model: PreviewModel; compact: boolean; head: CSSProperties; radius?: number; cols?: number; count?: number; from?: number }) {
   const p = model.palette;
   return (
-    <ul className={`grid gap-6 ${compact ? "grid-cols-1" : cols === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
-      {model.services.slice(0, count).map((s, i) => (
-        <li key={s.title + i} className="overflow-hidden" style={{ borderRadius: radius, background: p.surface, boxShadow: `inset 0 0 0 1px ${p.ink}14` }}>
-          <Photo model={model} i={start + i} size="md" className={ratio} />
-          <div className="p-5">
-            <h3 className="text-[1.15rem]" style={head}>
-              {s.title}
-            </h3>
-            <p className="mt-1.5 text-[0.95rem] leading-relaxed" style={{ color: p.muted }}>
-              {s.blurb}
-            </p>
-          </div>
+    <ul className={`grid gap-5 ${compact ? "grid-cols-1" : cols === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+      {model.services.slice(from, from + count).map((s, i) => (
+        <li key={s.title + i} className="p-6" style={{ borderRadius: radius, background: p.surface, boxShadow: `inset 0 3px 0 ${p.accent}, inset 0 0 0 1px ${p.ink}12` }}>
+          <span className="text-[0.85rem] font-bold tabular-nums" style={{ color: p.accentText }}>
+            {String(from + i + 1).padStart(2, "0")}
+          </span>
+          <h3 className="mt-3 text-[1.2rem] leading-snug" style={head}>
+            {s.title}
+          </h3>
+          <p className="mt-2 text-[0.95rem] leading-relaxed" style={{ color: p.muted }}>
+            {s.blurb}
+          </p>
         </li>
       ))}
     </ul>
+  );
+}
+
+/** Towns covered, written out as a plain list. */
+export function AreasList({ model, head, fallback }: { model: PreviewModel; head: CSSProperties; fallback?: string }) {
+  const towns = [model.contact.town, ...model.areas].filter(Boolean) as string[];
+  const p = model.palette;
+  if (!towns.length) return <p className="text-[1rem]" style={{ color: p.muted }}>{fallback ?? "Your town and the surrounding area"}</p>;
+  return (
+    <p className="text-[1.15rem] leading-relaxed" style={head}>
+      {towns.join("  ·  ")}
+      {towns.length === 1 ? " and the surrounding area" : ""}
+    </p>
   );
 }
 
@@ -255,91 +228,57 @@ export function Steps({ model, compact, head, style = "cols" }: { model: Preview
 
 /* ---------- Real map of the customer's area ---------- */
 
-interface Loc {
-  lat: number;
-  lon: number;
-}
-const geoMemo = new Map<string, Promise<Loc | null>>();
-
-/** One lookup per town (OpenStreetMap Nominatim: the browser's own request, cached, never more than one per town). */
-function geocode(town: string): Promise<Loc | null> {
-  const key = town.trim().toLowerCase();
-  const hit = geoMemo.get(key);
-  if (hit) return hit;
-  const cacheKey = `oss_geo_${key}`;
-  const p = (async () => {
-    try {
-      const stored = sessionStorage.getItem(cacheKey);
-      if (stored) return JSON.parse(stored) as Loc | null;
-    } catch {
-      /* ignore */
-    }
-    try {
-      const r = await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=gb&q=${encodeURIComponent(town)}`, { headers: { Accept: "application/json" } });
-      if (!r.ok) return null;
-      const j = (await r.json()) as { lat: string; lon: string }[];
-      const loc = j[0] ? { lat: Number(j[0].lat), lon: Number(j[0].lon) } : null;
-      if (loc && !Number.isFinite(loc.lat + loc.lon)) return null;
-      try {
-        sessionStorage.setItem(cacheKey, JSON.stringify(loc));
-      } catch {
-        /* ignore */
-      }
-      return loc;
-    } catch {
-      return null;
-    }
-  })();
-  geoMemo.set(key, p);
-  return p;
-}
-
-export const _clearGeoCache = () => geoMemo.clear();
-
-export function useTownLocation(town: string): Loc | null | undefined {
-  const [loc, setLoc] = useState<Loc | null | undefined>(undefined);
+export function usePlace(town: string, postcode: string): Place | null | undefined {
+  const [place, setPlace] = useState<Place | null | undefined>(undefined);
   useEffect(() => {
-    if (town.trim().length < 3) {
-      setLoc(null);
+    if (!normalisePostcode(postcode) && town.trim().length < 3) {
+      setPlace(null);
       return;
     }
-    setLoc(undefined);
+    setPlace(undefined);
     let live = true;
     const id = setTimeout(() => {
-      geocode(town).then((l) => live && setLoc(l));
-    }, 700);
+      lookupPlace({ postcode, town }).then((l) => live && setPlace(l));
+    }, 600);
     return () => {
       live = false;
       clearTimeout(id);
     };
-  }, [town]);
-  return loc;
+  }, [town, postcode]);
+  return place;
 }
 
 /**
- * A real OpenStreetMap view of the customer's town (never a drawn map). Without a town, or if the lookup
- * fails, it says so plainly instead of showing a made-up map.
+ * A real OpenStreetMap view (never a drawn map). A valid postcode with "pin" on puts a marker on the map; a town
+ * or a postcode without a pin shows the area. Without a location, or if the lookup fails, it says so plainly
+ * instead of showing a made-up map. The map is a still view (no scroll capture inside the page frame).
  */
-export function AreaMap({ model, className = "", style, zoom = 1 }: { model: PreviewModel; className?: string; style?: CSSProperties; zoom?: number }) {
+export function AreaMap({ model, className = "", style }: { model: PreviewModel; className?: string; style?: CSSProperties }) {
   const p = model.palette;
   const town = model.contact.town ?? "";
-  const loc = useTownLocation(town);
-  const dx = 0.05 / zoom;
-  const dy = 0.03 / zoom;
+  const postcode = model.contact.postcode ?? "";
+  const pin = model.contact.pin;
+  const place = usePlace(town, postcode);
+  const where = pin && postcode ? postcode : town || postcode;
+  // The map only takes the mouse or touch once it has been tapped, so scrolling the page never gets stuck on it.
+  const [active, setActive] = useState(false);
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ background: p.surface, boxShadow: `inset 0 0 0 1px ${p.ink}1f`, ...style }}>
-      {loc ? (
-        <iframe
-          title={`Map of ${town}`}
-          src={`https://www.openstreetmap.org/export/embed.html?bbox=${loc.lon - dx}%2C${loc.lat - dy}%2C${loc.lon + dx}%2C${loc.lat + dy}&layer=mapnik`}
-          loading="lazy"
-          referrerPolicy="strict-origin-when-cross-origin"
-          className="absolute inset-0 h-full w-full border-0"
-        />
+    <div className={`relative overflow-hidden ${className}`} style={{ background: p.surface, boxShadow: `inset 0 0 0 1px ${p.ink}1f`, ...style }} onMouseLeave={() => setActive(false)}>
+      {place ? (
+        <>
+          <iframe title={`Map of ${where}`} src={embedUrl(place, { pin })} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" tabIndex={-1} className={`absolute inset-0 h-full w-full border-0 ${active ? "" : "pointer-events-none"}`} />
+          {!active && (
+            <button type="button" tabIndex={-1} aria-hidden="true" onClick={() => setActive(true)} className="absolute inset-0 z-10 cursor-pointer">
+              <span className="absolute left-2 top-2 rounded px-2.5 py-1 text-[0.72rem] font-semibold shadow" style={{ background: p.bg, color: p.ink }}>
+                Tap to explore the map
+              </span>
+            </button>
+          )}
+        </>
       ) : (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-center" style={{ color: p.muted }}>
           <MapPin className="h-6 w-6" aria-hidden="true" />
-          <span className="text-[0.9rem]">{town && loc === undefined ? `Loading the map of ${town}…` : town ? "The map couldn't be loaded." : "Add your town and your area map appears here."}</span>
+          <span className="text-[0.9rem]">{where && place === undefined ? `Loading the map of ${where}…` : where ? "The map couldn't be loaded." : "Add your town and your area map appears here."}</span>
         </div>
       )}
     </div>
@@ -387,7 +326,7 @@ export function ContactList({ model, onDark = false, size = "base" }: { model: P
       </li>
       <li className="flex items-center gap-3">
         <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
-        {model.contact.town ? model.contact.town : <Soft p={p} onDark={onDark}>Your town or area</Soft>}
+        {model.contact.postcode || model.contact.town ? [model.contact.town, model.contact.postcode].filter(Boolean).join(", ") : <Soft p={p} onDark={onDark}>Your town or area</Soft>}
       </li>
     </ul>
   );
