@@ -64,3 +64,9 @@ Recommendation thresholds (`recommendPackage()`) are INFERRED business rules awa
 | A pin is shown only when the visitor opts in, and only for a valid postcode | INFERRED | Design choice to avoid publishing a home address by accident. |
 | Template wording (headlines, service names, process steps, about text) | PROVISIONAL | Generic sample copy per trade in `src/lib/preview/categories.ts`; the preview says it is sample wording. |
 | The previews contain no photographs | INFERRED | Owner decision: no images unless they are genuinely good. Openly licensed trade photos found on Wikimedia Commons were not of a standard worth shipping. |
+
+## Local pages (/web-design)
+
+- Verified in the repository: positioning line, package names and prices (from `src/data/packages.ts`), the fact that work is done online and replies come by email.
+- Inferred from public knowledge, to be spot-checked before wide promotion: the local context lines (county, new-town dates for Hemel Hempstead 1947, Stevenage 1946, Milton Keynes 1967, Welwyn Garden City 1920, named landmarks and nearby towns).
+- Not claimed anywhere: local office or address, local clients, reviews, rankings, response times.

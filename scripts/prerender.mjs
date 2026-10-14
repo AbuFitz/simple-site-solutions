@@ -3,12 +3,18 @@
 // Source of truth: src/data/meta.json, the same file the React <Seo> component reads.
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { HUB_PATH, hubDescription, hubJsonLd, hubTitle, locationJsonLd, locationPath, staticHubHtml, staticLocationHtml } from "../src/lib/locationSeo.mjs";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
 const SITE = "https://onesimplesite.co.uk";
 const meta = JSON.parse(readFileSync(join(root, "src/data/meta.json"), "utf8"));
+const locData = JSON.parse(readFileSync(join(root, "src/data/locations.json"), "utf8"));
+// Local pages: head, structured data and a plain-HTML copy of the page text, all from src/data/locations.json.
+const extra = { [HUB_PATH]: { title: hubTitle, description: hubDescription, jsonLd: hubJsonLd(locData, SITE), body: staticHubHtml(locData) } };
+for (const l of locData.locations) extra[locationPath(l.slug)] = { title: l.title, description: l.metaDescription, jsonLd: locationJsonLd(l, locData, SITE), body: staticLocationHtml(l, locData) };
+for (const [p, m] of Object.entries(extra)) meta[p] = m;
 const template = readFileSync(join(dist, "index.html"), "utf8");
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 
@@ -37,9 +43,11 @@ function render(path, m) {
   ].join("\n    ");
   if (!template.includes("<!--oss-head-->")) throw new Error("prerender: <!--oss-head--> marker missing from index.html");
   if (!/<title>[^<]*<\/title>/.test(template)) throw new Error("prerender: <title> missing from index.html");
-  return template
-    .replace("<!--oss-head-->", head)
+  const ld = (m.jsonLd ?? []).map((b) => `<script type="application/ld+json" data-rh="true">${JSON.stringify(b).replace(/</g, "\\u003c")}</script>`).join("\n    ");
+  const out = template
+    .replace("<!--oss-head-->", head + (ld ? `\n    ${ld}` : ""))
     .replace(/<title>[^<]*<\/title>/, `<title>${esc(m.title)}</title>`);
+  return m.body ? out.replace('<div id="root"></div>', `<div id="root">${m.body}</div>`) : out;
 }
 
 let count = 0;

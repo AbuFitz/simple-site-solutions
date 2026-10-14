@@ -21,6 +21,8 @@ const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const CheckoutCancel = lazy(() => import("./pages/CheckoutCancel"));
 const Onboard = lazy(() => import("./pages/Onboard"));
 const Preview = lazy(() => import("./pages/Preview"));
+const WebDesignHub = lazy(() => import("./pages/WebDesignHub"));
+const WebDesignLocation = lazy(() => import("./pages/WebDesignLocation"));
 const DevTemplate = import.meta.env.DEV ? lazy(() => import("./pages/DevTemplate")) : null;
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -39,6 +41,8 @@ const App = () => (
           <Route path="/packages" element={<Packages />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/preview" element={<Preview />} />
+          <Route path="/web-design" element={<WebDesignHub />} />
+          <Route path="/web-design/:slug" element={<WebDesignLocation />} />
           <Route path="/start" element={<Start />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

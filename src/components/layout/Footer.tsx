@@ -1,5 +1,7 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
+import locationData from "@/data/locations.json";
+import { locationPath } from "@/lib/locationSeo.mjs";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 
 export const Footer = forwardRef<HTMLElement>((_, ref) => {
@@ -77,6 +79,23 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* Local areas */}
+        <div className="mb-4 border-t border-border/60 pt-4 sm:mb-6 sm:pt-6">
+          <p className="text-xs text-muted-foreground">
+            OneSimpleSite provides web design and development for businesses across the UK.{" "}
+            <Link to="/web-design" className="underline underline-offset-4 hover:text-foreground">Web design near you</Link>:
+          </p>
+          <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1" aria-label="Web design by area">
+            {locationData.locations.map((l) => (
+              <li key={l.slug}>
+                <Link to={locationPath(l.slug)} className="inline-flex min-h-[28px] items-center text-xs text-muted-foreground transition-colors hover:text-foreground">
+                  {l.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Bottom */}

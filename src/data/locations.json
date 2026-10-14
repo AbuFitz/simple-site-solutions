@@ -1,0 +1,324 @@
+{
+  "ukLine": "OneSimpleSite provides web design and development for businesses across the UK.",
+  "shared": {
+    "localSeo": [
+      { "title": "A page and a title for how people search", "body": "Each page gets its own title, heading and description written around what you do and where you work, so search engines and customers can tell what the page is for." },
+      { "title": "Your location, shown properly", "body": "A real map, your service area written out in plain words, and your name, address and phone number set out the same way everywhere you appear online." },
+      { "title": "Fast and easy on a phone", "body": "Most local searches happen on a phone. Pages are built mobile-first, kept light, and made to be read and used with a thumb." },
+      { "title": "Structured data that is true", "body": "We add the technical markup that helps search engines understand your business and services. We only mark up facts you can back up, never invented reviews or ratings." },
+      { "title": "Honest about what SEO can do", "body": "A well-built site gives you a strong foundation. Rankings depend on your competition, your reviews and your Google Business Profile, so nobody can honestly guarantee a position." }
+    ],
+    "steps": [
+      { "title": "Tell us about your business", "body": "Fill in the project brief with what you do, where you work and what you want customers to do." },
+      { "title": "We plan and build it", "body": "We reply by email to confirm scope, then design and build your pages around your trade and your area." },
+      { "title": "Review, adjust, launch", "body": "You check the site, request the changes your package includes, and it goes live on your domain." }
+    ],
+    "faq": [
+      { "q": "Do you have an office in {city}?", "a": "OneSimpleSite works online with businesses across the UK, including {city}. There is no need to travel or meet in person: the project brief, email and your review of the finished pages cover everything." },
+      { "q": "How much does a website for a {city} business cost?", "a": "Our packages are fixed-price: The Starter £199, The Sorted £399 and The Works £649. What each includes, and anything that costs extra, is listed on the packages page. Prices are the same wherever you are in the UK." },
+      { "q": "Can you guarantee my business will rank on Google in {city}?", "a": "No, and be wary of anyone who does. We build the site properly for local search: clear titles, a real map, fast mobile pages and honest structured data. Where you rank also depends on competition, reviews and your Google Business Profile." }
+    ]
+  },
+  "locations": [
+    {
+      "slug": "hemel-hempstead",
+      "name": "Hemel Hempstead",
+      "county": "Hertfordshire",
+      "h1": "Web design in Hemel Hempstead",
+      "title": "Web Design Hemel Hempstead | From £199 | OneSimpleSite",
+      "metaDescription": "Web design and development for Hemel Hempstead businesses. Fixed-price websites from £199, built for local search and mobile by OneSimpleSite, a UK-wide web design service.",
+      "intro": [
+        "Hemel Hempstead is a Hertfordshire new town with a busy mix of trades, shops, offices and industrial businesses. Whether you run a plumbing firm out of a van, a salon in the Old Town or a company on one of the business parks, customers look you up on their phone first, and your website is what they find.",
+        "We build clear, fast, professionally designed websites for Hemel Hempstead businesses: layouts planned around your trade, plain-English wording, a real map of where you work and a call, quote or booking button that is easy to find. You get a fixed price up front and one site that does the job."
+      ],
+      "local": "Hemel Hempstead was designated a new town in 1947 and today the area has the Old Town high street, the large Maylands business park to the east and plenty of homes across Dacorum, so customers can be anywhere from the town centre to the villages around it. A good local site names the places you actually cover, so people in Apsley, Leverstock Green or Gadebridge know you work near them.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, heating engineers, builders and cleaners serving homes across Dacorum." },
+        { "name": "Garages and mobile mechanics", "line": "A site built around getting a quote or booking fast, with your coverage area made clear." },
+        { "name": "Salons, barbers and clinics", "line": "Services, a booking route and a map for customers finding you from the Old Town or nearby." },
+        { "name": "Business-park companies", "line": "A credible company site for firms based on Maylands and the surrounding estates." }
+      ],
+      "areas": ["Apsley", "Leverstock Green", "Gadebridge", "Boxmoor", "Berkhamsted", "Kings Langley", "Tring", "Redbourn"],
+      "neighbours": ["watford", "st-albans", "harpenden"],
+      "faq": [
+        { "q": "Can a website help me win work beyond Hemel Hempstead town itself?", "a": "Yes. List the towns and villages you really cover, such as Berkhamsted, Kings Langley or Tring, in plain words on the site and on the map. That helps customers there see you work near them, and it gives search engines honest local detail rather than a vague claim." },
+        { "q": "I am on a business park. Do I need a different kind of site?", "a": "Usually a company-style site: who you are, what you do, who you do it for and how to get in touch. We would still add a clear map and directions so visitors and delivery drivers can find you." }
+      ]
+    },
+    {
+      "slug": "st-albans",
+      "name": "St Albans",
+      "county": "Hertfordshire",
+      "h1": "Web design in St Albans",
+      "title": "Web Design St Albans | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for St Albans businesses, from independent shops to trades and practices. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "St Albans is a Hertfordshire cathedral city with a lively centre of independent shops, cafes and professional practices, surrounded by commuter villages full of homes that need trades and services. Standing out here takes a site that looks as considered as the businesses customers expect to find.",
+        "We build St Albans websites that feel established and are simple to use: clear services, a real map, and one obvious next step, whether that is a call, an enquiry or a booking. Everything is done online, at a fixed price, with wording written for your business."
+      ],
+      "local": "St Albans sits on the site of the Roman town of Verulamium and has a cathedral, a long-running city centre market and a train line straight into London. That means customers compare you with businesses in the city as well as in London, so a local site should be clear about where you work and what makes your service different.",
+      "sectors": [
+        { "name": "Independent shops and cafes", "line": "A site that shows what you sell, where you are and when to come, without feeling like a template." },
+        { "name": "Professional practices", "line": "Solicitors, accountants, therapists and clinics who need to look credible and be easy to contact." },
+        { "name": "Trades and home services", "line": "Builders, decorators, gardeners and cleaners working across the city and the villages around it." },
+        { "name": "Tutors and personal services", "line": "Clear subjects, a simple enquiry route and the areas you teach or visit." }
+      ],
+      "areas": ["Harpenden", "Hatfield", "Redbourn", "Wheathampstead", "London Colney", "Radlett", "Colney Heath", "Sandridge"],
+      "neighbours": ["harpenden", "hatfield", "hemel-hempstead", "watford"],
+      "faq": [
+        { "q": "Does my St Albans business need a different kind of site from one in London?", "a": "The build is the same. What differs is the message: a St Albans business is often competing on trust and local knowledge, so the site should lead with your area, your work and the people customers will deal with." },
+        { "q": "I work in St Albans and the villages. How do I show that?", "a": "We write your service area out in plain words, add it to your map and mention the villages you genuinely cover, such as Wheathampstead, Redbourn or Sandridge, so customers there can see you are near." }
+      ]
+    },
+    {
+      "slug": "watford",
+      "name": "Watford",
+      "county": "Hertfordshire",
+      "h1": "Web design in Watford",
+      "title": "Web Design Watford | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Watford businesses: trades, shops, salons and services. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Watford is one of Hertfordshire's busiest towns, with a large town centre, a mainline station into London and a steady stream of homeowners, commuters and businesses. That is a lot of customers searching for local services and a lot of competition for the same searches.",
+        "We build Watford websites that get to the point: what you do, where you work and how to reach you, laid out for a phone screen and written in plain English. You get a fixed price, a design planned around your business, and a real map your customers can use."
+      ],
+      "local": "Watford has a busy High Street and shopping centre, Watford Junction station, the football club at Vicarage Road and large residential areas such as Cassiobury, Oxhey and Garston. Many customers search for something close to home, so naming the neighbourhoods you cover helps people see you are nearby.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, locksmiths, cleaners and builders serving homes across the town and nearby." },
+        { "name": "Restaurants, cafes and takeaways", "line": "A site that shows who you are and gets people through the door or onto your ordering route." },
+        { "name": "Salons, barbers and beauty", "line": "Services, booking and a clear map for customers choosing between a lot of nearby options." },
+        { "name": "Local services and offices", "line": "A credible site for firms who win work by recommendation and need to look the part online." }
+      ],
+      "areas": ["Bushey", "Oxhey", "Garston", "Rickmansworth", "Abbots Langley", "Radlett", "Croxley Green", "Kings Langley"],
+      "neighbours": ["hemel-hempstead", "st-albans", "london"],
+      "faq": [
+        { "q": "I work across Watford and Bushey. Should that be one page or two?", "a": "One site, with clear wording about both areas. If you have real, different things to say about each, such as different services or a separate base, separate pages can help. Thin, near-identical pages for every town usually do not." },
+        { "q": "How do I stand out in a busy town like Watford?", "a": "By being specific. Name your services, your areas and what customers can expect, and make the next step obvious. A clean, fast site that says exactly what you do beats a vague one that tries to say everything." }
+      ]
+    },
+    {
+      "slug": "london",
+      "name": "London",
+      "county": "Greater London",
+      "h1": "Web design for London businesses",
+      "title": "Web Design London | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for London businesses across the boroughs. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, a UK-wide web design service.",
+      "intro": [
+        "London is the most competitive market in the UK for almost every service, and searches are often tied to a borough or neighbourhood rather than the whole city. A plumber in Barnet, a salon in Hackney and a practice in Croydon are all competing for different customers, so being specific matters more than being big.",
+        "We build London websites that are clear about what you do and the part of London you serve, with fast mobile pages, honest structured data and a call, booking or enquiry route that is easy to find. Everything is done online, at a fixed price, wherever in London you are."
+      ],
+      "local": "London has 32 boroughs plus the City, and customers think in terms of where they are: a street, a station, a borough. A London site works best when it is specific about the areas you actually cover, rather than just saying London, and when each area page has something real to say.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, locksmiths, cleaners and builders who need to show which boroughs they cover." },
+        { "name": "Independent restaurants and shops", "line": "A site that shows what makes you different and makes it easy to find, book or order." },
+        { "name": "Clinics, studios and practices", "line": "Services, a booking route and a clear map for customers choosing between nearby options." },
+        { "name": "Freelancers and consultants", "line": "A clear, credible site that explains what you do and who you do it for." }
+      ],
+      "areas": ["North London", "East London", "South London", "West London", "Central London", "Barnet", "Croydon", "Hackney"],
+      "neighbours": ["watford", "st-albans", "hatfield"],
+      "faq": [
+        { "q": "London is huge. How do I show which part I cover?", "a": "Name the boroughs or neighbourhoods you really work in, show them on a map and mention them in your page wording. Be wary of pages for dozens of areas you do not serve: they rarely help and can look like spam." },
+        { "q": "Is a fixed-price site enough in such a competitive city?", "a": "A good site is one part of winning work. Your reviews, your Google Business Profile and how quickly you respond matter too. We build the site properly so that it works for you, and we are honest about what it can and cannot do alone." }
+      ]
+    },
+    {
+      "slug": "luton",
+      "name": "Luton",
+      "county": "Bedfordshire",
+      "h1": "Web design in Luton",
+      "title": "Web Design Luton | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Luton businesses, from trades to shops and services. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Luton is a large, diverse Bedfordshire town with a strong mix of independent shops, restaurants, trades and service businesses, and customers who often search in more than one language. A clear, fast website helps you be found and trusted by the people nearby.",
+        "We build Luton websites that explain what you do in plain English, show where you work on a real map and make it easy to call, book or ask for a quote. You get a fixed price up front and a site designed around your business, not a generic template."
+      ],
+      "local": "Luton is known for its hat-making history, London Luton Airport and Luton Town football club, and is a short distance from Dunstable, Harpenden and Hitchin. Customers often search for something close to home, so naming the areas you cover, such as Leagrave, Bury Park or Stopsley, helps people see you are nearby.",
+      "sectors": [
+        { "name": "Restaurants, cafes and takeaways", "line": "A site that shows your food, your location and how to order or book." },
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and cleaners serving homes across the town and around it." },
+        { "name": "Independent shops and traders", "line": "A clear site that shows what you sell, where you are and how to get in touch." },
+        { "name": "Travel-related and local services", "line": "Taxis, parking, repairs and other services that people search for by place." }
+      ],
+      "areas": ["Leagrave", "Bury Park", "Stopsley", "Barton-le-Clay", "Caddington", "Houghton Regis", "Dunstable", "Harpenden"],
+      "neighbours": ["dunstable", "harpenden", "st-albans"],
+      "faq": [
+        { "q": "My customers search from Luton and Dunstable. Can one site cover both?", "a": "Yes. One site can name both towns, show them on the map and explain how you serve each. If you have genuinely different things to say about each place, separate pages can help." },
+        { "q": "Can the site speak to customers in more than one language?", "a": "We can plan a site that is clear and simple in English first. If you need another language, tell us in the project brief and we will explain what is practical for the package you choose." }
+      ]
+    },
+    {
+      "slug": "dunstable",
+      "name": "Dunstable",
+      "county": "Bedfordshire",
+      "h1": "Web design in Dunstable",
+      "title": "Web Design Dunstable | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Dunstable businesses: trades, shops and local services. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Dunstable is a Bedfordshire market town at the edge of the Chiltern Hills, with a mix of independent traders, trades and services and neighbours in Luton, Houghton Regis and the villages around. Customers choose between nearby options, so a site that is clear and quick to use helps you get picked.",
+        "We build Dunstable websites that say plainly what you do, where you work and how to reach you, on a design planned for your business. You get a fixed price, honest local SEO foundations and a real map that shows customers you are close."
+      ],
+      "local": "Dunstable sits beside Dunstable Downs, home to the London Gliding Club, and next to Luton and Houghton Regis. Many local businesses serve all three, so a site that names the places you cover helps customers see you work near them.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and cleaners covering Dunstable and the surrounding towns." },
+        { "name": "Independent shops and cafes", "line": "A site that shows what you offer and where to find you." },
+        { "name": "Salons, barbers and clinics", "line": "Services, booking and a map for customers choosing close to home." },
+        { "name": "Garages and vehicle services", "line": "A site built around getting a quote or booking quickly, with your coverage area clear." }
+      ],
+      "areas": ["Houghton Regis", "Luton", "Toddington", "Totternhoe", "Markyate", "Eaton Bray", "Kensworth", "Caddington"],
+      "neighbours": ["luton", "harpenden", "aylesbury", "milton-keynes"],
+      "faq": [
+        { "q": "I am in Dunstable but also cover Luton. Which should come first?", "a": "Lead with the place customers most associate with you, usually where you are based, and mention the others clearly. Keep your name, address and phone number the same everywhere, including on your Google Business Profile." },
+        { "q": "Do I need a big site for a small local business?", "a": "Often not. A few clear pages that explain what you do, where you work and how to get in touch can do the job. We will suggest the package that fits and tell you if a smaller one will do." }
+      ]
+    },
+    {
+      "slug": "harpenden",
+      "name": "Harpenden",
+      "county": "Hertfordshire",
+      "h1": "Web design in Harpenden",
+      "title": "Web Design Harpenden | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Harpenden businesses: independent shops, practices and trades. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Harpenden is a Hertfordshire town with a well-loved high street of independent shops, cafes and practices, surrounded by homes that regularly look for trades and services. Customers here often value care and local knowledge, and your site should show both.",
+        "We build Harpenden websites that feel considered and are simple to use: what you do, who you do it for, where you work and how to get in touch. You get a fixed price, plain-English wording and a design planned around your business."
+      ],
+      "local": "Harpenden has a traditional high street, a large common and a direct train line towards London and Bedford. It sits close to St Albans, Luton and Wheathampstead, so many local businesses serve more than one town and benefit from naming the places they cover.",
+      "sectors": [
+        { "name": "Independent shops and cafes", "line": "A site that shows what makes you different and where to find you on the high street." },
+        { "name": "Professional practices", "line": "Clinics, therapists, solicitors and accountants who need to look credible and be easy to contact." },
+        { "name": "Trades and home services", "line": "Builders, decorators, gardeners and cleaners serving homes in the town and around it." },
+        { "name": "Tutors and personal services", "line": "Clear subjects, areas covered and a simple enquiry route for parents and clients." }
+      ],
+      "areas": ["Wheathampstead", "Redbourn", "Kimpton", "Batford", "Luton", "St Albans", "Flamstead", "Markyate"],
+      "neighbours": ["st-albans", "luton", "dunstable", "hatfield"],
+      "faq": [
+        { "q": "Is a small site enough for a Harpenden shop or practice?", "a": "Often yes. A few well-written pages that explain what you do, show your location and make contact easy can work better than a large site. We will suggest the package that fits and say so if a smaller one will do." },
+        { "q": "How do I show I serve Harpenden and nearby villages?", "a": "Write the places you genuinely cover, such as Wheathampstead, Kimpton or Redbourn, into your service area wording and map. It helps customers there see you are close, and it gives search engines honest local detail." }
+      ]
+    },
+    {
+      "slug": "hatfield",
+      "name": "Hatfield",
+      "county": "Hertfordshire",
+      "h1": "Web design in Hatfield",
+      "title": "Web Design Hatfield | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Hatfield businesses: trades, shops, services and student-facing firms. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Hatfield is a Hertfordshire town with a university, a busy shopping and business area, the historic Old Hatfield and plenty of residential neighbourhoods, so its customers range from students to homeowners to office workers. A clear site helps each of them find the right thing quickly.",
+        "We build Hatfield websites that explain what you do, show where you are and make the next step obvious, on a design planned around your business. You get a fixed price, plain-English wording and a real map."
+      ],
+      "local": "Hatfield is home to the University of Hertfordshire, The Galleria shopping centre, Hatfield House and Old Hatfield, and sits between St Albans and Welwyn Garden City. That means a mix of student, commuter and family customers, and business areas close by, so a local site should be clear about who you serve and where.",
+      "sectors": [
+        { "name": "Student-facing services", "line": "Food, repairs, tutoring and personal services that need to be found quickly and understood at a glance." },
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and cleaners serving homes across Hatfield and nearby." },
+        { "name": "Cafes, restaurants and takeaways", "line": "Menus, a map and an easy way to order or book, for customers around the campus and the town." },
+        { "name": "Offices and business-park firms", "line": "A credible company site for firms based in and around Hatfield." }
+      ],
+      "areas": ["Old Hatfield", "Welham Green", "Brookmans Park", "Smallford", "Welwyn Garden City", "St Albans", "Potters Bar", "North Mymms"],
+      "neighbours": ["welwyn-garden-city", "st-albans", "harpenden", "stevenage"],
+      "faq": [
+        { "q": "I serve students as well as local residents. Can the site reflect that?", "a": "Yes. We write the site around both audiences: clear services, simple pricing details you provide, and a map that makes it easy to find you. We only state what you tell us is true." },
+        { "q": "Can one site cover Hatfield and Welwyn Garden City?", "a": "Yes. Name both clearly in your service area and on the map. If you have genuinely different things to say about each, separate pages can help." }
+      ]
+    },
+    {
+      "slug": "welwyn-garden-city",
+      "name": "Welwyn Garden City",
+      "county": "Hertfordshire",
+      "h1": "Web design in Welwyn Garden City",
+      "title": "Web Design Welwyn Garden City | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Welwyn Garden City businesses: shops, trades and services. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Welwyn Garden City is a planned town in Hertfordshire with a distinctive centre, tree-lined neighbourhoods and a steady base of local shops, trades and professional services. Customers here expect businesses to look tidy and be easy to deal with, and a website is where that starts.",
+        "We build Welwyn Garden City websites that are clear and well organised: what you do, who for, where you work and how to get in touch. You get a fixed price, a design planned around your business and a real map of your area."
+      ],
+      "local": "Welwyn Garden City was founded in 1920 as a garden city and has a central shopping area around the Howard Centre, plus employment areas and residential neighbourhoods around it. It sits close to Hatfield, Welwyn and Hertford, so many local businesses serve several places and should name them.",
+      "sectors": [
+        { "name": "Independent shops and traders", "line": "A site that shows what you sell, where you are and how to get in touch." },
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and gardeners serving homes across the town and nearby." },
+        { "name": "Professional services", "line": "Accountants, solicitors, clinics and consultants who need to look credible online." },
+        { "name": "Cafes and local hospitality", "line": "A site that shows your food, your location and how to book or order." }
+      ],
+      "areas": ["Welwyn", "Digswell", "Hatfield", "Hertford", "Knebworth", "Codicote", "Brookmans Park", "Cole Green"],
+      "neighbours": ["hatfield", "stevenage", "st-albans"],
+      "faq": [
+        { "q": "Do I need a Google Business Profile as well as a website?", "a": "Ideally yes. They work together. Your site and profile should use the same name, address, phone number and service area, so customers and search engines see a consistent picture. The profile is free and you manage it yourself." },
+        { "q": "I work in Welwyn Garden City and Hatfield. How should I show that?", "a": "Name both clearly in your service area and on the map, and be specific about what you offer in each. We will help you word it so it reads naturally." }
+      ]
+    },
+    {
+      "slug": "stevenage",
+      "name": "Stevenage",
+      "county": "Hertfordshire",
+      "h1": "Web design in Stevenage",
+      "title": "Web Design Stevenage | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Stevenage businesses: trades, shops, industrial and service firms. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Stevenage is a Hertfordshire town with a large employment area, a busy town centre, an Old Town and many residential neighbourhoods. That means a wide mix of customers and businesses, from tradespeople serving homes to firms working with other businesses.",
+        "We build Stevenage websites that explain what you do, show where you are and make contact easy, on a design planned around your business. You get a fixed price, plain-English wording and a real map."
+      ],
+      "local": "Stevenage was designated the first new town in England in 1946, and has a town centre, an Old Town and large employment areas such as Gunnels Wood Road. It sits near Hitchin, Letchworth and Welwyn, so many businesses serve a wide area and benefit from naming the places they cover.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and cleaners serving homes across the town and nearby." },
+        { "name": "Industrial and trade firms", "line": "A clear company site for firms on employment areas like Gunnels Wood Road, with directions and contact details." },
+        { "name": "Independent shops and cafes", "line": "Shops and cafes that want to be found, show what they offer and be easy to get in touch with." },
+        { "name": "Local services and practices", "line": "Clinics, tutors, garages and personal services who need to be easy to find and contact." }
+      ],
+      "areas": ["Old Town", "Knebworth", "Hitchin", "Letchworth", "Baldock", "Welwyn", "Graveley", "Aston"],
+      "neighbours": ["welwyn-garden-city", "hatfield", "luton"],
+      "faq": [
+        { "q": "Our business is on an industrial estate. Does that hurt local search?", "a": "Not in itself. What helps is a clear address, a real map, directions and consistent contact details everywhere you appear. We would set the site up so customers and delivery drivers can find you easily." },
+        { "q": "I cover Stevenage, Hitchin and Letchworth. How should the site say that?", "a": "Write the towns you really cover into your service area and onto the map. If each has something distinct to say, separate pages can help, but near-identical pages for every town usually do not." }
+      ]
+    },
+    {
+      "slug": "aylesbury",
+      "name": "Aylesbury",
+      "county": "Buckinghamshire",
+      "h1": "Web design in Aylesbury",
+      "title": "Web Design Aylesbury | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Aylesbury businesses and the Vale: trades, shops and services. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Aylesbury is the county town of Buckinghamshire, serving a large area of villages and new housing across the Vale. Many local businesses work well beyond the town itself, and customers search for trades and services that cover where they live.",
+        "We build Aylesbury websites that say clearly what you do and which places you cover, on a design planned around your business. You get a fixed price, plain-English wording and a real map that shows your service area."
+      ],
+      "local": "Aylesbury is the county town of Buckinghamshire, with a historic Market Square, the Waterside Theatre and growing neighbourhoods around it. It serves villages such as Wendover, Haddenham and Waddesdon, so a local site should name the places you cover.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and gardeners covering the town and villages across the Vale." },
+        { "name": "Independent shops and cafes", "line": "A site that shows what you sell, where you are and when to visit." },
+        { "name": "Farm and rural businesses", "line": "Farm shops, equine services and rural trades that need a clear site and a wide service area." },
+        { "name": "Professional services", "line": "Accountants, solicitors, clinics and consultants who need to look credible and be easy to contact." }
+      ],
+      "areas": ["Wendover", "Haddenham", "Waddesdon", "Stone", "Thame", "Tring", "Buckingham", "Princes Risborough"],
+      "neighbours": ["milton-keynes", "dunstable", "hemel-hempstead"],
+      "faq": [
+        { "q": "I cover Aylesbury and the villages around. How do we show that?", "a": "Write the villages and towns you genuinely serve, such as Wendover, Haddenham or Waddesdon, into your service area wording and map. It helps customers there see you work near them." },
+        { "q": "Can a rural business use the same kind of site?", "a": "Yes. The layout is planned around what you do. For a rural business that usually means clear services, a wide service area, and simple ways to call or enquire from a phone." }
+      ]
+    },
+    {
+      "slug": "milton-keynes",
+      "name": "Milton Keynes",
+      "county": "Buckinghamshire",
+      "h1": "Web design in Milton Keynes",
+      "title": "Web Design Milton Keynes | From £199 | OneSimpleSite",
+      "metaDescription": "Web design for Milton Keynes businesses: trades, shops, offices and services. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "intro": [
+        "Milton Keynes is a large, growing city with a wide mix of businesses, from tradespeople serving new housing to firms in business parks and independent shops across its towns and estates. Customers search by area, so clear local wording matters.",
+        "We build Milton Keynes websites that explain what you do, show where you work and make contact easy, on a design planned around your business. You get a fixed price, plain-English wording and a real map of your area."
+      ],
+      "local": "Milton Keynes was designated a new town in 1967 and brought together older towns and villages such as Bletchley, Wolverton, Stony Stratford and Newport Pagnell, along with a planned grid of roads and estates. Customers often think in terms of these areas, so a good local site names the ones you really cover.",
+      "sectors": [
+        { "name": "Trades and home services", "line": "Plumbers, electricians, builders and cleaners serving homes across the city and its estates." },
+        { "name": "Offices and business-park firms", "line": "A credible company site for firms based in the city's business areas." },
+        { "name": "Independent shops and restaurants", "line": "A site that shows what you offer and makes it easy to find, book or order." },
+        { "name": "Clinics, studios and personal services", "line": "Services, booking and a clear map for customers choosing close to home." }
+      ],
+      "areas": ["Bletchley", "Wolverton", "Stony Stratford", "Newport Pagnell", "Woburn Sands", "Olney", "Fenny Stratford", "Shenley"],
+      "neighbours": ["aylesbury", "dunstable", "luton"],
+      "faq": [
+        { "q": "Milton Keynes is spread across many areas. How should the site describe where I work?", "a": "Name the areas customers know, such as Bletchley, Wolverton, Stony Stratford or Newport Pagnell, rather than only saying Milton Keynes. Show them on the map and in your wording so people in each can see you work near them." },
+        { "q": "Do I need a different site if I work for businesses rather than homes?", "a": "The build is similar, but the message changes: who you work with, what you deliver and how to start a conversation. We write the site around the audience you tell us about in the project brief." }
+      ]
+    }
+  ]
+}
