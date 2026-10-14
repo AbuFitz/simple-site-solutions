@@ -79,6 +79,9 @@ export default function Privacy() {
                   (for example Stripe if you pay online, Resend to deliver email, OpenStreetMap and postcodes.io to look up and show the area map in the website preview, and our hosting provider), subject to confidentiality agreements. The project brief you send us is emailed to us and, as a courtesy, a copy is emailed to you.
                 </p>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
+                  <strong>Chat assistant (Sid).</strong> If you use the chat, your messages are sent from our server to an AI provider (Google Gemini and/or xAI Grok) so it can write a reply. We do not store chat messages on our servers and set no cookies for the chat; the conversation is kept in your own browser tab (session storage) and disappears when you close the tab or choose "Start a new chat". Our hosting provider may log technical request details such as IP address and time. Free AI tiers may allow the provider to use submitted text to improve its products, so please do not type passwords, card numbers or other sensitive details into the chat. Sid can make mistakes: check prices and terms on the packages page.
+                </p>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
                   While you fill in the project brief we keep a draft of your answers in your own browser (local storage) for up to 7 days so a refresh doesn't lose them. It isn't sent to us until you submit, and it is deleted when you submit or choose "Start again".
                 </p>
               </section>

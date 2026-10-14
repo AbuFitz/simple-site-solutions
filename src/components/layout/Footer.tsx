@@ -1,8 +1,17 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
+import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { SOCIAL } from "@/data/site";
 import locationData from "@/data/locations.json";
 import { locationPath } from "@/lib/locationSeo.mjs";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+
+const TikTok = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+    <path d="M16.6 3c.3 2.3 1.6 3.8 3.9 4v3.1c-1.4.1-2.7-.3-3.9-1.1v6.2c0 3.8-3 6.3-6.2 6.3a6.1 6.1 0 0 1-6.2-6.1c0-3.7 3.2-6.5 7-6v3.2c-1.7-.4-3.5.8-3.5 2.7 0 1.6 1.3 2.9 2.8 2.9 1.7 0 2.9-1.3 2.9-3V3h3.2Z" />
+  </svg>
+);
+const SOCIAL_ICON = { instagram: Instagram, facebook: Facebook, tiktok: TikTok, linkedin: Linkedin } as const;
 
 export const Footer = forwardRef<HTMLElement>((_, ref) => {
   return (
@@ -19,6 +28,19 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
             <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xs">
               Fixed-price websites for local UK businesses.
             </p>
+            <ul className="mt-4 flex items-center gap-2" aria-label="OneSimpleSite on social media">
+              {SOCIAL.map((n) => {
+                const Icon = SOCIAL_ICON[n.id];
+                return (
+                  <li key={n.id}>
+                    <a href={n.url} target="_blank" rel="noopener noreferrer me" className="flex h-11 w-11 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary">
+                      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                      <span className="sr-only">{n.label} (opens in a new tab)</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
           {/* Links */}
@@ -85,7 +107,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
         <div className="mb-4 border-t border-border/60 pt-4 sm:mb-6 sm:pt-6">
           <p className="text-xs text-muted-foreground">
             OneSimpleSite provides web design and development for businesses across the UK.{" "}
-            <Link to="/web-design" className="underline underline-offset-4 hover:text-foreground">Web design near you</Link>:
+            <Link to="/web-design" className="underline underline-offset-4 hover:text-foreground">Web design near you</Link> · <Link to="/guides" className="underline underline-offset-4 hover:text-foreground">Guides</Link>:
           </p>
           <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1" aria-label="Web design by area">
             {locationData.locations.map((l) => (

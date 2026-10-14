@@ -6,6 +6,7 @@ import { dirname, join } from "node:path";
 import { HUB_PATH, hubDescription, hubJsonLd, hubTitle, locationJsonLd, locationPath, staticHubHtml, staticLocationHtml } from "../src/lib/locationSeo.mjs";
 import { fileURLToPath } from "node:url";
 
+import { GUIDES_PATH, guideJsonLd, guidePath, guidesHubDescription, guidesHubJsonLd, guidesHubTitle, staticGuideHtml, staticGuidesHubHtml } from "../src/lib/guideSeo.mjs";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
 const SITE = "https://onesimplesite.co.uk";
@@ -14,6 +15,9 @@ const locData = JSON.parse(readFileSync(join(root, "src/data/locations.json"), "
 // Local pages: head, structured data and a plain-HTML copy of the page text, all from src/data/locations.json.
 const extra = { [HUB_PATH]: { title: hubTitle, description: hubDescription, jsonLd: hubJsonLd(locData, SITE), body: staticHubHtml(locData) } };
 for (const l of locData.locations) extra[locationPath(l.slug)] = { title: l.title, description: l.metaDescription, jsonLd: locationJsonLd(l, locData, SITE), body: staticLocationHtml(l, locData) };
+const guideData = JSON.parse(readFileSync(join(root, "src/data/guides.json"), "utf8"));
+extra[GUIDES_PATH] = { title: guidesHubTitle, description: guidesHubDescription, jsonLd: guidesHubJsonLd(guideData, SITE), body: staticGuidesHubHtml(guideData) };
+for (const g of guideData.guides) extra[guidePath(g.slug)] = { title: g.title, description: g.metaDescription, jsonLd: guideJsonLd(g, guideData, SITE), body: staticGuideHtml(g, guideData) };
 for (const [p, m] of Object.entries(extra)) meta[p] = m;
 const template = readFileSync(join(dist, "index.html"), "utf8");
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");

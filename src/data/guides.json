@@ -1,0 +1,302 @@
+{
+  "published": "2026-10-14",
+  "disclaimer": "OneSimpleSite is independent and is not affiliated with, endorsed by or sponsored by any company named in this guide. Product and company names belong to their owners. Plans, prices and features change, so check each provider's own site for current details.",
+  "guides": [
+    {
+      "slug": "diy-website-builder-or-web-designer",
+      "short": "DIY builder or web designer?",
+      "title": "DIY Website Builder or Web Designer? A Plain Guide | OneSimpleSite",
+      "metaDescription": "Should a small business build its own site on a website builder or pay a web designer? The honest trade-offs: time, cost, local SEO and who looks after it.",
+      "h1": "DIY website builder or web designer: which is right for a small business?",
+      "dek": "Both are fine choices. They suit different people. Here is how to tell which one you are.",
+      "sections": [
+        {
+          "h": "What you are really choosing between",
+          "p": [
+            "A website builder gives you the tools and you do the work. A web designer does the work and you review it. Everything else, the price, the speed and how good the result looks, follows from that.",
+            "Builders such as GoDaddy, One.com, Wix, Squarespace and WordPress are cheap to start and quick to open. The cost that does not show on the pricing page is your time: choosing a template, writing every page, finding photos, checking it on a phone, and setting up the bits that help you get found."
+          ]
+        },
+        {
+          "h": "When a builder is the right call",
+          "p": [
+            "If you enjoy this sort of thing, have a few free evenings and your business does not depend on the site, a builder will do the job. It is also a sensible way to test an idea before spending money.",
+            "It works best when the site can be simple: one page, a few services, a phone number. The more you want from it, the more the hours add up."
+          ]
+        },
+        {
+          "h": "When paying someone makes more sense",
+          "p": [
+            "If you are a tradesperson, a shop owner or a practice and customers will judge you on the site, the time is better spent on the job that pays you. A designer also knows the order that works: what to say first, where the call button goes and how to write for someone searching on their phone.",
+            "A fixed-price package takes the guesswork out of cost. You know the price, the page count and what is included before anything starts."
+          ]
+        },
+        {
+          "h": "The local search basics people miss",
+          "p": [
+            "Whatever you use, a local business needs the same few things: a clear title and heading on each page that say what you do and where, a real map and service area, your name, address and phone written the same way everywhere, and pages that load quickly on a phone.",
+            "A lot of DIY sites skip these because nothing prompts you to do them. They are quick to set up once you know about them."
+          ]
+        }
+      ],
+      "checklist": [
+        "How many hours can I realistically spend, and what is my time worth?",
+        "Do I know what to write on each page, or will I be staring at a blank box?",
+        "What does the plan cost at renewal, not just in the first year?",
+        "Can I take my site and domain with me if I leave?",
+        "Will someone check it on a phone, and does it show where I work?"
+      ],
+      "faq": [
+        { "q": "Is a website builder cheaper than a web designer?", "a": "Usually in cash terms, yes, at least at first. Add the hours you spend and any extras you end up buying, and the gap is often smaller than it looks." },
+        { "q": "Can I start on a builder and move to a designer later?", "a": "Yes. It is common. Keep your domain registered in your own name and keep copies of your text and photos, and moving later is much easier." }
+      ],
+      "related": ["godaddy-website-builder-or-web-designer", "wix-or-web-designer", "wordpress-or-web-designer"]
+    },
+    {
+      "slug": "godaddy-website-builder-or-web-designer",
+      "short": "GoDaddy",
+      "title": "GoDaddy Website Builder or a Web Designer? | OneSimpleSite",
+      "metaDescription": "Thinking about the GoDaddy website builder for your business? What it does well, where small businesses get stuck, and when a web designer is the better fit.",
+      "h1": "GoDaddy website builder or a web designer: what small businesses should know",
+      "dek": "GoDaddy is a big name and an easy place to start. Whether it is the right place to finish depends on how much time you have.",
+      "sections": [
+        {
+          "h": "What GoDaddy is good for",
+          "p": [
+            "GoDaddy is best known for selling domain names and hosting, and it also sells a website builder you use yourself. You pick a template, then fill in your text and pictures.",
+            "The big plus is having the domain, hosting and site under one login. If you already buy your domain there, adding a site is the least effort path."
+          ]
+        },
+        {
+          "h": "Where small businesses tend to get stuck",
+          "p": [
+            "Templates are quick to start and slow to finish. The first hour feels great. Then comes writing every page, finding photos you are allowed to use and checking each page on a phone. That is where many sites stall at three-quarters done.",
+            "Plans and prices change, so look at GoDaddy's own pricing page and check what your plan costs when it renews, not only the first term."
+          ]
+        },
+        {
+          "h": "What to check before you commit",
+          "p": [
+            "Ask yourself whether you can set your own page titles and descriptions, add a map and service area, and move the site elsewhere if you leave. Those questions matter more than the template.",
+            "Keep your domain registered in your own name, with your own email address on the account."
+          ]
+        },
+        {
+          "h": "What a web designer does differently",
+          "p": [
+            "We write and lay out the pages for you, set up the local search basics and check it on a phone before you see it. OneSimpleSite packages are fixed price: The Starter £199, The Sorted £399 and The Works £649, with what each includes listed on the packages page.",
+            "If you would rather do it yourself and the site can stay simple, a builder is a fair choice. If you would rather get on with your work, that is what we are for."
+          ]
+        }
+      ],
+      "checklist": [
+        "Is my domain registered in my own name?",
+        "What will this plan cost when it renews?",
+        "Can I edit page titles, descriptions and my service area?",
+        "Can I export or move the site if I leave?",
+        "Who writes the text, and who checks it on a phone?"
+      ],
+      "faq": [
+        { "q": "Can I keep my GoDaddy domain if I use a web designer?", "a": "Yes. Your domain stays registered where it is. A designer builds the site and points the domain at it, and you keep control of the domain." },
+        { "q": "Is GoDaddy good for local SEO?", "a": "A builder can be set up well for local search, but it will not do it for you. The work is the same whoever builds the site: clear titles, a real map, your details written the same way everywhere, and fast mobile pages." }
+      ],
+      "related": ["one-com-website-builder-or-web-designer", "diy-website-builder-or-web-designer", "wix-or-web-designer"]
+    },
+    {
+      "slug": "one-com-website-builder-or-web-designer",
+      "short": "One.com",
+      "title": "One.com Website Builder or a Web Designer? | OneSimpleSite",
+      "metaDescription": "Weighing up the One.com website builder (SimpleSite is now part of One.com) against a web designer? What to expect, what to check and who each suits.",
+      "h1": "One.com website builder or a web designer: which suits a local business?",
+      "dek": "One.com bundles a builder with hosting and domains. Handy if you want everything in one place, less so if you are short of time.",
+      "sections": [
+        {
+          "h": "What One.com offers",
+          "p": [
+            "One.com is a hosting and domain company founded in Denmark. It runs a website builder alongside its hosting plans, and the SimpleSite builder is now part of One.com.",
+            "If you want a domain, email and a site from one provider, that is the appeal."
+          ]
+        },
+        {
+          "h": "The honest trade-off",
+          "p": [
+            "A builder keeps costs low, but you do the building. You choose the design, write the text, and look after the site. For some owners that is a pleasant weekend. For others it is something that never quite gets finished.",
+            "Look at One.com's current plans and check the renewal price. Prices and features change, and the intro offer is rarely what you pay in year two."
+          ]
+        },
+        {
+          "h": "Things worth checking first",
+          "p": [
+            "Make sure you can edit the page title and description for every page, that the site works well on a phone, and that you can move away without losing your text and pictures.",
+            "Keep your own copy of everything you write. It makes any future change of provider painless."
+          ]
+        },
+        {
+          "h": "How we differ",
+          "p": [
+            "OneSimpleSite builds the site for you at a fixed price, with the text written, the layout planned for your trade and the local search basics set up. Packages start at £199 and are listed on the packages page.",
+            "You do not have to give up One.com to use us. If your domain or email is there, it can stay there."
+          ]
+        }
+      ],
+      "checklist": [
+        "What does my plan cost after the first term?",
+        "Can I edit titles, descriptions and my service area on every page?",
+        "How do I export my content if I move?",
+        "Do I want to build and maintain this myself?"
+      ],
+      "faq": [
+        { "q": "Is SimpleSite the same as One.com?", "a": "SimpleSite merged with One.com and its builder is now part of One.com. If you see both names, they refer to the same company." },
+        { "q": "Can I keep my One.com email if my site is built elsewhere?", "a": "Usually yes. Email and the website are separate services, so a site can be built elsewhere while your email stays where it is. Check your own plan to be sure." }
+      ],
+      "related": ["godaddy-website-builder-or-web-designer", "diy-website-builder-or-web-designer", "squarespace-or-web-designer"]
+    },
+    {
+      "slug": "wix-or-web-designer",
+      "short": "Wix",
+      "title": "Wix or a Web Designer for a Small Business? | OneSimpleSite",
+      "metaDescription": "Wix lets you build your own site with drag and drop. What that means for a small business, what to check on plans and when a web designer is the easier route.",
+      "h1": "Wix or a web designer: which is better for a small business?",
+      "dek": "Wix gives you a lot of freedom. Freedom is great until you are the one making every decision.",
+      "sections": [
+        {
+          "h": "What Wix is like to use",
+          "p": [
+            "Wix is a drag-and-drop builder. You can put most things almost anywhere on the page, which is fun for people who like to design and a lot of rope for people who do not.",
+            "It has a free plan with Wix branding and a Wix web address, and paid plans for using your own domain. Check the current plan details on Wix's own site."
+          ]
+        },
+        {
+          "h": "Where it gets harder",
+          "p": [
+            "With total freedom comes total responsibility. Spacing, text sizes and how a page looks on a phone are your job, and it is easy to end up with a site that looks fine on your laptop and cramped on a phone.",
+            "Local search basics still need setting up by hand: page titles, headings, your service area and a map."
+          ]
+        },
+        {
+          "h": "Questions to ask before you start",
+          "p": [
+            "Can you use your own domain on the plan you want? What will it cost at renewal? Can you move your content out if you change your mind?",
+            "Keep your domain in your own name and keep copies of your text and pictures."
+          ]
+        },
+        {
+          "h": "Where we fit",
+          "p": [
+            "We plan the layout around your trade, write the text with you and check it on a phone. Fixed prices start at £199 on the packages page.",
+            "If you enjoy designing, Wix is a fair choice. If you would rather hand it over and review the result, that is what a fixed-price package is for."
+          ]
+        }
+      ],
+      "checklist": [
+        "Which plan do I need to use my own domain?",
+        "What is the renewal price?",
+        "Who checks every page on a phone?",
+        "Where will my text and pictures be saved if I leave?"
+      ],
+      "faq": [
+        { "q": "Can I use my own domain with Wix?", "a": "Paid plans are designed for connecting your own domain. Check which plan you need on Wix's own pricing page, as plans change." },
+        { "q": "Is a Wix site good enough for a tradesperson?", "a": "It can be, if it is set up properly: clear services, a phone number at the top, your area and a map. The tool matters less than the content and setup." }
+      ],
+      "related": ["squarespace-or-web-designer", "diy-website-builder-or-web-designer", "godaddy-website-builder-or-web-designer"]
+    },
+    {
+      "slug": "squarespace-or-web-designer",
+      "short": "Squarespace",
+      "title": "Squarespace or a Web Designer? What to Know | OneSimpleSite",
+      "metaDescription": "Squarespace is known for polished templates. How it compares with a web designer for a small business, and what to check on subscriptions, SEO and moving.",
+      "h1": "Squarespace or a web designer: how to choose",
+      "dek": "Squarespace templates look good out of the box. The site is only as good as what you put in them.",
+      "sections": [
+        {
+          "h": "Why people like Squarespace",
+          "p": [
+            "Squarespace is known for polished, design-led templates, and it is popular with photographers, creatives and small shops. If you have good photography and a clear idea, it is easy to make something that looks smart.",
+            "It is a subscription service. You rent the site, so it is worth knowing what happens if you stop paying."
+          ]
+        },
+        {
+          "h": "Where local businesses can struggle",
+          "p": [
+            "Design-led templates assume you have strong pictures and not much to say. Trades and local services are usually the opposite: you need to say what you do, where, and how to reach you, quickly.",
+            "A beautiful template with vague text will not do much for a plumber or a clinic."
+          ]
+        },
+        {
+          "h": "What to check before you pay",
+          "p": [
+            "Look at the plan you need, the renewal price, and how to export your content. Check you can edit page titles and descriptions, add a map and write your service area in plain words.",
+            "Keep your domain registered in your own name."
+          ]
+        },
+        {
+          "h": "How a designer helps",
+          "p": [
+            "We start from your trade and write the text with you, so the page says what customers are looking for. Packages from £199 are on the packages page.",
+            "If you have the pictures and the eye, Squarespace can be a good fit. If you do not have the time, we can do it for you."
+          ]
+        }
+      ],
+      "checklist": [
+        "What happens to my site if I stop paying?",
+        "What is the plan cost at renewal?",
+        "Can I export my content?",
+        "Does the template suit text-heavy local services, or is it built for photography?"
+      ],
+      "faq": [
+        { "q": "Is Squarespace good for SEO?", "a": "It gives you the basic controls. As with any builder, the results depend on what you write and how you set up each page, not on the platform alone." },
+        { "q": "Can I move my domain from Squarespace later?", "a": "Domains can generally be transferred between providers. Check the current transfer rules on your account before you need to." }
+      ],
+      "related": ["wix-or-web-designer", "diy-website-builder-or-web-designer", "one-com-website-builder-or-web-designer"]
+    },
+    {
+      "slug": "wordpress-or-web-designer",
+      "short": "WordPress",
+      "title": "WordPress or a Web Designer for a Small Business? | OneSimpleSite",
+      "metaDescription": "WordPress is powerful and flexible, but it needs looking after. What small businesses should know before choosing it, and when a fixed-price site is simpler.",
+      "h1": "WordPress or a web designer: what a small business should know",
+      "dek": "WordPress can do almost anything. Somebody still has to look after it.",
+      "sections": [
+        {
+          "h": "Two things called WordPress",
+          "p": [
+            "WordPress.org is free software you install on your own hosting. WordPress.com is a hosted service, run by a company called Automattic. People often mix them up.",
+            "Either way you get a huge choice of themes and plugins, which is why so much of the web runs on it."
+          ]
+        },
+        {
+          "h": "The part that is easy to overlook",
+          "p": [
+            "A self-hosted WordPress site needs updating: WordPress itself, your theme and every plugin. If that slips, the site can slow down, break or become a security risk.",
+            "That is fine if you have someone who does it. For a small business owner it often becomes the job nobody does."
+          ]
+        },
+        {
+          "h": "When WordPress is a good choice",
+          "p": [
+            "If you need lots of pages, a blog, bookings or a shop, or you want to add features over time, WordPress gives you room to grow. It is also easy to find people who can help.",
+            "If your needs are a few clear pages and a phone number, you may not need all that."
+          ]
+        },
+        {
+          "h": "Where we fit",
+          "p": [
+            "We build simple, fast sites for local businesses at a fixed price, from £199 on the packages page. There is less to look after, which suits owners who want it done and not another thing to maintain.",
+            "If you need a lot of features, tell us in the project brief and we will say honestly what fits."
+          ]
+        }
+      ],
+      "checklist": [
+        "Who will keep WordPress, my theme and plugins updated?",
+        "Do I need the extra features, or just a few clear pages?",
+        "Who do I call if something breaks?",
+        "Do I know which kind of WordPress I am buying?"
+      ],
+      "faq": [
+        { "q": "Is WordPress free?", "a": "The WordPress.org software is free. You still pay for hosting and a domain, and possibly for themes, plugins and help." },
+        { "q": "Is WordPress good for local SEO?", "a": "It can be set up very well. As with any platform, you still need clear titles, a real map, fast pages and consistent business details." }
+      ],
+      "related": ["diy-website-builder-or-web-designer", "wix-or-web-designer", "godaddy-website-builder-or-web-designer"]
+    }
+  ]
+}

@@ -37,3 +37,14 @@ export const PAGES_FOR_SITEMAP = [
   "/cookies",
   "/accessibility",
 ] as const;
+
+/**
+ * PROVISIONAL: the handle is @onesimplesite on every network. Confirm each account exists and the URL is exact
+ * (LinkedIn in particular may use a different company slug) before launch; these also feed the Organization sameAs.
+ */
+export const SOCIAL = [
+  { id: "instagram", label: "Instagram", url: "https://www.instagram.com/onesimplesite/" },
+  { id: "facebook", label: "Facebook", url: "https://www.facebook.com/onesimplesite" },
+  { id: "tiktok", label: "TikTok", url: "https://www.tiktok.com/@onesimplesite" },
+  { id: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/company/onesimplesite/" },
+] as const;
