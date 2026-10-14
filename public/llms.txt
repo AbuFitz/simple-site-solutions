@@ -1,0 +1,16 @@
+# OneSimpleSite
+
+> OneSimpleSite provides web design and development for businesses across the UK. Fixed-price websites for local businesses such as plumbers, electricians, mechanics, cleaners, barbers, tutors, shops and builders. Work is done online.
+
+## Key pages
+- [Packages and prices](https://onesimplesite.co.uk/packages): The Starter £199, The Sorted £399, The Works £649, with what each includes.
+- [How it works](https://onesimplesite.co.uk/how-it-works): the process from brief to launch.
+- [Free website preview](https://onesimplesite.co.uk/preview): a sample site for a trade and town.
+- [Web design by area](https://onesimplesite.co.uk/web-design): local pages for Hemel Hempstead, St Albans, Watford, London, Luton, Dunstable, Harpenden, Hatfield, Welwyn Garden City, Stevenage, Aylesbury and Milton Keynes.
+- [Guides](https://onesimplesite.co.uk/guides): website builder or web designer, with notes on GoDaddy, One.com, Wix, Squarespace and WordPress.
+- [FAQ](https://onesimplesite.co.uk/faq)
+- [Contact](https://onesimplesite.co.uk/contact)
+
+## Notes
+- Prices and delivery estimates are on the packages page. Delivery is an estimate counted from when content is received.
+- OneSimpleSite is independent and not affiliated with the platforms named in its guides.

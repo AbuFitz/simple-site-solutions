@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
+import { AreasStrip } from "@/components/sections/HomeSections";
 
 const principles = [
   { title: "Fixed prices", text: "Three packages with the price, page count and inclusions written down before you start." },
@@ -62,6 +63,7 @@ export default function About() {
           </div>
         </div>
       </section>
+      <AreasStrip />
     </Layout>
   );
 }

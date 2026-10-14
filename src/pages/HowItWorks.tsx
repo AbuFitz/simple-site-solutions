@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
+import { FaqTeaser } from "@/components/sections/HomeSections";
 import { motion } from "framer-motion";
 import { Check, Clock, Zap, Users, Target } from "lucide-react";
 
@@ -216,6 +217,7 @@ export default function HowItWorks() {
       </section>
 
       {/* CTA */}
+      <FaqTeaser />
       <CTASection
         title="Ready to skip the"
         highlightedText="drama?"

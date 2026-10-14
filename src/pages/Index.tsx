@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { WorkShowcase } from "@/components/sections/WorkShowcase";
 import { PreviewTeaser } from "@/components/sections/PreviewTeaser";
+import { AreasStrip, FaqTeaser, HowItWorksStrip, PackagesGlance, TradesGrid } from "@/components/sections/HomeSections";
 import { TypewriterText } from "@/components/ui/TypewriterText";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
@@ -170,6 +171,10 @@ export default function Index() {
         </div>
       </section>
 
+      <PackagesGlance />
+      <HowItWorksStrip />
+      <TradesGrid />
+
       {/* Is This For You - Compact */}
       <section className="py-8 sm:py-12 md:py-16">
         <div className="content-width">
@@ -239,6 +244,9 @@ export default function Index() {
           </motion.div>
         </div>
       </section>
+
+      <AreasStrip />
+      <FaqTeaser />
 
       {/* CTA */}
       <CTASection

@@ -5,6 +5,7 @@ import { expectNoHorizontalOverflow, settle, watchErrors } from "./helpers";
 type Reply = { status?: number; body: Record<string, unknown>; delay?: number };
 
 async function mockChat(page: Page, reply: (q: string) => Reply) {
+  await page.addInitScript(() => window.localStorage.setItem("oss_cookie_consent", "accepted"));
   const seen: string[] = [];
   await page.route("**/api/chat", async (route) => {
     const q = JSON.parse(route.request().postData() ?? "{}").messages.at(-1).content as string;
@@ -130,4 +131,13 @@ test("on a phone the panel fills the visible area and keeps the composer visible
   expect(box!.y + box!.height).toBeLessThanOrEqual(420.5);
   await expect(page.getByLabel("Message Sid")).toBeInViewport();
   await expect(page.getByRole("button", { name: "Close chat" })).toBeInViewport();
+});
+
+test("the launcher waits until the cookie notice is dismissed", async ({ page }) => {
+  await page.goto("/about");
+  await settle(page);
+  await expect(page.getByRole("dialog", { name: "Cookie notice" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /Open chat with Sid/ })).toHaveCount(0);
+  await page.getByRole("button", { name: "Close cookie notice" }).click();
+  await expect(page.getByRole("button", { name: /Open chat with Sid/ })).toBeVisible();
 });

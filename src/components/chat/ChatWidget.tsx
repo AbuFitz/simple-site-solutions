@@ -5,16 +5,33 @@ import { MessageCircle } from "lucide-react";
 const ChatPanel = lazy(() => import("./ChatPanel"));
 const loadPanel = () => import("./ChatPanel");
 
+// Wait until the cookie notice has been dismissed so the two never sit on top of each other.
+const CONSENT_KEY = "oss_cookie_consent";
+const hasConsent = () => {
+  try {
+    return Boolean(window.localStorage.getItem(CONSENT_KEY));
+  } catch {
+    return true;
+  }
+};
+
 /** Pages where a floating chat would get in the way (payment, hidden onboarding, dev harness). */
 const HIDDEN = [/^\/checkout\//, /^\/onboard/, /^\/__tpl/];
 /** Pages with a sticky bottom action bar on phones: sit the launcher above it. */
-const RAISED = [/^\/preview/, /^\/start/];
+const RAISED = [/^\/$/, /^\/preview/, /^\/start/];
 
 export function ChatWidget() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [everOpened, setEverOpened] = useState(false);
   const launcher = useRef<HTMLButtonElement>(null);
+  const [consented, setConsented] = useState(hasConsent);
+
+  useEffect(() => {
+    const on = () => setConsented(true);
+    window.addEventListener("oss-cookie-consent", on);
+    return () => window.removeEventListener("oss-cookie-consent", on);
+  }, []);
 
   useEffect(() => {
     if (HIDDEN.some((r) => r.test(pathname))) setOpen(false);
@@ -30,7 +47,7 @@ export function ChatWidget() {
 
   return (
     <>
-      {!open && (
+      {!open && consented && (
         <button
           ref={launcher}
           type="button"

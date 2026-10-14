@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { X } from "lucide-react";
 
-const CONSENT_KEY = "oss_cookie_consent";
+export const CONSENT_KEY = "oss_cookie_consent";
 
 export function CookieConsent() {
   const [open, setOpen] = useState(false);
@@ -26,6 +26,7 @@ export function CookieConsent() {
       // ignore
     }
     setOpen(false);
+    window.dispatchEvent(new Event("oss-cookie-consent"));
   };
 
   // Only animate on first appearance, not on page navigation

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
+import { FaqTeaser } from "@/components/sections/HomeSections";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
@@ -252,6 +253,7 @@ export default function Packages() {
       </section>
 
       {/* CTA */}
+      <FaqTeaser />
       <CTASection
         title="Ready to get"
         highlightedText="started?"
