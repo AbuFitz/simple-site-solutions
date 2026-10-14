@@ -55,6 +55,10 @@ The e2e suite covers every route at 320, 390, 768, 1440 and 2200px (one h1, no c
 - `docs/research-notes.md`: UK buyer, competitor and legal research with sources.
 - `docs/pricing-review.md`: open pricing decisions.
 
+## Shop
+
+`/shop` sells personalised QR and NFC products (review cards and stands, a review kit, smart business cards, QR table signs, window and van stickers, and a digital QR pack). Catalogue, prices and personalisation rules are one file: `src/data/shop.ts`, read by both the browser and the API. Stripe hosted Checkout, signed webhook, order records and fulfilment hand-off are built and tested, and the shop is **closed by default** until the owner approves the prices and configures real Stripe Price IDs: see `docs/shop-launch.md` and `docs/shop-catalogue.md`.
+
 ## Payments
 
 Online payment (Stripe hosted Checkout) is built but **off by default**. It turns on only when every requirement in `docs/deployment.md` is met. Until then the site takes enquiries only and never shows a pay button.

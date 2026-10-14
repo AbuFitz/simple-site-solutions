@@ -5,6 +5,7 @@ import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
+import { ShopCrossSell } from "@/components/shop/ShopCrossSell";
 import { addons, hosting, packages } from "@/data/packages";
 import { DELIVERY_NOTE } from "@/data/site";
 
@@ -228,6 +229,12 @@ export default function Packages() {
               Optional. Either side can end it with 30 days' notice (see our terms).
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      <section className="pb-12 sm:pb-16">
+        <div className="content-width">
+          <ShopCrossSell context="website" slugs={["review-kit", "qr-table-sign", "sticker-pack"]} />
         </div>
       </section>
 

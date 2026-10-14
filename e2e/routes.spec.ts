@@ -22,7 +22,7 @@ for (const vp of VIEWPORTS) {
 
 test("every route has its own static title, description and canonical in the built HTML (no JavaScript needed)", () => {
   const seen = new Map<string, string>();
-  const routes = [...ROUTES.filter((r) => !r.includes("definitely") && r !== "/checkout/cancel"), "/checkout/success", "/onboard"];
+  const routes = [...ROUTES.filter((r) => !r.includes("definitely") && !r.includes("not-a-product") && r !== "/checkout/cancel"), "/checkout/success", "/onboard"];
   for (const route of routes) {
     const file = join(process.cwd(), "dist", route === "/" ? "" : route, "index.html");
     expect(existsSync(file), `${file} exists`).toBe(true);
@@ -35,7 +35,7 @@ test("every route has its own static title, description and canonical in the bui
     expect(canon, `${route} canonical`).toEqual(["https://onesimplesite.co.uk" + (route === "/" ? "/" : route)]);
     expect(seen.has(title), `${route} title duplicates ${seen.get(title)}`).toBe(false);
     seen.set(title, route);
-    if (route === "/onboard" || route.startsWith("/checkout")) expect(html).toContain("noindex");
+    if (["/onboard", "/shop/cart", "/shop/checkout", "/shop/order/cancel", "/shop/order/success", "/shop/order-status"].includes(route) || route.startsWith("/checkout")) expect(html).toContain("noindex");
   }
 });
 
@@ -50,23 +50,24 @@ test("rendered head has exactly one canonical and one description after hydratio
 });
 
 test("structured data has no ratings and parses", async ({ page }) => {
-  for (const route of ["/", "/packages", "/faq", "/work/arf-mods"]) {
+  for (const route of ["/", "/packages", "/faq", "/work/arf-mods", "/shop", "/shop/review-card", "/shop/help"]) {
     await page.goto(route);
     await settle(page);
     const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
     expect(blocks.length, route).toBeGreaterThan(0);
     for (const b of blocks) {
       expect(() => JSON.parse(b), route).not.toThrow();
-      expect(b).not.toMatch(/aggregateRating|ratingValue|reviewCount/);
+      expect(b).not.toMatch(/aggregateRating|ratingValue|reviewCount|"offers"|"availability"/);
     }
   }
 });
 
 test("sitemap and robots", async ({ request }) => {
   const sm = await (await request.get("/sitemap.xml")).text();
-  for (const p of ["/", "/work", "/packages", "/start", "/work/fixnow-mechanics"]) expect(sm).toContain(`<loc>https://onesimplesite.co.uk${p === "/" ? "/" : p}</loc>`);
+  for (const p of ["/", "/work", "/packages", "/start", "/work/fixnow-mechanics", "/shop", "/shop/review-card", "/shop/help"]) expect(sm).toContain(`<loc>https://onesimplesite.co.uk${p === "/" ? "/" : p}</loc>`);
   expect(sm).not.toContain("/onboard");
   expect(sm).not.toContain("/checkout");
+  for (const hidden of ["/shop/cart", "/shop/checkout", "/shop/order"]) expect(sm).not.toContain(hidden);
   const robots = await (await request.get("/robots.txt")).text();
   expect(robots).toContain("Sitemap: https://onesimplesite.co.uk/sitemap.xml");
   expect((await request.get("/og-image.png")).ok()).toBe(true);
@@ -76,7 +77,7 @@ test("sitemap and robots", async ({ request }) => {
 test("no broken internal links across the site", async ({ page }) => {
   test.setTimeout(240_000);
   const hrefs = new Set<string>();
-  for (const route of ROUTES.filter((r) => !r.includes("definitely"))) {
+  for (const route of ROUTES.filter((r) => !r.includes("definitely") && !r.includes("not-a-product"))) {
     await page.goto(route);
     await settle(page);
     for (const h of await page.locator("a[href]").evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).getAttribute("href") || ""))) {
@@ -95,7 +96,7 @@ test("no broken internal links across the site", async ({ page }) => {
 });
 
 test("unsupported claims are gone", async ({ page }) => {
-  const banned = [/satisfaction guarantee/i, /within 24 hours/i, /500\+/, /99\.9%/, /4\.9/, /most popular/i, /first month free/i, /keep it (live|fresh)/i, /£9\/month/i, /5-10 (business )?days/i];
+  const banned = [/satisfaction guarantee/i, /within 24 hours/i, /500\+/, /99\.9%/, /\b4\.9 ?(\/ ?5|stars?|out of)/i, /most popular/i, /first month free/i, /keep it (live|fresh)/i, /£9\/month/i, /5-10 (business )?days/i];
   for (const route of ["/", "/packages", "/faq", "/how-it-works", "/start", "/contact", "/about", "/terms"]) {
     await page.goto(route);
     await settle(page);

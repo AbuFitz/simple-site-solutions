@@ -164,7 +164,22 @@ export default function Terms() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">13. Privacy & Cookies</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">13. Shop Orders</h2>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
+                  These points apply to products bought from our <Link to="/shop" className="text-primary hover:underline">shop</Link>, in addition to the rest of these Terms.
+                </p>
+                <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
+                  <li><strong>Made to your details:</strong> products are made with the business name, links and other details you enter. You are responsible for checking them before you pay. We make each product exactly as entered.</li>
+                  <li><strong>Links and content:</strong> you must have the right to use any name, link or Wi-Fi network you give us. We check that a review link looks like a Google review link, but we do not check what a link leads to and are not responsible for it. Do not use our products to offer rewards for reviews or to discourage honest reviews.</li>
+                  <li><strong>Delivery:</strong> UK mainland only. Posted products are made to order and we email a dispatch date after you order. We deliver within 30 days unless we agree otherwise with you.</li>
+                  <li><strong>Cancellation and returns:</strong> goods made to your specification or clearly personalised are exempt from the 14-day cancellation right for consumers. This does not affect your legal rights if goods are faulty, damaged or not as described or ordered. Digital files are supplied by email once payment is confirmed.</li>
+                  <li><strong>Prices and VAT:</strong> prices are in pounds sterling. VAT treatment is to be confirmed.</li>
+                  <li><strong>Payment:</strong> online payment is taken by Stripe on its hosted page. We never see your card details. An order is accepted only when payment is confirmed.</li>
+                </ul>
+              </section>
+
+              <section>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">14. Privacy & Cookies</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Your use of our website and services is also governed by our{" "}
                   <Link to="/privacy" className="text-primary hover:underline">
@@ -179,7 +194,7 @@ export default function Terms() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">14. Contact</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">15. Contact</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   For any questions regarding these Terms, please contact us at{" "}
                   <a href="mailto:hello@onesimplesite.co.uk" className="text-primary hover:underline">

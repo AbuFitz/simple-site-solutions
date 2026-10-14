@@ -55,3 +55,23 @@ Status of every business fact the site relies on. Accessed 2026-10-14. Research 
 ## Preview generator
 
 Recommendation thresholds (`recommendPackage()`) are INFERRED business rules awaiting owner approval (`docs/pricing-review.md` §4).
+
+## Shop (added 2026-10-14; research in `docs/shop-research.md`, decisions in `docs/shop-catalogue.md`)
+
+| Fact | Status | Note |
+|---|---|---|
+| Catalogue of 7 products / 14 variants and their prices | PROVISIONAL (owner approval required) | `src/data/shop.ts`. Prices are research-based recommendations. The sticker pack prices are placeholders (no comparator found). |
+| UK delivery £3.95, free from £50 of posted items, UK mainland only | PROVISIONAL | Royal Mail Tracked 48 small parcel £3.65 is from a search summary only. |
+| Dispatch time | BLOCKED | No number is published. Copy says a dispatch date is emailed after ordering and the statutory 30 days applies. |
+| A production route for posted items (supplier, capacity, samples, NFC chip type and programming) | BLOCKED | Nothing is assumed. Ordering of posted items stays closed until `SHOP_FULFILMENT_CONFIRMED=true`. |
+| VAT registration and whether prices include VAT | BLOCKED | Site says VAT treatment is to be confirmed and shows no VAT line. Needs an accountant. |
+| Stripe Price IDs and webhook secret | BLOCKED | None exist in the repo; none invented. |
+| Stock levels | BLOCKED | Optional manual `SHOP_STOCK_*`; none claimed. |
+| Warranty, durability, waterproofing, sustainability, reviews, certifications | BLOCKED | None claimed; tests fail the build if such words appear in the shop. |
+| Returns: personalised goods exempt from 14-day cancellation (consumers); statutory rights for faults | PROVISIONAL | Consumer Contracts Regulations 2013 reg. 28(1)(b); Consumer Rights Act 2015. Draft wording needs legal review. Business buyers are outside the consumer rules. |
+| Google review links: `g.page/r/...` or `search.google.com/local/writereview?placeid=...` | PROVISIONAL | The first format is documented by secondary sources and the second is reported to be unreliable, so the product page tells customers to copy the link from Business Profile. We never claim to improve rankings or ratings, and we never gate or incentivise reviews (Google policy). |
+| NFC tag behaviour (no battery; most recent phones read it; iPhone XS/XR and later read in the background; some phones lack NFC) | VERIFIED (modest claims only) | NXP and Apple sources in the research notes. The site always pairs NFC with a QR code. |
+| Wi-Fi QR string format and escaping | PROVISIONAL | Secondary sources; covered by unit tests. Password is printed in the QR, so guest networks are advised. |
+| Personalisation data retention (orders 90 days, Wi-Fi password removed after hand-off) | INFERRED | Our design choice. UK GDPR retention periods need owner review. |
+| "Notify me when ordering opens" | INFERRED | One email, unticked consent box. PECR wording needs review. |
+| Product images | VERIFIED | Original SVG illustrations created in this repository. Labelled as illustrations, not photographs. No supplier imagery is used. |

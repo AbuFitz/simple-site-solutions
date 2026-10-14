@@ -28,6 +28,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
               {[
                 { to: "/", label: "Home" },
                 { to: "/work", label: "Our Work" },
+                { to: "/shop", label: "Shop" },
                 { to: "/how-it-works", label: "Process" },
                 { to: "/packages", label: "Pricing" },
                 { to: "/faq", label: "FAQ" },
@@ -102,6 +103,12 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Cookie Policy
+            </Link>
+            <Link
+              to="/shop/help"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Shop delivery &amp; returns
             </Link>
             <Link
               to="/accessibility"

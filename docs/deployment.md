@@ -44,7 +44,11 @@ Stripe stays off until all of these are true. Nothing here has been done for you
 
 How it fails closed: checkout is enabled only if `CHECKOUT_ENABLED`, `PRICING_APPROVED`, a valid key, a webhook secret, `SITE_URL`, the fulfilment store and at least one package with both a Price ID and `PACKAGE_READY_*=true` are present; a live key also needs `STRIPE_ALLOW_LIVE`. A session counts as paid only if Stripe reports it paid, in GBP, for exactly the catalogue amount.
 
-## 5. Before launch
+## 5. Shop
+
+The shop (`/shop`) ships **closed**. It has its own gates and per-variant switches, documented in `docs/shop-launch.md` and `docs/shop-catalogue.md`. Extra variables: `SHOP_ENABLED`, `SHOP_FULFILMENT_CONFIRMED`, and `SHOP_PRICE_*`, `SHOP_READY_*`, `SHOP_STOCK_*` per variant. It reuses `PRICING_APPROVED`, the Stripe keys and webhook secret, `SITE_URL`, the Upstash order store and `RESEND_API_KEY`. The same webhook endpoint serves website-package payments and shop orders (shop sessions carry `metadata.kind = "shop"`). Add Vercel Firewall rate limits for `/api/shop-*` as well as `/api/*`.
+
+## 6. Before launch
 
 - Resolve the BLOCKED items in `docs/fact-ledger.md`.
 - Replace the draft legal pages after review and add the company details.

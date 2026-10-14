@@ -91,6 +91,11 @@ export default function Cookies() {
                             <td className="py-2">Up to 7 days (localStorage)</td>
                           </tr>
                           <tr className="border-b border-border/50">
+                            <td className="py-2 pr-4 font-mono text-xs">oss_cart_v1</td>
+                            <td className="py-2 pr-4">Keeps your shop basket, including the details you entered to personalise items, in this browser</td>
+                            <td className="py-2">Until you order or clear it (localStorage)</td>
+                          </tr>
+                          <tr className="border-b border-border/50">
                             <td className="py-2 pr-4 font-mono text-xs">oss_preview_input</td>
                             <td className="py-2 pr-4">Carries your website preview details into the project brief</td>
                             <td className="py-2">Until you close the tab (sessionStorage)</td>

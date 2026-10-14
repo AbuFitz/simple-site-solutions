@@ -8,6 +8,7 @@ import { z } from "zod";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { PayOnline } from "@/components/PayOnline";
+import { ShopCrossSell } from "@/components/shop/ShopCrossSell";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Loader2 } from "lucide-react";
@@ -579,6 +580,9 @@ export default function Start() {
                     )}
                   </div>
                   <PayOnline packageId={selectedPackage} />
+                  <div className="mt-6 text-left">
+                    <ShopCrossSell context="start" slugs={["review-card", "digital-qr-pack", "qr-table-sign"]} />
+                  </div>
                   <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:mt-6 sm:flex-row">
                     {previewInput.name && (
                       <Link to={previewLink} className="btn-primary btn-md sm:btn-lg !text-background">
