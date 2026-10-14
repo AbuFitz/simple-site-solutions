@@ -19,8 +19,8 @@ test.describe("navigation", () => {
   test("menu link navigates and the menu closes", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: "Open menu" }).click();
-    await page.locator("#mobile-menu").getByRole("link", { name: "Work" }).click();
-    await expect(page).toHaveURL(/\/work$/);
+    await page.locator("#mobile-menu").getByRole("link", { name: "Pricing" }).click();
+    await expect(page).toHaveURL(/\/packages$/);
     await expect(page.locator("#mobile-menu")).toHaveCount(0);
   });
 
