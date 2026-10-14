@@ -2,20 +2,17 @@ import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
-import { CartButton } from "@/components/shop/CartButton";
 
 const navItems = [
   { path: "/", label: "Home" },
   { path: "/work", label: "Work" },
   { path: "/how-it-works", label: "Process" },
   { path: "/packages", label: "Pricing" },
-  { path: "/shop", label: "Shop" },
   { path: "/faq", label: "FAQ" },
 ];
 
 export function Navbar() {
   const location = useLocation();
-  const isActive = (path: string) => (path === "/" ? location.pathname === "/" : location.pathname === path || location.pathname.startsWith(`${path}/`));
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -63,7 +60,7 @@ export function Navbar() {
     <>
       {/* Floating Navigation Pill */}
       <motion.header
-        className="fixed top-3 sm:top-4 md:top-6 left-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl lg:max-w-4xl"
+        className="fixed top-3 sm:top-4 md:top-6 left-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl lg:max-w-3xl"
         style={{ x: "-50%" }}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -105,8 +102,8 @@ export function Navbar() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`whitespace-nowrap px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
-                  isActive(item.path)
+                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
+                  location.pathname === item.path
                     ? "bg-secondary text-foreground border-border"
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
                 }`}
@@ -116,12 +113,10 @@ export function Navbar() {
             ))}
           </div>
 
-          <CartButton className="flex-shrink-0" />
-
           {/* Desktop CTA */}
           <Link
             to="/start"
-            className="hidden lg:inline-flex items-center gap-1.5 whitespace-nowrap px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
+            className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
           >
             Get Started
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -175,7 +170,7 @@ export function Navbar() {
                         <Link
                           to={item.path}
                           className={`block px-4 py-3 text-base font-semibold rounded-lg transition-colors border-2 ${
-                            isActive(item.path)
+                            location.pathname === item.path
                               ? "text-primary border-primary"
                               : "text-foreground border-transparent hover:bg-secondary"
                           }`}

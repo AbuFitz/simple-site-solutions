@@ -124,20 +124,7 @@ export default function Privacy() {
               </section>
 
               <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Shop Orders</h2>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">If you order from our shop we handle:</p>
-                <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Personalisation details</strong> you enter (business name, links, and for Wi-Fi signs the network name and password). Used only to make your order. For Wi-Fi signs the password is emailed to us for production and removed from our order record once the order has been handed off.</li>
-                  <li><strong>Your email address and delivery address</strong>, collected with your payment by Stripe and shared with us to confirm and post your order.</li>
-                  <li><strong>Order records</strong> (reference, items, totals, status) kept for up to 90 days in our order store, and in our email and accounting records for as long as the law requires.</li>
-                  <li><strong>Your basket</strong> is kept only in your browser until you order or clear it.</li>
-                  <li><strong>"Notify me" sign-ups:</strong> if you ask to be told when ordering opens, we use your email address for that one message only.</li>
-                </ul>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">Our processors are Stripe (payment), Resend (email), Upstash (order store) and our hosting provider.</p>
-              </section>
-
-              <section>
-                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">9. Contact Us</h2>
+                <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Contact Us</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   If you have any questions about this Privacy Policy or wish to exercise your rights,
                   please contact us at{" "}

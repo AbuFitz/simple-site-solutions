@@ -1,7 +1,6 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Seo } from "@/components/seo/Seo";
-import { ShopCrossSell } from "@/components/shop/ShopCrossSell";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, Copy, Monitor, RefreshCw, Smartphone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -313,8 +312,6 @@ export default function Preview() {
                 </div>
               </div>
             </div>
-
-            <ShopCrossSell context="preview" businessType={input.category} />
           </div>
         </div>
       </section>

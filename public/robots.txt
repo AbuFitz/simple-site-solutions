@@ -4,9 +4,5 @@ Allow: /
 Disallow: /api/
 Disallow: /onboard
 Disallow: /checkout/
-Disallow: /shop/cart
-Disallow: /shop/checkout
-Disallow: /shop/order/
-Disallow: /shop/order-status
 
 Sitemap: https://onesimplesite.co.uk/sitemap.xml

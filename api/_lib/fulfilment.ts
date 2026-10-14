@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import { escapeHtml, oneLine } from "./http.js";
-import { redis } from "./redis.js";
 import { getPackage } from "../../src/data/packages.js";
 
 /**
@@ -11,6 +10,21 @@ import { getPackage } from "../../src/data/packages.js";
  * The fulfilment action itself is deliberately a placeholder: it notifies the owner by email that a
  * deposit/payment arrived. Anything further (invoice, onboarding link) belongs to the owner's process.
  */
+async function redis(cmd: (string | number)[]): Promise<unknown> {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) throw new Error("Fulfilment store not configured");
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+    body: JSON.stringify(cmd),
+  });
+  if (!r.ok) throw new Error(`Fulfilment store error ${r.status}`);
+  const body = (await r.json()) as { result?: unknown; error?: string };
+  if (body.error) throw new Error("Fulfilment store error");
+  return body.result;
+}
+
 export async function claim(sessionId: string): Promise<boolean> {
   const res = await redis(["SET", `oss:fulfilled:${sessionId}`, "1", "NX", "EX", 60 * 60 * 24 * 90]);
   return res === "OK";

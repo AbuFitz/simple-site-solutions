@@ -24,9 +24,6 @@ export default function Accessibility() {
         <h2 className="text-title mt-10">3D and motion</h2>
         <p className="text-body mt-3">The Our Work section on the home page uses an optional 3D view. Every project in it is also reachable as plain pages under Our Work. If your device asks for reduced motion, or 3D isn't available, you get a still version. Add <code>?3d=0</code> to the address to switch 3D off.</p>
 
-        <h2 className="text-title mt-10">The shop</h2>
-        <p className="text-body mt-3">The shop's filters, product options, basket, quantity controls and checkout review are built as labelled form controls that work with a keyboard, with errors announced next to the field and basket changes announced by a status message. Product pictures are illustrations with a text alternative and the product information is in text.</p>
-
         <h2 className="text-title mt-10">Known limits</h2>
         <p className="text-body mt-3">The 3D view can't be read by screen readers, so the same information is provided as text on the page and on each project's page. Some screenshots of other sites show those sites as they were when captured.</p>
 

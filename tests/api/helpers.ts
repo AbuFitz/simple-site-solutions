@@ -36,7 +36,7 @@ export const CHECKOUT_ENV = {
 
 export function setEnv(env: Record<string, string>) {
   for (const k of Object.keys(process.env)) {
-    if (/^(CHECKOUT_|PRICING_|SHOP_|STRIPE_|PACKAGE_READY_|SITE_URL|UPSTASH_|RESEND_|ADMIN_EMAIL|ALLOWED_ORIGINS)/.test(k)) delete process.env[k];
+    if (/^(CHECKOUT_|PRICING_|STRIPE_|PACKAGE_READY_|SITE_URL|UPSTASH_|RESEND_|ADMIN_EMAIL|ALLOWED_ORIGINS)/.test(k)) delete process.env[k];
   }
   Object.assign(process.env, env);
   vi.resetModules();
