@@ -4,7 +4,8 @@ export interface PackageTier {
   price: string;
   tagline: string;
   ideal: string;
-  popular?: boolean;
+  /** Our suggested starting point for most growing businesses. This is a recommendation, not a sales statistic. */
+  recommended?: boolean;
   /** Maximum pages included. Drives the page-stack height in the 3D pricing scene. */
   pages: number;
   features: string[];
@@ -39,7 +40,7 @@ export const packages: PackageTier[] = [
     price: "399",
     tagline: "Look established, win trust",
     ideal: "Growing businesses",
-    popular: true,
+    recommended: true,
     pages: 6,
     features: [
       "Up to 6 pages",
@@ -78,14 +79,24 @@ export const packages: PackageTier[] = [
   },
 ];
 
-export const addons = [
-  { name: "Logo Design", price: "49" },
-  { name: "Google Business Setup", price: "39" },
-  { name: "Booking System", price: "39" },
-  { name: "Email Templates ×3", price: "29" },
-  { name: "SEO Audit Report", price: "59" },
-  { name: "Legal Pages Pack", price: "19" },
+export interface Addon {
+  id: string;
+  name: string;
+  price: string;
+}
+
+export const addons: Addon[] = [
+  { id: "logo", name: "Logo Design", price: "49" },
+  { id: "google-business", name: "Google Business Profile Setup", price: "39" },
+  { id: "booking", name: "Booking System Setup", price: "39" },
+  { id: "email-templates", name: "Extra Email Templates (×3)", price: "29" },
+  { id: "seo-audit", name: "SEO Audit Report", price: "59" },
+  { id: "legal-pages", name: "Legal Pages Pack", price: "19" },
 ];
+
+export const packageIds = packages.map((p) => p.id) as PackageTier["id"][];
+export const getPackage = (id: string) => packages.find((p) => p.id === id);
+export const getAddon = (id: string) => addons.find((a) => a.id === id);
 
 export const hosting = {
   name: "Keep It Running",

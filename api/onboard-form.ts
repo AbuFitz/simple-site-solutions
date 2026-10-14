@@ -1,5 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Resend } from "resend";
+import { z } from "zod";
+import { clientIp, json, oneLine, originAllowed } from "./_lib/http.js";
+import { rateLimit } from "./_lib/rateLimit.js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -230,7 +233,7 @@ function clientEmailHtml(data: OnboardFormData): string {
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">Here's what happens next:</p>
               <ol style="font-size: 16px; line-height: 1.8; color: #374151; margin: 0 0 24px 0; padding-left: 20px;">
-                <li>We'll review your details over the next 24 hours</li>
+                <li>We'll review your details and email you with next steps</li>
                 <li>We'll reach out to confirm everything and collect payment</li>
                 <li>Once payment is received, we'll start building your website</li>
                 <li>You'll receive your website for review within a few days</li>
@@ -253,7 +256,7 @@ function clientEmailHtml(data: OnboardFormData): string {
               </div>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                If you need to add anything or have questions, email us at <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>.
+                If you need to add anything or have questions, email us at <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>.
               </p>
 
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 32px 0 0 0;">
@@ -272,7 +275,7 @@ function clientEmailHtml(data: OnboardFormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">
-                <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>
+                <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
               </p>
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 16px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">© ${new Date().getFullYear()} OneSimpleSite. Made for local UK businesses.</p>
@@ -659,64 +662,78 @@ function adminEmailHtml(data: OnboardFormData): string {
 </html>`;
 }
 
+const emailOk = z.string().trim().email().max(254);
+
+/** Every value in the intake is free text; cap its size and shape so one request can't be abusive. */
+function sanitiseIntake(body: unknown): OnboardFormData | null {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return null;
+  const out: Record<string, unknown> = {};
+  let total = 0;
+  for (const [k, v] of Object.entries(body as Record<string, unknown>)) {
+    if (k.length > 60) return null;
+    if (typeof v === "string") {
+      if (v.length > 5000) return null;
+      total += v.length;
+      out[k] = v;
+    } else if (Array.isArray(v) && v.length <= 50 && v.every((x) => typeof x === "string" && x.length <= 200)) {
+      out[k] = v;
+    } else if (typeof v === "boolean" || typeof v === "number" || v == null) {
+      out[k] = v;
+    } else {
+      return null;
+    }
+  }
+  if (total > 40_000) return null;
+  return out as unknown as OnboardFormData;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
+  if (!originAllowed(req)) return json(res, 403, { error: "Forbidden" });
+
+  const rl = rateLimit(`onboard:${clientIp(req)}`, 5, 10 * 60_000);
+  if (!rl.ok) {
+    res.setHeader("Retry-After", String(rl.retryAfter));
+    return json(res, 429, { error: "Too many attempts. Please wait a few minutes and try again." });
   }
 
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY not configured");
-    return res.status(500).json({ error: "Email service not configured" });
+    return json(res, 503, { error: "Sending isn't available right now. Please email us instead." });
+  }
+
+  const data = sanitiseIntake(req.body);
+  if (!data || !emailOk.safeParse(data.email).success || !data.contactName?.trim() || !data.businessName?.trim()) {
+    return json(res, 400, { error: "Please check your name, business name and email." });
   }
 
   try {
-    const data: OnboardFormData = req.body;
-
-    // Validate required fields
-    if (!data.email || !data.contactName || !data.businessName) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
     const pkg = getPackageInfo(data.confirmedPackage);
 
-    // Send client confirmation email
-    const { data: clientEmailData, error: clientEmailError } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: data.email,
-      subject: `All done - ${pkg.name} Package`,
-      html: clientEmailHtml(data),
-    });
-
-    if (clientEmailError) {
-      console.error("Failed to send client confirmation email:", clientEmailError);
-      return res.status(500).json({ error: "Failed to send confirmation email", details: clientEmailError.message });
-    }
-
-    // Send admin notification email with full details
-    const { data: adminEmailData, error: adminEmailError } = await resend.emails.send({
+    // The owner's copy is the record, so it goes first and must succeed.
+    const admin = await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: data.email,
-      subject: `New Client: ${data.businessName} - ${pkg.name} (${pkg.price})`,
+      subject: oneLine(`New Client: ${data.businessName} - ${pkg.name} (${pkg.price})`),
       html: adminEmailHtml(data),
     });
-
-    if (adminEmailError) {
-      console.error("Failed to send admin notification email:", adminEmailError);
-      return res.status(500).json({ error: "Failed to send admin notification", details: adminEmailError.message });
+    if (admin.error) {
+      console.error("Failed to send admin notification:", admin.error.message);
+      return json(res, 502, { error: "We couldn't send your details. Please try again or email us." });
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Onboarding complete",
-      clientEmailId: clientEmailData?.id,
-      adminEmailId: adminEmailData?.id,
+    const client = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: data.email,
+      subject: oneLine(`All done - ${pkg.name} Package`),
+      html: clientEmailHtml(data),
     });
+    if (client.error) console.error("Failed to send client copy:", client.error.message);
+
+    return json(res, 200, { success: true, copySent: !client.error });
   } catch (error) {
-    console.error("Error processing onboard form:", error);
-    return res.status(500).json({
-      error: "Failed to process onboarding",
-      details: error instanceof Error ? error.message : "Unknown error",
-    });
+    console.error("onboard-form failed:", error instanceof Error ? error.message : error);
+    return json(res, 502, { error: "We couldn't send your details. Please try again or email us." });
   }
 }

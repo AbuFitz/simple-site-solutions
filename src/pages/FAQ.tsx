@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
@@ -13,12 +14,12 @@ const faqs = [
   {
     question: "How much does a website cost?",
     answer:
-      "We have three packages: The Starter at £199 (everything you need to get online properly), The Sorted at £399 (our most popular — look established and win trust), and The Works at £649 (compete seriously and scale). All packages include local SEO foundations, mobile-first design, speed optimisation, and everything you need. No hidden fees, no upsell traps.",
+      "We have three packages: The Starter at £199 (everything you need to get online properly), The Sorted at £399 (look established and win trust), and The Works at £649 (compete seriously and scale). Each package lists exactly what is included on the packages page. Optional extras and the optional £19/month Keep It Running plan are priced separately and shown there.",
   },
   {
     question: "How long does it take to build my website?",
     answer:
-      "5-10 business days from when you submit your content. Starter sites are typically faster, while The Works packages with deeper positioning take a bit longer. We don't do endless timelines — you'll have your site live quickly.",
+      "Our estimate is 5–7 days for The Starter, 7–10 for The Sorted and 10–14 for The Works, counted from when we have your content and the go-ahead. Late content or slow feedback moves the date.",
   },
   {
     question: "What's included in every package?",
@@ -33,7 +34,7 @@ const faqs = [
   {
     question: "Which package should I choose?",
     answer:
-      "The Starter is perfect for new businesses and sole traders who need to get online fast. The Sorted is our most popular — ideal for established businesses wanting clarity, trust positioning, and room to refine. The Works is for businesses investing seriously in competing and scaling.",
+      "The Starter is perfect for new businesses and sole traders who need to get online fast. The Sorted suits growing businesses that want clearer trust signals, booking and room to refine. The Works is for businesses investing seriously in competing and scaling.",
   },
   {
     question: "Is SEO included?",
@@ -43,17 +44,17 @@ const faqs = [
   {
     question: "How is this different from hiring a web designer?",
     answer:
-      "We're a productised service, not a custom agency. We don't offer unlimited revisions, moodboards, or 'design by committee.' We analyse what works in your industry and build you a proven layout. It's faster, more affordable, and gets better results.",
+      "We're a productised service, not a custom agency. We don't offer unlimited revisions, moodboards, or 'design by committee.' We start from a layout planned for your kind of business and fill it with your details. It is faster and costs less than a fully custom design, with less room for bespoke changes.",
   },
   {
     question: "Can I choose my own design?",
     answer:
-      "No — and that's intentional. We build based on layouts that already convert in your industry. We've researched what works for plumbers, electricians, mechanics, cleaners, and other local trades. If you want full creative control, we're not the right fit. If you want results, we are.",
+      "No — and that's intentional. We build from layouts planned for your kind of business, so you don't choose the design from scratch. If you want full creative control, we're probably not the right fit.",
   },
   {
     question: "What if I need changes after we launch?",
     answer:
-      "We're here to help. If you're on our Keep It Fresh hosting plan, monthly content updates are included. For bigger updates or changes outside of your plan, we'll quote you fairly. Our goal is happy customers, not nickel-and-diming you.",
+      "We're here to help. The optional Keep It Running plan (£19/month) includes up to 5 content updates a month. Anything beyond that, or without the plan, we'll quote before doing the work.",
   },
   {
     question: "What do you need from me to get started?",
@@ -63,12 +64,12 @@ const faqs = [
   {
     question: "What about hosting?",
     answer:
-      "We offer two hosting plans: Keep It Live (£9/month) includes domain, hosting, SSL, backups, and security updates. Keep It Fresh (£19/month) adds monthly content updates so your site stays current. You're also free to host it yourself — we'll hand over all the files.",
+      "One optional plan: Keep It Running at £19/month covers hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month. Whether you can host the site yourself, and how files are handed over, is still to be confirmed in writing, so ask us before you order.",
   },
   {
     question: "What are the payment terms?",
     answer:
-      "The Starter: paid upfront in full. The Sorted and The Works: 50% upfront to begin, 50% before we launch your site. We accept bank transfer and card payments.",
+      "The Starter: paid upfront in full. The Sorted and The Works: 50% upfront to begin, 50% before we launch your site. How payment is taken is confirmed with you when your enquiry is accepted.",
   },
   {
     question: "What add-ons do you offer?",
@@ -78,7 +79,7 @@ const faqs = [
   {
     question: "Do you offer refunds?",
     answer:
-      "Due to the nature of custom work, deposits are non-refundable once work has begun. That said, we work with you to make sure you're happy with the result — we're not in the business of leaving customers disappointed.",
+      "Due to the nature of custom work, deposits are non-refundable once work has begun. If you need to cancel, tell us as soon as you can and we'll explain where things stand.",
   },
   {
     question: "What industries do you work with?",
@@ -88,13 +89,20 @@ const faqs = [
   {
     question: "Can I see examples of your work?",
     answer:
-      "Yes! Check out our portfolio on the homepage. We've built sites for businesses like FixNow Mechanics, ARF Mods, and ReadySold. Each site follows our proven layout approach tailored to their industry.",
+      "Yes! See the Our Work section on the homepage for real sites we have built or have in preview.",
   },
 ];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
+};
 
 export default function FAQ() {
   return (
     <Layout>
+      <Seo path="/faq" jsonLd={faqJsonLd} />
       {/* Hero */}
       <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
         <DottedGrid className="opacity-40" spacing={36} />

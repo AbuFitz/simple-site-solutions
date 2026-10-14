@@ -1,6 +1,6 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { Seo } from "@/components/seo/Seo";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Check, Copy, Monitor, RefreshCw, Smartphone } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
@@ -100,14 +100,7 @@ export default function Preview() {
 
   return (
     <Layout>
-      <Helmet>
-        <title>See What Your Website Could Look Like | OneSimpleSite</title>
-        <meta
-          name="description"
-          content="Enter your business name and trade and see a preview of your website, built on a layout that already works in your industry. Nothing is sent or stored."
-        />
-        <link rel="canonical" href="https://onesimplesite.co.uk/preview" />
-      </Helmet>
+      <Seo path="/preview" />
 
       <section className="relative pb-6 pt-24 sm:pt-32 md:pt-36">
         <DottedGrid className="opacity-30" spacing={36} />

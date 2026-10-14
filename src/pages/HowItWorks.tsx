@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
@@ -21,7 +22,7 @@ const steps = [
     number: "03",
     title: "We Research & Build",
     description:
-      "We look at what works in your industry and build you a site designed to convert. No guesswork, just proven layouts.",
+      "We start from a layout planned for your kind of business and build it around your details.",
   },
   {
     number: "04",
@@ -40,8 +41,8 @@ const steps = [
 const benefits = [
   {
     icon: Clock,
-    title: "5-10 Days",
-    description: "Not months. You'll have your site live quickly.",
+    title: "Days, Not Months",
+    description: "Estimated 5–14 days by package, counted from when we have your content.",
   },
   {
     icon: Zap,
@@ -63,6 +64,7 @@ const benefits = [
 export default function HowItWorks() {
   return (
     <Layout>
+      <Seo path="/how-it-works" />
       {/* Hero */}
       <section className="pt-24 pb-12 sm:pt-32 sm:pb-16 md:pt-40 md:pb-24 relative">
         <DottedGrid className="opacity-40" spacing={36} />

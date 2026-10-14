@@ -1,13 +1,14 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Resend } from "resend";
+import { briefSchema } from "../src/lib/brief-schema.js";
+import { clientIp, json, oneLine, originAllowed } from "./_lib/http.js";
+import { rateLimit } from "./_lib/rateLimit.js";
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Email configuration
 const FROM_EMAIL = "OneSimpleSite <noreply@onesimplesite.co.uk>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "hello@onesimplesite.co.uk";
-const BASE_URL = "https://onesimplesite.co.uk";
+const BASE_URL = process.env.SITE_URL || "https://onesimplesite.co.uk";
 
 interface FormData {
   businessName: string;
@@ -93,7 +94,7 @@ function customerEmailHtml(data: FormData): string {
               </p>
               <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">Here's what happens next:</p>
               <ol style="font-size: 16px; line-height: 1.8; color: #374151; margin: 0 0 24px 0; padding-left: 20px;">
-                <li>We'll review your details within 24 hours</li>
+                <li>We'll review your details and email you to confirm scope and next steps</li>
                 <li>You'll receive a follow-up email with any questions</li>
                 <li>Once we have everything, we'll get started on your site</li>
               </ol>
@@ -136,7 +137,7 @@ function customerEmailHtml(data: FormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">
-                <a href="mailto:support@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">support@onesimplesite.co.uk</a>
+                <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
               </p>
               <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 16px 0;">
               <p style="font-size: 12px; color: #9ca3af; margin: 0;">© ${new Date().getFullYear()} OneSimpleSite. Made for local UK businesses.</p>
@@ -262,7 +263,7 @@ function adminEmailHtml(data: FormData): string {
                 <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
               </p>
               <p style="font-size: 14px; color: #6b7280; margin: 0;">
-                support@onesimplesite.co.uk
+                hello@onesimplesite.co.uk
               </p>
             </td>
           </tr>
@@ -275,65 +276,70 @@ function adminEmailHtml(data: FormData): string {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Only allow POST
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== "POST") return json(res, 405, { error: "Method not allowed" });
+  if (!originAllowed(req)) return json(res, 403, { error: "Forbidden" });
+
+  const rl = rateLimit(`brief:${clientIp(req)}`, 5, 10 * 60_000);
+  if (!rl.ok) {
+    res.setHeader("Retry-After", String(rl.retryAfter));
+    return json(res, 429, { error: "Too many attempts. Please wait a few minutes and try again." });
   }
 
-  // Check for API key
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY not configured");
-    return res.status(500).json({ error: "Email service not configured" });
+    return json(res, 503, { error: "Sending isn't available right now. Please email us instead." });
   }
 
+  // Honeypot: pretend success so bots learn nothing, but send nothing.
+  if (typeof req.body?.company_site === "string" && req.body.company_site.length > 0) {
+    return json(res, 200, { success: true });
+  }
+
+  const parsed = briefSchema.safeParse(req.body);
+  if (!parsed.success) {
+    const fields: Record<string, string> = {};
+    for (const issue of parsed.error.issues) {
+      const key = String(issue.path[0] ?? "form");
+      fields[key] ??= issue.message;
+    }
+    return json(res, 400, { error: "Some details need fixing.", fields });
+  }
+
+  const data: FormData = {
+    ...parsed.data,
+    phone: parsed.data.phone || undefined,
+    websiteUrl: parsed.data.websiteUrl || undefined,
+    details: parsed.data.details || undefined,
+  };
+  const pkg = getPackageInfo(data.selectedPackage);
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   try {
-    const data: FormData = req.body;
-
-    // Basic validation
-    if (!data.email || !data.name || !data.businessName || !data.businessDescription) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    const pkg = getPackageInfo(data.selectedPackage);
-
-    // Send customer confirmation email
-    const { data: customerEmailData, error: customerEmailError } = await resend.emails.send({
-      from: FROM_EMAIL,
-      to: data.email,
-      subject: `Thanks for your enquiry${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : ""}`,
-      html: customerEmailHtml(data),
-    });
-
-    if (customerEmailError) {
-      console.error("Failed to send customer confirmation email:", customerEmailError);
-      return res.status(500).json({ error: "Failed to send confirmation email", details: customerEmailError.message });
-    }
-
-    // Send admin notification email
-    const { data: adminEmailData, error: adminEmailError } = await resend.emails.send({
+    // The owner's notification is the lead, so it goes first and must succeed.
+    const admin = await resend.emails.send({
       from: FROM_EMAIL,
       to: ADMIN_EMAIL,
       replyTo: data.email,
-      subject: `New Enquiry: ${data.businessName}${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : " (needs help choosing)"}`,
+      subject: oneLine(`New Enquiry: ${data.businessName}${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : " (needs help choosing)"}`),
       html: adminEmailHtml(data),
     });
-
-    if (adminEmailError) {
-      console.error("Failed to send admin notification email:", adminEmailError);
-      return res.status(500).json({ error: "Failed to send admin notification", details: adminEmailError.message });
+    if (admin.error) {
+      console.error("Failed to send admin notification:", admin.error.message);
+      return json(res, 502, { error: "We couldn't send your brief. Your answers are saved here, so you can try again or email us." });
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Emails sent successfully",
-      customerEmailId: customerEmailData?.id,
-      adminEmailId: adminEmailData?.id,
+    // The customer's copy is a courtesy: if it fails, the enquiry still reached us.
+    const customer = await resend.emails.send({
+      from: FROM_EMAIL,
+      to: data.email,
+      subject: oneLine(`Thanks for your enquiry${pkg.name !== "Not sure yet" ? ` - ${pkg.name}` : ""}`),
+      html: customerEmailHtml(data),
     });
+    if (customer.error) console.error("Failed to send customer copy:", customer.error.message);
+
+    return json(res, 200, { success: true, copySent: !customer.error });
   } catch (error) {
-    console.error("Error sending emails:", error);
-    return res.status(500).json({
-      error: "Failed to send emails",
-      details: error instanceof Error ? error.message : "Unknown error",
-    });
+    console.error("submit-form failed:", error instanceof Error ? error.message : error);
+    return json(res, 502, { error: "We couldn't send your brief. Your answers are saved here, so you can try again or email us." });
   }
 }

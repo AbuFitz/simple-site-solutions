@@ -1,4 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
+import { LegalNotice } from "@/components/LegalNotice";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -6,6 +8,7 @@ import { Link } from "react-router-dom";
 export default function Privacy() {
   return (
     <Layout>
+      <Seo path="/privacy" />
       <section className="pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 relative">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10">
@@ -21,6 +24,8 @@ export default function Privacy() {
               How we collect, use, and protect your personal information.
             </p>
           </motion.div>
+
+          <LegalNotice />
 
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
@@ -71,7 +76,10 @@ export default function Privacy() {
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   We do not sell, trade, or rent your personal information to third parties. 
                   We may share information with trusted service providers who assist us in operating our business 
-                  (e.g., payment processors, hosting providers), subject to confidentiality agreements.
+                  (for example Stripe if you pay online, Resend to deliver email, and our hosting provider), subject to confidentiality agreements. The project brief you send us is emailed to us and, as a courtesy, a copy is emailed to you.
+                </p>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
+                  While you fill in the project brief we keep a draft of your answers in your own browser (local storage) for up to 7 days so a refresh doesn't lose them. It isn't sent to us until you submit, and it is deleted when you submit or choose "Start again".
                 </p>
               </section>
 

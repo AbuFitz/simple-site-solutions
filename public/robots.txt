@@ -1,20 +1,8 @@
-# OneSimpleSite - Robots.txt
-# https://onesimplesite.co.uk
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# OneSimpleSite robots.txt
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /onboard
+Disallow: /checkout/
 
-# Sitemap location
 Sitemap: https://onesimplesite.co.uk/sitemap.xml

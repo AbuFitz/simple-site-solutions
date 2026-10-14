@@ -4,162 +4,37 @@ import { DottedGrid } from "@/components/ui/DottedGrid";
 import { CTASection } from "@/components/CTASection";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
-import { Helmet } from "react-helmet-async";
+import { Seo, breadcrumb } from "@/components/seo/Seo";
+import { addons, hosting, packages } from "@/data/packages";
+import { DELIVERY_NOTE } from "@/data/site";
 
-const packages = [
-  {
-    id: "starter",
-    name: "The Starter",
-    price: "199",
-    tagline: "Get online properly",
-    ideal: "New businesses & sole traders",
-    features: [
-      "Up to 3 pages",
-      "Professional copywriting",
-      "Mobile-first design",
-      "Contact form + WhatsApp",
-      "Google Maps",
-      "Basic SEO",
-      "SSL + Speed optimised",
-      "1 revision round",
-    ],
-    delivery: "5–7 days",
-    payment: "Upfront",
-  },
-  {
-    id: "sorted",
-    name: "The Sorted",
-    price: "399",
-    tagline: "Look established, win trust",
-    ideal: "Growing businesses",
-    popular: true,
-    features: [
-      "Up to 6 pages",
-      "Everything in Starter, plus:",
-      "Conversion-focused layout",
-      "Reviews & trust signals",
-      "Booking system included",
-      "Full on-page SEO",
-      "Free domain (1st year)",
-      "Business email setup",
-      "2 revision rounds",
-    ],
-    delivery: "7–10 days",
-    payment: "50% upfront",
-  },
-  {
-    id: "works",
-    name: "The Works",
-    price: "649",
-    tagline: "Compete seriously, scale",
-    ideal: "Established businesses",
-    features: [
-      "Up to 10 pages",
-      "Everything in Sorted, plus:",
-      "SEO-led architecture",
-      "Location pages for local SEO",
-      "Blog setup + 1 post",
-      "Google Analytics setup",
-      "Advanced booking",
-      "Full legal pages",
-      "3 revision rounds",
-    ],
-    delivery: "10–14 days",
-    payment: "50% upfront",
-  },
+const comparison: { label: string; values: [string, string, string] }[] = [
+  { label: "Pages", values: ["Up to 3", "Up to 6", "Up to 10"] },
+  { label: "Copywriting", values: ["Included", "Included", "Included"] },
+  { label: "Contact form + WhatsApp, Google Maps", values: ["Included", "Included", "Included"] },
+  { label: "SEO", values: ["Basic", "Full on-page", "SEO-led structure"] },
+  { label: "Booking system", values: ["—", "Included", "Advanced"] },
+  { label: "Reviews & trust signals", values: ["—", "Included", "Included"] },
+  { label: "Free domain (1st year)", values: ["—", "Included", "Included"] },
+  { label: "Business email setup", values: ["—", "Included", "Included"] },
+  { label: "Location pages for local SEO", values: ["—", "—", "Included"] },
+  { label: "Blog setup + 1 post", values: ["—", "—", "Included"] },
+  { label: "Google Analytics setup", values: ["—", "—", "Included"] },
+  { label: "Full legal pages", values: ["—", "—", "Included"] },
+  { label: "Revision rounds", values: ["1", "2", "3"] },
+  { label: "Estimated delivery", values: ["5–7 days", "7–10 days", "10–14 days"] },
+  { label: "Payment", values: ["Upfront", "50% upfront", "50% upfront"] },
 ];
-
-const addons = [
-  { name: "Logo Design", price: "49" },
-  { name: "Google Business Setup", price: "39" },
-  { name: "Booking System", price: "39" },
-  { name: "Email Templates ×3", price: "29" },
-  { name: "SEO Audit Report", price: "59" },
-  { name: "Legal Pages Pack", price: "19" },
-];
-
-const hosting = {
-  name: "Keep It Running",
-  price: "19",
-  features: [
-    "Website hosting & domain",
-    "SSL certificate",
-    "Weekly backups",
-    "Security monitoring",
-    "Up to 5 content updates/month",
-    "Priority support",
-  ],
-};
-
-// JSON-LD structured data for SEO
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  name: "Web Design Packages & Pricing | OneSimpleSite",
-  description: "Professional website packages for UK local businesses. The Starter £199, The Sorted £399, The Works £649. No hidden fees.",
-  url: "https://onesimplesite.co.uk/packages",
-  mainEntity: {
-    "@type": "ItemList",
-    itemListElement: packages.map((pkg, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      item: {
-        "@type": "Product",
-        name: pkg.name,
-        description: pkg.tagline,
-        offers: {
-          "@type": "Offer",
-          price: pkg.price,
-          priceCurrency: "GBP",
-          availability: "https://schema.org/InStock",
-        },
-      },
-    })),
-  },
-  provider: {
-    "@type": "LocalBusiness",
-    name: "OneSimpleSite",
-    url: "https://onesimplesite.co.uk",
-    email: "support@onesimplesite.co.uk",
-    areaServed: {
-      "@type": "Country",
-      name: "United Kingdom",
-    },
-    priceRange: "£199 - £649",
-  },
-};
 
 export default function Packages() {
   return (
     <Layout>
-      <Helmet>
-        <title>Web Design Packages & Pricing | From £199 | OneSimpleSite</title>
-        <meta
-          name="description"
-          content="Affordable web design packages for UK local businesses. The Starter £199, The Sorted £399, The Works £649. Professional websites with SEO, mobile-first design, and no hidden fees. Get online in 5-14 days."
-        />
-        <meta
-          name="keywords"
-          content="web design prices UK, website cost small business, affordable web design, local business website, website packages UK, cheap website design, professional website cost, web design pricing, small business website cost, tradesman website"
-        />
-        <link rel="canonical" href="https://onesimplesite.co.uk/packages" />
-
-        {/* Open Graph */}
-        <meta property="og:title" content="Web Design Packages | From £199 | OneSimpleSite" />
-        <meta property="og:description" content="Professional websites for UK local businesses. Simple pricing, no hidden fees. Get online in days, not months." />
-        <meta property="og:url" content="https://onesimplesite.co.uk/packages" />
-        <meta property="og:type" content="website" />
-
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Web Design Packages | From £199" />
-        <meta name="twitter:description" content="Professional websites for UK local businesses. Simple pricing, no hidden fees." />
-
-        {/* Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      </Helmet>
+      <Seo path="/packages"
+        jsonLd={breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "Packages", path: "/packages" },
+        ])}
+      />
 
       {/* Hero - Clean & Direct */}
       <section className="pt-24 pb-8 sm:pt-32 sm:pb-12 md:pt-36 md:pb-16 relative">
@@ -175,7 +50,7 @@ export default function Packages() {
               Simple pricing for <span className="text-primary">local businesses</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground">
-              One-time payment. No monthly fees for the website itself. No surprises.
+              A fixed price for each package. Optional extras and monthly care are priced separately, below.
             </p>
           </motion.div>
         </div>
@@ -189,7 +64,7 @@ export default function Packages() {
               <motion.article
                 key={pkg.id}
                 className={`relative rounded-2xl p-6 sm:p-8 flex flex-col ${
-                  pkg.popular
+                  pkg.recommended
                     ? "bg-primary/5 border-2 border-primary"
                     : "bg-card border border-border"
                 }`}
@@ -200,10 +75,10 @@ export default function Packages() {
                 itemScope
                 itemType="https://schema.org/Product"
               >
-                {pkg.popular && (
+                {pkg.recommended && (
                   <div className="absolute -top-3 left-6">
                     <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-primary text-primary-foreground rounded-full">
-                      Most Popular
+                      Recommended
                     </span>
                   </div>
                 )}
@@ -235,7 +110,7 @@ export default function Packages() {
                 <Link
                   to="/start"
                   className={`w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-semibold transition-all ${
-                    pkg.popular
+                    pkg.recommended
                       ? "bg-primary text-primary-foreground hover:brightness-110"
                       : "bg-secondary text-foreground border border-border hover:bg-muted"
                   }`}
@@ -250,6 +125,39 @@ export default function Packages() {
                 </p>
               </motion.article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison */}
+      <section className="pb-16 sm:pb-20">
+        <div className="content-width">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-center">
+            Compare <span className="text-primary">packages</span>
+          </h2>
+          <p className="text-muted-foreground text-sm text-center mb-6">A dash means it isn't included. Anything not listed isn't included either; ask if you're unsure.</p>
+          <div role="region" aria-label="Package comparison table" tabIndex={0} className="overflow-x-auto rounded-xl border border-border">
+            <table className="w-full min-w-[34rem] text-sm">
+              <caption className="sr-only">What each package includes</caption>
+              <thead>
+                <tr className="bg-card text-left">
+                  <th scope="col" className="p-3 font-semibold">&nbsp;</th>
+                  {packages.map((p) => (
+                    <th key={p.id} scope="col" className="p-3 font-semibold">{p.name}<span className="block font-normal text-muted-foreground">£{p.price}</span></th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {comparison.map((row) => (
+                  <tr key={row.label} className="border-t border-border">
+                    <th scope="row" className="p-3 text-left font-medium">{row.label}</th>
+                    {row.values.map((v, i) => (
+                      <td key={i} className="p-3 text-muted-foreground">{v === "—" ? <><span aria-hidden="true">—</span><span className="sr-only">Not included</span></> : v}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -317,7 +225,7 @@ export default function Packages() {
             </div>
 
             <p className="text-xs text-muted-foreground mt-4">
-              No contract. Cancel anytime. First month free with any package.
+              Optional. Either side can end it with 30 days' notice (see our terms).
             </p>
           </motion.div>
         </div>
@@ -328,19 +236,16 @@ export default function Packages() {
         <div className="content-width">
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" /> No hidden fees
+              <Check className="w-4 h-4 text-primary" /> Prices shown up front
             </span>
             <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" /> SEO included
+              <Check className="w-4 h-4 text-primary" /> Mobile-first design
             </span>
             <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" /> Mobile-first
+              <Check className="w-4 h-4 text-primary" /> Built for UK businesses
             </span>
             <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" /> Fast delivery
-            </span>
-            <span className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-primary" /> UK-based
+              <Check className="w-4 h-4 text-primary" /> {DELIVERY_NOTE}
             </span>
           </div>
         </div>
@@ -350,7 +255,7 @@ export default function Packages() {
       <CTASection
         title="Ready to get"
         highlightedText="started?"
-        description="Most businesses choose The Sorted. Not sure? We'll help you pick."
+        description="Not sure which package fits? Send a short brief and we'll suggest one."
         primaryButtonText="Start Your Project"
         primaryButtonLink="/start"
       />

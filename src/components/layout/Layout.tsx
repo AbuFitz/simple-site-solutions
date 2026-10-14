@@ -18,8 +18,9 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="page-container overflow-x-hidden">
+      <a href="#main" className="skip-link">Skip to main content</a>
       <Navbar />
-      <main>{children}</main>
+      <main id="main" tabIndex={-1}>{children}</main>
       <CookieConsent />
       <Footer />
     </div>

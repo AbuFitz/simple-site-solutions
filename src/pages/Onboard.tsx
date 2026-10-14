@@ -1,3 +1,4 @@
+import { Seo } from "@/components/seo/Seo";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Loader2 } from "lucide-react";
@@ -174,7 +175,7 @@ const ctaOptions = [
 
 const packages = [
   { id: "starter", name: "The Starter", price: "£199" },
-  { id: "sorted", name: "The Sorted", price: "£399", popular: true },
+  { id: "sorted", name: "The Sorted", price: "£399", recommended: true },
   { id: "works", name: "The Works", price: "£649" },
 ];
 
@@ -272,6 +273,7 @@ export default function Onboard() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Seo path="/onboard" />
         <motion.div
           className="max-w-md w-full text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -283,7 +285,7 @@ export default function Onboard() {
           <h1 className="text-2xl font-bold mb-3">All done, thank you!</h1>
           <p className="text-muted-foreground mb-6">
             We've received everything we need and sent you a confirmation email.
-            We'll be in touch within 24 hours to get your project started.
+            We'll email you with next steps to get your project started.
           </p>
           <p className="text-sm text-muted-foreground">
             Questions? Email{" "}
@@ -298,6 +300,7 @@ export default function Onboard() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo path="/onboard" />
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -1272,9 +1275,9 @@ export default function Onboard() {
                           </div>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">{pkg.name}</span>
-                            {pkg.popular && (
+                            {pkg.recommended && (
                               <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-primary/20 text-primary">
-                                Popular
+                                Recommended
                               </span>
                             )}
                           </div>

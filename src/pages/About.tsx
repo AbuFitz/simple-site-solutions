@@ -1,174 +1,64 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Heart, Target, Users, Award } from "lucide-react";
+import { Seo, breadcrumb } from "@/components/seo/Seo";
+import { DottedGrid } from "@/components/ui/DottedGrid";
 
-const values = [
-  {
-    icon: Heart,
-    title: "Simplicity First",
-    description: "We believe great websites don't need to be complicated. Clean, clear, and effective.",
-  },
-  {
-    icon: Target,
-    title: "Results-Focused",
-    description: "Every design decision we make is aimed at getting you more customers.",
-  },
-  {
-    icon: Users,
-    title: "Personal Service",
-    description: "You're not a ticket number. You'll work directly with our team.",
-  },
-  {
-    icon: Award,
-    title: "Quality Always",
-    description: "We take pride in every website we build. Your success is our reputation.",
-  },
-];
-
-const team = [
-  {
-    name: "Alex Thompson",
-    role: "Founder & Lead Developer",
-    bio: "Former agency developer who saw too many local businesses being overcharged for simple websites. Started OneSimpleSite to change that.",
-  },
-  {
-    name: "Emma Williams",
-    role: "Design Lead",
-    bio: "10 years of experience in web design. Passionate about creating beautiful, user-friendly experiences that convert visitors into customers.",
-  },
-  {
-    name: "Marcus Chen",
-    role: "SEO Specialist",
-    bio: "Helps local businesses get found online. Has helped over 200 businesses improve their Google rankings.",
-  },
+const principles = [
+  { title: "Fixed prices", text: "Three packages with the price, page count and inclusions written down before you start." },
+  { title: "Planned layouts", text: "We start from a layout planned for your kind of business and build it around your details, instead of designing from a blank page." },
+  { title: "Plain English", text: "No jargon. We tell you what we need from you, and what happens next." },
+  { title: "Nothing invented", text: "No made-up reviews, client logos or results on this site. If we can't show it, we don't say it." },
 ];
 
 export default function About() {
   return (
     <Layout>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary/50 to-background py-20">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-              We're on a Mission to Help{" "}
-              <span className="gradient-text">Local Businesses Thrive</span>
-            </h1>
-            <p className="text-lg text-muted-foreground md:text-xl">
-              OneSimpleSite was founded with one goal: make professional websites accessible to every local business in the UK.
-            </p>
-          </div>
+      <Seo path="/about"
+        jsonLd={breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ])}
+      />
+      <section className="relative pt-24 pb-10 sm:pt-32 sm:pb-14">
+        <DottedGrid className="opacity-30" spacing={32} />
+        <div className="content-width relative z-10 max-w-3xl">
+          <h1 className="text-headline">
+            About <span className="text-primary">OneSimpleSite</span>
+          </h1>
+          <p className="text-body-lg mt-4">
+            We build websites for UK local businesses: trades, mechanics, cleaners, barbers, tutors, small shops and similar. The idea is simple: a clear fixed price, a layout planned for your kind of business, and a short process.
+          </p>
+          <p className="text-body-lg mt-4">
+            It suits you if you want a clean, working site without managing a design project. It doesn't suit you if you want full creative control or a custom web app; the <Link className="underline underline-offset-4 hover:text-foreground" to="/faq">FAQ</Link> explains the trade-off.
+          </p>
         </div>
       </section>
 
-      {/* Story */}
-      <section className="section">
-        <div className="container">
-          <div className="mx-auto max-w-3xl">
-            <h2 className="mb-6 text-2xl font-bold md:text-3xl">Our Story</h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                We started OneSimpleSite after seeing the same problem over and over: talented tradespeople and local business owners being quoted thousands of pounds for basic websites, or worse, ending up with terrible DIY sites that hurt their credibility.
-              </p>
-              <p>
-                A plumber shouldn't have to become a web developer. An electrician shouldn't need to understand SEO. And no local business should pay agency prices for a simple, effective website.
-              </p>
-              <p>
-                That's why we created a straightforward service: professional websites at fair prices, delivered fast, with no technical jargon or hidden costs. Since launching in 2019, we've helped over 500 UK businesses establish their online presence and grow.
-              </p>
-              <p className="font-medium text-foreground">
-                We believe every local business deserves a website they can be proud of.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="section bg-muted/30">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">What We Stand For</h2>
-          </div>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {values.map((value) => (
-              <div key={value.title} className="text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
-                  <value.icon className="h-7 w-7 text-primary" />
-                </div>
-                <h3 className="mb-2 text-lg font-semibold">{value.title}</h3>
-                <p className="text-sm text-muted-foreground">{value.description}</p>
-              </div>
+      <section className="pb-12">
+        <div className="content-width">
+          <h2 className="text-title mb-6">How we work</h2>
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {principles.map((p) => (
+              <li key={p.title} className="bordered-section bg-card p-5">
+                <h3 className="font-semibold">{p.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{p.text}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* Team */}
-      <section className="section">
-        <div className="container">
-          <div className="section-header">
-            <h2 className="section-title">Meet the Team</h2>
-            <p className="section-description">
-              A small, dedicated team focused on delivering exceptional results.
-            </p>
-          </div>
-          
-          <div className="grid gap-8 md:grid-cols-3">
-            {team.map((member) => (
-              <div key={member.name} className="card-elevated text-center">
-                <div className="mx-auto mb-4 h-24 w-24 rounded-full bg-muted" />
-                <h3 className="text-lg font-semibold">{member.name}</h3>
-                <p className="mb-3 text-sm text-primary">{member.role}</p>
-                <p className="text-sm text-muted-foreground">{member.bio}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="border-y border-border bg-muted/30 py-12">
-        <div className="container">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary md:text-4xl">500+</div>
-              <div className="mt-1 text-sm text-muted-foreground">Websites Built</div>
+      <section className="pb-16 sm:pb-24">
+        <div className="content-width">
+          <div className="bordered-section flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-title">See what we've built</h2>
+              <p className="mt-1 text-muted-foreground">Real projects, with what was built for each.</p>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary md:text-4xl">5</div>
-              <div className="mt-1 text-sm text-muted-foreground">Years Experience</div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link to="/work" className="btn-outline btn-md min-h-[44px] justify-center">Our work</Link>
+              <Link to="/start" className="btn-primary btn-md min-h-[44px] justify-center !text-background">Start a project</Link>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary md:text-4xl">98%</div>
-              <div className="mt-1 text-sm text-muted-foreground">Client Satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary md:text-4xl">100+</div>
-              <div className="mt-1 text-sm text-muted-foreground">5-Star Reviews</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="section">
-        <div className="container">
-          <div className="mx-auto max-w-3xl rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12">
-            <h2 className="mb-4 text-2xl font-bold md:text-3xl">
-              Ready to Work With Us?
-            </h2>
-            <p className="mb-6 opacity-90">
-              Let's chat about your business and how we can help you grow online.
-            </p>
-            <Button size="lg" variant="secondary" asChild>
-              <Link to="/contact">
-                Get in Touch
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
           </div>
         </div>
       </section>

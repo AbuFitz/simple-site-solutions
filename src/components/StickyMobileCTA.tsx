@@ -32,7 +32,7 @@ export function StickyMobileCTA() {
       <div className="bg-background/95 backdrop-blur-md border-t-2 border-primary px-4 py-3 safe-area-bottom">
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-muted-foreground">From £199 • 5-10 day delivery</p>
+            <p className="text-xs text-muted-foreground">From £199 • Fixed prices</p>
             <p className="text-sm font-semibold truncate">Get your website live</p>
           </div>
           <Link

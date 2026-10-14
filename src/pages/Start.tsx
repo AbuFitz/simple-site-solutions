@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { FlowPreview } from "@/components/preview/FlowPreview";
 import { encodeInput, mergeFlowInput, recallPreview } from "@/lib/preview/generate";
@@ -6,130 +6,136 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
+import { PayOnline } from "@/components/PayOnline";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { addons as addonData, packages as packageData } from "@/data/packages";
+import { briefFieldsSchema } from "@/lib/brief-schema";
+import { clearDraft, loadDraft, saveDraft } from "@/lib/draft";
+import { REPLY_COPY } from "@/data/site";
 
-const formSchema = z.object({
-  businessName: z.string().min(2, "Business name is required"),
-  name: z.string().min(2, "Your name is required"),
-  email: z.string().email("Please enter a valid email"),
-  phone: z.string().optional(),
-  businessDescription: z.string().min(5, "Please tell us what your business does"),
-  websiteUrl: z.string().optional(),
-  details: z.string().optional(),
-});
-
+const formSchema = briefFieldsSchema;
 type FormData = z.infer<typeof formSchema>;
 
 function StepHeader({
   title,
   description,
   progress,
+  headingRef,
 }: {
   title: React.ReactNode;
   description: string;
   progress: number;
+  headingRef?: React.Ref<HTMLHeadingElement>;
 }) {
   return (
     <div className="mb-5 sm:mb-7">
-      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3">
+      <h1 ref={headingRef} tabIndex={-1} className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3 focus:outline-none">
         {title}
       </h1>
       <p className="text-sm sm:text-base md:text-lg text-muted-foreground">{description}</p>
 
       <div className="mt-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-widest">
-            Progress
-          </span>
-          <span className="text-[10px] sm:text-xs font-semibold text-foreground">{progress}%</span>
+          <span className="text-xs text-muted-foreground uppercase tracking-widest">Progress</span>
+          <span className="text-xs font-semibold text-foreground">{progress}%</span>
         </div>
-        <Progress value={progress} className="h-1 sm:h-1.5" />
+        <Progress value={progress} aria-label="Project brief progress" className="h-1.5" />
       </div>
     </div>
   );
 }
 
-function FormError({ message }: { message?: string }) {
-  if (!message) return null;
+function Field({
+  id,
+  label,
+  required,
+  hint,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  required?: boolean;
+  hint?: string;
+  error?: string;
+  children: (a: { id: string; "aria-invalid": boolean; "aria-describedby"?: string; "aria-required"?: boolean }) => React.ReactNode;
+}) {
+  const describedBy = [hint ? `${id}-hint` : "", error ? `${id}-error` : ""].filter(Boolean).join(" ") || undefined;
   return (
-    <motion.p
-      initial={{ opacity: 0, y: -4 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="text-[10px] sm:text-xs text-destructive mt-1.5"
-    >
-      {message}
-    </motion.p>
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium mb-1.5">
+        {label}
+        {required ? <span className="text-muted-foreground font-normal"> (required)</span> : <span className="text-muted-foreground font-normal"> (optional)</span>}
+      </label>
+      {hint && (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground mb-1.5">
+          {hint}
+        </p>
+      )}
+      {children({ id, "aria-invalid": Boolean(error), "aria-describedby": describedBy, "aria-required": required })}
+      {error && (
+        <p id={`${id}-error`} role="alert" className="text-sm text-destructive mt-1.5">
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
 
 const packages = [
-  {
-    id: "starter",
-    name: "The Starter",
-    price: "£199",
-    description: "Everything you need to get online properly",
-  },
-  {
-    id: "sorted",
-    name: "The Sorted",
-    price: "£399",
-    description: "Look established and win trust",
-    popular: true,
-  },
-  {
-    id: "works",
-    name: "The Works",
-    price: "£649",
-    description: "Compete seriously and scale",
-  },
-  {
-    id: "unsure",
-    name: "Not sure yet",
-    price: "",
-    description: "Help me choose the right package",
-  },
+  ...packageData.map((p) => ({
+    id: p.id as string,
+    name: p.name,
+    price: `£${p.price}`,
+    description: `${p.tagline} · up to ${p.pages} pages · ${p.delivery}`,
+    recommended: p.recommended,
+  })),
+  { id: "unsure", name: "Not sure yet", price: "", description: "Help me choose the right package", recommended: false },
 ];
 
-const availableAddons = [
-  { id: "logo", name: "Logo Design", price: "£49" },
-  { id: "google-business", name: "Google Business Profile Setup", price: "£39" },
-  { id: "booking", name: "Booking System Setup", price: "£39" },
-  { id: "email-templates", name: "Extra Email Templates (×3)", price: "£29" },
-  { id: "seo-audit", name: "SEO Audit Report", price: "£59" },
-  { id: "legal-pages", name: "Legal Pages Pack", price: "£19" },
-];
+const availableAddons = addonData.map((a) => ({ id: a.id, name: a.name, price: `£${a.price}` }));
+
+const FIELD_NAMES = ["businessName", "name", "email", "phone", "businessDescription", "websiteUrl", "details"] as const;
 
 export default function Start() {
   const [params] = useSearchParams();
   const prefillPackage = params.get("package");
-  const [step, setStep] = useState(1);
-  const [selectedPackage, setSelectedPackage] = useState<string | null>(["starter", "sorted", "works"].includes(prefillPackage ?? "") ? prefillPackage : null);
-  const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
+  const draft = useMemo(() => loadDraft(), []);
+  const [step, setStep] = useState(() => (draft && !prefillPackage ? draft.step : 1));
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(
+    packages.some((p) => p.id === prefillPackage) ? prefillPackage : draft?.selectedPackage ?? null
+  );
+  const [selectedAddons, setSelectedAddons] = useState<string[]>(draft?.selectedAddons ?? []);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [attachPreview, setAttachPreview] = useState(true);
+  const [restored] = useState(Boolean(draft));
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const firstRender = useRef(true);
   const stored = useMemo(() => recallPreview(), []);
 
   const {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      businessName: (params.get("business") ?? "").slice(0, 100),
-      name: "",
-      email: stored?.email ?? "",
-      phone: stored?.phone ?? "",
-      businessDescription: (params.get("type") ?? "").slice(0, 200),
-      websiteUrl: "",
-      details: "",
+      businessName: (params.get("business") ?? draft?.fields.businessName ?? "").slice(0, 100),
+      name: draft?.fields.name ?? "",
+      email: draft?.fields.email ?? stored?.email ?? "",
+      phone: draft?.fields.phone ?? stored?.phone ?? "",
+      businessDescription: (params.get("type") ?? draft?.fields.businessDescription ?? "").slice(0, 200),
+      websiteUrl: draft?.fields.websiteUrl ?? "",
+      details: draft?.fields.details ?? "",
     },
   });
 
@@ -142,38 +148,67 @@ export default function Start() {
   const showPreview = step >= 2 || Boolean(stored) || Boolean(params.get("business"));
   const previewLink = `/preview?${encodeInput(previewInput)}`;
 
+  // Keep the draft in this browser so a refresh or an accidental close doesn't lose the brief
+  const values = watch();
+  useEffect(() => {
+    if (isSubmitted) return;
+    const fields: Record<string, string> = {};
+    FIELD_NAMES.forEach((k) => {
+      fields[k] = String((values as Record<string, unknown>)[k] ?? "");
+    });
+    saveDraft({ step, selectedPackage, selectedAddons, fields });
+  }, [values, step, selectedPackage, selectedAddons, isSubmitted]);
+
+  // Move focus to the new step's heading so keyboard and screen-reader users land in the right place
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [step, isSubmitted]);
+
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     setSubmitError(null);
+    const form = document.getElementById("brief-form") as HTMLFormElement | null;
+    const honeypot = (form?.elements.namedItem("company_site") as HTMLInputElement | null)?.value ?? "";
 
     try {
       const response = await fetch("/api/submit-form", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
-          details: attachPreview && showPreview
-            ? `${(data.details ?? "").trim()}${data.details ? "\n\n" : ""}Preview they saw: ${window.location.origin}${previewLink}`.slice(0, 1900)
-            : data.details,
-          selectedPackage,
+          details:
+            attachPreview && showPreview
+              ? `${(data.details ?? "").trim()}${data.details ? "\n\n" : ""}Preview they saw: ${window.location.origin}${previewLink}`.slice(0, 2000)
+              : data.details,
+          selectedPackage: selectedPackage ?? "unsure",
           selectedAddons,
+          company_site: honeypot,
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to submit form");
+        if (response.status === 400 && errorData.fields) {
+          for (const [field, message] of Object.entries(errorData.fields as Record<string, string>)) {
+            if ((FIELD_NAMES as readonly string[]).includes(field)) setError(field as keyof FormData, { message });
+          }
+          throw new Error("Some details need fixing. Check the highlighted fields.");
+        }
+        if (response.status === 429) throw new Error("Too many attempts. Please wait a few minutes and try again.");
+        throw new Error(errorData.error || "We couldn't send your brief. Your answers are saved here, so you can try again or email us.");
       }
 
+      clearDraft();
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Form submission error:", error);
       setSubmitError(
-        error instanceof Error
+        error instanceof Error && error.message
           ? error.message
-          : "Something went wrong. Please try again or email us directly."
+          : "We couldn't send your brief. Your answers are saved here, so you can try again or email us."
       );
     } finally {
       setIsSubmitting(false);
@@ -197,6 +232,7 @@ export default function Start() {
 
   return (
     <Layout>
+      <Seo path="/start" />
       <section className="pt-20 pb-4 sm:pt-20 sm:pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 relative min-h-[calc(100dvh-3.5rem)] flex flex-col justify-start">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className={`content-width relative z-10 flex-1 flex flex-col mx-auto max-w-xl sm:max-w-2xl ${showPreview && !isSubmitted ? "lg:max-w-6xl" : "lg:max-w-3xl xl:max-w-4xl"}`}>
@@ -230,14 +266,18 @@ export default function Start() {
                       }
                       description="Select the package that fits your business needs."
                       progress={getProgressValue()}
+                      headingRef={headingRef}
                     />
 
-                    <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+                    <div role="radiogroup" aria-label="Package" className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                       {packages.map((pkg) => (
                         <button
                           key={pkg.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={selectedPackage === pkg.id}
                           onClick={() => setSelectedPackage(pkg.id)}
-                          className={`relative w-full p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl text-left transition-all flex items-center justify-between border-2 bg-card ${
+                          className={`relative w-full min-h-[44px] p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl text-left transition-all flex items-center justify-between border-2 bg-card ${
                             selectedPackage === pkg.id
                               ? "border-primary"
                               : "border-border hover:border-muted-foreground/50"
@@ -246,13 +286,13 @@ export default function Start() {
                           <div className="min-w-0 flex-1 mr-2 sm:mr-3">
                             <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1 flex-wrap">
                               <span className="text-sm sm:text-base md:text-lg font-bold">{pkg.name}</span>
-                              {pkg.popular && (
+                              {pkg.recommended && (
                                 <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[9px] sm:text-[10px] font-medium border border-primary/30">
-                                  Most Popular
+                                  Recommended
                                 </span>
                               )}
                             </div>
-                            <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground truncate">
+                            <p className="text-xs sm:text-sm text-muted-foreground">
                               {pkg.description}
                             </p>
                           </div>
@@ -279,6 +319,7 @@ export default function Start() {
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => setStep(2)}
                       disabled={!canProceedStep1}
                       className="btn-primary btn-md sm:btn-lg w-full sm:w-auto justify-center disabled:opacity-50 disabled:cursor-not-allowed"
@@ -304,14 +345,17 @@ export default function Start() {
                       }
                       description="Optional extras to enhance your website. Select any or skip."
                       progress={getProgressValue()}
+                      headingRef={headingRef}
                     />
 
                     <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
                       {availableAddons.map((addon) => (
                         <button
                           key={addon.id}
+                          type="button"
+                          aria-pressed={selectedAddons.includes(addon.id)}
                           onClick={() => toggleAddon(addon.id)}
-                          className={`p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all border-2 bg-card ${
+                          className={`min-h-[44px] p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all border-2 bg-card ${
                             selectedAddons.includes(addon.id)
                               ? "border-primary"
                               : "border-border hover:border-muted-foreground/50"
@@ -331,7 +375,7 @@ export default function Start() {
                               )}
                             </div>
                           </div>
-                          <span className="text-[10px] sm:text-xs text-primary font-medium">{addon.price}</span>
+                          <span className="text-xs text-primary font-medium">{addon.price}</span>
                         </button>
                       ))}
                     </div>
@@ -349,6 +393,7 @@ export default function Start() {
 
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <button
+                        type="button"
                         onClick={() => setStep(1)}
                         className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
                       >
@@ -356,6 +401,7 @@ export default function Start() {
                         Back
                       </button>
                       <button
+                        type="button"
                         onClick={() => setStep(3)}
                         className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2"
                       >
@@ -381,101 +427,67 @@ export default function Start() {
                       }
                       description="Just the basics. We'll take it from here."
                       progress={getProgressValue()}
+                      headingRef={headingRef}
                     />
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-                      <div>
-                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          Business Name *
-                        </label>
-                        <input
-                          {...register("businessName")}
-                          placeholder="e.g. Smith's Plumbing"
-                          className={`input-base text-sm ${errors.businessName ? "border-destructive focus:ring-destructive/50" : ""}`}
-                        />
-                        <FormError message={errors.businessName?.message} />
+                    <form id="brief-form" onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4 mb-6 sm:mb-8">
+                      {restored && (
+                        <p className="text-sm text-muted-foreground">
+                          We kept your earlier answers in this browser.{" "}
+                          <button
+                            type="button"
+                            className="underline underline-offset-2 hover:text-foreground min-h-[44px]"
+                            onClick={() => {
+                              clearDraft();
+                              window.location.assign("/start");
+                            }}
+                          >
+                            Start again
+                          </button>
+                        </p>
+                      )}
+                      <Field id="businessName" label="Business name" required error={errors.businessName?.message}>
+                        {(a) => <input {...a} {...register("businessName")} autoComplete="organization" placeholder="e.g. Smith's Plumbing" className="input-base text-base" />}
+                      </Field>
+
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <Field id="name" label="Your name" required error={errors.name?.message}>
+                          {(a) => <input {...a} {...register("name")} autoComplete="name" placeholder="John Smith" className="input-base text-base" />}
+                        </Field>
+                        <Field id="phone" label="Phone number" error={errors.phone?.message}>
+                          {(a) => <input {...a} {...register("phone")} type="tel" autoComplete="tel" inputMode="tel" placeholder="07XXX XXXXXX" className="input-base text-base" />}
+                        </Field>
                       </div>
 
-                      <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                            Your Name *
-                          </label>
-                          <input
-                            {...register("name")}
-                            placeholder="John Smith"
-                            className={`input-base text-sm ${errors.name ? "border-destructive focus:ring-destructive/50" : ""}`}
-                          />
-                          <FormError message={errors.name?.message} />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                            Phone Number
-                          </label>
-                          <input
-                            {...register("phone")}
-                            placeholder="07XXX XXXXXX"
-                            className={`input-base text-sm ${errors.phone ? "border-destructive focus:ring-destructive/50" : ""}`}
-                          />
-                          <FormError message={errors.phone?.message} />
-                        </div>
-                      </div>
+                      <Field id="email" label="Email address" required hint="We reply here." error={errors.email?.message}>
+                        {(a) => <input {...a} {...register("email")} type="email" autoComplete="email" placeholder="john@example.com" className="input-base text-base" />}
+                      </Field>
 
-                      <div>
-                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          Email Address *
-                        </label>
-                        <input
-                          type="email"
-                          {...register("email")}
-                          placeholder="john@example.com"
-                          className={`input-base text-sm ${errors.email ? "border-destructive focus:ring-destructive/50" : ""}`}
-                        />
-                        <FormError message={errors.email?.message} />
-                      </div>
+                      <Field id="businessDescription" label="What does your business do?" required error={errors.businessDescription?.message}>
+                        {(a) => <input {...a} {...register("businessDescription")} placeholder="e.g. Mobile mechanic, hair salon, personal trainer" className="input-base text-base" />}
+                      </Field>
 
-                      <div>
-                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          What does your business do? *
-                        </label>
-                        <input
-                          {...register("businessDescription")}
-                          placeholder="e.g. Mobile mechanic, Hair salon, Personal trainer..."
-                          className={`input-base text-sm ${errors.businessDescription ? "border-destructive focus:ring-destructive/50" : ""}`}
-                        />
-                        <FormError message={errors.businessDescription?.message} />
-                      </div>
+                      <Field id="websiteUrl" label="Current website" error={errors.websiteUrl?.message}>
+                        {(a) => <input {...a} {...register("websiteUrl")} inputMode="url" autoComplete="url" placeholder="e.g. www.yourbusiness.co.uk" className="input-base text-base" />}
+                      </Field>
 
-                      <div>
-                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          Current website URL (if you have one)
-                        </label>
-                        <input
-                          {...register("websiteUrl")}
-                          placeholder="e.g. www.yourbusiness.co.uk"
-                          className={`input-base text-sm ${errors.websiteUrl ? "border-destructive focus:ring-destructive/50" : ""}`}
-                        />
-                        <FormError message={errors.websiteUrl?.message} />
-                      </div>
+                      <Field id="details" label="Anything else we should know?" error={errors.details?.message}>
+                        {(a) => <textarea {...a} {...register("details")} placeholder="Goals, timeline, questions" rows={3} className="input-base resize-none text-base" />}
+                      </Field>
 
-                      <div>
-                        <label className="block text-[10px] sm:text-xs font-medium mb-1.5 sm:mb-2">
-                          Anything else we should know?
+                      {/* Honeypot: hidden from people and assistive tech. Bots tend to fill it in. */}
+                      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                        <label>
+                          Leave this empty
+                          <input type="text" name="company_site" tabIndex={-1} autoComplete="off" defaultValue="" />
                         </label>
-                        <textarea
-                          {...register("details")}
-                          placeholder="Tell us anything — your goals, timeline, questions..."
-                          rows={3}
-                          className={`input-base resize-none text-sm ${errors.details ? "border-destructive focus:ring-destructive/50" : ""}`}
-                        />
-                        <FormError message={errors.details?.message} />
                       </div>
 
                       {showPreview && (
-                        <label className="flex cursor-pointer items-start gap-3 text-xs text-muted-foreground sm:text-sm">
+                        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted-foreground min-h-[44px]">
                           <input
                             type="checkbox"
-                            className="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]"
+                            className="mt-0.5 h-5 w-5 accent-[hsl(var(--primary))]"
                             checked={attachPreview}
                             onChange={(e) => setAttachPreview(e.target.checked)}
                           />
@@ -483,14 +495,15 @@ export default function Start() {
                         </label>
                       )}
 
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        We use these details only to reply to your enquiry. This form doesn't take payment. See our{" "}
+                        <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">privacy policy</Link>.
+                      </p>
+
                       {submitError && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="p-3 sm:p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm"
-                        >
+                        <div role="alert" className="p-3 sm:p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
                           {submitError}
-                        </motion.div>
+                        </div>
                       )}
 
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
@@ -498,7 +511,7 @@ export default function Start() {
                           type="button"
                           onClick={() => setStep(2)}
                           disabled={isSubmitting}
-                          className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 disabled:opacity-50"
+                          className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 disabled:opacity-50 min-h-[44px]"
                         >
                           <ArrowLeft className="w-4 h-4 mr-2" />
                           Back
@@ -506,16 +519,17 @@ export default function Start() {
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-70"
+                          aria-busy={isSubmitting}
+                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-70 min-h-[44px]"
                         >
                           {isSubmitting ? (
                             <>
                               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Sending...
+                              Sending…
                             </>
                           ) : (
                             <>
-                              Submit
+                              Send my brief
                               <Send className="w-4 h-4 ml-2" />
                             </>
                           )}
@@ -544,11 +558,11 @@ export default function Start() {
                   >
                     <Check className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-primary" />
                   </motion.div>
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-2 sm:mb-3">
-                    <span className="text-primary">You're in!</span>
+                  <h1 ref={headingRef} tabIndex={-1} className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mb-2 sm:mb-3 focus:outline-none">
+                    <span className="text-primary">Brief received</span>
                   </h1>
                   <p className="text-sm sm:text-base text-muted-foreground max-w-sm mx-auto mb-4 sm:mb-6">
-                    We've sent a confirmation to your email. We'll be in touch within 24 hours.
+                    We've emailed you a copy of your brief. {REPLY_COPY} We'll confirm scope and next steps before any work starts.
                   </p>
                   <div className="inline-block p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border text-left">
                     <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Package</div>
@@ -564,6 +578,7 @@ export default function Start() {
                       </div>
                     )}
                   </div>
+                  <PayOnline packageId={selectedPackage} />
                   <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:mt-6 sm:flex-row">
                     {previewInput.name && (
                       <Link to={previewLink} className="btn-primary btn-md sm:btn-lg !text-background">

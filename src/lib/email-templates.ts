@@ -183,7 +183,7 @@ export function customerConfirmationEmail(data: FormData): string {
               </p>
 
               <ol style="font-size: 16px; line-height: 1.8; color: #374151; margin: 0 0 24px 0; padding-left: 20px;">
-                <li>We'll review your details within 24 hours</li>
+                <li>We'll review your details and email you to confirm scope and next steps</li>
                 <li>You'll receive a follow-up email with any questions</li>
                 <li>Once we have everything, we'll get started on your site</li>
               </ol>

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 
 const trustItems = [
-  "5-10 Day Delivery",
-  "Proven Layouts",
-  "Satisfaction Guarantee",
+  "Fixed Prices",
+  "Layouts For Your Trade",
+  "Plain-English Process",
   "No Endless Meetings",
 ];
 

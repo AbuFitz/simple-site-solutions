@@ -1,0 +1,99 @@
+{
+  "/accessibility": {
+    "title": "Accessibility statement | OneSimpleSite",
+    "description": "How we aim to make this website accessible, what we test, and how to report a problem."
+  },
+  "/work": {
+    "title": "Our Work | Real Sites We've Built | OneSimpleSite",
+    "description": "Websites we have built for UK businesses and our own projects, with what was built and the stack. No invented results."
+  },
+  "/contact": {
+    "title": "Contact OneSimpleSite | Questions Before You Order",
+    "description": "Ask a question before you order. Send a message or email us. To start a project, use the project brief."
+  },
+  "/checkout/cancel": {
+    "title": "Payment cancelled | OneSimpleSite",
+    "description": "You left checkout before paying. Nothing was charged."
+  },
+  "/start": {
+    "title": "Start your project | OneSimpleSite",
+    "description": "Choose a package and tell us about your business. We reply by email to confirm scope and next steps. No payment is taken on this form."
+  },
+  "/packages": {
+    "title": "Website Packages & Prices | From £199 | OneSimpleSite",
+    "description": "Three fixed-price website packages for UK local businesses: The Starter £199, The Sorted £399, The Works £649. See exactly what each includes and what costs extra."
+  },
+  "/checkout/success": {
+    "title": "Payment status | OneSimpleSite",
+    "description": "Checking your payment."
+  },
+  "/about": {
+    "title": "About OneSimpleSite | Fixed-Price Websites for UK Businesses",
+    "description": "OneSimpleSite builds fixed-price websites for UK local businesses from layouts planned for each kind of business."
+  },
+  "/": {
+    "title": "OneSimpleSite | Fixed-Price Websites for UK Local Businesses",
+    "description": "Fixed-price websites for UK local businesses, built from layouts planned for your kind of business. Packages from £199. See real work and preview your site."
+  },
+  "/how-it-works": {
+    "title": "How It Works | From Brief to Live Site | OneSimpleSite",
+    "description": "Pick a package, send your details, and we build your site from a layout planned for your kind of business. See the steps and what we need from you."
+  },
+  "/faq": {
+    "title": "FAQ | Prices, Delivery, Hosting & Refunds | OneSimpleSite",
+    "description": "Answers about package prices, delivery estimates, hosting, payment terms, add-ons and refunds for OneSimpleSite websites."
+  },
+  "/preview": {
+    "title": "Preview Your Website | OneSimpleSite",
+    "description": "Enter your business name and trade to see a preview of your website on a layout planned for your kind of business. Nothing is sent to us until you choose to."
+  },
+  "/privacy": {
+    "title": "Privacy Policy | OneSimpleSite",
+    "description": "How OneSimpleSite collects, uses and protects the personal information you give us."
+  },
+  "/terms": {
+    "title": "Terms of Service | OneSimpleSite",
+    "description": "The terms for OneSimpleSite website packages: scope, timeline, payment, hosting, changes and cancellation."
+  },
+  "/cookies": {
+    "title": "Cookie Policy | OneSimpleSite",
+    "description": "Which cookies and browser storage OneSimpleSite uses, and how to control them."
+  },
+  "/onboard": {
+    "title": "Client onboarding | OneSimpleSite",
+    "description": "Onboarding form for existing OneSimpleSite clients.",
+    "noindex": true
+  },
+  "/work/fixnow-mechanics": {
+    "title": "FixNow Mechanics | Mobile mechanic website | OneSimpleSite",
+    "description": "A mobile mechanic that comes to the customer, so the site is built around getting a quote fast and proving the area is covered. What we built and the stack used."
+  },
+  "/work/fixnow-shop": {
+    "title": "FixNow Shop | Car tech & accessories website | OneSimpleSite",
+    "description": "A storefront for dash cams and car tech with two ways to buy: product only, or supplied and professionally fitted. What we built and the stack used."
+  },
+  "/work/readysold": {
+    "title": "ReadySold | Car selling service website | OneSimpleSite",
+    "description": "A done-for-you car selling service. The page leads with a three-field valuation request and then explains the process. What we built and the stack used."
+  },
+  "/work/stonebridge": {
+    "title": "Stonebridge Construction | Construction website | OneSimpleSite",
+    "description": "A quiet, editorial site for extensions, loft conversions and renovations where the build photography does the selling. What we built and the stack used."
+  },
+  "/work/true-to-detail": {
+    "title": "True To Detail | Mobile car valeting website | OneSimpleSite",
+    "description": "A bold, high-contrast valeting site with clear packages, area pages and a route into booking and the customer account. What we built and the stack used."
+  },
+  "/work/brightlearn-tutoring": {
+    "title": "BrightLearn Tutoring | Online maths tuition website | OneSimpleSite",
+    "description": "A calm, friendly site for parents: what is taught, how lessons work, what it costs, and how to enquire. What we built and the stack used."
+  },
+  "/work/quantum-biotesting": {
+    "title": "Quantum BioTesting | Private blood testing website | OneSimpleSite",
+    "description": "A clinical-but-human site for private blood tests: what is tested, where to go, and how a visit works. What we built and the stack used."
+  },
+  "/work/arf-mods": {
+    "title": "ARF Mods | Automotive ecommerce website | OneSimpleSite",
+    "description": "A parts and coding shop for BMW owners, organised by category and by model. What we built and the stack used."
+  }
+}

@@ -1,4 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
+import { LegalNotice } from "@/components/LegalNotice";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -6,6 +8,7 @@ import { Link } from "react-router-dom";
 export default function Cookies() {
   return (
     <Layout>
+      <Seo path="/cookies" />
       <section className="pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 relative">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10">
@@ -21,6 +24,8 @@ export default function Cookies() {
               How we use cookies to improve your experience on our website.
             </p>
           </motion.div>
+
+          <LegalNotice />
 
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"

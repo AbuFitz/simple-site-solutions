@@ -1,176 +1,168 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Mail, MapPin, Clock, Check } from "lucide-react";
+import { Seo, breadcrumb } from "@/components/seo/Seo";
+import { DottedGrid } from "@/components/ui/DottedGrid";
+import { SITE } from "@/data/site";
+
+type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+  const [values, setValues] = useState({ name: "", email: "", message: "" });
+  const [errors, setErrors] = useState<Errors>({});
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "failed">("idle");
+  const [failure, setFailure] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const set = (k: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setValues((v) => ({ ...v, [k]: e.target.value }));
+
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // UI only - no actual submission
-    setSubmitted(true);
+    const honeypot = (e.currentTarget.elements.namedItem("company_site") as HTMLInputElement).value;
+    const next: Errors = {};
+    if (values.name.trim().length < 2) next.name = "Your name is required";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) next.email = "Enter an email address like name@example.com";
+    if (values.message.trim().length < 10) next.message = "Tell us a little more (at least 10 characters)";
+    setErrors(next);
+    if (Object.keys(next).length) return;
+
+    setStatus("sending");
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, company_site: honeypot }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) {
+        setStatus("sent");
+        return;
+      }
+      if (r.status === 400 && j.fields) setErrors(j.fields);
+      setFailure(r.status === 429 ? "Too many attempts. Please wait a few minutes and try again." : j.error || "We couldn't send your message.");
+      setStatus("failed");
+    } catch {
+      setFailure("We couldn't reach the server. Check your connection, or email us directly.");
+      setStatus("failed");
+    }
   };
+
+  const input = (id: keyof typeof values, label: string, extra: React.InputHTMLAttributes<HTMLInputElement> = {}) => (
+    <div>
+      <label htmlFor={id} className="mb-1.5 block text-sm font-medium">
+        {label} <span className="font-normal text-muted-foreground">(required)</span>
+      </label>
+      <input
+        id={id}
+        value={values[id]}
+        onChange={set(id)}
+        aria-invalid={Boolean(errors[id as keyof Errors])}
+        aria-describedby={errors[id as keyof Errors] ? `${id}-error` : undefined}
+        aria-required
+        className="input-base text-base"
+        {...extra}
+      />
+      {errors[id as keyof Errors] && (
+        <p id={`${id}-error`} role="alert" className="mt-1.5 text-sm text-destructive">
+          {errors[id as keyof Errors]}
+        </p>
+      )}
+    </div>
+  );
 
   return (
     <Layout>
-      {/* Hero */}
-      <section className="bg-gradient-to-b from-secondary/50 to-background py-20">
-        <div className="container">
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="mb-6 text-4xl font-bold md:text-5xl">
-              Let's Build Your <span className="gradient-text">New Website</span>
+      <Seo path="/contact"
+        jsonLd={breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
+      <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
+        <DottedGrid className="opacity-30" spacing={32} />
+        <div className="content-width relative z-10 grid gap-10 lg:grid-cols-[1fr_360px]">
+          <div>
+            <h1 className="text-headline">
+              Get in <span className="text-primary">touch</span>
             </h1>
-            <p className="text-lg text-muted-foreground md:text-xl">
-              Ready to get more customers? Fill out the form below and we'll be in touch within 24 hours.
+            <p className="text-body-lg mt-4 max-w-xl">
+              Got a question before you order? Send a message and we'll reply by email. Ready to go? <Link className="underline underline-offset-4 hover:text-foreground" to="/start">Send a project brief</Link> instead; it gets the details we need.
             </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Contact Form & Info */}
-      <section className="section">
-        <div className="container">
-          <div className="grid gap-12 lg:grid-cols-5">
-            {/* Form */}
-            <div className="lg:col-span-3">
-              <div className="rounded-2xl border border-border bg-card p-8">
-                {submitted ? (
-                  <div className="py-12 text-center">
-                    <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
-                      <Check className="h-8 w-8 text-success" />
-                    </div>
-                    <h2 className="mb-2 text-2xl font-bold">Thank You!</h2>
-                    <p className="text-muted-foreground">
-                      We've received your enquiry and will be in touch within 24 hours.
-                    </p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Your Name *</Label>
-                        <Input id="name" placeholder="John Smith" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="business">Business Name *</Label>
-                        <Input id="business" placeholder="Smith's Plumbing" required />
-                      </div>
-                    </div>
-                    
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email Address *</Label>
-                        <Input id="email" type="email" placeholder="john@example.com" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
-                        <Input id="phone" type="tel" placeholder="07123 456789" />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="service">What type of business do you have? *</Label>
-                      <Input id="service" placeholder="e.g., Plumber, Electrician, Cleaner" required />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="budget">Approximate Budget</Label>
-                      <select
-                        id="budget"
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      >
-                        <option value="">Select a budget range</option>
-                        <option value="starter">£495 - Starter</option>
-                        <option value="professional">£795 - Professional</option>
-                        <option value="premium">£1,295 - Premium</option>
-                        <option value="custom">Custom / Not Sure</option>
-                      </select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="message">Tell us about your project *</Label>
-                      <Textarea
-                        id="message"
-                        placeholder="What would you like to achieve with your new website? Any specific features you need?"
-                        rows={5}
-                        required
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="website">Do you have an existing website?</Label>
-                      <Input id="website" placeholder="www.example.com (if applicable)" />
-                    </div>
-                    
-                    <Button type="submit" size="lg" className="w-full">
-                      Send Enquiry
-                    </Button>
-                    
-                    <p className="text-center text-sm text-muted-foreground">
-                      We'll respond within 24 hours. No spam, ever.
-                    </p>
-                  </form>
-                )}
+            {status === "sent" ? (
+              <div role="status" className="bordered-highlight mt-8 p-6">
+                <h2 className="text-title">Message sent</h2>
+                <p className="mt-2 text-muted-foreground">Thanks. We'll reply to {values.email} by email.</p>
               </div>
-            </div>
-            
-            {/* Contact Info */}
-            <div className="lg:col-span-2">
-              <div className="space-y-6">
+            ) : (
+              <form onSubmit={submit} noValidate className="mt-8 max-w-xl space-y-4">
+                {input("name", "Your name", { autoComplete: "name" })}
+                {input("email", "Email address", { type: "email", autoComplete: "email" })}
                 <div>
-                  <h2 className="mb-4 text-xl font-semibold">Get in Touch</h2>
-                  <p className="text-muted-foreground">
-                    Prefer to reach out directly? Here's how you can contact us.
-                  </p>
+                  <label htmlFor="message" className="mb-1.5 block text-sm font-medium">
+                    Message <span className="font-normal text-muted-foreground">(required)</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    rows={5}
+                    value={values.message}
+                    onChange={set("message")}
+                    aria-invalid={Boolean(errors.message)}
+                    aria-describedby={errors.message ? "message-error" : undefined}
+                    aria-required
+                    className="input-base resize-none text-base"
+                  />
+                  {errors.message && (
+                    <p id="message-error" role="alert" className="mt-1.5 text-sm text-destructive">
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <Mail className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Email</div>
-                      <a href="mailto:hello@onesimplesite.co.uk" className="text-muted-foreground hover:text-primary">
-                        hello@onesimplesite.co.uk
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <MapPin className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Location</div>
-                      <span className="text-muted-foreground">London, United Kingdom</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                      <Clock className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium">Response Time</div>
-                      <span className="text-muted-foreground">Within 24 hours</span>
-                    </div>
-                  </div>
+                <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                  <label>
+                    Leave this empty
+                    <input type="text" name="company_site" tabIndex={-1} autoComplete="off" defaultValue="" />
+                  </label>
                 </div>
-                
-                <div className="rounded-lg border border-border bg-muted/30 p-6">
-                  <h3 className="mb-2 font-semibold">Free Consultation</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Not sure what you need? Book a free 15-minute call and we'll help you figure out the best solution for your business.
-                  </p>
-                </div>
-              </div>
-            </div>
+                <p className="text-xs text-muted-foreground">
+                  We use your details only to reply. See our <Link className="underline underline-offset-2 hover:text-foreground" to="/privacy">privacy policy</Link>.
+                </p>
+                {status === "failed" && (
+                  <div role="alert" className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                    {failure} You can also email <a className="underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+                  </div>
+                )}
+                <button type="submit" disabled={status === "sending"} aria-busy={status === "sending"} className="btn-primary btn-lg min-h-[44px] justify-center disabled:opacity-70">
+                  {status === "sending" ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending…
+                    </>
+                  ) : (
+                    "Send message"
+                  )}
+                </button>
+              </form>
+            )}
           </div>
+
+          <aside className="bordered-section h-fit bg-card p-6">
+            <h2 className="text-lg font-semibold">Other ways</h2>
+            <ul className="mt-4 space-y-3 text-sm">
+              <li>
+                <span className="block text-muted-foreground">Email</span>
+                <a className="inline-flex min-h-[44px] items-center underline underline-offset-4" href={`mailto:${SITE.email}`}>
+                  {SITE.email}
+                </a>
+              </li>
+              <li>
+                <span className="block text-muted-foreground">Starting a project</span>
+                <Link className="inline-flex min-h-[44px] items-center underline underline-offset-4" to="/start">
+                  Project brief
+                </Link>
+              </li>
+            </ul>
+          </aside>
         </div>
       </section>
     </Layout>

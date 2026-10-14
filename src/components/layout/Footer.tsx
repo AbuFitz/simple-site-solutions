@@ -15,21 +15,23 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
               one<span className="text-primary">simple</span>site
             </Link>
             <p className="mt-2 sm:mt-3 text-xs sm:text-sm text-muted-foreground max-w-xs">
-              Fast, proven websites for local UK businesses. No drama, just results.
+              Fixed-price websites for local UK businesses.
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold mb-2 sm:mb-3 text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">
+            <h2 className="font-semibold mb-2 sm:mb-3 text-xs uppercase tracking-wider text-muted-foreground">
               Navigate
-            </h4>
+            </h2>
             <ul className="space-y-1.5 sm:space-y-2">
               {[
                 { to: "/", label: "Home" },
+                { to: "/work", label: "Our Work" },
                 { to: "/how-it-works", label: "Process" },
                 { to: "/packages", label: "Pricing" },
                 { to: "/faq", label: "FAQ" },
+                { to: "/about", label: "About" },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
@@ -45,9 +47,9 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-2 sm:mb-3 text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground">
+            <h2 className="font-semibold mb-2 sm:mb-3 text-xs uppercase tracking-wider text-muted-foreground">
               Contact
-            </h4>
+            </h2>
             <ul className="space-y-1.5 sm:space-y-2">
               <li>
                 <Link
@@ -55,6 +57,14 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
                   className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Start a Project
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Contact
                 </Link>
               </li>
               <li>
@@ -71,30 +81,36 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
 
         {/* Bottom */}
         <div className="pt-4 sm:pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-          <p className="text-[10px] sm:text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} OneSimpleSite
           </p>
           <div className="flex items-center gap-3 sm:gap-4">
             <Link
               to="/privacy"
-              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
               to="/terms"
-              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Terms of Service
             </Link>
             <Link
               to="/cookies"
-              className="text-[10px] sm:text-xs text-muted-foreground hover:text-foreground transition-colors"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               Cookie Policy
             </Link>
+            <Link
+              to="/accessibility"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Accessibility
+            </Link>
           </div>
-          <p className="text-[10px] sm:text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             Made for local UK businesses
           </p>
         </div>

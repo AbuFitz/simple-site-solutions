@@ -1,4 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
+import { LegalNotice } from "@/components/LegalNotice";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -6,6 +8,7 @@ import { Link } from "react-router-dom";
 export default function Terms() {
   return (
     <Layout>
+      <Seo path="/terms" />
       <section className="pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 md:pb-20 relative">
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10">
@@ -21,6 +24,8 @@ export default function Terms() {
               The terms and conditions governing our web design services.
             </p>
           </motion.div>
+
+          <LegalNotice />
 
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
@@ -82,7 +87,7 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">5. Timeline</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  We aim to deliver websites within 5-10 business days from receiving all required content and approval to proceed. 
+                  We estimate delivery at 5–7 days (The Starter), 7–10 days (The Sorted) and 10–14 days (The Works), counted from receiving all required content and approval to proceed. These are estimates, not guarantees. 
                   Delays caused by the Client (e.g., late content delivery, delayed feedback) may extend this timeline.
                 </p>
               </section>
@@ -111,11 +116,10 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting Plans (Optional)</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  We offer two optional hosting plans:
+                  We offer one optional hosting plan:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Keep It Live (£9/month):</strong> Domain, hosting, SSL, backups, and security updates</li>
-                  <li><strong>Keep It Fresh (£19/month):</strong> Everything in Keep It Live, plus monthly content updates</li>
+                  <li><strong>Keep It Running (£19/month):</strong> Hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
                   Either party may terminate with 30 days' notice.
@@ -128,8 +132,7 @@ export default function Terms() {
                   Post-launch support:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>With Keep It Fresh:</strong> Monthly content updates, security updates, and support included</li>
-                  <li><strong>With Keep It Live:</strong> Security updates and support included</li>
+                  <li><strong>With Keep It Running:</strong> Up to 5 content updates a month, security monitoring and support</li>
                   <li><strong>One-off changes:</strong> Quoted individually based on scope</li>
                 </ul>
               </section>

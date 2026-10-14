@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
+import { Seo } from "@/components/seo/Seo";
 import { WorkShowcase } from "@/components/sections/WorkShowcase";
 import { PreviewTeaser } from "@/components/sections/PreviewTeaser";
 import { TypewriterText } from "@/components/ui/TypewriterText";
@@ -15,13 +16,13 @@ const typewriterWords = ["converts.", "performs.", "delivers.", "works."];
 const whyUsPoints = [
   {
     number: "01",
-    title: "Proven Layouts",
-    description: "Built from what converts in your industry. No guesswork.",
+    title: "Built For Your Trade",
+    description: "Layouts planned around how customers in your trade look for and contact a business.",
   },
   {
     number: "02",
-    title: "5-10 Days",
-    description: "Your site goes live fast. No waiting months.",
+    title: "Days, Not Months",
+    description: "Estimated 5–14 days by package, counted from when we have your content.",
   },
   {
     number: "03",
@@ -43,15 +44,16 @@ const notForYou = [
 ];
 
 const forYou = [
-  "A website that converts",
-  "Proven industry layouts",
-  "Fast, reliable delivery",
-  "Results over opinions",
+  "A site built to get enquiries",
+  "Layouts built for your trade",
+  "A clear delivery estimate",
+  "Decisions made for you",
 ];
 
 export default function Index() {
   return (
     <Layout>
+      <Seo path="/" />
       {/* Hero Section */}
       <section className="min-h-[70vh] sm:min-h-[80vh] flex items-center pt-20 pb-4 sm:pt-24 sm:pb-8 md:pt-28 md:pb-12 relative">
         <DottedGrid className="opacity-40" spacing={24} dotSize={1.5} />
@@ -89,8 +91,8 @@ export default function Index() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Fast, proven websites for local businesses using layouts that
-              already work in your industry.
+              Fixed-price websites for local businesses, built from layouts
+              planned for your kind of business.
             </motion.p>
 
             <motion.div
