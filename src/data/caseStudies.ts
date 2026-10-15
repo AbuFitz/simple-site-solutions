@@ -22,7 +22,6 @@ export interface CaseStudy {
   theme: CaseTheme;
   hero: { src: string; alt: string };
   phone: { src: string; alt: string };
-  scope?: string;
   brief?: { lead: string; accent: string; body: string };
   phones?: { images: { src: string; alt: string }[]; title: string };
   full?: { src: string; alt: string; label: string; caption: string };
@@ -44,7 +43,6 @@ export const caseStudies: Record<string, CaseStudy> = {
     theme: { bg: ORANGE, fg: "#FFF3EA", meta: INK, briefBg: INK, briefFg: BONE, accent: ORANGE, phonesBg: ORANGE, phonesFg: INK, fullBg: INK, nextBg: ORANGE, nextFg: "#FFF3EA" },
     hero: { src: shots.ttdHero, alt: "True To Detail website, home page" },
     phone: { src: shots.ttdMHero, alt: "True To Detail website on a phone" },
-    scope: "Design, build, local pages",
     brief: {
       lead: "Mobile detailing delivered to your driveway. ",
       accent: "No drop-off. No waiting.",
@@ -80,7 +78,6 @@ export const caseStudies: Record<string, CaseStudy> = {
     theme: { bg: CREAM, fg: NAVY, meta: NAVY, briefBg: NAVY, briefFg: CREAM, accent: "#6C9DFF", phonesBg: "#2A74F4", phonesFg: "#FFFFFF", fullBg: NAVY, nextBg: BONE, nextFg: INK },
     hero: { src: shots.blHero, alt: "BrightLearn Tutoring website, home page" },
     phone: { src: shots.blM1, alt: "BrightLearn Tutoring programmes on a phone" },
-    scope: "Design, build, programmes and pricing",
     brief: {
       lead: "Maths that finally feels ",
       accent: "simple.",

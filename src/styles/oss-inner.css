@@ -204,3 +204,7 @@
   .pg-case .brief h2 { font-size: calc(36 * var(--v)); }
 }
 @media (max-width: 959px) { .pg-case .next h2 { font-size: 15vw; white-space: normal; line-height: 0.88; } }
+
+.pg-case .brief .brief-family { margin-top: 40px; max-width: 640px; font-size: 19px; line-height: 1.5; opacity: 0.8; border-top: 1px solid currentColor; padding-top: 18px; }
+.pg-case .brief .brief-built { list-style: none; padding: 0; margin: 40px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.pg-case .brief .brief-built li { font: 14px var(--f-mono); border: 1px solid currentColor; padding: 8px 14px; border-radius: 999px; opacity: 0.9; }

@@ -30,6 +30,8 @@ export interface WorkProject {
   status: WorkStatus;
   /** Owner-confirmed relationship. Left undefined until verified. */
   label?: WorkLabel;
+  /** Set when two projects belong to the same business, so each page can say so. */
+  family?: string;
   /** The two short lines shown on the index rows. */
   line: [string, string];
   /** Public URL when one is live and verified. */
@@ -53,6 +55,7 @@ export const projects: WorkProject[] = [
     status: "Live",
     label: "Client work",
     line: ["Mobile mechanic", "Hemel Hempstead & Herts"],
+    family: "Part of FixNow: the mechanics service and the shop are one business with one team of engineers and a single shared backend, presented as two sites. This is the mechanics site; the shop is its own site.",
     url: "https://fixnowmechanics.co.uk",
     domain: "fixnowmechanics.co.uk",
     summary: "A mobile mechanic that comes to the customer, so the site is built around getting a quote fast and proving the area is covered.",
@@ -75,6 +78,7 @@ export const projects: WorkProject[] = [
     status: "Live",
     label: "Client work",
     line: ["Car tech and accessories", "Online shop"],
+    family: "Part of FixNow: the mechanics service and the shop are one business with one team of engineers and a single shared backend, presented as two sites. This is the shop; the mechanics site is its own site.",
     url: "https://shop.fixnowmechanics.co.uk",
     domain: "shop.fixnowmechanics.co.uk",
     summary: "A storefront for dash cams and car tech with two ways to buy: product only, or supplied and professionally fitted.",

@@ -39,9 +39,9 @@ export function CaseStudy({ project, next }: { project: WorkProject; next: WorkP
     "--ts": ts,
     "--tsm": tsm,
     "--nts": Math.min(150, Math.round(3000 / next.name.length)),
-    "--b-bg": study?.theme.briefBg,
+    "--b-bg": study?.theme.briefBg ?? `color-mix(in srgb, ${project.tint} 22%, #0b0f0d)`,
     "--b-fg": study?.theme.briefFg,
-    "--c-accent": study?.theme.accent,
+    "--c-accent": study?.theme.accent ?? project.tint,
     "--p-bg": study?.theme.phonesBg,
     "--p-fg": study?.theme.phonesFg,
     "--f-bg": study?.theme.fullBg,
@@ -73,12 +73,6 @@ export function CaseStudy({ project, next }: { project: WorkProject; next: WorkP
             <dt>Place</dt>
             <dd>{place}</dd>
           </div>
-          {study?.scope && (
-            <div>
-              <dt>Scope</dt>
-              <dd>{study.scope}</dd>
-            </div>
-          )}
         </dl>
       </header>
 
@@ -94,8 +88,14 @@ export function CaseStudy({ project, next }: { project: WorkProject; next: WorkP
         ) : (
           <>
             <h2 className="oss-disp">{project.summary}</h2>
+            <ul className="brief-built" aria-label="What we built">
+              {project.built.map((b) => (
+                <li key={b}>{b}</li>
+              ))}
+            </ul>
           </>
         )}
+        {project.family && <p className="brief-family">{project.family}</p>}
       </section>
 
       {study?.phones && (

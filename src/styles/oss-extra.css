@@ -128,11 +128,9 @@ body.has-cookie main { padding-bottom: 96px; }
 .oss-chat-panel [role="log"] .mt-2, .oss-chat-panel [role="log"] span.underline { color: #c9cbc6 !important; }
 .oss-chat-panel .underline { color: var(--bone) !important; }
 
-/* Emphasis: the highlighted phrase is sharp and bright; the words around it sit back, slightly softened */
-.hm-story p > .oss-rise, .hm-team blockquote > .oss-rise, .ab-quote blockquote > .oss-rise { filter: blur(1.6px); opacity: 0.5; transition: filter 0.6s ease, opacity 0.6s ease; }
-.hm-story p em, .hm-team blockquote em, .ab-quote blockquote em { color: #fff; text-shadow: 0 0 40px rgba(255, 255, 255, 0.28); }
-.hm-story p em .oss-rise, .hm-team blockquote em .oss-rise, .ab-quote blockquote em .oss-rise { filter: none; opacity: 1; }
-.hm-story p:hover > .oss-rise, .hm-team blockquote:hover > .oss-rise, .ab-quote blockquote:hover > .oss-rise { filter: none; opacity: 0.85; }
-.hm-price h2 > .oss-rise, .hm-how h2 > .oss-rise { filter: blur(1.2px); opacity: 0.55; }
-.hm-price h2 em .oss-rise, .hm-how h2 em .oss-rise { filter: none; opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .hm-story p > .oss-rise, .hm-team blockquote > .oss-rise, .ab-quote blockquote > .oss-rise { transition: none; } }
+/* Emphasis: the highlighted phrase is bright; the words around it sit back (colour only, no blur) */
+.hm-story p > .oss-rise, .hm-team blockquote > .oss-rise, .ab-quote blockquote > .oss-rise { opacity: 0.55; }
+.hm-story p em, .hm-team blockquote em, .ab-quote blockquote em { color: #fff; }
+.hm-story p em .oss-rise, .hm-team blockquote em .oss-rise, .ab-quote blockquote em .oss-rise { opacity: 1; }
+.hm-price h2 > .oss-rise, .hm-how h2 > .oss-rise { opacity: 0.6; }
+.hm-price h2 em .oss-rise, .hm-how h2 em .oss-rise { opacity: 1; }
