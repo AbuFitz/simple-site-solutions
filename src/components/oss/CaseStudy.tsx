@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import { CtaBand } from "@/components/oss/CtaBand";
 import { caseStudies, type CaseStudy as CaseData } from "@/data/caseStudies";
+import { hd } from "@/assets/redesign";
 import type { WorkProject } from "@/data/work";
 
 const INK = "#0E1311";
@@ -26,7 +27,8 @@ export function CaseStudy({ project, next }: { project: WorkProject; next: WorkP
 
   const bg = study?.theme.bg ?? project.tint;
   const fg = study?.theme.fg ?? textOn(project.tint);
-  const hero = study?.hero ?? { src: project.img.d, alt: `${project.name} website, home page` };
+  const shotsHd = hd[project.slug];
+  const hero = study?.hero ?? { src: shotsHd?.[0] ?? project.img.d, alt: `${project.name} website, home page` };
   const phone = study?.phone ?? { src: project.img.m, alt: `${project.name} website on a phone` };
   const longest = Math.max(...project.name.split(" ").map((w) => w.length));
   const ts = Math.min(236, Math.round(2750 / project.name.length));
@@ -108,6 +110,14 @@ export function CaseStudy({ project, next }: { project: WorkProject; next: WorkP
             </div>
           ))}
           <p className="t">{study.phones.title}</p>
+        </section>
+      )}
+
+      {!study?.full && shotsHd && (
+        <section className="full" data-tone="dark">
+          <div className="oss-screen">
+            <img src={shotsHd[1]} alt={`${project.name} website, further down the home page`} loading="lazy" decoding="async" />
+          </div>
         </section>
       )}
 
