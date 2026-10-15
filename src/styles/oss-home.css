@@ -178,3 +178,52 @@
 .hm .cta .row { display: flex; gap: 30px; align-items: center; margin-top: 56px; flex-wrap: wrap; }
 .hm .cta .row a:not(.oss-btn) { font-size: 20px; }
 @media (max-width: 959px) { .hm .cta { padding: 80px var(--m); } .hm .cta .row { display: block; } .hm .cta .row a:not(.oss-btn) { display: block; margin-top: 20px; } }
+
+/* ---------- More motion ---------- */
+.hm-caret { display: inline-block; width: 0.07em; height: 0.78em; margin-left: 0.06em; background: currentColor; vertical-align: -0.02em; animation: hm-caret 0.9s steps(1) infinite; }
+@keyframes hm-caret { 50% { opacity: 0; } }
+.hm-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(520px circle at var(--mx, 72%) var(--my, 38%), rgba(239, 235, 227, 0.12), transparent 65%); animation: hm-drift 14s ease-in-out infinite alternate; }
+@keyframes hm-drift { from { background-position: 0 0; opacity: 0.8; } to { opacity: 1; } }
+.hm-hero h1 > span:not(.g) { transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.hm-hero h1:hover > span:nth-child(1) { transform: translateX(1.2vw); }
+.hm-hero h1:hover > span:nth-child(2) { transform: translateX(-1.2vw); }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hm-hero h1 { animation: hm-hero-out linear both; animation-timeline: view(); animation-range: exit 0% exit 80%; transform-origin: 0 100%; }
+    @keyframes hm-hero-out { to { transform: translateY(-14vh) scale(0.9); opacity: 0.15; } }
+    .hm-days b:first-child { animation: hm-from-l linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
+    .hm-days b:last-child { animation: hm-from-r linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
+    @keyframes hm-from-l { from { transform: translateX(-38vw) rotate(-6deg); } to { transform: none; } }
+    @keyframes hm-from-r { from { transform: translateX(38vw) rotate(6deg); } to { transform: none; } }
+    .hm-svc li:nth-child(odd) > b { animation: hm-slide-l linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
+    .hm-svc li:nth-child(even) > b { animation: hm-slide-r linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
+    @keyframes hm-slide-l { from { transform: translateX(-12vw); } to { transform: none; } }
+    @keyframes hm-slide-r { from { transform: translateX(12vw); } to { transform: none; } }
+    .hm-team li > b { animation: hm-slide-r linear both; animation-timeline: view(); animation-range: entry 0% entry 90%; }
+    .hm-how li i { animation: hm-par linear both; animation-timeline: view(); animation-range: cover 0% cover 100%; }
+    @keyframes hm-par { from { transform: translateY(90px); } to { transform: translateY(-60px); } }
+    .hm-try h2, .hm-price h2, .hm-how h2, .hm-rack__head h2 { animation: hm-grow linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; transform-origin: 0 100%; }
+    @keyframes hm-grow { from { transform: scale(0.82); opacity: 0.3; } to { transform: none; opacity: 1; } }
+    .hm-days p { animation: hm-grow linear both; animation-timeline: view(); animation-range: entry 20% cover 40%; transform-origin: 50% 50%; }
+  }
+}
+@media (hover: hover) { .hm-card:hover .hm-card__shot { transform: translateY(-8px); } .hm-card__shot { transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); } }
+/* Phones: bigger, louder */
+@media (max-width: 959px) {
+  .hm-hero h1 { font-size: 16.6vw; line-height: 0.84; }
+  .hm-hero h1 > span:nth-child(2) { padding-left: 0; }
+  .hm-hero__line { font-size: 21px; }
+  .hm-story p { font-size: 11.5vw; line-height: 0.98; }
+  .hm-facts b { font-size: 18vw; }
+  .hm-svc li b { font-size: 11.5vw; line-height: 0.95; }
+  .hm-team blockquote { font-size: 11.6vw; line-height: 0.95; }
+  .hm-team li b { font-size: 13vw; }
+  .hm-price h2, .hm-try h2, .hm-how h2 { font-size: 17vw; }
+  .hm-price li b, .hm-price li i { font-size: 8.5vw; }
+  .hm-days { padding: 90px var(--m); }
+  .hm-days b { font-size: 52vw; }
+  .hm-rack__head h2 { font-size: 20vw; }
+  .hm .cta h2 { font-size: 16vw; }
+  .hm-svc, .hm-team, .hm-price, .hm-how, .hm-try, .hm-story { padding-top: 100px; padding-bottom: 100px; }
+}
+@media (prefers-reduced-motion: reduce) { .hm-caret, .hm-hero::before { animation: none; } }

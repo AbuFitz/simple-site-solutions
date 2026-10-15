@@ -4,6 +4,7 @@ import { Seo } from "@/components/seo/Seo";
 import { CtaBand } from "@/components/oss/CtaBand";
 import { PreviewPrompt } from "@/components/oss/PreviewPrompt";
 import { WorkRack } from "@/components/oss/WorkRack";
+import { TypeRotate } from "@/components/oss/TypeRotate";
 import { Scramble } from "@/components/oss/Scramble";
 
 const services = [
@@ -29,11 +30,11 @@ export default function Index() {
     <Layout pageClass="pg hm">
       <Seo path="/" />
 
-      <section className="hm-hero" data-tone="dark" aria-labelledby="hero-title">
+      <section className="hm-hero" data-tone="dark" aria-labelledby="hero-title" onPointerMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`); e.currentTarget.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`); }}>
         <h1 id="hero-title">
           <span><Scramble text="Websites" /></span>
           <span><Scramble text="that make" delay={250} /></span>
-          <span className="g"><Scramble text="sense." delay={500} /></span>
+          <span className="g"><TypeRotate words={["sense.", "noise.", "waves.", "trouble."]} /></span>
         </h1>
         <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £199.</p>
               </section>
