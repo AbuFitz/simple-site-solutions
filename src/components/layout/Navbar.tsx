@@ -16,6 +16,8 @@ const isCurrent = (p: string, path: string) => p === path || (path !== "/" && p.
 /** Minimal top bar (wordmark, Start a project, Menu) that follows the colour beneath it, plus a full-screen menu. */
 export function Navbar() {
   const { pathname } = useLocation();
+  // The brief form is a focused page: only a way back home, no menu and no second "Start a project".
+  const focused = pathname === "/start";
   const [open, setOpen] = useState(false);
   const [tone, setTone] = useState<Tone>("dark");
   const [scrolled, setScrolled] = useState(false);
@@ -71,6 +73,7 @@ export function Navbar() {
 
   return (
     <>
+      {focused ? null : (
       <nav ref={bar} className="oss-bar" data-tone={open ? "dark" : tone} data-open={open} data-scrolled={scrolled} aria-label="Main">
         <div className="oss-bar__r">
           <Link to="/start" className="oss-bar__start">Start a project</Link>
@@ -79,12 +82,13 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+      )}
       {pathname !== "/" && (
         <Link to="/" className="oss-home-link" data-tone={open ? "dark" : tone} style={{ color: (open ? "dark" : tone) === "light" ? "#0e1311" : "#efebe3" }}>
           &#8592; Home
         </Link>
       )}
-      {open && (
+      {!focused && open && (
         <div id="site-menu" className="oss-fm" role="dialog" aria-label="Menu">
           <ul>
             {items.map((it, i) => (

@@ -35,7 +35,7 @@ function StepHeader({
       <h1 ref={headingRef} tabIndex={-1} className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2 sm:mb-3 focus:outline-none">
         {title}
       </h1>
-      <p className="text-sm sm:text-base md:text-lg text-muted-foreground">{description}</p>
+      {description ? <p className="text-sm sm:text-base md:text-lg text-muted-foreground">{description}</p> : null}
 
       <div className="mt-4">
         <div className="flex items-center justify-between mb-2">
@@ -242,10 +242,10 @@ export default function Start() {
                     <StepHeader
                       title={
                         <>
-                          Choose your <span className="text-primary">package</span>
+                          Pick a <span className="text-primary">package</span>
                         </>
                       }
-                      description="Select the package that fits your business needs."
+                      description=""
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
@@ -273,9 +273,6 @@ export default function Start() {
                                 </span>
                               )}
                             </div>
-                            <p className="text-xs sm:text-sm text-muted-foreground">
-                              {pkg.description}
-                            </p>
                           </div>
                           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                             {pkg.price && (
@@ -324,7 +321,7 @@ export default function Start() {
                           Any <span className="text-primary">add-ons?</span>
                         </>
                       }
-                      description="Optional extras to enhance your website. Select any or skip."
+                      description=""
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
@@ -403,10 +400,10 @@ export default function Start() {
                     <StepHeader
                       title={
                         <>
-                          Tell us about <span className="text-primary">you</span>
+                          Your <span className="text-primary">details</span>
                         </>
                       }
-                      description="Just the basics. We'll take it from here."
+                      description=""
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
@@ -464,9 +461,8 @@ export default function Start() {
                         </label>
                       </div>
 
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        We use these details only to reply to your enquiry. This form doesn't take payment. See our{" "}
-                        <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">privacy policy</Link>.
+                      <p className="text-sm text-muted-foreground">
+                        Used only to reply to you. <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">Privacy</Link>
                       </p>
 
                       {submitError && (
@@ -531,7 +527,7 @@ export default function Start() {
                     <span className="text-primary">Brief received</span>
                   </h1>
                   <p className="text-sm sm:text-base text-muted-foreground max-w-sm mx-auto mb-4 sm:mb-6">
-                    We've emailed you a copy of your brief. {REPLY_COPY} We'll confirm scope and next steps before any work starts.
+                    {REPLY_COPY}
                   </p>
                   <div className="inline-block p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border text-left">
                     <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Package</div>
