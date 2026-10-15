@@ -8,7 +8,7 @@ interface Msg { id: string; role: "user" | "assistant"; content: string; actions
 const STORE = "oss-sid-chat-v1";
 const MAX_CHARS = 500;
 const WELCOME: Msg = { id: "welcome", role: "assistant", content: "Hi, I'm Sid, OneSimpleSite's website assistant. Ask me about packages, prices, timings or whether we cover your area." };
-const PROMPTS = ["What do the packages cost?", "How long does a website take?", "Do you cover my area?", "Can I see a preview first?"];
+const PROMPTS = ["What do the packages cost?", "How long does a website take?", "Do you cover my area?", "What is included in each package?"];
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 

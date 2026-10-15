@@ -1,6 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
-import { LegalNotice } from "@/components/LegalNotice";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -25,7 +24,6 @@ export default function Cookies() {
             </p>
           </motion.div>
 
-          <LegalNotice />
 
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"
@@ -135,10 +133,7 @@ export default function Cookies() {
                   media platforms or advertising networks that would place tracking cookies on your device.
                 </p>
                 <p className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  One exception to be aware of: when you enter a town or postcode in the website preview, your browser looks
-                  it up with OpenStreetMap (nominatim.openstreetmap.org) or postcodes.io and shows a map from
-                  openstreetmap.org (a community mapping project, not an advertising network). Those services receive your
-                  IP address and the town or postcode you typed. We do not add any cookies for them.
+                  One exception to be aware of: our local area pages show a map loaded from openstreetmap.org (a community mapping project, not an advertising network), and if you use the website preview and enter a town or postcode, your browser looks it up with OpenStreetMap (nominatim.openstreetmap.org) or postcodes.io. Those services receive your IP address and, for the preview, the town or postcode you typed. We do not add any cookies for them.
                 </p>
               </section>
 

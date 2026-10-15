@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { SITE, SOCIAL } from "@/data/site";
 import locationData from "@/data/locations.json";
 import { locationPath } from "@/lib/locationSeo.mjs";
+import { TypeRotate } from "@/components/oss/TypeRotate";
 
 const siteLinks = [
   { to: "/work", label: "Work" },
@@ -63,7 +64,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
       </div>
       <div className="oss-foot__bigwrap">
         <Link to="/" className="oss-foot__big" aria-label="OneSimpleSite, back to the home page">
-          one<b>simple</b>site
+          one<b><TypeRotate words={["simple", "smart", "sharp"]} /></b>site
         </Link>
       </div>
       <div className="oss-foot__legal">

@@ -89,7 +89,7 @@ ${loc.intro.map((p) => `<p>${esc(p)}</p>`).join("\n")}
 ${faqFor(loc, data).map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join("\n")}
 <h2>${esc("Web design nearby")}</h2>
 <ul>${loc.neighbours.filter((s) => bySlug[s]).map((s) => `<li><a href="${locationPath(s)}">Web design ${esc(bySlug[s].name)}</a></li>`).join("")}</ul>
-<p><a href="/packages">Website packages and prices</a> · <a href="/preview">Free website preview</a> · <a href="/start">Start your project</a></p>
+<p><a href="/packages">Website packages and prices</a> · <a href="/start">Start your project</a></p>
 </main>`;
 }
 
@@ -100,6 +100,6 @@ export function staticHubHtml(data) {
 <h1>Web design across the UK</h1>
 <p>${esc(data.ukLine)} We work online, at fixed prices, with local businesses wherever they are. These pages cover the areas where we are building local search presence first.</p>
 ${counties.map((c) => `<h2>${esc(c)}</h2><ul>${data.locations.filter((l) => l.county === c).map((l) => `<li><a href="${locationPath(l.slug)}">Web design ${esc(l.name)}</a></li>`).join("")}</ul>`).join("\n")}
-<p><a href="/packages">Website packages and prices</a> · <a href="/preview">Free website preview</a> · <a href="/start">Start your project</a></p>
+<p><a href="/packages">Website packages and prices</a> · <a href="/start">Start your project</a></p>
 </main>`;
 }

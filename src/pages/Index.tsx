@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { CtaBand } from "@/components/oss/CtaBand";
-import { PreviewPrompt } from "@/components/oss/PreviewPrompt";
 import { WorkRack } from "@/components/oss/WorkRack";
+import { CountUp } from "@/components/oss/CountUp";
+import { DaysCounter } from "@/components/oss/DaysCounter";
 import { TypeRotate } from "@/components/oss/TypeRotate";
 import { Scramble } from "@/components/oss/Scramble";
 
@@ -16,8 +17,8 @@ const services = [
 ];
 const team = [
   { name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
-  { name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
   { name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
+  { name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
 ];
 const packages = [
   { name: "The Starter", note: "3 pages, 5 to 7 days", price: "£199" },
@@ -31,31 +32,28 @@ export default function Index() {
       <Seo path="/" />
 
       <section className="hm-hero" data-tone="dark" aria-labelledby="hero-title" onPointerMove={(e) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`); e.currentTarget.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`); }}>
+        <div className="hm-blobs" aria-hidden="true"><i className="hm-blob b1" /><i className="hm-blob b2" /></div>
         <h1 id="hero-title">
           <span><Scramble text="Websites" /></span>
           <span><Scramble text="that make" delay={250} /></span>
-          <span className="g"><TypeRotate words={["sense.", "noise.", "waves.", "trouble."]} /></span>
+          <span className="g"><TypeRotate words={["sense.", "an impact.", "a mark."]} /></span>
         </h1>
         <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £199.</p>
               </section>
 
       <section className="hm-story" data-tone="dark" aria-labelledby="story-title">
         <small><Scramble text="Our story" /></small>
-        <p id="story-title">Small businesses deserve a website that <em>looks right, feels right</em> and actually works.</p>
+        <p id="story-title"><Scramble text="Small businesses deserve a website that" /> <em><Scramble text="looks right, feels right" delay={350} /></em> <Scramble text="and actually works." delay={700} /></p>
         <ul className="hm-facts">
           <li><b>UK</b><span>wide, with local pages</span></li>
-          <li><b>£199</b><span>where fixed prices start</span></li>
+          <li><b><CountUp to={199} prefix="£" /></b><span>where fixed prices start</span></li>
         </ul>
         
       </section>
 
       <WorkRack />
 
-      <section className="hm-days" data-tone="dark" aria-label="How long it takes">
-        <b aria-hidden="true">5</b>
-        <p>to <em>14</em> days, estimated from when we have your content. Fixed price, written down first.</p>
-        <b aria-hidden="true">14</b>
-      </section>
+      <DaysCounter />
 
       <section className="hm-svc" data-tone="light" aria-labelledby="svc-title">
         <h2 id="svc-title" className="hm-lab"><Scramble text="What we make" /></h2>
@@ -70,8 +68,6 @@ export default function Index() {
         </ul>
       </section>
 
-      <PreviewPrompt />
-
       <section className="hm-how" data-tone="light" aria-labelledby="how-title">
         <h2 id="how-title"><Scramble text="Notes in," /> <em><Scramble text="site out." delay={200} /></em></h2>
         <ol>
@@ -83,7 +79,7 @@ export default function Index() {
 
       <section className="hm-team" data-tone="dark" aria-labelledby="team-title">
         <h2 id="team-title" className="sr-only">The team</h2>
-        <blockquote>&ldquo;We want it to look right, feel right and <em>actually work</em> for the business.&rdquo;</blockquote>
+        <blockquote><Scramble text="“We want it to look right, feel right and" /> <em><Scramble text="actually work" delay={400} /></em> <Scramble text="for the business.”" delay={650} /></blockquote>
         <p className="hm-by">The OneSimpleSite team</p>
         <ul>
           {team.map((m) => (

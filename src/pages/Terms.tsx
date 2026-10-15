@@ -1,6 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
-import { LegalNotice } from "@/components/LegalNotice";
 import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -25,7 +24,6 @@ export default function Terms() {
             </p>
           </motion.div>
 
-          <LegalNotice />
 
           <motion.div
             className="bordered-section p-5 sm:p-8 md:p-10 space-y-6 sm:space-y-8"

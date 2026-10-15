@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { Check } from "lucide-react";
+import { GuideArt } from "@/components/oss/GuideArt";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -16,7 +17,7 @@ export default function Guide() {
   if (!g) return <NotFound />;
   const related = g.related.map((s) => data.guides.find((x) => x.slug === s)).filter((x): x is NonNullable<typeof x> => Boolean(x));
   return (
-    <Layout>
+    <Layout pageClass="pg pg-inner gd">
       <Seo path={guidePath(g.slug)} title={g.title} description={g.metaDescription} jsonLd={guideJsonLd(g, data, SITE.url)} />
       <article>
         <header className="relative pb-8 pt-24 sm:pb-12 sm:pt-32">
@@ -31,6 +32,7 @@ export default function Guide() {
           </div>
         </header>
 
+        <div className="gd-cover"><GuideArt slug={g.slug} /></div>
         <div className="content-width max-w-3xl space-y-8 pb-10">
           {g.sections.map((s) => (
             <section key={s.h}>
@@ -70,10 +72,9 @@ export default function Guide() {
 
           <div className="bordered-highlight p-6">
             <h2 className="text-title">Want it done for you?</h2>
-            <p className="text-body mt-2">Fixed-price websites from £199, built for your trade and your area. See a sample first, or compare packages.</p>
+            <p className="text-body mt-2">Fixed-price websites from £199, built for your trade and your area. Compare packages and see what is included.</p>
             <div className="mt-4 flex flex-wrap gap-3">
-              <Link to="/preview" className="btn-primary btn-lg min-h-[48px] !text-background">Show my preview</Link>
-              <Link to="/packages" className="btn-outline btn-lg min-h-[48px]">Packages and prices</Link>
+              <Link to="/packages" className="btn-primary btn-lg min-h-[48px] !text-background">Packages and prices</Link>
             </div>
           </div>
 

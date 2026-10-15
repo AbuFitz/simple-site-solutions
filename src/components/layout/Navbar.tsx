@@ -8,7 +8,6 @@ const items = [
   { path: "/how-it-works", label: "Process" },
   { path: "/about", label: "About" },
   { path: "/guides", label: "Guides" },
-  { path: "/preview", label: "Preview your site" },
 ];
 
 type Tone = "dark" | "light";
@@ -19,6 +18,7 @@ export function Navbar() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [tone, setTone] = useState<Tone>("dark");
+  const [scrolled, setScrolled] = useState(false);
   const bar = useRef<HTMLElement>(null);
   const btn = useRef<HTMLButtonElement>(null);
   const raf = useRef(0);
@@ -28,6 +28,7 @@ export function Navbar() {
     const el = bar.current;
     if (!el) return;
     const hit = document.elementsFromPoint(window.innerWidth / 2, 40).find((n) => !el.contains(n) && n.closest("[data-tone]"));
+    setScrolled(window.scrollY > window.innerHeight * 0.85);
     const next = (hit?.closest("[data-tone]")?.getAttribute("data-tone") ?? "dark") as Tone;
     setTone((t) => (t === next ? t : next));
   }, []);
@@ -70,7 +71,7 @@ export function Navbar() {
 
   return (
     <>
-      <nav ref={bar} className="oss-bar" data-tone={open ? "dark" : tone} data-open={open} aria-label="Main">
+      <nav ref={bar} className="oss-bar" data-tone={open ? "dark" : tone} data-open={open} data-scrolled={scrolled} aria-label="Main">
         <div className="oss-bar__r">
           <Link to="/start" className="oss-bar__start">Start a project</Link>
           <button ref={btn} type="button" className="oss-bar__menu" aria-expanded={open} aria-controls="site-menu" onClick={() => setOpen((o) => !o)}>
@@ -78,6 +79,11 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+      {pathname !== "/" && (
+        <Link to="/" className="oss-home-link" data-tone={open ? "dark" : tone} style={{ color: (open ? "dark" : tone) === "light" ? "#0e1311" : "#efebe3" }}>
+          &#8592; Home
+        </Link>
+      )}
       {open && (
         <div id="site-menu" className="oss-fm" role="dialog" aria-label="Menu">
           <ul>

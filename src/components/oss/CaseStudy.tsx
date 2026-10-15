@@ -79,10 +79,6 @@ export function CaseStudy({ project, next }: { project: WorkProject; next: WorkP
               <dd>{study.scope}</dd>
             </div>
           )}
-          <div>
-            <dt>Stack</dt>
-            <dd>{project.stack.join(", ")}</dd>
-          </div>
         </dl>
       </header>
 

@@ -146,14 +146,6 @@ for (const width of [390, 1440]) {
       await expect(page.getByRole("link", { name: /Start this project/ })).toHaveAttribute("href", /\/start\?package=/);
     });
 
-    test("the Preview link in the nav opens the guide", async ({ page }) => {
-      await page.goto("/");
-      await page.getByRole("button", { name: "Menu" }).click();
-      await page.locator("#site-menu").getByRole("link", { name: /Preview/ }).click();
-      await expect(page).toHaveURL(/\/preview/);
-      await expect(page.getByLabel("Business name")).toBeVisible();
-    });
-
     test("axe: each step of the guide", async ({ page }) => {
       await mockGeo(page);
       await page.goto("/preview");

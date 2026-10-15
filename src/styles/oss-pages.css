@@ -234,7 +234,7 @@
 .pg-case .ch h1{position:absolute;z-index:3;left:var(--m);top:calc(140 * var(--u));font-size:calc(var(--ts,236) * var(--u));line-height:.86;letter-spacing:-.065em;white-space:nowrap}
 .pg-case .ch .d1{position:absolute;left:var(--m);top:calc(410 * var(--u));width:calc(1328 * var(--u));aspect-ratio:2200/1145;z-index:1}
 .pg-case .ch .ph{z-index:4;left:calc(1130 * var(--u));top:calc(350 * var(--u));width:calc(250 * var(--u))}
-.pg-case .meta{position:absolute;left:var(--m);right:var(--m);bottom:calc(40 * var(--u));z-index:4;display:grid;grid-template-columns:1.1fr 1.3fr 1fr 1.2fr;gap:calc(24 * var(--u));color:var(--c-meta,var(--ink))}
+.pg-case .meta{position:absolute;left:var(--m);right:var(--m);bottom:calc(40 * var(--u));z-index:4;display:grid;grid-template-columns:1.1fr 1.3fr 1.2fr;gap:calc(24 * var(--u));color:var(--c-meta,var(--ink))}
 .pg-case .meta span{display:block;font-size:15px;opacity:.7;margin-bottom:2px}
 .pg-case .meta b{font-weight:500;font-size:19px}
 .pg-case .brief{background:var(--b-bg,var(--ink));color:var(--b-fg,var(--bone));padding:calc(170 * var(--u)) var(--m) calc(330 * var(--u))}

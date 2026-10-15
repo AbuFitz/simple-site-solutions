@@ -47,7 +47,7 @@ Status of every business fact the site relies on. Accessed 2026-10-14. Research 
 | Fact | Status | Note |
 |---|---|---|
 | Site sets no analytics/marketing cookies; uses localStorage `oss_cookie_consent`, `oss_brief_draft_v1` (7 days), sessionStorage `oss_preview_input` | VERIFIED | Listed in the cookie policy. Cookie banner is informational because nothing non-essential is set. Re-assess before adding any analytics (ICO guidance, research notes §4). |
-| Privacy policy, Terms, Cookie policy text | PROVISIONAL | Marked "working draft awaiting review" on each page via `LegalNotice`. Needs owner and legal review. |
+| Privacy policy, Terms, Cookie policy text | PROVISIONAL | The "working draft" banner was removed at the owner's request (the site is live). Text matches what the site actually does (forms, chat, maps, local storage). Still BLOCKED and not stated: legal entity details and whether prices include VAT; a solicitor review is still advisable. |
 | Accessibility statement | PROVISIONAL | Draft. Automated axe checks pass (see README); no manual screen-reader audit has been done. |
 | Core Web Vitals thresholds, WCAG 2.2 AA | VERIFIED | web.dev and W3C (research notes §5). |
 | Stripe flow design (hosted Checkout, signed webhook, idempotent fulfilment) | VERIFIED | Stripe docs (research notes §4). |

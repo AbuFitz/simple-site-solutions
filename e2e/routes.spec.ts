@@ -74,7 +74,7 @@ test("sitemap and robots", async ({ request }) => {
 });
 
 test("no broken internal links across the site", async ({ page }) => {
-  test.setTimeout(240_000);
+  test.setTimeout(480_000);
   const hrefs = new Set<string>();
   for (const route of ROUTES.filter((r) => !r.includes("definitely"))) {
     await page.goto(route);

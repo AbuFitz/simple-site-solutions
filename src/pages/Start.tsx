@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { FlowPreview } from "@/components/preview/FlowPreview";
-import { encodeInput, mergeFlowInput, recallPreview } from "@/lib/preview/generate";
+import { recallPreview } from "@/lib/preview/generate";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -113,7 +112,6 @@ export default function Start() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [attachPreview, setAttachPreview] = useState(true);
   const [restored] = useState(Boolean(draft));
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
@@ -138,15 +136,6 @@ export default function Start() {
       details: draft?.fields.details ?? "",
     },
   });
-
-  const [liveName, liveDescription, livePhone, liveEmail] = watch(["businessName", "businessDescription", "phone", "email"]);
-  const previewInput = useMemo(
-    () => mergeFlowInput(stored, { name: liveName ?? "", description: liveDescription ?? "", phone: livePhone ?? "", email: liveEmail ?? "" }),
-    [stored, liveName, liveDescription, livePhone, liveEmail]
-  );
-  // The preview appears once there is something to show: from step 2, or straight away when it came from the preview page
-  const showPreview = step >= 2 || Boolean(stored) || Boolean(params.get("business"));
-  const previewLink = `/preview?${encodeInput(previewInput)}`;
 
   // Keep the draft in this browser so a refresh or an accidental close doesn't lose the brief
   const values = watch();
@@ -180,10 +169,7 @@ export default function Start() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
-          details:
-            attachPreview && showPreview
-              ? `${(data.details ?? "").trim()}${data.details ? "\n\n" : ""}Preview they saw: ${window.location.origin}${previewLink}`.slice(0, 2000)
-              : data.details,
+          details: data.details,
           selectedPackage: selectedPackage ?? "unsure",
           selectedAddons,
           company_site: honeypot,
@@ -235,7 +221,7 @@ export default function Start() {
       <Seo path="/start" />
       <section className="pt-20 pb-4 sm:pt-20 sm:pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 relative min-h-[calc(100dvh-3.5rem)] flex flex-col justify-start">
         <DottedGrid className="opacity-30" spacing={32} />
-        <div className={`content-width relative z-10 flex-1 flex flex-col mx-auto max-w-xl sm:max-w-2xl ${showPreview && !isSubmitted ? "lg:max-w-6xl" : "lg:max-w-3xl xl:max-w-4xl"}`}>
+        <div className={`content-width relative z-10 flex-1 flex flex-col mx-auto max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl`}>
           <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.div
@@ -243,14 +229,9 @@ export default function Start() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className={showPreview ? "lg:grid lg:grid-cols-12 lg:items-start lg:gap-10" : ""}
+                
               >
-                {showPreview && (
-                  <div className="mb-5 lg:order-2 lg:col-span-7 lg:mb-0">
-                    <FlowPreview input={previewInput} />
-                  </div>
-                )}
-                <div className={showPreview ? "lg:order-1 lg:col-span-5" : ""}>
+                <div>
                 {/* Step 1: Package Selection */}
                 {step === 1 && (
                   <motion.div
@@ -483,18 +464,6 @@ export default function Start() {
                         </label>
                       </div>
 
-                      {showPreview && (
-                        <label className="flex cursor-pointer items-start gap-3 text-sm text-muted-foreground min-h-[44px]">
-                          <input
-                            type="checkbox"
-                            className="mt-0.5 h-5 w-5 accent-[hsl(var(--primary))]"
-                            checked={attachPreview}
-                            onChange={(e) => setAttachPreview(e.target.checked)}
-                          />
-                          <span>Include a link to my preview, so you can see what I saw.</span>
-                        </label>
-                      )}
-
                       <p className="text-xs text-muted-foreground leading-relaxed">
                         We use these details only to reply to your enquiry. This form doesn't take payment. See our{" "}
                         <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">privacy policy</Link>.
@@ -580,11 +549,6 @@ export default function Start() {
                   </div>
                   <PayOnline packageId={selectedPackage} />
                   <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:mt-6 sm:flex-row">
-                    {previewInput.name && (
-                      <Link to={previewLink} className="btn-primary btn-md sm:btn-lg !text-background">
-                        See your preview again
-                      </Link>
-                    )}
                     <Link to="/" className="btn-outline btn-md sm:btn-lg">
                       Back to Home
                     </Link>

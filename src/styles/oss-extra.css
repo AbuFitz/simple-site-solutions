@@ -77,17 +77,26 @@
 .oss-chat-launcher:hover > span:nth-child(2) { color: var(--ink); }
 .oss-chat-launcher::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--spring); margin-right: 10px; animation: oss-blink 2.4s ease-in-out infinite; }
 @keyframes oss-blink { 50% { opacity: 0.2; } }
-.oss-chat-panel { border-radius: 0 !important; background: #0b0f0d !important; border: 1px solid rgba(239, 235, 227, 0.3) !important; color: var(--bone) !important; font-family: var(--f-text); }
-.oss-chat-panel header { background: transparent !important; border-bottom: 1px solid rgba(239, 235, 227, 0.2) !important; }
+.oss-chat-panel { border-radius: 18px !important; background: #0b0f0d !important; border: 0 !important; color: var(--bone) !important; font-family: var(--f-text); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6) !important; }
+.oss-chat-panel header { background: transparent !important; border: 0 !important; padding-top: 18px !important; padding-bottom: 6px !important; }
 .oss-chat-panel header > span { display: none; }
-.oss-chat-panel header p:first-child { font: 500 13px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--bone); }
-.oss-chat-panel [role="log"] p { border-radius: 0 !important; background: transparent !important; border: 0 !important; padding-left: 0 !important; padding-right: 0 !important; color: var(--bone) !important; }
-.oss-chat-panel [role="log"] .justify-end p { color: #c9cbc6 !important; margin-left: 40px; border-left: 1px solid rgba(239, 235, 227, 0.3) !important; padding-left: 12px !important; }
-.oss-chat-panel [role="log"] a { color: var(--bone) !important; border-color: rgba(239, 235, 227, 0.4) !important; border-radius: 0 !important; background: transparent !important; }
-.oss-chat-panel form { background: transparent !important; border-top: 1px solid rgba(239, 235, 227, 0.2) !important; }
-.oss-chat-panel textarea { border-radius: 0 !important; background: transparent !important; border-color: rgba(239, 235, 227, 0.35) !important; }
-.oss-chat-panel button[type="submit"] { border-radius: 0 !important; background: var(--bone) !important; color: var(--ink) !important; }
-.oss-chat-panel [aria-label="Suggested questions"] button { border-radius: 0 !important; background: transparent !important; border-color: rgba(239, 235, 227, 0.35) !important; color: var(--bone) !important; font-family: var(--f-mono); font-size: 13px; text-transform: uppercase; }
+.oss-chat-panel header p:first-child { font: 700 28px / 1 var(--f-display); letter-spacing: -0.04em; text-transform: uppercase; color: var(--bone); }
+.oss-chat-panel header p:last-child { font: 13px var(--f-mono) !important; color: #8b908c !important; }
+.oss-chat-panel [role="log"] p { border-radius: 0 !important; background: transparent !important; border: 0 !important; padding: 0 !important; color: var(--bone) !important; font-size: 17px !important; line-height: 1.45 !important; }
+.oss-chat-panel [role="log"] .justify-end p { color: #8b908c !important; text-align: right; }
+.oss-chat-panel [role="log"] a { color: var(--bone) !important; border: 0 !important; border-bottom: 1px solid rgba(239, 235, 227, 0.5) !important; border-radius: 0 !important; background: transparent !important; padding: 0 !important; min-height: 0 !important; }
+.oss-chat-panel form { background: transparent !important; border: 0 !important; }
+.oss-chat-panel textarea { border-radius: 0 !important; background: transparent !important; border: 0 !important; border-bottom: 1px solid rgba(239, 235, 227, 0.35) !important; box-shadow: none !important; padding-left: 0 !important; font-size: 17px !important; }
+.oss-chat-panel textarea:focus { border-bottom-color: var(--bone) !important; }
+.oss-chat-panel button[type="submit"] { border-radius: 999px !important; background: var(--bone) !important; color: var(--ink) !important; }
+.oss-chat-panel [aria-label="Suggested questions"] button { border: 0 !important; border-radius: 0 !important; background: transparent !important; padding: 0 !important; min-height: 0 !important; color: #c9cbc6 !important; font: 500 16px var(--f-text) !important; text-align: left; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(239, 235, 227, 0.3); }
+.oss-chat-panel [aria-label="Suggested questions"] { flex-direction: column; align-items: flex-start; gap: 10px !important; }
+.oss-chat-panel [role="status"] span { background: var(--bone) !important; }
+.oss-chat-panel p.text-muted-foreground, .oss-chat-panel form p { color: #9a9f9b !important; font-size: 12px !important; }
+.oss-chat-launcher { border: 0 !important; background: var(--bone) !important; color: var(--ink) !important; border-radius: 999px !important; padding: 13px 20px !important; }
+.oss-chat-launcher > span:nth-child(2) { color: var(--ink) !important; }
+.oss-chat-launcher::before { background: var(--ink) !important; }
+.oss-chat-launcher:hover { background: #fff !important; }
 @media (prefers-reduced-motion: reduce) { .oss-chat-launcher::before { animation: none; } }
 
 /* ---------- Fade-in for words and sections across inner pages ---------- */
@@ -106,3 +115,15 @@
 .oss-rise__i { display: inline-block; transform: translateY(112%); transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
 .oss-rise.is-in .oss-rise__i { transform: none; }
 @media (prefers-reduced-motion: reduce) { .oss-rise__i { transform: none; transition: none; } }
+
+/* ---------- Cookie notice: one flat line ---------- */
+.oss-cookie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 14px 24px; background: #0b0f0d; box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5); color: var(--bone); font-family: var(--f-text); animation: oss-cookie-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+body.has-cookie main { padding-bottom: 96px; }
+.oss-cookie p { margin: 0; font-size: 15px; line-height: 1.4; color: rgba(239, 235, 227, 0.88); }
+.oss-cookie a { color: var(--bone); text-decoration: underline; text-underline-offset: 3px; }
+.oss-cookie button { flex: none; font: 600 14px var(--f-mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); background: var(--bone); border: 0; padding: 11px 18px; border-radius: 999px; cursor: pointer; }
+@keyframes oss-cookie-in { from { transform: translateY(100%); } to { transform: none; } }
+@media (max-width: 959px) { .oss-cookie { padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); } .oss-cookie p { font-size: 14px; } }
+@media (prefers-reduced-motion: reduce) { .oss-cookie { animation: none; } }
+.oss-chat-panel [role="log"] .mt-2, .oss-chat-panel [role="log"] span.underline { color: #c9cbc6 !important; }
+.oss-chat-panel .underline { color: var(--bone) !important; }

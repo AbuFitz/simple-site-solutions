@@ -1,5 +1,5 @@
 /**
- * Case-study content. Only what we can stand behind: what the site is for, what we built and the stack.
+ * Case-study content. Only what we can stand behind: what the site is for, and what we built.
  * No outcomes, traffic, enquiry or revenue figures are published for any project.
  */
 import { shots } from "@/assets/redesign";
@@ -73,7 +73,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { title: "Quote and booking", text: "Dedicated routes for requesting a quote and booking." },
       { title: "Customer system", text: "A link into a separate customer and job system." },
     ],
-    palette: { colors: ["#0C0C0C", ORANGE, "#FFFFFF"], note: "Palette, Bebas Neue and DM Sans, read from the live site on 15 October 2026" },
+    palette: { colors: ["#0C0C0C", ORANGE, "#FFFFFF"], note: "Palette read from the live site on 15 October 2026" },
     nextShot: { src: shots.ttdHero, alt: "True To Detail website, home page" },
   },
   "brightlearn-tutoring": {
