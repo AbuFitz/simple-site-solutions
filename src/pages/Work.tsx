@@ -7,26 +7,16 @@ import { projects, type WorkProject } from "@/data/work";
 import { shots } from "@/assets/redesign";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 
-type Filter = "all" | "client" | "sister" | "more";
+type Filter = "all";
 
 const featured = ["true-to-detail", "brightlearn-tutoring"];
-const inFilter = (p: WorkProject, f: Filter) => {
-  if (f === "all") return true;
-  if (f === "client") return p.label === "Client work";
-  if (f === "sister") return p.label === "Sister business" || p.label === "Sister product";
-  return p.label === "Real project" || !p.label;
-};
+const inFilter = (_p: WorkProject, _f: Filter) => true;
 
 export default function Work() {
   const [filter, setFilter] = useState<Filter>("all");
   const feat = useScrollProgress<HTMLElement>();
   const count = (f: Filter) => projects.filter((p) => inFilter(p, f)).length;
-  const tabs: { id: Filter; label: string }[] = [
-    { id: "all", label: `All (${count("all")})` },
-    { id: "client", label: `Client work (${count("client")})` },
-    { id: "sister", label: `Sister projects (${count("sister")})` },
-    { id: "more", label: `More (${count("more")})` },
-  ];
+  const tabs: { id: Filter; label: string }[] = [{ id: "all", label: `All (${count("all")})` }];
   const rows = projects.filter((p) => !featured.includes(p.slug) && inFilter(p, filter));
   const showFeatured = filter === "all" || filter === "client";
 
@@ -42,7 +32,7 @@ export default function Work() {
 
       <header className="wh" data-tone="light">
         <h1 className="oss-disp">Work</h1>
-        <p className="intro">Client work, sister projects and other sites we have built. Labels show what each one is; projects without a label are still being confirmed.</p>
+        <p className="intro">Websites we have built for businesses across the UK.</p>
         <div className="filters" role="group" aria-label="Filter projects">
           {tabs.map((t) => (
             <button key={t.id} type="button" className={filter === t.id ? "on" : ""} aria-pressed={filter === t.id} onClick={() => setFilter(t.id)}>
@@ -99,7 +89,7 @@ export default function Work() {
       <section className="idx" data-tone="light" aria-labelledby="more-title">
         <div className="hd">
           <h2 id="more-title" className="oss-disp">{showFeatured && filter === "all" ? "More work" : "Work"}</h2>
-          <p>Sister projects and other sites we have built. We show captures only, with no external links.</p>
+          <p>More of the sites we have built. We show captures only, with no external links.</p>
         </div>
         <ul>
           {rows.map((p) => (
@@ -120,7 +110,7 @@ export default function Work() {
             </li>
           ))}
         </ul>
-        <p className="note">Projects without a label are still being confirmed. We only label what we can verify.</p>
+        
       </section>
 
       <CtaBand />

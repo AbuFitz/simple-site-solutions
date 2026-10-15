@@ -59,7 +59,7 @@
 .pg-inner h1, .pg-inner h2 { font-family: var(--f-display); }
 .pg-inner .badge, .pg-inner .badge-primary, .pg-inner .badge-muted { font-family: var(--f-mono); letter-spacing: 0; text-transform: none; }
 
-.oss-cta { background: var(--green); color: var(--ink); padding: 110px 56px; font-family: var(--f-text); }
+.oss-cta { background: var(--paper, #e6e7e3); color: var(--ink); padding: 110px 56px; font-family: var(--f-text); }
 .oss-cta h2 { font-size: clamp(40px, 6.4vw, 96px); line-height: 0.94; letter-spacing: -0.05em; max-width: 1100px; margin: 0; }
 .oss-cta p { margin: 24px 0 0; font-size: 21px; max-width: 560px; color: var(--ink); }
 .oss-cta .row { display: flex; gap: 30px; align-items: center; margin-top: 40px; flex-wrap: wrap; }
@@ -69,23 +69,25 @@
 
 .pg-inner p a.text-primary, .pg-inner li a.text-primary { text-decoration: underline; text-underline-offset: 3px; }
 
-/* ---------- Chat widget: flat, mono, no bubble ---------- */
-.oss-chat-launcher { height: auto !important; border-radius: 2px !important; border: 0 !important; background: var(--spring) !important; color: var(--ink) !important; padding: 13px 20px !important; box-shadow: none !important; gap: 0 !important; font-family: var(--f-mono) !important; }
+/* ---------- Chat widget: flat, mono, black and grey-white ---------- */
+.oss-chat-launcher { height: auto !important; border-radius: 2px !important; border: 1px solid rgba(239, 235, 227, 0.35) !important; background: #0b0f0d !important; color: var(--bone) !important; padding: 13px 20px !important; box-shadow: none !important; gap: 0 !important; font-family: var(--f-mono) !important; }
 .oss-chat-launcher > span:first-child, .oss-chat-launcher svg { display: none !important; }
-.oss-chat-launcher > span:nth-child(2) { display: inline !important; font: 500 14px var(--f-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); }
-.oss-chat-launcher:hover { transform: translateY(-3px) !important; }
-.oss-chat-launcher::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); margin-right: 10px; animation: oss-blink 2.4s ease-in-out infinite; }
+.oss-chat-launcher > span:nth-child(2) { display: inline !important; font: 500 14px var(--f-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--bone); }
+.oss-chat-launcher:hover { transform: translateY(-3px) !important; background: var(--bone) !important; }
+.oss-chat-launcher:hover > span:nth-child(2) { color: var(--ink); }
+.oss-chat-launcher::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--spring); margin-right: 10px; animation: oss-blink 2.4s ease-in-out infinite; }
 @keyframes oss-blink { 50% { opacity: 0.2; } }
-.oss-chat-panel { border-radius: 0 !important; background: #0b1f17 !important; border: 1px solid rgba(79, 217, 160, 0.5) !important; color: var(--bone) !important; font-family: var(--f-text); }
-.oss-chat-panel header { background: transparent !important; border-bottom: 1px solid rgba(79, 217, 160, 0.35) !important; }
+.oss-chat-panel { border-radius: 0 !important; background: #0b0f0d !important; border: 1px solid rgba(239, 235, 227, 0.3) !important; color: var(--bone) !important; font-family: var(--f-text); }
+.oss-chat-panel header { background: transparent !important; border-bottom: 1px solid rgba(239, 235, 227, 0.2) !important; }
 .oss-chat-panel header > span { display: none; }
-.oss-chat-panel header p:first-child { font: 500 13px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--spring); }
+.oss-chat-panel header p:first-child { font: 500 13px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--bone); }
 .oss-chat-panel [role="log"] p { border-radius: 0 !important; background: transparent !important; border: 0 !important; padding-left: 0 !important; padding-right: 0 !important; color: var(--bone) !important; }
-.oss-chat-panel [role="log"] .justify-end p { color: var(--spring) !important; margin-left: 40px; }
-.oss-chat-panel form { background: transparent !important; border-top: 1px solid rgba(79, 217, 160, 0.35) !important; }
+.oss-chat-panel [role="log"] .justify-end p { color: #c9cbc6 !important; margin-left: 40px; border-left: 1px solid rgba(239, 235, 227, 0.3) !important; padding-left: 12px !important; }
+.oss-chat-panel [role="log"] a { color: var(--bone) !important; border-color: rgba(239, 235, 227, 0.4) !important; border-radius: 0 !important; background: transparent !important; }
+.oss-chat-panel form { background: transparent !important; border-top: 1px solid rgba(239, 235, 227, 0.2) !important; }
 .oss-chat-panel textarea { border-radius: 0 !important; background: transparent !important; border-color: rgba(239, 235, 227, 0.35) !important; }
-.oss-chat-panel button[type="submit"] { border-radius: 0 !important; background: var(--spring) !important; color: var(--ink) !important; }
-.oss-chat-panel [aria-label="Suggested questions"] button { border-radius: 0 !important; background: transparent !important; font-family: var(--f-mono); font-size: 13px; text-transform: uppercase; }
+.oss-chat-panel button[type="submit"] { border-radius: 0 !important; background: var(--bone) !important; color: var(--ink) !important; }
+.oss-chat-panel [aria-label="Suggested questions"] button { border-radius: 0 !important; background: transparent !important; border-color: rgba(239, 235, 227, 0.35) !important; color: var(--bone) !important; font-family: var(--f-mono); font-size: 13px; text-transform: uppercase; }
 @media (prefers-reduced-motion: reduce) { .oss-chat-launcher::before { animation: none; } }
 
 /* ---------- Fade-in for words and sections across inner pages ---------- */
@@ -98,3 +100,9 @@
   }
 }
 @keyframes oss-fade { to { opacity: 1; transform: none; } }
+
+/* Text rise (replaces the decode effect) */
+.oss-rise__w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.12em; margin-bottom: -0.12em; }
+.oss-rise__i { display: inline-block; transform: translateY(112%); transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.oss-rise.is-in .oss-rise__i { transform: none; }
+@media (prefers-reduced-motion: reduce) { .oss-rise__i { transform: none; transition: none; } }

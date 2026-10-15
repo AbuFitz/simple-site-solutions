@@ -199,14 +199,6 @@ function clientEmailHtml(data: OnboardFormData): string {
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; max-width: 600px;">
-          <!-- Header -->
-          <tr>
-            <td style="padding: 32px 40px; border-bottom: 2px solid #e5e5e5;">
-              <a href="${BASE_URL}" style="font-size: 24px; font-weight: 700; color: #000000; text-decoration: none;">
-                one<span style="color: #3BA875;">simple</span>site
-              </a>
-            </td>
-          </tr>
           <!-- Body -->
           <tr>
             <td style="padding: 40px;">
@@ -310,14 +302,6 @@ function adminEmailHtml(data: OnboardFormData): string {
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; max-width: 600px;">
-          <!-- Header -->
-          <tr>
-            <td style="padding: 32px 40px; border-bottom: 2px solid #e5e5e5;">
-              <a href="${BASE_URL}" style="font-size: 24px; font-weight: 700; color: #000000; text-decoration: none;">
-                one<span style="color: #3BA875;">simple</span>site
-              </a>
-            </td>
-          </tr>
           <!-- Body -->
           <tr>
             <td style="padding: 40px;">

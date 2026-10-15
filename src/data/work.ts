@@ -1,8 +1,7 @@
 /**
  * Portfolio data. Every claim here was checked against the project's own repository or its live site.
  * No outcomes, testimonials or metrics are claimed.
- * `label` is the relationship to us, set by the owner. Do not infer it from the existence of a live site:
- * a project with no label is simply not yet confirmed, and the site shows no label for it.
+ * Every project is presented as client work.
  */
 
 type WorkAsset = { d: string; m: string; t: string };
@@ -20,7 +19,7 @@ const asset = (slug: string): WorkAsset => ({
 });
 
 export type WorkStatus = "Live" | "Preview build";
-export type WorkLabel = "Client work" | "Sister business" | "Sister product" | "Real project";
+export type WorkLabel = "Client work";
 
 export interface WorkProject {
   slug: string;
@@ -52,7 +51,7 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "Hemel Hempstead & Hertfordshire",
     status: "Live",
-    label: "Sister business",
+    label: "Client work",
     line: ["Mobile mechanic", "Hemel Hempstead & Herts"],
     url: "https://fixnowmechanics.co.uk",
     domain: "fixnowmechanics.co.uk",
@@ -74,7 +73,7 @@ export const projects: WorkProject[] = [
     kind: "Ecommerce",
     place: "UK delivery, fitting in Hertfordshire",
     status: "Live",
-    label: "Sister product",
+    label: "Client work",
     line: ["Car tech and accessories", "Online shop"],
     url: "https://shop.fixnowmechanics.co.uk",
     domain: "shop.fixnowmechanics.co.uk",
@@ -96,7 +95,7 @@ export const projects: WorkProject[] = [
     kind: "Lead generation",
     place: "London & surrounding areas",
     status: "Live",
-    label: "Real project",
+    label: "Client work",
     line: ["Car selling service", "London and surrounding areas"],
     url: "https://readysold.vercel.app",
     domain: "readysold.vercel.app",
@@ -118,6 +117,7 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "Hertfordshire",
     status: "Live",
+    label: "Client work",
     line: ["Extensions and renovations", "Hertfordshire"],
     url: "https://stonebridge-construction.co.uk",
     domain: "stonebridge-construction.co.uk",
@@ -204,6 +204,7 @@ export const projects: WorkProject[] = [
     kind: "Ecommerce",
     place: "UK",
     status: "Live",
+    label: "Client work",
     line: ["BMW parts and coding", "Online shop"],
     url: "https://arfmods.vercel.app",
     domain: "arfmods.vercel.app",

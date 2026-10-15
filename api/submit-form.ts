@@ -61,218 +61,52 @@ function escapeHtml(text: string): string {
     .replace(/'/g, "&#039;");
 }
 
+// Emails: plain, dark, green accent, same type as the site. No logo, no images.
+const SHELL_OPEN = `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
+<body style="margin:0;padding:0;background:#080C0B;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#EFEBE3;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#080C0B;"><tr><td align="center" style="padding:48px 24px;">
+<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">`;
+const SHELL_CLOSE = `</table></td></tr></table></body></html>`;
+const row = (label: string, value: string) =>
+  `<tr><td style="padding:14px 0;border-top:1px solid #26322D;"><div style="font:12px 'Courier New',monospace;letter-spacing:1px;text-transform:uppercase;color:#4FD9A0;margin-bottom:4px;">${label}</div><div style="font-size:17px;line-height:1.45;color:#EFEBE3;">${value}</div></td></tr>`;
+const foot = `<tr><td style="padding-top:32px;border-top:1px solid #26322D;font-size:13px;line-height:1.6;color:#8A938E;">
+Sent because of an enquiry on onesimplesite.co.uk.<br>
+<a href="${BASE_URL}/privacy" style="color:#8A938E;">Privacy</a> &nbsp; <a href="${BASE_URL}/terms" style="color:#8A938E;">Terms</a> &nbsp; <a href="mailto:hello@onesimplesite.co.uk" style="color:#8A938E;">hello@onesimplesite.co.uk</a>
+</td></tr>`;
+
 // Customer confirmation email HTML
 function customerEmailHtml(data: FormData): string {
   const pkg = getPackageInfo(data.selectedPackage);
-
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f4f6; padding: 40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; max-width: 600px;">
-          <!-- Header -->
-          <tr>
-            <td style="padding: 32px 40px; border-bottom: 2px solid #e5e5e5;">
-              <a href="${BASE_URL}" style="font-size: 24px; font-weight: 700; color: #000000; text-decoration: none;">
-                one<span style="color: #3BA875;">simple</span>site
-              </a>
-            </td>
-          </tr>
-          <!-- Body -->
-          <tr>
-            <td style="padding: 40px;">
-              <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">Thanks for getting in touch, ${escapeHtml(data.name)}!</h1>
-              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                We've received your enquiry${pkg.name !== "Not sure yet" ? ` for <strong>${pkg.name}</strong>` : ""} and we're excited to help get your business online.
-              </p>
-              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">Here's what happens next:</p>
-              <ol style="font-size: 16px; line-height: 1.8; color: #374151; margin: 0 0 24px 0; padding-left: 20px;">
-                <li>We'll review your details and email you to confirm scope and next steps</li>
-                <li>You'll receive a follow-up email with any questions</li>
-                <li>Once we have everything, we'll get started on your site</li>
-              </ol>
-              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Your Enquiry Summary</div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Package</div>
-                  <div style="font-size: 16px; color: #000000;">${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}</div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Business</div>
-                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessName)}</div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">What You Do</div>
-                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessDescription)}</div>
-                </div>
-                ${data.selectedAddons.length > 0 ? `
-                <div>
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Add-ons</div>
-                  <div style="font-size: 16px; color: #000000;">${formatAddons(data.selectedAddons)}</div>
-                </div>
-                ` : ""}
-              </div>
-              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">In the meantime, feel free to check out our FAQ if you have any questions, or email us at <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>.</p>
-              <a href="${BASE_URL}/faq" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">View FAQ</a>
-              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 32px 0 0 0;">
-                Cheers,<br><strong>The OneSimpleSite Team</strong>
-              </p>
-            </td>
-          </tr>
-          <!-- Footer -->
-          <tr>
-            <td style="background-color: #f9fafb; padding: 32px 40px; border-top: 1px solid #e5e5e5;">
-              <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">This email was sent because you submitted an enquiry on onesimplesite.co.uk</p>
-              <p style="margin: 0 0 16px 0;">
-                <a href="${BASE_URL}/faq" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">FAQ</a>
-                <a href="${BASE_URL}/terms" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Terms of Service</a>
-                <a href="${BASE_URL}/privacy" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Privacy Policy</a>
-                <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
-              </p>
-              <p style="font-size: 14px; color: #6b7280; margin: 0 0 16px 0;">
-                <a href="mailto:hello@onesimplesite.co.uk" style="color: #3BA875; text-decoration: none;">hello@onesimplesite.co.uk</a>
-              </p>
-              <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 16px 0;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">© ${new Date().getFullYear()} OneSimpleSite. Made for local UK businesses.</p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
+  return `${SHELL_OPEN}
+<tr><td style="font-size:40px;line-height:1.05;font-weight:700;letter-spacing:-1.5px;text-transform:uppercase;padding-bottom:24px;">Got it, ${escapeHtml(data.name)}.</td></tr>
+<tr><td style="font-size:17px;line-height:1.6;color:#C9CBC6;padding-bottom:32px;">We have your enquiry${pkg.name !== "Not sure yet" ? ` for ${pkg.name}` : ""}. We will email you to confirm scope and next steps.</td></tr>
+${row("Package", `${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}`)}
+${row("Business", escapeHtml(data.businessName))}
+${row("What you do", escapeHtml(data.businessDescription))}
+${data.selectedAddons.length > 0 ? row("Add-ons", formatAddons(data.selectedAddons)) : ""}
+<tr><td style="padding:32px 0;font-size:17px;line-height:1.6;color:#C9CBC6;">Questions? Reply to this email.<br><span style="color:#EFEBE3;">The OneSimpleSite team</span></td></tr>
+${foot}
+${SHELL_CLOSE}`;
 }
 
 // Admin notification email HTML
 function adminEmailHtml(data: FormData): string {
   const pkg = getPackageInfo(data.selectedPackage);
-  const timestamp = new Date().toLocaleString("en-GB", {
-    dateStyle: "full",
-    timeStyle: "short",
-    timeZone: "Europe/London",
-  });
-
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f4f6; padding: 40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; max-width: 600px;">
-          <!-- Header -->
-          <tr>
-            <td style="padding: 32px 40px; border-bottom: 2px solid #e5e5e5;">
-              <a href="${BASE_URL}" style="font-size: 24px; font-weight: 700; color: #000000; text-decoration: none;">
-                one<span style="color: #3BA875;">simple</span>site
-              </a>
-            </td>
-          </tr>
-          <!-- Body -->
-          <tr>
-            <td style="padding: 40px;">
-              <h1 style="font-size: 24px; font-weight: 700; color: #000000; margin: 0 0 16px 0;">New Enquiry Received</h1>
-              <p style="font-size: 16px; line-height: 1.6; color: #374151; margin: 0 0 16px 0;">
-                You've received a new enquiry from <strong>${escapeHtml(data.name)}</strong> at <strong>${escapeHtml(data.businessName)}</strong>.
-              </p>
-              ${pkg.name !== "Not sure yet" ? `
-              <div style="background-color: #ecfdf5; border: 1px solid #3BA875; border-radius: 8px; padding: 16px; margin: 24px 0;">
-                <div style="font-weight: 600; color: #3BA875; font-size: 14px;">${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}</div>
-              </div>
-              ` : `
-              <div style="background-color: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 16px; margin: 24px 0;">
-                <div style="font-weight: 600; color: #92400e; font-size: 14px;">Not sure yet — needs help choosing</div>
-              </div>
-              `}
-
-              <!-- Contact Details -->
-              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Contact Details</div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Name</div>
-                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.name)}</div>
-                </div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Email</div>
-                  <div style="font-size: 16px;"><a href="mailto:${escapeHtml(data.email)}" style="color: #3BA875;">${escapeHtml(data.email)}</a></div>
-                </div>
-                ${data.phone ? `
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Phone</div>
-                  <div style="font-size: 16px;"><a href="tel:${escapeHtml(data.phone)}" style="color: #3BA875;">${escapeHtml(data.phone)}</a></div>
-                </div>
-                ` : ""}
-                <div>
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Business Name</div>
-                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessName)}</div>
-                </div>
-              </div>
-
-              <!-- Business Details -->
-              <div style="background-color: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0;">
-                <div style="font-weight: 600; font-size: 14px; color: #000; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Business Details</div>
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">What They Do</div>
-                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.businessDescription)}</div>
-                </div>
-                ${data.websiteUrl ? `
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Current Website</div>
-                  <div style="font-size: 16px;"><a href="${escapeHtml(data.websiteUrl.startsWith("http") ? data.websiteUrl : `https://${data.websiteUrl}`)}" style="color: #3BA875;" target="_blank">${escapeHtml(data.websiteUrl)}</a></div>
-                </div>
-                ` : ""}
-                ${data.selectedAddons.length > 0 ? `
-                <div style="margin-bottom: 12px;">
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Selected Add-ons</div>
-                  <div style="font-size: 16px; color: #000000;">${formatAddons(data.selectedAddons)}</div>
-                </div>
-                ` : ""}
-                ${data.details ? `
-                <div>
-                  <div style="font-size: 12px; font-weight: 600; color: #6b7280; text-transform: uppercase; margin-bottom: 4px;">Additional Details</div>
-                  <div style="font-size: 16px; color: #000000;">${escapeHtml(data.details)}</div>
-                </div>
-                ` : ""}
-              </div>
-
-              <a href="mailto:${escapeHtml(data.email)}?subject=Re: Your OneSimpleSite Enquiry - ${encodeURIComponent(data.businessName)}" style="display: inline-block; background-color: #3BA875; color: #ffffff; font-size: 16px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 9999px; margin: 16px 0;">Reply to ${escapeHtml(data.name)}</a>
-
-              <hr style="border: none; border-top: 1px solid #e5e5e5; margin: 24px 0;">
-              <p style="font-size: 12px; color: #9ca3af; margin: 0;">Received: ${timestamp}</p>
-            </td>
-          </tr>
-          <!-- Footer -->
-          <tr>
-            <td style="background-color: #f9fafb; padding: 32px 40px; border-top: 1px solid #e5e5e5;">
-              <p style="margin: 0 0 16px 0;">
-                <a href="${BASE_URL}/faq" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">FAQ</a>
-                <a href="${BASE_URL}/terms" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Terms of Service</a>
-                <a href="${BASE_URL}/privacy" style="font-size: 14px; color: #3BA875; text-decoration: none; margin-right: 24px;">Privacy Policy</a>
-                <a href="${BASE_URL}/cookies" style="font-size: 14px; color: #3BA875; text-decoration: none;">Cookie Policy</a>
-              </p>
-              <p style="font-size: 14px; color: #6b7280; margin: 0;">
-                hello@onesimplesite.co.uk
-              </p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
+  const site = data.websiteUrl ? escapeHtml(data.websiteUrl) : "";
+  return `${SHELL_OPEN}
+<tr><td style="font-size:36px;line-height:1.05;font-weight:700;letter-spacing:-1.5px;text-transform:uppercase;padding-bottom:28px;">New enquiry</td></tr>
+${row("From", `${escapeHtml(data.name)}, ${escapeHtml(data.businessName)}`)}
+${row("Package", `${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}`)}
+${row("Email", `<a href="mailto:${escapeHtml(data.email)}" style="color:#4FD9A0;">${escapeHtml(data.email)}</a>`)}
+${data.phone ? row("Phone", `<a href="tel:${escapeHtml(data.phone)}" style="color:#4FD9A0;">${escapeHtml(data.phone)}</a>`) : ""}
+${row("What they do", escapeHtml(data.businessDescription))}
+${site ? row("Current site", site) : ""}
+${data.selectedAddons.length > 0 ? row("Add-ons", formatAddons(data.selectedAddons)) : ""}
+${data.details ? row("Details", escapeHtml(data.details)) : ""}
+<tr><td style="padding:32px 0;"><a href="mailto:${escapeHtml(data.email)}?subject=${encodeURIComponent(`Re: Your OneSimpleSite enquiry - ${data.businessName}`)}" style="display:inline-block;background:#4FD9A0;color:#080C0B;font-size:16px;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:999px;">Reply to ${escapeHtml(data.name)}</a></td></tr>
+${foot}
+${SHELL_CLOSE}`;
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {

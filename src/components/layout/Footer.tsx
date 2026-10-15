@@ -34,7 +34,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
             ))}
           </ul>
         </nav>
-        <nav aria-label="Web design by area">
+        <nav aria-label="Web design by area" className="oss-foot__areaswrap">
           <h2>Areas</h2>
           <ul className="oss-foot__areas">
             {locationData.locations.map((l) => (

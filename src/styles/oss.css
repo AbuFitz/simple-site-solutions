@@ -112,7 +112,7 @@
   .oss-foot { padding: 64px 20px 24px; }
   .oss-foot__a { grid-template-columns: 1fr 1fr; row-gap: 36px; }
   .oss-foot__lead { grid-column: 1 / 3; font-size: 34px; }
-  .oss-foot__areas { grid-column: 1 / 3; }
+  .oss-foot__areaswrap { grid-column: 1 / 3; }
   .oss-foot li { font-size: 18px; line-height: 2.1; }
   .oss-foot__bigwrap { margin-top: 50px; }
   .oss-foot__legal { display: block; font-size: 16px; line-height: 1.8; }
@@ -132,7 +132,9 @@
 
 /* ---------- Minimal bar + full-screen menu ---------- */
 .oss-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 90; height: 84px; display: flex; justify-content: flex-end; align-items: center; padding: 0 56px; font-family: var(--f-text); color: var(--bone); transition: color 0.25s ease; }
-.oss-bar[data-tone="light"] { color: var(--ink); }
+.oss-bar { background: linear-gradient(180deg, rgba(7, 10, 9, 0.85), rgba(7, 10, 9, 0)); }
+.oss-bar[data-tone="light"] { color: var(--ink); background: linear-gradient(180deg, rgba(230, 231, 227, 0.9), rgba(230, 231, 227, 0)); }
+.oss-bar[data-open="true"] { background: none; }
 .oss-bar__wm { font-family: var(--f-brand); font-weight: 700; letter-spacing: -0.03em; font-size: 24px; color: inherit; text-decoration: none; }
 .oss-bar__wm b { color: var(--spring); font-weight: 700; }
 .oss-bar[data-tone="light"] .oss-bar__wm b { color: var(--ink); }

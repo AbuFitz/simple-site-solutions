@@ -91,7 +91,7 @@ export function Navbar() {
             ))}
           </ul>
           <div className="oss-fm__side">
-            <p><small>START</small><Link to="/start">Start a project</Link><br /><a href="mailto:hello@onesimplesite.co.uk">hello@onesimplesite.co.uk</a></p>
+            <p><small>CONTACT</small><a href="mailto:hello@onesimplesite.co.uk">hello@onesimplesite.co.uk</a></p>
             <p><small>AREAS</small>Hemel Hempstead, St Albans, Watford, London, Luton and across the UK.</p>
           </div>
         </div>

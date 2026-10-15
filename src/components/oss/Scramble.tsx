@@ -1,59 +1,50 @@
-import { createElement, useEffect, useRef, useState } from "react";
-
-const GLYPHS = "!<>-_\\/[]{}=+*^?#01";
+import { Fragment, createElement, useEffect, useRef, useState } from "react";
 
 /**
- * Text that decodes itself: characters resolve left to right out of random glyphs, once, when it scrolls into view.
- * Screen readers get the real text from the start; reduced-motion users see it already resolved.
- * `hover` replays it when the pointer enters the nearest parent with data-scramble-host.
+ * Text that rises into place: each word slides up out of a mask with a short stagger, once, when it scrolls into view.
+ * Same footprint before and after (no jumping letters). Screen readers get plain text; reduced motion shows it at once.
+ * (File name kept so existing imports keep working.)
  */
-export function Scramble({ text, as = "span", delay = 0, hover = false, className }: { text: string; as?: "span" | "b"; delay?: number; hover?: boolean; className?: string }) {
+export function Scramble({ text, as = "span", delay = 0, className }: { text: string; as?: "span" | "b"; delay?: number; hover?: boolean; className?: string }) {
   const ref = useRef<HTMLElement>(null);
-  const [out, setOut] = useState(text);
-  const timer = useRef(0);
+  const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let started = false;
-    const run = () => {
-      cancelAnimationFrame(timer.current);
-      const t0 = performance.now() + delay;
-      const dur = 380 + text.length * 34;
-      const tick = (now: number) => {
-        const p = Math.max(0, Math.min(1, (now - t0) / dur));
-        const keep = Math.floor(p * text.length);
-        setOut(
-          text
-            .split("")
-            .map((c, i) => (c === " " || i < keep ? c : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
-            .join(""),
-        );
-        if (p < 1) timer.current = requestAnimationFrame(tick);
-        else setOut(text);
-      };
-      timer.current = requestAnimationFrame(tick);
-    };
-    setOut(text.replace(/[^ ]/g, " "));
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(true);
+      return;
+    }
     const io = new IntersectionObserver(
       (es) => {
-        if (es[0].isIntersecting && !started) {
-          started = true;
-          run();
+        if (es[0].isIntersecting) {
+          setShown(true);
+          io.disconnect();
         }
       },
       { threshold: 0.2 },
     );
     io.observe(el);
-    const host = hover ? el.closest("[data-scramble-host]") : null;
-    host?.addEventListener("mouseenter", run);
-    return () => {
-      io.disconnect();
-      host?.removeEventListener("mouseenter", run);
-      cancelAnimationFrame(timer.current);
-    };
-  }, [text, delay, hover]);
+    return () => io.disconnect();
+  }, []);
 
-  return createElement(as, { ref, className }, <span className="sr-only">{text} </span>, <span aria-hidden="true">{out}</span>);
+  const words = text.split(" ");
+  return createElement(
+    as,
+    { ref, className: `oss-rise${shown ? " is-in" : ""}${className ? ` ${className}` : ""}` },
+    <span className="sr-only">{text}</span>,
+    <span aria-hidden="true">
+      {words.map((w, i) => (
+        <Fragment key={i}>
+          <span className="oss-rise__w">
+            <span className="oss-rise__i" style={{ transitionDelay: `${delay + i * 70}ms` }}>
+              {w}
+            </span>
+          </span>
+          {i < words.length - 1 ? " " : ""}
+        </Fragment>
+      ))}
+    </span>,
+  );
 }

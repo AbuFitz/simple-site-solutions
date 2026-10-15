@@ -38,7 +38,7 @@ test.describe("navigation", () => {
 test.describe("Work pages", () => {
   test.use({ viewport: { width: 1440, height: 1000 } });
 
-  test("home page is typographic: no project captures, one link to the work, reduced motion too", async ({ browser }) => {
+  test("home page hero is typographic and the work stack links to the work, reduced motion too", async ({ browser }) => {
     for (const reducedMotion of ["no-preference", "reduce"] as const) {
       const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion });
       const page = await ctx.newPage();
@@ -46,24 +46,18 @@ test.describe("Work pages", () => {
       await page.goto("/");
       await settle(page);
       await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName(/Websites\s*that make\s*sense\./);
-      await expect(page.getByRole("link", { name: /see our work/ })).toHaveAttribute("href", "/work");
-      expect(await page.locator("main img").count()).toBe(0);
+      await expect(page.getByRole("link", { name: "View more" }).first()).toHaveAttribute("href", "/work");
+      expect(await page.locator("main .hm-hero img").count()).toBe(0);
       expect(errors).toEqual([]);
       await ctx.close();
     }
   });
 
-  test("project labels are the confirmed ones and nothing is inferred", async ({ page }) => {
+  test("every project is presented as client work", async ({ page }) => {
     await page.goto("/work");
-    const row = (name: RegExp) => page.getByRole("link", { name }).filter({ has: page.locator(".nm") });
-    await expect(row(/FixNow Mechanics/)).toContainText("Sister business");
-    await expect(row(/FixNow Shop/)).toContainText("Sister product");
-    await expect(row(/ReadySold/)).toContainText("Real project");
-    await expect(row(/Quantum BioTesting/)).toContainText("Client work");
-    for (const n of [/Stonebridge/, /ARF Mods/]) {
-      await expect(row(n).locator(".oss-tag")).toHaveCount(0);
-    }
+    await expect(page.locator(".idx .irow .oss-tag")).toHaveCount(6);
     await expect(page.locator(".feat .oss-tag")).toHaveText(["Client work", "Client work"]);
+    await expect(page.getByText(/sister/i)).toHaveCount(0);
   });
 
   test("project pages exist as plain, linkable pages", async ({ page }) => {

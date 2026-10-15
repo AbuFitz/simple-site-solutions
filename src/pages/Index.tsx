@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { CtaBand } from "@/components/oss/CtaBand";
+import { PreviewPrompt } from "@/components/oss/PreviewPrompt";
+import { WorkRack } from "@/components/oss/WorkRack";
 import { Scramble } from "@/components/oss/Scramble";
 
 const services = [
@@ -34,21 +36,19 @@ export default function Index() {
           <span className="g"><Scramble text="sense." delay={500} /></span>
         </h1>
         <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £199.</p>
-        <div className="hm-marq" aria-hidden="true"><div><span>Fixed prices</span><span>Looks right</span><span>Feels right</span><span>Works</span><span>UK-wide</span><span>Fixed prices</span><span>Looks right</span><span>Feels right</span><span>Works</span><span>UK-wide</span></div></div>
-        <Link to="/start" className="hm-hero__go">Start a project <span aria-hidden="true">&#8599;</span></Link>
-        <span className="hm-hero__scroll" aria-hidden="true">Scroll &#8595;</span>
-      </section>
+              </section>
 
       <section className="hm-story" data-tone="dark" aria-labelledby="story-title">
         <small><Scramble text="Our story" /></small>
         <p id="story-title">Small businesses deserve a website that <em>looks right, feels right</em> and actually works.</p>
         <ul className="hm-facts">
-          <li><b>3</b><span>people behind every site</span></li>
           <li><b>UK</b><span>wide, with local pages</span></li>
           <li><b>£199</b><span>where fixed prices start</span></li>
         </ul>
-        <Link to="/work" className="hm-link">If you want to see our work, it's here &#8594;</Link>
+        
       </section>
+
+      <WorkRack />
 
       <section className="hm-days" data-tone="dark" aria-label="How long it takes">
         <b aria-hidden="true">5</b>
@@ -67,6 +67,17 @@ export default function Index() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <PreviewPrompt />
+
+      <section className="hm-how" data-tone="light" aria-labelledby="how-title">
+        <h2 id="how-title"><Scramble text="Notes in," /> <em><Scramble text="site out." delay={200} /></em></h2>
+        <ol>
+          <li><i aria-hidden="true">1</i><b>Brief</b><span>Tell us about the business. No copy or photos yet? We guide you.</span></li>
+          <li><i aria-hidden="true">2</i><b>Build</b><span>Planned for your kind of business and built around your details.</span></li>
+          <li><i aria-hidden="true">3</i><b>Launch</b><span>You review it, we refine it, then it goes live.</span></li>
+        </ol>
       </section>
 
       <section className="hm-team" data-tone="dark" aria-labelledby="team-title">
