@@ -155,3 +155,12 @@
   .oss-fm { grid-template-columns: 1fr; padding: 96px 20px 40px; }
 }
 @media (prefers-reduced-motion: reduce) { .oss-fm { animation: none; } }
+
+/* Menu: same scale on phones as desktop. It may scroll; it should still hit you in the face. */
+.oss-fm li a { font-size: clamp(64px, 11vw, 160px); }
+@media (max-width: 959px) {
+  .oss-fm { padding-top: 92px; align-content: start; }
+  .oss-fm li a { font-size: 17vw; line-height: 0.95; padding: 6px 0; gap: 14px; }
+  .oss-fm li a small { align-self: flex-start; margin-top: 2.2vw; }
+  .oss-fm__side { padding: 30px 0 60px; font-size: 18px; }
+}
