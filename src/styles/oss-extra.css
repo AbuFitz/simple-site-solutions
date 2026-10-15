@@ -129,8 +129,15 @@ body.has-cookie main { padding-bottom: 96px; }
 .oss-chat-panel .underline { color: var(--bone) !important; }
 
 /* Emphasis: the highlighted phrase is bright; the words around it sit back (colour only, no blur) */
-.hm-story p > .oss-rise, .hm-team blockquote > .oss-rise, .ab-quote blockquote > .oss-rise { opacity: 0.55; }
+.hm-story p > .oss-rise, .hm-team blockquote > .oss-rise, .ab-quote blockquote > .oss-rise { opacity: 0.78; }
 .hm-story p em, .hm-team blockquote em, .ab-quote blockquote em { color: #fff; }
 .hm-story p em .oss-rise, .hm-team blockquote em .oss-rise, .ab-quote blockquote em .oss-rise { opacity: 1; }
-.hm-price h2 > .oss-rise, .hm-how h2 > .oss-rise { opacity: 0.6; }
+.hm-price h2 > .oss-rise, .hm-how h2 > .oss-rise { opacity: 0.78; }
 .hm-price h2 em .oss-rise, .hm-how h2 em .oss-rise { opacity: 1; }
+
+/* The top bar spans the width but must not swallow clicks on content underneath it */
+.oss-bar { pointer-events: none; }
+.oss-bar > *, .oss-bar__r a, .oss-bar__r button { pointer-events: auto; }
+.oss-home-link { pointer-events: auto; }
+.hm-price h2, .hm-how h2 { color: var(--ink); }
+.hm-price h2 > .oss-rise, .hm-how h2 > .oss-rise { opacity: 0.72; }

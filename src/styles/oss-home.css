@@ -1,7 +1,7 @@
 /* Home: typographic, black / green / grey-white. No imagery. */
 .hm { --paper: #e6e7e3; --m: 56px; background: var(--ink); color: var(--bone); }
 .hm em { font-style: normal; color: var(--bone); }
-.hm-story p, .hm-team blockquote { color: #8d918c; }
+.hm-story p, .hm-team blockquote { color: #bfc2bd; }
 .hm-story p em, .hm-team blockquote em { color: #f4f3ee; }
 .hm small { font: 14px var(--f-mono); letter-spacing: 0.04em; }
 .hm-hero { position: relative; min-height: 100svh; background: #070a09; overflow: hidden; padding: 0 var(--m); display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 96px; }
@@ -40,7 +40,6 @@
 .hm-price { background: var(--paper); color: var(--ink); padding: 150px var(--m); display: grid; grid-template-columns: 1fr 1fr; gap: 50px 80px; }
 .hm-price h2 { font: 700 clamp(48px, 8.4vw, 120px) / 0.9 var(--f-display); letter-spacing: -0.05em; text-transform: uppercase; margin: 0; }
 .hm-price em { color: var(--ink); }
-.hm-price h2, .hm-how h2 { color: #6b706c; }
 .hm-price h2 em, .hm-how h2 em { color: var(--ink); }
 .hm-price ul { list-style: none; padding: 0; margin: 0; }
 .hm-price li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; border-top: 1px solid rgba(11, 15, 13, 0.25); padding: 24px 0; }
