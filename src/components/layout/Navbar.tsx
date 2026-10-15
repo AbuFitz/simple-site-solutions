@@ -1,36 +1,65 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const navItems = [
-  { path: "/", label: "Home" },
-  { path: "/how-it-works", label: "Process" },
+  { path: "/work", label: "Work" },
   { path: "/packages", label: "Pricing" },
-  { path: "/faq", label: "FAQ" },
+  { path: "/how-it-works", label: "Process" },
+  { path: "/guides", label: "Guides" },
+  { path: "/preview", label: "Preview" },
 ];
 
+type Tone = "dark" | "light";
+
+const isCurrent = (pathname: string, path: string) => pathname === path || pathname.startsWith(`${path}/`);
+
+/**
+ * Floating pill. Centred with plain CSS (no transform), so no animation library can push it off-centre.
+ * Its colour follows whatever is underneath it: sections mark themselves with data-tone="light"
+ * (bone, paper, cream and project colours) and the pill turns ink there; everywhere else it is bone.
+ */
 export function Navbar() {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [tone, setTone] = useState<Tone>("dark");
+  const nav = useRef<HTMLElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
+  const frame = useRef(0);
 
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const measure = useCallback(() => {
+    frame.current = 0;
+    const el = nav.current;
+    if (!el) return;
+    const box = el.getBoundingClientRect();
+    const x = Math.min(window.innerWidth - 2, Math.max(2, box.left + box.width / 2));
+    const y = box.top + box.height / 2;
+    const hit = document.elementsFromPoint(x, y).find((n) => !el.contains(n) && n.closest("[data-tone]"));
+    const next = (hit?.closest("[data-tone]")?.getAttribute("data-tone") ?? "dark") as Tone;
+    setTone((t) => (t === next ? t : next));
   }, []);
 
-  // Close menu on route change
+  const schedule = useCallback(() => {
+    if (!frame.current) frame.current = requestAnimationFrame(measure);
+  }, [measure]);
+
+  useEffect(() => {
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (frame.current) cancelAnimationFrame(frame.current);
+    };
+  }, [schedule]);
+
+  // New route: close the menu and re-read the tone once the new page has rendered.
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname]);
+    const t = window.setTimeout(schedule, 60);
+    return () => window.clearTimeout(t);
+  }, [pathname, schedule]);
 
-  // Escape closes the menu and returns focus to the button that opened it (no visual change)
   useEffect(() => {
     if (!menuOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -43,163 +72,60 @@ export function Navbar() {
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
-
   return (
     <>
-      {/* Floating Navigation Pill */}
-      <motion.header
-        className="fixed top-3 sm:top-4 md:top-6 left-1/2 -translate-x-1/2 z-[80] w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] max-w-2xl"
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        <nav
-          className={`relative flex items-center gap-2 min-w-0 p-1.5 sm:p-2 rounded-full border-2 border-border transition-all duration-300 ${
-            scrolled ? "bg-background/98 backdrop-blur-md shadow-lg" : "bg-background/95 backdrop-blur-sm"
-          }`}
-        >
-          {/* Mobile/Tablet Menu Button - Moved before logo */}
-          <button
-            ref={menuButton}
-            type="button"
-            aria-controls="mobile-menu"
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden flex-shrink-0 inline-flex items-center justify-center p-2.5 sm:p-3 bg-primary text-primary-foreground rounded-full transition-all hover:brightness-110"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? (
-              <X className="w-5 h-5 sm:w-6 sm:h-6" />
-            ) : (
-              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-            )}
-          </button>
-
-          {/* Brand */}
-          <Link
-            to="/"
-            className="flex-1 min-w-0 lg:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-lg sm:text-xl md:text-lg lg:text-2xl lg:pl-5 lg:pr-6 font-bold tracking-tight truncate"
-          >
-            one<span className="text-primary">simple</span>site
+      <div className="oss-nav-wrap">
+        <nav ref={nav} className="oss-nav" data-tone={tone} aria-label="Main">
+          <Link to="/" className="oss-nav__wm" aria-label="OneSimpleSite home">
+            one<b>simple</b>site
           </Link>
-
-          {/* Desktop Links - hidden on mobile/tablet */}
-          <div className="hidden lg:flex items-center gap-0.5 flex-1">
+          <div className="oss-nav__links">
             {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200 border ${
-                  location.pathname === item.path
-                    ? "bg-secondary text-foreground border-border"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50 border-transparent"
-                }`}
-              >
+              <Link key={item.path} to={item.path} aria-current={isCurrent(pathname, item.path) ? "page" : undefined}>
                 {item.label}
               </Link>
             ))}
           </div>
-
-          {/* Desktop CTA */}
-          <Link
-            to="/start"
-            className="hidden lg:inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-semibold hover:brightness-110 transition-all"
-          >
-            Get Started
-            <ArrowUpRight className="w-3.5 h-3.5" />
+          <Link to="/start" className="oss-nav__cta">
+            <span className="oss-nav__dot" aria-hidden="true" />
+            Start a project
           </Link>
+          <button
+            ref={menuButton}
+            type="button"
+            className="oss-nav__menu"
+            aria-controls="mobile-menu"
+            aria-expanded={menuOpen}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <i />
+            <i />
+          </button>
         </nav>
-      </motion.header>
+      </div>
 
-      {/* Mobile Menu Dropdown */}
-      <AnimatePresence>
-        {menuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="fixed inset-0 z-[75] bg-black/20 backdrop-blur-sm lg:hidden"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setMenuOpen(false)}
-            />
-
-            {/* Menu Panel */}
-            <motion.div
-              id="mobile-menu"
-              className="fixed top-[4.5rem] left-3 right-3 sm:left-6 sm:right-6 z-[85] lg:hidden"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
-            >
-              <div className="bg-background border-2 border-border rounded-2xl shadow-2xl overflow-hidden">
-                {/* Dotted grid background */}
-                <div
-                  className="absolute inset-0 opacity-20"
-                  style={{
-                    backgroundImage: `radial-gradient(circle, hsl(var(--muted-foreground) / 0.3) 1px, transparent 1px)`,
-                    backgroundSize: "20px 20px",
-                  }}
-                />
-
-                <nav className="relative z-10 p-4 sm:p-5">
-                  <div className="space-y-1">
-                    {navItems.map((item, index) => (
-                      <motion.div
-                        key={item.path}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ delay: 0.05 + index * 0.05, duration: 0.2 }}
-                      >
-                        <Link
-                          to={item.path}
-                          className={`block px-4 py-3 text-base font-semibold rounded-lg transition-colors border-2 ${
-                            location.pathname === item.path
-                              ? "text-primary border-primary"
-                              : "text-foreground border-transparent hover:bg-secondary"
-                          }`}
-                        >
-                          {item.label}
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ delay: 0.2, duration: 0.2 }}
-                    className="mt-4 pt-4 border-t border-border"
-                  >
-                    <Link
-                      to="/start"
-                      className="flex items-center justify-center gap-2 w-full px-5 py-3 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:brightness-110 transition-all"
-                    >
-                      Get Started
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </motion.div>
-                </nav>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {menuOpen && (
+        <>
+          <button type="button" aria-hidden="true" tabIndex={-1} className="fixed inset-0 z-[78] cursor-default bg-transparent lg:hidden" onClick={() => setMenuOpen(false)} />
+          <div id="mobile-menu" className="oss-menu">
+            <nav aria-label="Mobile">
+              <Link to="/" className="oss-menu__link" aria-current={pathname === "/" ? "page" : undefined}>
+                Home
+              </Link>
+              {navItems.map((item) => (
+                <Link key={item.path} to={item.path} className="oss-menu__link" aria-current={isCurrent(pathname, item.path) ? "page" : undefined}>
+                  {item.label}
+                </Link>
+              ))}
+              <Link to="/start" className="oss-btn">
+                <span>Start a project</span>
+                <span aria-hidden="true">&#8599;</span>
+              </Link>
+            </nav>
+          </div>
+        </>
+      )}
     </>
   );
 }

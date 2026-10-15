@@ -6,9 +6,11 @@ import { CookieConsent } from "@/components/CookieConsent";
 
 interface LayoutProps {
   children: ReactNode;
+  /** Page class for the redesigned compositions, e.g. "pg pg-home". */
+  pageClass?: string;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, pageClass = "pg-inner" }: LayoutProps) {
   const { pathname } = useLocation();
 
   // Scroll to top on route change
@@ -17,7 +19,7 @@ export function Layout({ children }: LayoutProps) {
   }, [pathname]);
 
   return (
-    <div className="page-container overflow-x-hidden">
+    <div className={`page-container overflow-x-clip ${pageClass}`.trim()}>
       <a href="#main" className="skip-link">Skip to main content</a>
       <Navbar />
       <main id="main" tabIndex={-1}>{children}</main>

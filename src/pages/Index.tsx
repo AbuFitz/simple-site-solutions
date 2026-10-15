@@ -1,266 +1,215 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
-import { WorkShowcase } from "@/components/sections/WorkShowcase";
-import { PreviewTeaser } from "@/components/sections/PreviewTeaser";
-import { AreasStrip, FaqTeaser, HowItWorksStrip, PackagesGlance, TradesGrid } from "@/components/sections/HomeSections";
-import { TypewriterText } from "@/components/ui/TypewriterText";
-import { DottedGrid } from "@/components/ui/DottedGrid";
-import { CTASection } from "@/components/CTASection";
-import { StickyMobileCTA } from "@/components/StickyMobileCTA";
-import { TrustStrip } from "@/components/TrustStrip";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Check, X } from "lucide-react";
+import { projects } from "@/data/work";
+import { shots } from "@/assets/redesign";
+import { useScrollProgress } from "@/hooks/useScrollProgress";
+import { CtaBand } from "@/components/oss/CtaBand";
 
-const typewriterWords = ["converts.", "performs.", "delivers.", "works."];
+const indexProjects = projects.filter((p) => p.slug !== "true-to-detail" && p.slug !== "brightlearn-tutoring");
 
-const whyUsPoints = [
-  {
-    number: "01",
-    title: "Built For Your Trade",
-    description: "Layouts planned around how customers in your trade look for and contact a business.",
-  },
-  {
-    number: "02",
-    title: "Days, Not Months",
-    description: "Estimated 5–14 days by package, counted from when we have your content.",
-  },
-  {
-    number: "03",
-    title: "No Drama",
-    description: "No endless meetings, moodboards, or revisions.",
-  },
-  {
-    number: "04",
-    title: "Mobile-First",
-    description: "Perfect on every device, every time.",
-  },
+const steps = [
+  { title: "Choose a package", text: "Pick what fits your business and budget." },
+  { title: "Tell us about the business", text: "A short form. We guide you on anything missing." },
+  { title: "We research and build", text: "Planned for your kind of business, built around your details." },
+  { title: "You review", text: "We share the site and refine it with you." },
+  { title: "Go live", text: "Fast, mobile-first and ready for local search." },
 ];
 
-const notForYou = [
-  "Unlimited revisions",
-  "Design it yourself",
-  "Custom web apps",
-  "The cheapest option",
+const packages = [
+  { name: "The Starter", note: "Get online properly. Up to 3 pages.", days: "5 to 7 days", price: "£199" },
+  { name: "The Sorted", note: "Look established, win trust. Up to 6 pages.", days: "7 to 10 days", price: "£399", tag: "Our suggestion" },
+  { name: "The Works", note: "Compete seriously. Up to 10 pages.", days: "10 to 14 days", price: "£649" },
 ];
 
-const forYou = [
-  "A site built to get enquiries",
-  "Layouts built for your trade",
-  "A clear delivery estimate",
-  "Decisions made for you",
-];
+function Arrow() {
+  return <span aria-hidden="true">&#8599;</span>;
+}
 
 export default function Index() {
+  const plateA = useScrollProgress<HTMLElement>();
+  const plateB = useScrollProgress<HTMLElement>();
+
   return (
-    <Layout>
+    <Layout pageClass="pg pg-home">
       <Seo path="/" />
-      {/* Hero Section */}
-      <section className="min-h-[70vh] sm:min-h-[80vh] flex items-center pt-20 pb-4 sm:pt-24 sm:pb-8 md:pt-28 md:pb-12 relative">
-        <DottedGrid className="opacity-40" spacing={24} dotSize={1.5} />
-        <div className="content-width relative z-10">
-          <div className="max-w-4xl">
-            <motion.div
-              className="bordered-section inline-block px-3 py-1.5 sm:px-4 sm:py-2 mb-4 sm:mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Websites for Local UK Businesses
-              </span>
-            </motion.div>
 
-            <motion.h1
-              className="text-display mb-4 sm:mb-6"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <span className="block">
-                Websites that{" "}
-                <span className="text-primary">
-                  <TypewriterText texts={typewriterWords} speed={120} />
-                </span>
-              </span>
-              <span className="block">Not just impress.</span>
-            </motion.h1>
-
-            <motion.p
-              className="text-body-lg max-w-2xl mb-6 sm:mb-8"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              Fixed-price websites for local businesses, built from layouts
-              planned for your kind of business.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-col sm:flex-row gap-3"
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-            >
-              <Link
-                to="/start"
-                className="btn-primary btn-lg w-full sm:w-auto justify-center"
-              >
-                Get Started
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
-              </Link>
-              <Link
-                to="/packages"
-                className="btn-outline btn-lg w-full sm:w-auto justify-center"
-              >
-                View Pricing
-              </Link>
-            </motion.div>
-
-            {/* Trust strip */}
-            <TrustStrip />
+      {/* Hero: the work is the composition */}
+      <section className="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title" className="oss-disp">
+          <span className="line">We build</span>
+          <span className="line">websites</span>
+          <span className="oss-it line">people remember.</span>
+        </h1>
+        <div className="sub">
+          <p>Fixed-price websites for businesses across the UK, designed around how your customers actually look for you.</p>
+          <div className="row">
+            <Link className="oss-btn" to="/start">
+              <span>Start a project</span>
+              <Arrow />
+            </Link>
+            <Link className="oss-lnk" to="/work">
+              See the work
+            </Link>
           </div>
         </div>
-      </section>
-
-      {/* Portfolio */}
-      <WorkShowcase />
-
-      <PreviewTeaser />
-
-      {/* Why Us - Redesigned */}
-      <section className="py-10 sm:py-14 md:py-20 relative">
-        <div className="content-width relative z-10">
-          <motion.div
-            className="mb-6 sm:mb-10"
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <span className="badge-primary mb-3 inline-block">Why Us</span>
-            <h2 className="text-headline max-w-xl">
-              Built from what <span className="text-primary">already works</span>
-            </h2>
-          </motion.div>
-
-          {/* Two-column layout on desktop */}
-          <div className="grid gap-3 md:grid-cols-2">
-            {whyUsPoints.map((point, index) => (
-              <motion.div
-                key={point.number}
-                className="group relative flex items-start gap-4 p-4 sm:p-5 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {/* Number */}
-                <span className="text-3xl sm:text-4xl font-bold text-primary/20 group-hover:text-primary/40 transition-colors">
-                  {point.number}
-                </span>
-                
-                {/* Content */}
-                <div className="pt-1">
-                  <h3 className="text-sm sm:text-base font-bold mb-1">{point.title}</h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{point.description}</p>
-                </div>
-              </motion.div>
-            ))}
+        <div className="stage">
+          <div className="plane oss-screen">
+            <img src={shots.ttdHero} width={2000} height={1041} alt="True To Detail website, home page" {...{ fetchpriority: "high" }} decoding="async" />
           </div>
-        </div>
-      </section>
-
-      <PackagesGlance />
-      <HowItWorksStrip />
-      <TradesGrid />
-
-      {/* Is This For You - Compact */}
-      <section className="py-8 sm:py-12 md:py-16">
-        <div className="content-width">
-          <motion.div
-            className="bordered-section-lg p-4 sm:p-6 md:p-10 relative"
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <DottedGrid className="opacity-20" spacing={24} />
-            <div className="relative z-10">
-              <div className="text-center mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">
-                  This is <span className="text-primary">not</span> for everyone
-                </h2>
-              </div>
-
-              <div className="grid gap-3 sm:gap-4 md:grid-cols-2 max-w-4xl mx-auto">
-                {/* Not For You */}
-                <motion.div
-                  className="card-dark p-4 sm:p-5 md:p-6"
-                  initial={{ opacity: 0, x: -14 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <h3 className="text-sm sm:text-base font-bold mb-3 sm:mb-4 text-muted-foreground">
-                    Not for you if you want...
-                  </h3>
-                  <ul className="space-y-2.5 sm:space-y-3">
-                    {notForYou.map((item) => (
-                      <li key={item} className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-full bg-destructive/10 border border-destructive/30 flex items-center justify-center shrink-0">
-                          <X className="w-2.5 h-2.5 text-destructive" />
-                        </div>
-                        <span className="text-xs sm:text-sm text-muted-foreground">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-
-                {/* For You */}
-                <motion.div
-                  className="card-base border-primary/30 p-4 sm:p-5 md:p-6"
-                  initial={{ opacity: 0, x: 14 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <h3 className="text-sm sm:text-base font-bold mb-3 sm:mb-4">
-                    Perfect if you want...
-                  </h3>
-                  <ul className="space-y-2.5 sm:space-y-3">
-                    {forYou.map((item) => (
-                      <li key={item} className="flex items-center gap-2">
-                        <div className="check-icon w-5 h-5">
-                          <Check className="w-2.5 h-2.5" />
-                        </div>
-                        <span className="text-xs sm:text-sm text-foreground">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              </div>
+          <div className="fade" aria-hidden="true" />
+          <div className="bl oss-screen oss-shadow">
+            <img src={shots.blHero} width={2000} height={1041} alt="BrightLearn Tutoring website, home page" decoding="async" />
+          </div>
+          <div className="oss-phone ph">
+            <div className="oss-screen">
+              <img src={shots.ttdMHero} width={780} height={1440} alt="True To Detail website on a phone" decoding="async" />
             </div>
-          </motion.div>
+          </div>
+          <div className="oss-phone ph2" aria-hidden="true">
+            <div className="oss-screen">
+              <img src={shots.blMHero} width={780} height={1440} alt="" decoding="async" />
+            </div>
+          </div>
         </div>
       </section>
 
-      <AreasStrip />
-      <FaqTeaser />
+      {/* Selected work: two project plates. The seam between them is cut on the diagonal from the True To Detail site. */}
+      <section ref={plateA} className="pa" data-tone="light" aria-labelledby="ttd-title">
+        <h2 id="ttd-title">True To Detail</h2>
+        <div className="stage">
+          <div className="d1 oss-screen oss-shadow">
+            <img src={shots.ttdHero} width={2000} height={1041} loading="lazy" alt="True To Detail website, home page" decoding="async" />
+          </div>
+          <div className="d2 oss-screen oss-shadow">
+            <img src={shots.ttdPacks} width={1600} height={1000} loading="lazy" alt="True To Detail packages page" decoding="async" />
+          </div>
+          <div className="oss-phone ph">
+            <div className="oss-screen">
+              <img src={shots.ttdMHero} width={780} height={1440} loading="lazy" alt="True To Detail website on a phone" decoding="async" />
+            </div>
+          </div>
+        </div>
+        <div className="txt">
+          <span className="oss-tag">Client work</span>
+          <p>Mobile car valeting in Hemel Hempstead and Hertfordshire. A bold site with clear packages, area pages and a route into booking.</p>
+          <Link className="oss-btn oss-btn--ink" to="/work/true-to-detail">
+            <span>View case study</span>
+            <span aria-hidden="true">&#8594;</span>
+          </Link>
+        </div>
+      </section>
 
-      {/* CTA */}
-      <CTASection
-        title="Let's build something"
-        highlightedText="that converts."
-        description="Pick your package. Send your details. Get a website in days, not months."
-        primaryButtonText="Start Your Project"
-        primaryButtonLink="/start"
-        secondaryButtonText="See Pricing"
-        secondaryButtonLink="/packages"
-      />
+      <section ref={plateB} className="pb" data-tone="light" aria-labelledby="bl-title">
+        <h2 id="bl-title">BrightLearn Tutoring</h2>
+        <div className="stage">
+          <div className="d1 oss-screen oss-shadow">
+            <img src={shots.blHero} width={2000} height={1041} loading="lazy" alt="BrightLearn Tutoring website, home page" decoding="async" />
+          </div>
+          <div className="d2 oss-screen oss-shadow">
+            <img src={shots.blPrice} width={1600} height={1000} loading="lazy" alt="BrightLearn Tutoring pricing page" decoding="async" />
+          </div>
+          <div className="oss-phone ph">
+            <div className="oss-screen">
+              <img src={shots.blM1} width={780} height={1688} loading="lazy" alt="BrightLearn Tutoring programmes on a phone" decoding="async" />
+            </div>
+          </div>
+        </div>
+        <div className="txt">
+          <span className="oss-tag">Client work</span>
+          <p>Online maths tuition, KS2 to GCSE. A calm site for parents: what is taught, how lessons work and what it costs.</p>
+          <Link className="oss-btn oss-btn--navy" to="/work/brightlearn-tutoring">
+            <span>View case study</span>
+            <span aria-hidden="true">&#8594;</span>
+          </Link>
+        </div>
+      </section>
 
-      {/* Sticky Mobile CTA */}
-      <StickyMobileCTA />
+      {/* Point of view */}
+      <section className="pov" aria-labelledby="pov-title">
+        <h2 id="pov-title" className="oss-disp">
+          A website gets judged in seconds, <span className="a">on a phone,</span> by someone with a question.
+        </h2>
+        <p>So prices are written down before we start, every page is checked on a real phone, and local search is set up from the first page rather than added at the end.</p>
+        <div className="oss-phone ph" aria-hidden="true">
+          <div className="oss-screen">
+            <img src={shots.ttdM2} width={780} height={1688} loading="lazy" alt="" decoding="async" />
+          </div>
+        </div>
+        <div className="oss-phone p2" aria-hidden="true">
+          <div className="oss-screen">
+            <img src={shots.blMHero} width={780} height={1440} loading="lazy" alt="" decoding="async" />
+          </div>
+        </div>
+      </section>
+
+      {/* More work */}
+      <section className="idx" data-tone="light" aria-labelledby="more-title">
+        <div className="hd">
+          <h2 id="more-title" className="oss-disp">More work</h2>
+          <Link className="oss-lnk" to="/work">
+            All work ({projects.length}) &#8594;
+          </Link>
+        </div>
+        <ul>
+          {indexProjects.map((p) => (
+            <li key={p.slug}>
+              <Link className="irow" to={`/work/${p.slug}`}>
+                <span className="nm">{p.name}</span>
+                <span className="sc">
+                  {p.line[0]}
+                  <br />
+                  {p.line[1]}
+                  {p.status === "Preview build" ? ", in build" : ""}
+                </span>
+                {p.label ? <span className="oss-tag st">{p.label}</span> : <span className="st" />}
+                <span className="float" aria-hidden="true">
+                  <img src={p.img.t} width={800} height={500} loading="lazy" alt="" decoding="async" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Process */}
+      <section className="proc" data-tone="light" aria-labelledby="proc-title">
+        <h2 id="proc-title" className="oss-disp">From first form to live site in days, not months.</h2>
+        <ol>
+          {steps.map((s, i) => (
+            <li key={s.title} className={`step s${i + 1}`}>
+              <b>{s.title}</b>
+              <span>{s.text}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* Pricing */}
+      <section className="price" aria-labelledby="price-title">
+        <div className="l">
+          <h2 id="price-title" className="oss-disp">Fixed prices, written down.</h2>
+          <p>Three packages, one price each. What each includes and what costs extra is on the packages page.</p>
+          <Link className="oss-lnk" to="/packages">
+            Compare packages &#8594;
+          </Link>
+        </div>
+        <ul className="rows">
+          {packages.map((pk) => (
+            <li key={pk.name}>
+              <div className="nm">
+                {pk.name}
+                {pk.tag && <span className="oss-tag">{pk.tag}</span>}
+                <small>{pk.note}</small>
+              </div>
+              <div className="mt">{pk.days}</div>
+              <div className="pr">{pk.price}</div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <CtaBand />
     </Layout>
   );
 }

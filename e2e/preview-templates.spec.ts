@@ -146,12 +146,11 @@ for (const width of [390, 1440]) {
       await expect(page.getByRole("link", { name: /Start this project/ })).toHaveAttribute("href", /\/start\?package=/);
     });
 
-    test("the home page hand-off lands on the guide, not a half-built preview", async ({ page }) => {
+    test("the Preview link in the nav opens the guide", async ({ page }) => {
       await page.goto("/");
-      await page.getByLabel("Business name").fill("Brightside Cleaning");
-      await page.getByRole("button", { name: "Show my preview" }).click();
+      await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Preview" }).click();
       await expect(page).toHaveURL(/\/preview/);
-      await expect(page.getByRole("heading", { name: "Where do you work?" })).toBeVisible();
+      await expect(page.getByLabel("Business name")).toBeVisible();
     });
 
     test("axe: each step of the guide", async ({ page }) => {

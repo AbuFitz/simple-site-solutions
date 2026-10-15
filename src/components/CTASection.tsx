@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 
 interface CTASectionProps {
   title: string;
@@ -12,56 +10,32 @@ interface CTASectionProps {
   secondaryButtonLink?: string;
 }
 
+/** Closing call to action for inner pages: the green band from the redesign, with page-specific wording. */
 export function CTASection({
   title,
   highlightedText,
   description,
-  primaryButtonText = "Get Started",
+  primaryButtonText = "Start a project",
   primaryButtonLink = "/start",
   secondaryButtonText,
   secondaryButtonLink,
 }: CTASectionProps) {
   return (
-    <section className="py-12 sm:py-16 md:py-24 pb-28 md:pb-24">
-      <div className="content-width">
-        <motion.div
-          className="text-center max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          viewport={{ once: true }}
-        >
-          {/* Decorative element */}
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="w-8 sm:w-12 h-px bg-border" />
-            <span className="w-2 h-2 rounded-full bg-primary" />
-            <span className="w-8 sm:w-12 h-px bg-border" />
-          </div>
-          
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-3 sm:mb-4">
-            {title} <span className="text-primary">{highlightedText}</span>
-          </h2>
-          <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 max-w-lg mx-auto">
-            {description}
-          </p>
-          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3">
-            <Link
-              to={primaryButtonLink}
-              className="btn-primary btn-lg justify-center"
-            >
-              {primaryButtonText}
-              <ArrowUpRight className="w-4 h-4 ml-2" />
-            </Link>
-            {secondaryButtonText && secondaryButtonLink && (
-              <Link
-                to={secondaryButtonLink}
-                className="btn-outline btn-lg justify-center"
-              >
-                {secondaryButtonText}
-              </Link>
-            )}
-          </div>
-        </motion.div>
+    <section className="oss-cta" data-tone="light">
+      <h2 className="oss-disp">
+        {title} {highlightedText}
+      </h2>
+      <p>{description}</p>
+      <div className="row">
+        <Link to={primaryButtonLink} className="oss-btn oss-btn--ink">
+          <span>{primaryButtonText}</span>
+          <span aria-hidden="true">&#8599;</span>
+        </Link>
+        {secondaryButtonText && secondaryButtonLink && (
+          <Link to={secondaryButtonLink} className="oss-lnk">
+            {secondaryButtonText}
+          </Link>
+        )}
       </div>
     </section>
   );

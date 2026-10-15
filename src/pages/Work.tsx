@@ -1,59 +1,129 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
-import { DottedGrid } from "@/components/ui/DottedGrid";
-import { projects } from "@/data/work";
+import { CtaBand } from "@/components/oss/CtaBand";
+import { projects, type WorkProject } from "@/data/work";
+import { shots } from "@/assets/redesign";
+import { useScrollProgress } from "@/hooks/useScrollProgress";
+
+type Filter = "all" | "client" | "sister" | "more";
+
+const featured = ["true-to-detail", "brightlearn-tutoring"];
+const inFilter = (p: WorkProject, f: Filter) => {
+  if (f === "all") return true;
+  if (f === "client") return p.label === "Client work";
+  if (f === "sister") return p.label === "Sister business" || p.label === "Sister product";
+  return p.label === "Real project" || !p.label;
+};
 
 export default function Work() {
+  const [filter, setFilter] = useState<Filter>("all");
+  const feat = useScrollProgress<HTMLElement>();
+  const count = (f: Filter) => projects.filter((p) => inFilter(p, f)).length;
+  const tabs: { id: Filter; label: string }[] = [
+    { id: "all", label: `All (${count("all")})` },
+    { id: "client", label: `Client work (${count("client")})` },
+    { id: "sister", label: `Sister projects (${count("sister")})` },
+    { id: "more", label: `More (${count("more")})` },
+  ];
+  const rows = projects.filter((p) => !featured.includes(p.slug) && inFilter(p, filter));
+  const showFeatured = filter === "all" || filter === "client";
+
   return (
-    <Layout>
-      <Seo path="/work"
+    <Layout pageClass="pg pg-work">
+      <Seo
+        path="/work"
         jsonLd={breadcrumb([
           { name: "Home", path: "/" },
           { name: "Our Work", path: "/work" },
         ])}
       />
-      <section className="relative pt-24 pb-10 sm:pt-32 sm:pb-14">
-        <DottedGrid className="opacity-30" spacing={32} />
-        <div className="content-width relative z-10">
-          <h1 className="text-headline max-w-3xl">
-            Sites we've <span className="text-primary">built</span>
-          </h1>
-          <p className="text-body-lg mt-4 max-w-2xl">
-            Real projects, with what we built for each. Some are for other businesses and some are our own or sister projects; each one says which stage it is at. We don't publish results we can't back up.
-          </p>
+
+      <header className="wh" data-tone="light">
+        <h1 className="oss-disp">Work</h1>
+        <p className="intro">Client work, sister projects and other sites we have built. Labels show what each one is; projects without a label are still being confirmed.</p>
+        <div className="filters" role="group" aria-label="Filter projects">
+          {tabs.map((t) => (
+            <button key={t.id} type="button" className={filter === t.id ? "on" : ""} aria-pressed={filter === t.id} onClick={() => setFilter(t.id)}>
+              {t.label}
+            </button>
+          ))}
         </div>
+      </header>
+
+      {showFeatured && (
+        <section ref={feat} className="feat" data-tone="light" aria-label="Featured projects">
+          <div className="a">
+            <h2>
+              <Link to="/work/true-to-detail">True To Detail</Link>
+            </h2>
+            <div className="d1 oss-screen oss-shadow">
+              <img src={shots.ttdHero} width={2000} height={1041} alt="True To Detail website, home page" decoding="async" />
+            </div>
+            <div className="d2 oss-screen oss-shadow">
+              <img src={shots.ttdPacks} width={1600} height={1000} loading="lazy" alt="True To Detail packages page" decoding="async" />
+            </div>
+            <div className="oss-phone ph">
+              <div className="oss-screen">
+                <img src={shots.ttdMHero} width={780} height={1440} loading="lazy" alt="True To Detail website on a phone" decoding="async" />
+              </div>
+            </div>
+            <div className="txt">
+              <span className="oss-tag">Client work</span>
+              <p>Mobile car valeting, Hemel Hempstead and Hertfordshire</p>
+              <Link className="oss-lnk" to="/work/true-to-detail">View case study &#8594;</Link>
+            </div>
+          </div>
+          <div className="b">
+            <h2>
+              <Link to="/work/brightlearn-tutoring">BrightLearn Tutoring</Link>
+            </h2>
+            <div className="d3 oss-screen oss-shadow">
+              <img src={shots.blHero} width={2000} height={1041} loading="lazy" alt="BrightLearn Tutoring website, home page" decoding="async" />
+            </div>
+            <div className="oss-phone ph">
+              <div className="oss-screen">
+                <img src={shots.blM1} width={780} height={1688} loading="lazy" alt="BrightLearn Tutoring programmes on a phone" decoding="async" />
+              </div>
+            </div>
+            <div className="txt">
+              <span className="oss-tag">Client work</span>
+              <p>Online maths tuition, KS2 to GCSE</p>
+              <Link className="oss-lnk" to="/work/brightlearn-tutoring">View case study &#8594;</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="idx" data-tone="light" aria-labelledby="more-title">
+        <div className="hd">
+          <h2 id="more-title" className="oss-disp">{showFeatured && filter === "all" ? "More work" : "Work"}</h2>
+          <p>Sister projects and other sites we have built. We show captures only, with no external links.</p>
+        </div>
+        <ul>
+          {rows.map((p) => (
+            <li key={p.slug}>
+              <Link className="irow" to={`/work/${p.slug}`}>
+                <span className="nm">{p.name}</span>
+                <span className="sc">
+                  {p.line[0]}
+                  <br />
+                  {p.line[1]}
+                  {p.status === "Preview build" ? ", in build" : ""}
+                </span>
+                {p.label ? <span className="oss-tag st">{p.label}</span> : <span className="st" />}
+                <span className="float" aria-hidden="true">
+                  <img src={p.img.t} width={800} height={500} loading="lazy" alt="" decoding="async" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <p className="note">Projects without a label are still being confirmed. We only label what we can verify.</p>
       </section>
 
-      <section className="pb-16 sm:pb-24">
-        <div className="content-width">
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((p) => (
-              <li key={p.slug} className="bordered-section flex flex-col bg-card">
-                <Link to={`/work/${p.slug}`} className="group block focus-visible:outline-offset-[-2px]">
-                  <img
-                    src={p.img.t}
-                    width={800}
-                    height={500}
-                    loading="lazy"
-                    decoding="async"
-                    alt={`${p.name} website, top of the home page`}
-                    className="aspect-[8/5] w-full object-cover object-top"
-                  />
-                  <div className="p-5">
-                    <p className="text-xs text-muted-foreground">
-                      {p.sector} · {p.status}
-                    </p>
-                    <h2 className="mt-1 text-xl font-bold tracking-tight group-hover:text-primary">{p.name}</h2>
-                    <p className="mt-2 text-sm text-muted-foreground">{p.summary}</p>
-                    <span className="mt-4 inline-flex min-h-[44px] items-center text-sm font-semibold text-primary">View project details</span>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      <CtaBand />
     </Layout>
   );
 }

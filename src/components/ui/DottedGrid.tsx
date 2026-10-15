@@ -7,27 +7,7 @@ interface DottedGridProps {
   spacing?: number;
 }
 
-export const DottedGrid = forwardRef<HTMLDivElement, DottedGridProps>(
-  (
-    {
-      className = "",
-      dotColor = "hsl(var(--muted-foreground) / 0.15)",
-      dotSize = 1,
-      spacing = 24,
-    },
-    ref
-  ) => {
-    return (
-      <div
-        ref={ref}
-        className={`absolute inset-0 pointer-events-none ${className}`}
-        style={{
-          backgroundImage: `radial-gradient(circle, ${dotColor} ${dotSize}px, transparent ${dotSize}px)`,
-          backgroundSize: `${spacing}px ${spacing}px`,
-        }}
-      />
-    );
-  }
-);
+/** The dotted background was retired with the redesign. Kept as a no-op so inner pages need no edits. */
+export const DottedGrid = forwardRef<HTMLDivElement, DottedGridProps>(() => null);
 
 DottedGrid.displayName = "DottedGrid";

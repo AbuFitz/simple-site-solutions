@@ -35,65 +35,41 @@ test.describe("navigation", () => {
   });
 });
 
-test.describe("3D Our Work fallbacks", () => {
+test.describe("Work pages", () => {
   test.use({ viewport: { width: 1440, height: 1000 } });
 
-  test("with ?3d=0 no canvas is created and the poster and controls work", async ({ page }) => {
-    const errors = watchErrors(page);
-    await page.goto("/?3d=0");
-    await settle(page);
-    await page.locator("#work").scrollIntoViewIfNeeded();
-    await page.waitForTimeout(800);
-    expect(await page.locator("#work canvas").count()).toBe(0);
-    const next = page.getByRole("button", { name: "Next project" });
-    await next.click();
-    await expect(page.getByRole("tab", { selected: true })).toBeVisible();
-    expect(errors).toEqual([]);
+  test("home page shows both client plates and the index, with reduced motion too", async ({ browser }) => {
+    for (const reducedMotion of ["no-preference", "reduce"] as const) {
+      const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion });
+      const page = await ctx.newPage();
+      const errors = watchErrors(page);
+      await page.goto("/");
+      await settle(page);
+      await expect(page.getByRole("heading", { level: 2, name: "True To Detail" })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 2, name: "BrightLearn Tutoring" })).toBeVisible();
+      await expect(page.getByRole("link", { name: /ReadySold/ })).toBeVisible();
+      expect(errors).toEqual([]);
+      await ctx.close();
+    }
   });
 
-  test("reduced motion: page renders and the section stays usable", async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion: "reduce" });
-    const page = await ctx.newPage();
-    const errors = watchErrors(page);
-    await page.goto("/");
-    await settle(page);
-    await page.locator("#work").scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1200);
-    await page.getByRole("button", { name: "Next project" }).click();
-    await expect(page.locator("#work")).toBeVisible();
-    expect(errors).toEqual([]);
-    await ctx.close();
-  });
-
-  test("with WebGL unavailable the poster remains and nothing throws", async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
-    await ctx.addInitScript(() => {
-      const orig = HTMLCanvasElement.prototype.getContext;
-      HTMLCanvasElement.prototype.getContext = function (type: string, ...rest: unknown[]) {
-        if (/webgl/i.test(type)) return null;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (orig as any).call(this, type, ...rest);
-      } as typeof orig;
-    });
-    const page = await ctx.newPage();
-    const errors = watchErrors(page);
-    await page.goto("/");
-    await settle(page);
-    await page.locator("#work").scrollIntoViewIfNeeded();
-    await page.waitForTimeout(1500);
-    await expect(page.locator("#work")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Previous project" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Next project" })).toBeVisible();
-    await expect(page.locator("#work").getByText("Visit site")).toHaveCount(0);
-    expect(errors.filter((e) => !/WebGL|webgl|context/i.test(e))).toEqual([]);
-    await ctx.close();
-  });
-
-  test("project pages exist as plain, linkable alternatives to the 3D rack", async ({ page }) => {
+  test("project labels are the confirmed ones and nothing is inferred", async ({ page }) => {
     await page.goto("/work");
-    const cards = page.locator("main ul > li");
-    await expect(cards.first()).toBeVisible();
-    expect(await cards.count()).toBeGreaterThanOrEqual(8);
+    const row = (name: RegExp) => page.getByRole("link", { name }).filter({ has: page.locator(".nm") });
+    await expect(row(/FixNow Mechanics/)).toContainText("Sister business");
+    await expect(row(/FixNow Shop/)).toContainText("Sister product");
+    await expect(row(/ReadySold/)).toContainText("Real project");
+    await expect(row(/Quantum BioTesting/)).toContainText("Client work");
+    for (const n of [/Stonebridge/, /ARF Mods/]) {
+      await expect(row(n).locator(".oss-tag")).toHaveCount(0);
+    }
+    await expect(page.locator(".feat .oss-tag")).toHaveText(["Client work", "Client work"]);
+  });
+
+  test("project pages exist as plain, linkable pages", async ({ page }) => {
+    await page.goto("/work");
+    await expect(page.locator(".idx .irow").first()).toBeVisible();
+    expect(await page.locator(".idx .irow").count()).toBe(6);
     await page.getByRole("link", { name: /FixNow Mechanics/ }).first().click();
     await expect(page.getByRole("heading", { level: 1, name: "FixNow Mechanics" })).toBeVisible();
     await expect(page.getByText("We don't publish traffic")).toBeVisible();

@@ -1,7 +1,8 @@
 /**
  * Portfolio data. Every claim here was checked against the project's own repository or its live site.
- * No outcomes, testimonials or metrics are claimed. "client" is deliberately not used: some projects
- * are our own or sister businesses, so they are described as projects.
+ * No outcomes, testimonials or metrics are claimed.
+ * `label` is the relationship to us, set by the owner. Do not infer it from the existence of a live site:
+ * a project with no label is simply not yet confirmed, and the site shows no label for it.
  */
 
 type WorkAsset = { d: string; m: string; t: string };
@@ -19,6 +20,7 @@ const asset = (slug: string): WorkAsset => ({
 });
 
 export type WorkStatus = "Live" | "Preview build";
+export type WorkLabel = "Client work" | "Sister business" | "Sister product" | "Real project";
 
 export interface WorkProject {
   slug: string;
@@ -27,6 +29,10 @@ export interface WorkProject {
   kind: "Service site" | "Ecommerce" | "Web app" | "Lead generation";
   place: string;
   status: WorkStatus;
+  /** Owner-confirmed relationship. Left undefined until verified. */
+  label?: WorkLabel;
+  /** The two short lines shown on the index rows. */
+  line: [string, string];
   /** Public URL when one is live and verified. */
   url?: string;
   domain: string;
@@ -46,6 +52,8 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "Hemel Hempstead & Hertfordshire",
     status: "Live",
+    label: "Sister business",
+    line: ["Mobile mechanic", "Hemel Hempstead & Herts"],
     url: "https://fixnowmechanics.co.uk",
     domain: "fixnowmechanics.co.uk",
     summary: "A mobile mechanic that comes to the customer, so the site is built around getting a quote fast and proving the area is covered.",
@@ -66,6 +74,8 @@ export const projects: WorkProject[] = [
     kind: "Ecommerce",
     place: "UK delivery, fitting in Hertfordshire",
     status: "Live",
+    label: "Sister product",
+    line: ["Car tech and accessories", "Online shop"],
     url: "https://shop.fixnowmechanics.co.uk",
     domain: "shop.fixnowmechanics.co.uk",
     summary: "A storefront for dash cams and car tech with two ways to buy: product only, or supplied and professionally fitted.",
@@ -86,6 +96,8 @@ export const projects: WorkProject[] = [
     kind: "Lead generation",
     place: "London & surrounding areas",
     status: "Live",
+    label: "Real project",
+    line: ["Car selling service", "London and surrounding areas"],
     url: "https://readysold.vercel.app",
     domain: "readysold.vercel.app",
     summary: "A done-for-you car selling service. The page leads with a three-field valuation request and then explains the process.",
@@ -106,6 +118,7 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "Hertfordshire",
     status: "Live",
+    line: ["Extensions and renovations", "Hertfordshire"],
     url: "https://stonebridge-construction.co.uk",
     domain: "stonebridge-construction.co.uk",
     summary: "A quiet, editorial site for extensions, loft conversions and renovations where the build photography does the selling.",
@@ -126,6 +139,8 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "Hemel Hempstead & Hertfordshire",
     status: "Live",
+    label: "Client work",
+    line: ["Mobile car valeting", "Hemel Hempstead & Herts"],
     url: "https://www.truetodetail.co.uk",
     domain: "truetodetail.co.uk",
     summary: "A bold, high-contrast valeting site with clear packages, area pages and a route into booking and the customer account.",
@@ -146,6 +161,8 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "Online, KS2 to GCSE",
     status: "Live",
+    label: "Client work",
+    line: ["Online maths tuition", "KS2 to GCSE"],
     url: "https://www.brightlearntutoring.co.uk",
     domain: "brightlearntutoring.co.uk",
     summary: "A calm, friendly site for parents: what is taught, how lessons work, what it costs, and how to enquire.",
@@ -166,6 +183,8 @@ export const projects: WorkProject[] = [
     kind: "Service site",
     place: "UK & Ireland",
     status: "Preview build",
+    label: "Client work",
+    line: ["Private blood testing", "UK and Ireland"],
     domain: "In build",
     summary: "A clinical-but-human site for private blood tests: what is tested, where to go, and how a visit works.",
     built: [
@@ -185,6 +204,7 @@ export const projects: WorkProject[] = [
     kind: "Ecommerce",
     place: "UK",
     status: "Live",
+    line: ["BMW parts and coding", "Online shop"],
     url: "https://arfmods.vercel.app",
     domain: "arfmods.vercel.app",
     summary: "A parts and coding shop for BMW owners, organised by category and by model.",
