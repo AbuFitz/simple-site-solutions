@@ -4,24 +4,24 @@ import { briefMock, expectNoHorizontalOverflow, settle, watchErrors } from "./he
 
 test.describe("navigation", () => {
   test.use({ viewport: { width: 390, height: 844 } });
-  test("mobile menu opens, lists links, closes with Escape and returns focus", async ({ page }) => {
+  test("menu opens full screen, lists links, closes with Escape and returns focus", async ({ page }) => {
     await page.goto("/");
     await settle(page);
-    const btn = page.getByRole("button", { name: "Open menu" });
+    const btn = page.getByRole("button", { name: "Menu" });
     await btn.click();
-    await expect(page.getByRole("button", { name: "Close menu" })).toHaveAttribute("aria-expanded", "true");
-    await expect(page.locator("#mobile-menu").getByRole("link", { name: "Pricing" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Close", exact: true })).toHaveAttribute("aria-expanded", "true");
+    await expect(page.locator("#site-menu").getByRole("link", { name: /Pricing/ })).toBeVisible();
     await page.keyboard.press("Escape");
-    await expect(page.locator("#mobile-menu")).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Open menu" })).toBeFocused();
+    await expect(page.locator("#site-menu")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Menu" })).toBeFocused();
   });
 
   test("menu link navigates and the menu closes", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: "Open menu" }).click();
-    await page.locator("#mobile-menu").getByRole("link", { name: "Pricing" }).click();
+    await page.getByRole("button", { name: "Menu" }).click();
+    await page.locator("#site-menu").getByRole("link", { name: /Pricing/ }).click();
     await expect(page).toHaveURL(/\/packages$/);
-    await expect(page.locator("#mobile-menu")).toHaveCount(0);
+    await expect(page.locator("#site-menu")).toHaveCount(0);
   });
 
   test("skip link is the first tab stop and moves focus to main", async ({ page }) => {
@@ -38,16 +38,16 @@ test.describe("navigation", () => {
 test.describe("Work pages", () => {
   test.use({ viewport: { width: 1440, height: 1000 } });
 
-  test("home page shows both client plates and the index, with reduced motion too", async ({ browser }) => {
+  test("home page is typographic: no project captures, one link to the work, reduced motion too", async ({ browser }) => {
     for (const reducedMotion of ["no-preference", "reduce"] as const) {
       const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, reducedMotion });
       const page = await ctx.newPage();
       const errors = watchErrors(page);
       await page.goto("/");
       await settle(page);
-      await expect(page.getByRole("heading", { level: 2, name: "True To Detail" })).toBeVisible();
-      await expect(page.getByRole("heading", { level: 2, name: "BrightLearn Tutoring" })).toBeVisible();
-      await expect(page.getByRole("link", { name: /ReadySold/ })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName(/Websites\s*that make\s*sense\./);
+      await expect(page.getByRole("link", { name: /see our work/ })).toHaveAttribute("href", "/work");
+      expect(await page.locator("main img").count()).toBe(0);
       expect(errors).toEqual([]);
       await ctx.close();
     }

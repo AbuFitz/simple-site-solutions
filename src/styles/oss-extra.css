@@ -68,3 +68,33 @@
 .pg-inner .oss-cta h2 { color: var(--ink); }
 
 .pg-inner p a.text-primary, .pg-inner li a.text-primary { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Chat widget: flat, mono, no bubble ---------- */
+.oss-chat-launcher { height: auto !important; border-radius: 2px !important; border: 0 !important; background: var(--spring) !important; color: var(--ink) !important; padding: 13px 20px !important; box-shadow: none !important; gap: 0 !important; font-family: var(--f-mono) !important; }
+.oss-chat-launcher > span:first-child, .oss-chat-launcher svg { display: none !important; }
+.oss-chat-launcher > span:nth-child(2) { display: inline !important; font: 500 14px var(--f-mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); }
+.oss-chat-launcher:hover { transform: translateY(-3px) !important; }
+.oss-chat-launcher::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); margin-right: 10px; animation: oss-blink 2.4s ease-in-out infinite; }
+@keyframes oss-blink { 50% { opacity: 0.2; } }
+.oss-chat-panel { border-radius: 0 !important; background: #0b1f17 !important; border: 1px solid rgba(79, 217, 160, 0.5) !important; color: var(--bone) !important; font-family: var(--f-text); }
+.oss-chat-panel header { background: transparent !important; border-bottom: 1px solid rgba(79, 217, 160, 0.35) !important; }
+.oss-chat-panel header > span { display: none; }
+.oss-chat-panel header p:first-child { font: 500 13px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--spring); }
+.oss-chat-panel [role="log"] p { border-radius: 0 !important; background: transparent !important; border: 0 !important; padding-left: 0 !important; padding-right: 0 !important; color: var(--bone) !important; }
+.oss-chat-panel [role="log"] .justify-end p { color: var(--spring) !important; margin-left: 40px; }
+.oss-chat-panel form { background: transparent !important; border-top: 1px solid rgba(79, 217, 160, 0.35) !important; }
+.oss-chat-panel textarea { border-radius: 0 !important; background: transparent !important; border-color: rgba(239, 235, 227, 0.35) !important; }
+.oss-chat-panel button[type="submit"] { border-radius: 0 !important; background: var(--spring) !important; color: var(--ink) !important; }
+.oss-chat-panel [aria-label="Suggested questions"] button { border-radius: 0 !important; background: transparent !important; font-family: var(--f-mono); font-size: 13px; text-transform: uppercase; }
+@media (prefers-reduced-motion: reduce) { .oss-chat-launcher::before { animation: none; } }
+
+/* ---------- Fade-in for words and sections across inner pages ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pg-inner main h1, .pg-inner main h2, .pg-inner main h3, .pg-inner main p, .pg-inner main li,
+    .hm-svc li, .hm-price li, .hm-facts li, .hm-team li, .hm-price h2, .hm-svc .hm-lab, .hm-link, .oss-cta h2, .oss-cta p {
+      opacity: 0; transform: translateY(26px); animation: oss-fade 1s cubic-bezier(0.22, 1, 0.36, 1) both; animation-timeline: view(); animation-range: entry 0% entry 45%;
+    }
+  }
+}
+@keyframes oss-fade { to { opacity: 1; transform: none; } }

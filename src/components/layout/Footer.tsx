@@ -61,10 +61,10 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
           </ul>
         </nav>
       </div>
-      <div className="oss-foot__bigwrap" aria-hidden="true">
-        <div className="oss-foot__big">
+      <div className="oss-foot__bigwrap">
+        <Link to="/" className="oss-foot__big" aria-label="OneSimpleSite, back to the home page">
           one<b>simple</b>site
-        </div>
+        </Link>
       </div>
       <div className="oss-foot__legal">
         <span>&copy; {new Date().getFullYear()} OneSimpleSite</span>

@@ -83,7 +83,7 @@
 .oss-foot__areas li { break-inside: avoid; }
 .oss-foot__all { margin: 10px 0 0; font-size: 17px; text-decoration: underline; text-underline-offset: 4px; }
 .oss-foot__bigwrap { margin-top: 70px; container-type: inline-size; overflow: hidden; }
-.oss-foot__big { font-family: var(--f-brand); font-weight: 700; letter-spacing: -0.06em; line-height: 0.8; white-space: nowrap; font-size: 17.4vw; font-size: calc(100cqw * 0.1625); padding-bottom: 0.18em; }
+.oss-foot__big { display: block; color: inherit; text-decoration: none; font-family: var(--f-brand); font-weight: 700; letter-spacing: -0.06em; line-height: 0.8; white-space: nowrap; font-size: 17.4vw; font-size: calc(100cqw * 0.1625); padding-bottom: 0.18em; }
 .oss-foot__big b { color: var(--green); font-weight: 700; }
 .oss-foot__legal { display: flex; justify-content: space-between; gap: 24px; margin-top: 56px; font-size: 15px; opacity: 0.6; flex-wrap: wrap; }
 .oss-foot__legal ul { display: flex; gap: 20px; flex-wrap: wrap; }
@@ -129,3 +129,29 @@
   .oss-btn, .oss-nav__cta { transition: none; }
   .oss-btn:hover, .oss-nav__cta:hover { transform: none; }
 }
+
+/* ---------- Minimal bar + full-screen menu ---------- */
+.oss-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 90; height: 84px; display: flex; justify-content: flex-end; align-items: center; padding: 0 56px; font-family: var(--f-text); color: var(--bone); transition: color 0.25s ease; }
+.oss-bar[data-tone="light"] { color: var(--ink); }
+.oss-bar__wm { font-family: var(--f-brand); font-weight: 700; letter-spacing: -0.03em; font-size: 24px; color: inherit; text-decoration: none; }
+.oss-bar__wm b { color: var(--spring); font-weight: 700; }
+.oss-bar[data-tone="light"] .oss-bar__wm b { color: var(--ink); }
+.oss-bar__r { display: flex; gap: 34px; align-items: center; }
+.oss-bar__r a, .oss-bar button { color: inherit; font: 500 15px var(--f-text); letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; background: none; border: 0; cursor: pointer; padding: 10px 0; }
+.oss-bar__r a:hover, .oss-bar button:hover { opacity: 0.65; }
+.oss-fm { position: fixed; inset: 0; z-index: 85; background: var(--ink); color: var(--bone); padding: 120px 56px 56px; display: grid; grid-template-columns: 1fr 320px; gap: 40px; overflow: auto; animation: oss-fm-in 0.3s ease both; }
+.oss-fm ul { list-style: none; margin: 0; padding: 0; }
+.oss-fm li a { display: flex; align-items: baseline; gap: 20px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: clamp(44px, 8.2vw, 124px); line-height: 1; letter-spacing: -0.05em; color: inherit; text-decoration: none; padding: 4px 0; }
+.oss-fm li a small { font: 13px var(--f-mono); letter-spacing: 0; color: var(--spring); width: 30px; }
+.oss-fm li a:hover, .oss-fm li a[aria-current="page"] { color: var(--spring); }
+.oss-fm__side { font-size: 17px; line-height: 1.6; padding-top: 16px; }
+.oss-fm__side p { margin: 0 0 28px; }
+.oss-fm__side small { display: block; font: 13px var(--f-mono); color: var(--spring); margin-bottom: 6px; }
+.oss-fm__side a { color: inherit; }
+@keyframes oss-fm-in { from { opacity: 0; } to { opacity: 1; } }
+@media (max-width: 959px) {
+  .oss-bar { padding: 0 20px; height: 68px; }
+  .oss-bar__r { gap: 20px; }
+  .oss-fm { grid-template-columns: 1fr; padding: 96px 20px 40px; }
+}
+@media (prefers-reduced-motion: reduce) { .oss-fm { animation: none; } }

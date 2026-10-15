@@ -192,7 +192,7 @@ export default function ChatPanel({ open, onClose }: { open: boolean; onClose: (
       hidden={!open}
       onKeyDown={onKeyDown}
       style={style}
-      className={`fixed z-[85] flex-col overflow-hidden ${open ? "flex" : "hidden"} border-border bg-background shadow-2xl ${mobile ? "inset-x-0 bottom-0 rounded-t-2xl border-t-2" : "bottom-6 right-6 h-[min(640px,calc(100dvh-3rem))] w-[390px] rounded-2xl border-2"} ${open ? "animate-in fade-in-0 slide-in-from-bottom-4 duration-200 motion-reduce:animate-none" : ""}`}
+      className={`oss-chat-panel fixed z-[95] flex-col overflow-hidden ${open ? "flex" : "hidden"} border-border bg-background shadow-2xl ${mobile ? "inset-x-0 bottom-0 rounded-t-2xl border-t-2" : "bottom-6 right-6 h-[min(640px,calc(100dvh-3rem))] w-[390px] rounded-2xl border-2"} ${open ? "animate-in fade-in-0 slide-in-from-bottom-4 duration-200 motion-reduce:animate-none" : ""}`}
     >
       <header className="flex items-center gap-3 border-b border-border bg-card px-4 py-3" style={{ paddingTop: mobile ? "max(0.75rem, env(safe-area-inset-top))" : undefined }}>
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-extrabold text-primary-foreground" aria-hidden="true">S</span>

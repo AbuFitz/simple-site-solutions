@@ -1,212 +1,101 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
-import { projects } from "@/data/work";
-import { shots } from "@/assets/redesign";
-import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { CtaBand } from "@/components/oss/CtaBand";
+import { Scramble } from "@/components/oss/Scramble";
 
-const indexProjects = projects.filter((p) => p.slug !== "true-to-detail" && p.slug !== "brightlearn-tutoring");
-
-const steps = [
-  { title: "Choose a package", text: "Pick what fits your business and budget." },
-  { title: "Tell us about the business", text: "A short form. We guide you on anything missing." },
-  { title: "We research and build", text: "Planned for your kind of business, built around your details." },
-  { title: "You review", text: "We share the site and refine it with you." },
-  { title: "Go live", text: "Fast, mobile-first and ready for local search." },
+const services = [
+  { n: "01", t: "Business websites", d: "A clear site for a trade, practice or local service: what you do, where, and how to get in touch." },
+  { n: "02", t: "Redesigns", d: "Already online but it looks tired or confuses people? We rebuild it around what customers ask." },
+  { n: "03", t: "Online shops", d: "Product pages, a basket that remembers, and a checkout handoff for sellers who take orders." },
+  { n: "04", t: "Quotes & bookings", d: "Forms and routes that turn a visit into an enquiry." },
+  { n: "05", t: "Found locally", d: "A page for each area you cover, set up so people nearby can find you." },
 ];
-
+const team = [
+  { name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
+  { name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
+  { name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
+];
 const packages = [
-  { name: "The Starter", note: "Get online properly. Up to 3 pages.", days: "5 to 7 days", price: "£199" },
-  { name: "The Sorted", note: "Look established, win trust. Up to 6 pages.", days: "7 to 10 days", price: "£399", tag: "Our suggestion" },
-  { name: "The Works", note: "Compete seriously. Up to 10 pages.", days: "10 to 14 days", price: "£649" },
+  { name: "The Starter", note: "3 pages, 5 to 7 days", price: "£199" },
+  { name: "The Sorted", note: "6 pages, 7 to 10 days", price: "£399" },
+  { name: "The Works", note: "10 pages, 10 to 14 days", price: "£649" },
 ];
-
-function Arrow() {
-  return <span aria-hidden="true">&#8599;</span>;
-}
 
 export default function Index() {
-  const plateA = useScrollProgress<HTMLElement>();
-  const plateB = useScrollProgress<HTMLElement>();
-
   return (
-    <Layout pageClass="pg pg-home">
+    <Layout pageClass="pg hm">
       <Seo path="/" />
 
-      {/* Hero: the work is the composition */}
-      <section className="hero" aria-labelledby="hero-title">
-        <h1 id="hero-title" className="oss-disp">
-          <span className="line">We build</span>
-          <span className="line">websites</span>
-          <span className="oss-it line">people remember.</span>
+      <section className="hm-hero" data-tone="dark" aria-labelledby="hero-title">
+        <h1 id="hero-title">
+          <span><Scramble text="Websites" /></span>
+          <span><Scramble text="that make" delay={250} /></span>
+          <span className="g"><Scramble text="sense." delay={500} /></span>
         </h1>
-        <div className="sub">
-          <p>Fixed-price websites for businesses across the UK, designed around how your customers actually look for you.</p>
-          <div className="row">
-            <Link className="oss-btn" to="/start">
-              <span>Start a project</span>
-              <Arrow />
-            </Link>
-            <Link className="oss-lnk" to="/work">
-              See the work
-            </Link>
-          </div>
-        </div>
-        <div className="stage">
-          <div className="plane oss-screen">
-            <img src={shots.ttdHero} width={2000} height={1041} alt="True To Detail website, home page" {...{ fetchpriority: "high" }} decoding="async" />
-          </div>
-          <div className="fade" aria-hidden="true" />
-          <div className="bl oss-screen oss-shadow">
-            <img src={shots.blHero} width={2000} height={1041} alt="BrightLearn Tutoring website, home page" decoding="async" />
-          </div>
-          <div className="oss-phone ph">
-            <div className="oss-screen">
-              <img src={shots.ttdMHero} width={780} height={1440} alt="True To Detail website on a phone" decoding="async" />
-            </div>
-          </div>
-          <div className="oss-phone ph2" aria-hidden="true">
-            <div className="oss-screen">
-              <img src={shots.blMHero} width={780} height={1440} alt="" decoding="async" />
-            </div>
-          </div>
-        </div>
+        <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £199.</p>
+        <div className="hm-marq" aria-hidden="true"><div><span>Fixed prices</span><span>Looks right</span><span>Feels right</span><span>Works</span><span>UK-wide</span><span>Fixed prices</span><span>Looks right</span><span>Feels right</span><span>Works</span><span>UK-wide</span></div></div>
+        <Link to="/start" className="hm-hero__go">Start a project <span aria-hidden="true">&#8599;</span></Link>
+        <span className="hm-hero__scroll" aria-hidden="true">Scroll &#8595;</span>
       </section>
 
-      {/* Selected work: two project plates. The seam between them is cut on the diagonal from the True To Detail site. */}
-      <section ref={plateA} className="pa" data-tone="light" aria-labelledby="ttd-title">
-        <h2 id="ttd-title">True To Detail</h2>
-        <div className="stage">
-          <div className="d1 oss-screen oss-shadow">
-            <img src={shots.ttdHero} width={2000} height={1041} loading="lazy" alt="True To Detail website, home page" decoding="async" />
-          </div>
-          <div className="d2 oss-screen oss-shadow">
-            <img src={shots.ttdPacks} width={1600} height={1000} loading="lazy" alt="True To Detail packages page" decoding="async" />
-          </div>
-          <div className="oss-phone ph">
-            <div className="oss-screen">
-              <img src={shots.ttdMHero} width={780} height={1440} loading="lazy" alt="True To Detail website on a phone" decoding="async" />
-            </div>
-          </div>
-        </div>
-        <div className="txt">
-          <span className="oss-tag">Client work</span>
-          <p>Mobile car valeting in Hemel Hempstead and Hertfordshire. A bold site with clear packages, area pages and a route into booking.</p>
-          <Link className="oss-btn oss-btn--ink" to="/work/true-to-detail">
-            <span>View case study</span>
-            <span aria-hidden="true">&#8594;</span>
-          </Link>
-        </div>
+      <section className="hm-story" data-tone="dark" aria-labelledby="story-title">
+        <small><Scramble text="Our story" /></small>
+        <p id="story-title">Small businesses deserve a website that <em>looks right, feels right</em> and actually works.</p>
+        <ul className="hm-facts">
+          <li><b>3</b><span>people behind every site</span></li>
+          <li><b>UK</b><span>wide, with local pages</span></li>
+          <li><b>£199</b><span>where fixed prices start</span></li>
+        </ul>
+        <Link to="/work" className="hm-link">If you want to see our work, it's here &#8594;</Link>
       </section>
 
-      <section ref={plateB} className="pb" data-tone="light" aria-labelledby="bl-title">
-        <h2 id="bl-title">BrightLearn Tutoring</h2>
-        <div className="stage">
-          <div className="d1 oss-screen oss-shadow">
-            <img src={shots.blHero} width={2000} height={1041} loading="lazy" alt="BrightLearn Tutoring website, home page" decoding="async" />
-          </div>
-          <div className="d2 oss-screen oss-shadow">
-            <img src={shots.blPrice} width={1600} height={1000} loading="lazy" alt="BrightLearn Tutoring pricing page" decoding="async" />
-          </div>
-          <div className="oss-phone ph">
-            <div className="oss-screen">
-              <img src={shots.blM1} width={780} height={1688} loading="lazy" alt="BrightLearn Tutoring programmes on a phone" decoding="async" />
-            </div>
-          </div>
-        </div>
-        <div className="txt">
-          <span className="oss-tag">Client work</span>
-          <p>Online maths tuition, KS2 to GCSE. A calm site for parents: what is taught, how lessons work and what it costs.</p>
-          <Link className="oss-btn oss-btn--navy" to="/work/brightlearn-tutoring">
-            <span>View case study</span>
-            <span aria-hidden="true">&#8594;</span>
-          </Link>
-        </div>
+      <section className="hm-days" data-tone="dark" aria-label="How long it takes">
+        <b aria-hidden="true">5</b>
+        <p>to <em>14</em> days, estimated from when we have your content. Fixed price, written down first.</p>
+        <b aria-hidden="true">14</b>
       </section>
 
-      {/* Point of view */}
-      <section className="pov" aria-labelledby="pov-title">
-        <h2 id="pov-title" className="oss-disp">
-          A website gets judged in seconds, <span className="a">on a phone,</span> by someone with a question.
-        </h2>
-        <p>So prices are written down before we start, every page is checked on a real phone, and local search is set up from the first page rather than added at the end.</p>
-        <div className="oss-phone ph" aria-hidden="true">
-          <div className="oss-screen">
-            <img src={shots.ttdM2} width={780} height={1688} loading="lazy" alt="" decoding="async" />
-          </div>
-        </div>
-        <div className="oss-phone p2" aria-hidden="true">
-          <div className="oss-screen">
-            <img src={shots.blMHero} width={780} height={1440} loading="lazy" alt="" decoding="async" />
-          </div>
-        </div>
-      </section>
-
-      {/* More work */}
-      <section className="idx" data-tone="light" aria-labelledby="more-title">
-        <div className="hd">
-          <h2 id="more-title" className="oss-disp">More work</h2>
-          <Link className="oss-lnk" to="/work">
-            All work ({projects.length}) &#8594;
-          </Link>
-        </div>
+      <section className="hm-svc" data-tone="light" aria-labelledby="svc-title">
+        <h2 id="svc-title" className="hm-lab"><Scramble text="What we make" /></h2>
         <ul>
-          {indexProjects.map((p) => (
-            <li key={p.slug}>
-              <Link className="irow" to={`/work/${p.slug}`}>
-                <span className="nm">{p.name}</span>
-                <span className="sc">
-                  {p.line[0]}
-                  <br />
-                  {p.line[1]}
-                  {p.status === "Preview build" ? ", in build" : ""}
-                </span>
-                {p.label ? <span className="oss-tag st">{p.label}</span> : <span className="st" />}
-                <span className="float" aria-hidden="true">
-                  <img src={p.img.t} width={800} height={500} loading="lazy" alt="" decoding="async" />
-                </span>
-              </Link>
+          {services.map((s) => (
+            <li key={s.n} data-scramble-host>
+              <small>{s.n}</small>
+              <b><Scramble text={s.t} hover /></b>
+              <span>{s.d}</span>
             </li>
           ))}
         </ul>
       </section>
 
-      {/* Process */}
-      <section className="proc" data-tone="light" aria-labelledby="proc-title">
-        <h2 id="proc-title" className="oss-disp">From first form to live site in days, not months.</h2>
-        <ol>
-          {steps.map((s, i) => (
-            <li key={s.title} className={`step s${i + 1}`}>
-              <b>{s.title}</b>
-              <span>{s.text}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* Pricing */}
-      <section className="price" aria-labelledby="price-title">
-        <div className="l">
-          <h2 id="price-title" className="oss-disp">Fixed prices, written down.</h2>
-          <p>Three packages, one price each. What each includes and what costs extra is on the packages page.</p>
-          <Link className="oss-lnk" to="/packages">
-            Compare packages &#8594;
-          </Link>
-        </div>
-        <ul className="rows">
-          {packages.map((pk) => (
-            <li key={pk.name}>
-              <div className="nm">
-                {pk.name}
-                {pk.tag && <span className="oss-tag">{pk.tag}</span>}
-                <small>{pk.note}</small>
-              </div>
-              <div className="mt">{pk.days}</div>
-              <div className="pr">{pk.price}</div>
+      <section className="hm-team" data-tone="dark" aria-labelledby="team-title">
+        <h2 id="team-title" className="sr-only">The team</h2>
+        <blockquote>&ldquo;We want it to look right, feel right and <em>actually work</em> for the business.&rdquo;</blockquote>
+        <p className="hm-by">The OneSimpleSite team</p>
+        <ul>
+          {team.map((m) => (
+            <li key={m.name} data-scramble-host>
+              <small>{m.role}</small>
+              <b><Scramble text={m.name} hover /></b>
+              <span>{m.text}</span>
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="hm-price" data-tone="light" aria-labelledby="price-title">
+        <h2 id="price-title"><Scramble text="Fixed" /> <em><Scramble text="prices." delay={200} /></em></h2>
+        <ul>
+          {packages.map((p) => (
+            <li key={p.name}>
+              <b>{p.name}</b>
+              <span>{p.note}</span>
+              <i>{p.price}</i>
+            </li>
+          ))}
+        </ul>
+        <Link to="/packages" className="hm-link">Compare everything included &#8594;</Link>
       </section>
 
       <CtaBand />

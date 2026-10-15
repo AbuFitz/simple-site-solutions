@@ -10,6 +10,7 @@ import "./index.css";
 import "./styles/oss.css";
 import "./styles/oss-pages.css";
 import "./styles/oss-extra.css";
+import "./styles/oss-home.css";
 
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>

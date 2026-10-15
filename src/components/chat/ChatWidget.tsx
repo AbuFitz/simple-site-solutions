@@ -60,7 +60,7 @@ export function ChatWidget() {
             setOpen(true);
             setEverOpened(true);
           }}
-          className={`fixed right-4 z-[60] flex h-14 items-center gap-2.5 rounded-full border-2 border-border bg-background pl-2 pr-2 shadow-xl transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-6 sm:pl-2 sm:pr-5 ${raised ? "bottom-24 sm:bottom-6" : "bottom-4 sm:bottom-6"}`}
+          className={`oss-chat-launcher fixed right-4 z-[60] flex h-14 items-center gap-2.5 rounded-full border-2 border-border bg-background pl-2 pr-2 shadow-xl transition-transform hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:right-6 sm:pl-2 sm:pr-5 ${raised ? "bottom-24 sm:bottom-6" : "bottom-4 sm:bottom-6"}`}
         >
           <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base font-extrabold text-primary-foreground" aria-hidden="true">S</span>
           <span className="hidden text-sm font-semibold sm:inline">Ask Sid</span>

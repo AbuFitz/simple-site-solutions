@@ -148,7 +148,8 @@ for (const width of [390, 1440]) {
 
     test("the Preview link in the nav opens the guide", async ({ page }) => {
       await page.goto("/");
-      await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Preview" }).click();
+      await page.getByRole("button", { name: "Menu" }).click();
+      await page.locator("#site-menu").getByRole("link", { name: /Preview/ }).click();
       await expect(page).toHaveURL(/\/preview/);
       await expect(page.getByLabel("Business name")).toBeVisible();
     });

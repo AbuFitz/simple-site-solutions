@@ -1,45 +1,38 @@
 import { Link, useLocation } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const navItems = [
+const items = [
+  { path: "/", label: "Home" },
   { path: "/work", label: "Work" },
   { path: "/packages", label: "Pricing" },
   { path: "/how-it-works", label: "Process" },
+  { path: "/about", label: "About" },
   { path: "/guides", label: "Guides" },
-  { path: "/preview", label: "Preview" },
+  { path: "/preview", label: "Preview your site" },
 ];
 
 type Tone = "dark" | "light";
+const isCurrent = (p: string, path: string) => p === path || (path !== "/" && p.startsWith(`${path}/`));
 
-const isCurrent = (pathname: string, path: string) => pathname === path || pathname.startsWith(`${path}/`);
-
-/**
- * Floating pill. Centred with plain CSS (no transform), so no animation library can push it off-centre.
- * Its colour follows whatever is underneath it: sections mark themselves with data-tone="light"
- * (bone, paper, cream and project colours) and the pill turns ink there; everywhere else it is bone.
- */
+/** Minimal top bar (wordmark, Start a project, Menu) that follows the colour beneath it, plus a full-screen menu. */
 export function Navbar() {
   const { pathname } = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [tone, setTone] = useState<Tone>("dark");
-  const nav = useRef<HTMLElement>(null);
-  const menuButton = useRef<HTMLButtonElement>(null);
-  const frame = useRef(0);
+  const bar = useRef<HTMLElement>(null);
+  const btn = useRef<HTMLButtonElement>(null);
+  const raf = useRef(0);
 
   const measure = useCallback(() => {
-    frame.current = 0;
-    const el = nav.current;
+    raf.current = 0;
+    const el = bar.current;
     if (!el) return;
-    const box = el.getBoundingClientRect();
-    const x = Math.min(window.innerWidth - 2, Math.max(2, box.left + box.width / 2));
-    const y = box.top + box.height / 2;
-    const hit = document.elementsFromPoint(x, y).find((n) => !el.contains(n) && n.closest("[data-tone]"));
+    const hit = document.elementsFromPoint(window.innerWidth / 2, 40).find((n) => !el.contains(n) && n.closest("[data-tone]"));
     const next = (hit?.closest("[data-tone]")?.getAttribute("data-tone") ?? "dark") as Tone;
     setTone((t) => (t === next ? t : next));
   }, []);
-
   const schedule = useCallback(() => {
-    if (!frame.current) frame.current = requestAnimationFrame(measure);
+    if (!raf.current) raf.current = requestAnimationFrame(measure);
   }, [measure]);
 
   useEffect(() => {
@@ -49,82 +42,59 @@ export function Navbar() {
     return () => {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
-      if (frame.current) cancelAnimationFrame(frame.current);
+      if (raf.current) cancelAnimationFrame(raf.current);
     };
   }, [schedule]);
 
-  // New route: close the menu and re-read the tone once the new page has rendered.
   useEffect(() => {
-    setMenuOpen(false);
+    setOpen(false);
     const t = window.setTimeout(schedule, 60);
     return () => window.clearTimeout(t);
   }, [pathname, schedule]);
 
   useEffect(() => {
-    if (!menuOpen) return;
+    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setMenuOpen(false);
-        menuButton.current?.focus();
+        setOpen(false);
+        btn.current?.focus();
       }
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [menuOpen]);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <>
-      <div className="oss-nav-wrap">
-        <nav ref={nav} className="oss-nav" data-tone={tone} aria-label="Main">
-          <Link to="/" className="oss-nav__wm" aria-label="OneSimpleSite home">
-            one<b>simple</b>site
-          </Link>
-          <div className="oss-nav__links">
-            {navItems.map((item) => (
-              <Link key={item.path} to={item.path} aria-current={isCurrent(pathname, item.path) ? "page" : undefined}>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          <Link to="/start" className="oss-nav__cta">
-            <span className="oss-nav__dot" aria-hidden="true" />
-            Start a project
-          </Link>
-          <button
-            ref={menuButton}
-            type="button"
-            className="oss-nav__menu"
-            aria-controls="mobile-menu"
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            <i />
-            <i />
+      <nav ref={bar} className="oss-bar" data-tone={open ? "dark" : tone} data-open={open} aria-label="Main">
+        <div className="oss-bar__r">
+          <Link to="/start" className="oss-bar__start">Start a project</Link>
+          <button ref={btn} type="button" className="oss-bar__menu" aria-expanded={open} aria-controls="site-menu" onClick={() => setOpen((o) => !o)}>
+            {open ? "Close" : "Menu"}
           </button>
-        </nav>
-      </div>
-
-      {menuOpen && (
-        <>
-          <button type="button" aria-hidden="true" tabIndex={-1} className="fixed inset-0 z-[78] cursor-default bg-transparent lg:hidden" onClick={() => setMenuOpen(false)} />
-          <div id="mobile-menu" className="oss-menu">
-            <nav aria-label="Mobile">
-              <Link to="/" className="oss-menu__link" aria-current={pathname === "/" ? "page" : undefined}>
-                Home
-              </Link>
-              {navItems.map((item) => (
-                <Link key={item.path} to={item.path} className="oss-menu__link" aria-current={isCurrent(pathname, item.path) ? "page" : undefined}>
-                  {item.label}
+        </div>
+      </nav>
+      {open && (
+        <div id="site-menu" className="oss-fm" role="dialog" aria-label="Menu">
+          <ul>
+            {items.map((it, i) => (
+              <li key={it.path}>
+                <Link to={it.path} aria-current={isCurrent(pathname, it.path) ? "page" : undefined}>
+                  <small>{String(i + 1).padStart(2, "0")}</small>
+                  {it.label}
                 </Link>
-              ))}
-              <Link to="/start" className="oss-btn">
-                <span>Start a project</span>
-                <span aria-hidden="true">&#8599;</span>
-              </Link>
-            </nav>
+              </li>
+            ))}
+          </ul>
+          <div className="oss-fm__side">
+            <p><small>START</small><Link to="/start">Start a project</Link><br /><a href="mailto:hello@onesimplesite.co.uk">hello@onesimplesite.co.uk</a></p>
+            <p><small>AREAS</small>Hemel Hempstead, St Albans, Watford, London, Luton and across the UK.</p>
           </div>
-        </>
+        </div>
       )}
     </>
   );
