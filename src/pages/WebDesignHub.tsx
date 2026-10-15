@@ -18,7 +18,7 @@ export default function WebDesignHub() {
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10 max-w-3xl">
           <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
-            <Link to="/" className="hover:text-foreground">Home</Link> / <span aria-current="page">Web design</span>
+            <span aria-current="page">Web design</span>
           </nav>
           <h1 className="text-headline">
             Web design <span className="text-primary">across the UK</span>

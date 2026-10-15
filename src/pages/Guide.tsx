@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import { Check } from "lucide-react";
-import { GuideArt } from "@/components/oss/GuideArt";
 import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -24,7 +23,7 @@ export default function Guide() {
           <DottedGrid className="opacity-30" spacing={32} />
           <div className="content-width relative z-10 max-w-3xl">
             <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
-              <Link to="/" className="hover:text-foreground">Home</Link> / <Link to={GUIDES_PATH} className="hover:text-foreground">Guides</Link> / <span aria-current="page">{g.short}</span>
+              <Link to={GUIDES_PATH} className="hover:text-foreground">Guides</Link> / <span aria-current="page">{g.short}</span>
             </nav>
             <h1 className="text-headline">{g.h1}</h1>
             <p className="text-body-lg mt-4">{g.dek}</p>
@@ -32,7 +31,6 @@ export default function Guide() {
           </div>
         </header>
 
-        <div className="gd-cover"><GuideArt slug={g.slug} /></div>
         <div className="content-width max-w-3xl space-y-8 pb-10">
           {g.sections.map((s) => (
             <section key={s.h}>
