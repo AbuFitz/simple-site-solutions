@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { clientIp, escapeHtml, json, oneLine, originAllowed } from "./_lib/http.js";
 import { rateLimit } from "./_lib/rateLimit.js";
+import { foot, row, shellClose, shellOpen, title } from "./_lib/emailKit.js";
 
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Your name is required").max(100),
@@ -39,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       to: process.env.ADMIN_EMAIL || "hello@onesimplesite.co.uk",
       replyTo: d.email,
       subject: oneLine(`Website message from ${d.name}`),
-      html: `<p><strong>${escapeHtml(d.name)}</strong> (${escapeHtml(d.email)})</p><p style="white-space:pre-wrap">${escapeHtml(d.message)}</p>`,
+      html: `${shellOpen}${title("New message", 36)}${row("From", `${escapeHtml(d.name)}`)}${row("Email", `<a href="mailto:${escapeHtml(d.email)}" style="color:#4FD9A0;">${escapeHtml(d.email)}</a>`)}${row("Message", escapeHtml(d.message))}${foot("Sent from the contact form on onesimplesite.co.uk.")}${shellClose}`,
     });
     if (error) {
       console.error("contact send failed:", error.message);

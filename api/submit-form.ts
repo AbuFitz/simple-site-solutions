@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { briefSchema } from "../src/lib/brief-schema.js";
 import { clientIp, json, oneLine, originAllowed } from "./_lib/http.js";
 import { rateLimit } from "./_lib/rateLimit.js";
+import { foot as footBlock, row, shellClose, shellOpen } from "./_lib/emailKit.js";
 
 
 // Email configuration
@@ -61,19 +62,9 @@ function escapeHtml(text: string): string {
     .replace(/'/g, "&#039;");
 }
 
-// Emails: plain, dark, green accent, same type as the site. No logo, no images.
-const SHELL_OPEN = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"></head>
-<body style="margin:0;padding:0;background:#080C0B;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#EFEBE3;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#080C0B;"><tr><td align="center" style="padding:48px 24px;">
-<table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">`;
-const SHELL_CLOSE = `</table></td></tr></table></body></html>`;
-const row = (label: string, value: string) =>
-  `<tr><td style="padding:14px 0;border-top:1px solid #26322D;"><div style="font:12px 'Courier New',monospace;letter-spacing:1px;text-transform:uppercase;color:#4FD9A0;margin-bottom:4px;">${label}</div><div style="font-size:17px;line-height:1.45;color:#EFEBE3;">${value}</div></td></tr>`;
-const foot = `<tr><td style="padding-top:32px;border-top:1px solid #26322D;font-size:13px;line-height:1.6;color:#8A938E;">
-Sent because of an enquiry on onesimplesite.co.uk.<br>
-<a href="${BASE_URL}/privacy" style="color:#8A938E;">Privacy</a> &nbsp; <a href="${BASE_URL}/terms" style="color:#8A938E;">Terms</a> &nbsp; <a href="mailto:hello@onesimplesite.co.uk" style="color:#8A938E;">hello@onesimplesite.co.uk</a>
-</td></tr>`;
+const SHELL_OPEN = shellOpen;
+const SHELL_CLOSE = shellClose;
+const foot = footBlock("Sent because of an enquiry on onesimplesite.co.uk.");
 
 // Customer confirmation email HTML
 function customerEmailHtml(data: FormData): string {
