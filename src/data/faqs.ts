@@ -54,7 +54,7 @@ export const faqs: Faq[] = [
   {
     question: "What about hosting?",
     answer:
-      "One optional plan: Keep It Running at £19/month covers hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month. Whether you can host the site yourself, and how files are handed over, is still to be confirmed in writing, so ask us before you order.",
+      "One optional plan: Keep It Running at £19/month covers hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month. Whether you can host the site yourself, and how files are handed over, is still to be confirmed in writing, so ask us before you start.",
   },
   {
     question: "What are the payment terms?",

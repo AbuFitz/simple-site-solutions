@@ -87,7 +87,7 @@ export default function Contact() {
               Get in <span className="text-primary">touch</span>
             </h1>
             <p className="text-body-lg mt-4 max-w-xl">
-              Got a question before you order? Send a message and we'll reply by email. Ready to go? <Link className="underline underline-offset-4 hover:text-foreground" to="/start">Send a project brief</Link> instead; it gets the details we need.
+              Got a question? Send a message and we'll reply by email. Ready to start? <Link className="underline underline-offset-4 hover:text-foreground" to="/start">Send a project brief</Link> instead; it gets the details we need.
             </p>
 
             {status === "sent" ? (
