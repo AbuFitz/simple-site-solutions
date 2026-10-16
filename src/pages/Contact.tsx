@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { FlowGlow } from "@/components/oss/FlowGlow";
+import { team } from "@/data/team";
 import { Layout } from "@/components/layout/Layout";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -157,6 +158,14 @@ export default function Contact() {
                   {SITE.email}
                 </a>
               </li>
+              {team.map((m) => (
+                <li key={m.slug}>
+                  <span className="block text-muted-foreground">{m.name}, {m.role}</span>
+                  <a className="inline-flex min-h-[44px] items-center underline underline-offset-4" href={`mailto:${m.email}`}>
+                    {m.email}
+                  </a>
+                </li>
+              ))}
               <li>
                 <span className="block text-muted-foreground">Starting a project</span>
                 <Link className="inline-flex min-h-[44px] items-center underline underline-offset-4" to="/start">

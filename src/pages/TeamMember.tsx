@@ -44,6 +44,10 @@ export default function TeamMember() {
               <dd>{f.value}</dd>
             </div>
           ))}
+          <div>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${m.email}`}>{m.email}</a></dd>
+          </div>
         </dl>
       </section>
       <section className="tm-next" data-tone="dark" aria-label="Rest of the team">

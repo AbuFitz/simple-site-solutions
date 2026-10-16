@@ -5,6 +5,8 @@
 export interface Member {
   slug: string;
   name: string;
+  /** Direct email, supplied by the owner. */
+  email: string;
   role: string;
   /** What they do here (from the team list). */
   does: string;
@@ -17,6 +19,7 @@ export interface Member {
 export const team: Member[] = [
   {
     slug: "farhan-m",
+    email: "Farhan@onesimplesite.co.uk",
     name: "Farhan M",
     role: "Client Director",
     does: "Client relationships, briefs, communication and project coordination.",
@@ -30,6 +33,7 @@ export const team: Member[] = [
   },
   {
     slug: "matt-r",
+    email: "Matthew@onesimplesite.co.uk",
     name: "Matt R",
     role: "Design Director",
     does: "Website design, interaction, visual systems and digital experience.",
@@ -43,6 +47,7 @@ export const team: Member[] = [
   },
   {
     slug: "abukar-s",
+    email: "Abukar@onesimplesite.co.uk",
     name: "Abukar S",
     role: "Creative Director",
     does: "Creative direction, website strategy, design and overall experience.",

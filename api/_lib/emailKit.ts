@@ -5,6 +5,12 @@
 const BASE_URL = "https://onesimplesite.co.uk";
 const MUTED = "#8A938E";
 
+const TEAM = [
+  { name: "Farhan", email: "Farhan@onesimplesite.co.uk" },
+  { name: "Matt", email: "Matthew@onesimplesite.co.uk" },
+  { name: "Abukar", email: "Abukar@onesimplesite.co.uk" },
+];
+
 const SOCIAL = [
   { label: "Instagram", url: "https://www.instagram.com/onesimplesite/" },
   { label: "Facebook", url: "https://www.facebook.com/profile.php?id=61587530671229" },
@@ -51,8 +57,10 @@ export const button = (href: string, text: string) =>
 
 export const foot = (reason: string) => {
   const socials = SOCIAL.map((s) => `<a href="${s.url}" style="color:${MUTED};">${s.label}</a>`).join(" &nbsp;·&nbsp; ");
+  const direct = TEAM.map((t) => `<a href="mailto:${t.email}" style="color:${MUTED};">${t.name}: ${t.email}</a>`).join("<br>");
   return `<tr><td style="padding-top:32px;border-top:1px solid #26322D;font-size:13px;line-height:1.9;color:${MUTED};">
-${reason}<br>
+${reason}<br><br>
+${direct}<br><br>
 ${socials}<br>
 <a href="${BASE_URL}/privacy" style="color:${MUTED};">Privacy</a> &nbsp; <a href="${BASE_URL}/terms" style="color:${MUTED};">Terms</a> &nbsp; <a href="mailto:hello@onesimplesite.co.uk" style="color:${MUTED};">hello@onesimplesite.co.uk</a>
 </td></tr>`;
