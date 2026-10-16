@@ -42,7 +42,7 @@ export default function Index() {
               </section>
 
       <section className="hm-story" data-tone="dark" aria-labelledby="story-title">
-        <small><Scramble text="Our story" /></small>
+        <small><Scramble text="What we do" /></small>
         <p id="story-title"><Scramble text="Built for how customers" /> <em><Scramble text="find, check and contact" delay={350} /></em> <Scramble text="a local business." delay={700} /></p>
         <ul className="hm-facts">
           <li><b>UK</b><span>wide, with local pages</span></li>
