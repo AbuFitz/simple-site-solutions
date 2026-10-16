@@ -11,9 +11,9 @@ const principles = [
   { t: "Nothing invented", d: "No made-up reviews, logos or results. If we can't show it, we don't say it." },
 ];
 const team = [
-  { name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
-  { name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
-  { name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
+  { slug: "farhan-m", name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
+  { slug: "matt-r", name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
+  { slug: "abukar-s", name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
 ];
 
 export default function About() {
@@ -21,7 +21,6 @@ export default function About() {
     <Layout pageClass="pg pg-inner ab">
       <Seo path="/about" jsonLd={breadcrumb([{ name: "Home", path: "/" }, { name: "About", path: "/about" }])} />
       <section className="ab-hero" data-tone="dark">
-        <p className="ab-kicker">About</p>
         <h1>
           <span><Scramble text="Websites for" /></span>
           <span><Scramble text="UK businesses." delay={200} /></span>
@@ -30,16 +29,18 @@ export default function About() {
       </section>
 
       <section className="ab-quote" data-tone="dark">
-        <blockquote>&ldquo;We want it to look right, feel right and <em>actually work</em> for the business.&rdquo;</blockquote>
+        <p className="ab-statement">Every site is planned around <em>your trade, your area</em> and the questions your customers ask before they call.</p>
       </section>
 
       <section className="ab-team" data-tone="light" aria-label="The team">
         <ul>
           {team.map((m) => (
             <li key={m.name}>
-              <small>{m.role}</small>
-              <b>{m.name}</b>
-              <span>{m.text}</span>
+              <Link to={`/about/${m.slug}`}>
+                <small>{m.role}</small>
+                <b>{m.name}</b>
+                <span>{m.text}</span>
+              </Link>
             </li>
           ))}
         </ul>

@@ -76,11 +76,6 @@ export default function HowItWorks() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <div className="bordered-section inline-block px-4 py-2 mb-4 sm:mb-6">
-              <span className="text-[10px] sm:text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                The Process
-              </span>
-            </div>
             <h1 className="text-display mb-6 sm:mb-8">
               Simple. <span className="text-primary">Straightforward.</span>
             </h1>

@@ -16,9 +16,9 @@ const services = [
   { n: "05", t: "Found locally", d: "A page for each area you cover, set up so people nearby can find you." },
 ];
 const team = [
-  { name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
-  { name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
-  { name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
+  { slug: "farhan-m", name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
+  { slug: "matt-r", name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
+  { slug: "abukar-s", name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
 ];
 const packages = [
   { name: "The Starter", note: "3 pages, 5 to 7 days", price: "£199" },
@@ -43,7 +43,7 @@ export default function Index() {
 
       <section className="hm-story" data-tone="dark" aria-labelledby="story-title">
         <small><Scramble text="Our story" /></small>
-        <p id="story-title"><Scramble text="Small businesses deserve a website that" /> <em><Scramble text="looks right, feels right" delay={350} /></em> <Scramble text="and actually works." delay={700} /></p>
+        <p id="story-title"><Scramble text="Built for how customers" /> <em><Scramble text="find, check and contact" delay={350} /></em> <Scramble text="a local business." delay={700} /></p>
         <ul className="hm-facts">
           <li><b>UK</b><span>wide, with local pages</span></li>
           <li><b><CountUp to={199} prefix="£" /></b><span>where fixed prices start</span></li>
@@ -79,14 +79,15 @@ export default function Index() {
 
       <section className="hm-team" data-tone="dark" aria-labelledby="team-title">
         <h2 id="team-title" className="sr-only">The team</h2>
-        <blockquote><Scramble text="“We want it to look right, feel right and" /> <em><Scramble text="actually work" delay={400} /></em> <Scramble text="for the business.”" delay={650} /></blockquote>
-        <p className="hm-by">The OneSimpleSite team</p>
+        <blockquote><Scramble text="Planned around" /> <em><Scramble text="your trade" delay={300} /></em> <Scramble text="and the questions your customers ask." delay={600} /></blockquote>
         <ul>
           {team.map((m) => (
             <li key={m.name} data-scramble-host>
-              <small>{m.role}</small>
-              <b><Scramble text={m.name} hover /></b>
-              <span>{m.text}</span>
+              <Link to={`/about/${m.slug}`}>
+                <small>{m.role}</small>
+                <b><Scramble text={m.name} hover /></b>
+                <span>{m.text}</span>
+              </Link>
             </li>
           ))}
         </ul>

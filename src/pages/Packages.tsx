@@ -35,7 +35,6 @@ export default function Packages() {
       />
 
       <section className="pk-hero" data-tone="dark">
-        <p className="pk-kicker">Pricing</p>
         <h1>
           <span><Scramble text="Fixed" /></span>
           <span><Scramble text="prices." delay={200} /></span>

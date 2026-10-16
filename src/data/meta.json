@@ -97,5 +97,17 @@
   "/work/arf-mods": {
     "title": "ARF Mods | Automotive ecommerce website | OneSimpleSite",
     "description": "A parts and coding shop for BMW owners, organised by category and by model. What we built and the stack used."
+  },
+  "/about/farhan-m": {
+    "title": "Farhan M, Client Director | OneSimpleSite",
+    "description": "Farhan M is Client Director at OneSimpleSite. Client relationships, briefs, communication and project coordination."
+  },
+  "/about/matt-r": {
+    "title": "Matt R, Design Director | OneSimpleSite",
+    "description": "Matt R is Design Director at OneSimpleSite. Website design, interaction, visual systems and digital experience."
+  },
+  "/about/abukar-s": {
+    "title": "Abukar S, Creative Director | OneSimpleSite",
+    "description": "Abukar S is Creative Director at OneSimpleSite. Creative direction, website strategy, design and overall experience."
   }
 }

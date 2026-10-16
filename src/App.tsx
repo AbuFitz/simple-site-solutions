@@ -16,6 +16,7 @@ const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Cookies = lazy(() => import("./pages/Cookies"));
 const About = lazy(() => import("./pages/About"));
+const TeamMember = lazy(() => import("./pages/TeamMember"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Work = lazy(() => import("./pages/Work"));
 const WorkDetail = lazy(() => import("./pages/WorkDetail"));
@@ -73,6 +74,7 @@ const App = () => {
           <Route path="/web-design/:slug" element={<WebDesignLocation />} />
           <Route path="/start" element={<Start />} />
           <Route path="/about" element={<About />} />
+          <Route path="/about/:slug" element={<TeamMember />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/work" element={<Work />} />
           <Route path="/work/:slug" element={<WorkDetail />} />
