@@ -114,7 +114,9 @@
   .oss-foot__lead { grid-column: 1 / 3; font-size: 34px; }
   .oss-foot__areaswrap { grid-column: 1 / 3; }
   .oss-foot li { font-size: 18px; line-height: 2.1; }
-  .oss-foot__bigwrap { margin-top: 50px; }
+  .oss-foot__bigwrap { margin-top: 50px; margin-inline: -20px; }
+  .oss-foot__big { font-size: calc(100cqw * 0.36); width: max-content; padding-left: 20px; }
+  @media (prefers-reduced-motion: no-preference) { .oss-foot__big { animation: oss-foot-pan 14s ease-in-out infinite alternate; } }
   .oss-foot__legal { display: block; font-size: 16px; line-height: 1.8; }
   .oss-foot__legal > span { display: block; }
   .oss-foot__legal ul { margin-top: 8px; }
@@ -164,3 +166,5 @@
   .oss-fm li a small { align-self: flex-start; margin-top: 2.2vw; }
   .oss-fm__side { padding: 30px 0 60px; font-size: 18px; }
 }
+
+@keyframes oss-foot-pan { from { transform: translateX(0); } to { transform: translateX(calc(100cqw - 100%)); } }
