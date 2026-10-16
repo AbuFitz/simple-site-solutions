@@ -26,7 +26,6 @@ export default function WebDesignLocation() {
 
       <section className="ar-hero" data-tone="dark">
         <nav aria-label="Breadcrumb" className="ar-crumb">
-          <Link to="/">&#8592; Home</Link>
           <Link to={HUB_PATH}>All areas</Link>
         </nav>
         <p className="ar-kicker">{String(idx + 1).padStart(2, "0")} / {loc.county}</p>
