@@ -52,9 +52,6 @@ export const team: Member[] = [
     ],
     facts: [
       { label: "Role", value: "Creative Director" },
-      { label: "Born", value: "Yemen" },
-      { label: "Heritage", value: "Somali" },
-      { label: "In the UK", value: "Since 2008" },
       { label: "Looks after", value: "Direction, strategy, design, experience" },
     ],
   },
