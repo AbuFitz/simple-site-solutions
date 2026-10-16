@@ -7,7 +7,7 @@ const MUTED = "#8A938E";
 
 const TEAM = [
   { name: "Farhan", email: "Farhan@onesimplesite.co.uk" },
-  { name: "Matt", email: "Matthew@onesimplesite.co.uk" },
+  { name: "Matthew", email: "Matthew@onesimplesite.co.uk" },
   { name: "Abukar", email: "Abukar@onesimplesite.co.uk" },
 ];
 

@@ -12,7 +12,7 @@ const principles = [
 ];
 const team = [
   { slug: "farhan-m", name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
-  { slug: "matt-r", name: "Matt R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
+  { slug: "matthew-r", name: "Matthew R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
   { slug: "abukar-s", name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
 ];
 

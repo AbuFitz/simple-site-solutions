@@ -33,7 +33,7 @@ export const PAGES_FOR_SITEMAP = [
   "/contact",
   "/about",
   "/about/farhan-m",
-  "/about/matt-r",
+  "/about/matthew-r",
   "/about/abukar-s",
   "/privacy",
   "/terms",

@@ -32,13 +32,13 @@ export const team: Member[] = [
     ],
   },
   {
-    slug: "matt-r",
+    slug: "matthew-r",
     email: "Matthew@onesimplesite.co.uk",
-    name: "Matt R",
+    name: "Matthew R",
     role: "Design Director",
     does: "Website design, interaction, visual systems and digital experience.",
     story: [
-      "Matt leads how each site looks and moves. He builds the visual system behind a project so the whole site feels like one thing, from the first screen to the last button.",
+      "Matthew leads how each site looks and moves. He builds the visual system behind a project so the whole site feels like one thing, from the first screen to the last button.",
     ],
     facts: [
       { label: "Role", value: "Design Director" },
