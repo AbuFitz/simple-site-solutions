@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import { FlowGlow } from "@/components/oss/FlowGlow";
 import { Layout } from "@/components/layout/Layout";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
 import { DottedGrid } from "@/components/ui/DottedGrid";
@@ -80,6 +81,7 @@ export default function Contact() {
         ])}
       />
       <section className="relative pt-24 pb-16 sm:pt-32 sm:pb-24">
+        <FlowGlow level={Object.values(values).filter((v) => typeof v === "string" && v.trim()).length * 2 + (status === "sent" ? 4 : 0)} />
         <DottedGrid className="opacity-30" spacing={32} />
         <div className="content-width relative z-10 grid gap-10 lg:grid-cols-[1fr_360px]">
           <div>

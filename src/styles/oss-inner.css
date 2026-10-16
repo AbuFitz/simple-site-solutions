@@ -215,10 +215,11 @@
 .pk-more summary:hover::after { background: rgba(239, 235, 227, 0.12); }
 .pk-more details[open] summary::after { transform: rotate(45deg); }
 .pk-more summary::-webkit-details-marker, .pk-row summary::-webkit-details-marker { display: none; }
-.pk-row summary { display: inline-flex; align-items: center; gap: 10px; border: 1px solid currentColor; border-radius: 999px; padding: 9px 16px; margin-top: 18px; }
+.pk-row summary { display: inline-flex; align-items: center; gap: 10px; border: 0; border-radius: 999px; background: rgba(11, 15, 13, 0.08); padding: 10px 18px; margin-top: 18px; outline: none; }
+.pk-row summary:focus-visible { box-shadow: 0 0 0 2px currentColor; }
 .pk-row summary::after { content: "+"; font: 400 20px / 1 var(--f-mono); transition: transform 0.3s ease; }
 .pk-row details[open] summary::after { transform: rotate(45deg); }
-.pk-row summary:hover { background: rgba(11, 15, 13, 0.07); }
+.pk-row summary:hover { background: rgba(11, 15, 13, 0.14); }
 
 .ab-statement { margin: 0; font: 700 clamp(34px, 7vw, 108px) / 0.95 var(--f-display); letter-spacing: -0.055em; text-transform: uppercase; max-width: 1300px; color: #bfc2bd; }
 .ab-statement em { font-style: normal; color: #fff; }

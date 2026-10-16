@@ -141,3 +141,17 @@ body.has-cookie main { padding-bottom: 96px; }
 .oss-home-link { pointer-events: auto; }
 .hm-price h2, .hm-how h2 { color: var(--ink); }
 .hm-price h2 > .oss-rise, .hm-how h2 > .oss-rise { opacity: 0.72; }
+
+/* FlowGlow: moving gradient behind forms. */
+.fg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; opacity: var(--fg-s, 0.5); transition: opacity 1.2s ease; }
+.fg-o { position: absolute; transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.fg-o i { display: block; border-radius: 50%; will-change: transform; }
+.fg-o1 { left: -10vmax; top: -12vmax; }
+.fg-o2 { right: -14vmax; top: 10vmax; }
+.fg-o3 { left: 18vw; bottom: -22vmax; }
+.fg-o1 i { width: 70vmax; height: 70vmax; background: radial-gradient(closest-side, rgba(38, 176, 125, 0.3), rgba(38, 176, 125, 0) 72%); animation: fg-a 14s ease-in-out infinite alternate; }
+.fg-o2 i { width: 60vmax; height: 60vmax; background: radial-gradient(closest-side, rgba(158, 162, 156, 0.26), rgba(158, 162, 156, 0) 72%); animation: fg-b 18s ease-in-out infinite alternate; }
+.fg-o3 i { width: 56vmax; height: 56vmax; background: radial-gradient(closest-side, rgba(20, 90, 60, 0.4), rgba(20, 90, 60, 0) 70%); animation: fg-a 22s ease-in-out infinite alternate-reverse; }
+@keyframes fg-a { to { transform: translate3d(14vmax, 10vmax, 0) scale(1.15); } }
+@keyframes fg-b { to { transform: translate3d(-12vmax, 14vmax, 0) scale(0.9); } }
+@media (prefers-reduced-motion: reduce) { .fg-o, .fg { transition: none; } .fg-o i { animation: none; } }

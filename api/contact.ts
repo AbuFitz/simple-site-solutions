@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { clientIp, escapeHtml, json, oneLine, originAllowed } from "./_lib/http.js";
 import { rateLimit } from "./_lib/rateLimit.js";
-import { foot, row, shellClose, shellOpen, title } from "./_lib/emailKit.js";
+import { esc, foot, lead, row, shellClose, shellOpen, title } from "./_lib/emailKit.js";
 
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Your name is required").max(100),
@@ -35,7 +35,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   const d = parsed.data;
   try {
-    const { error } = await new Resend(process.env.RESEND_API_KEY).emails.send({
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
       from: "OneSimpleSite <noreply@onesimplesite.co.uk>",
       to: process.env.ADMIN_EMAIL || "hello@onesimplesite.co.uk",
       replyTo: d.email,
@@ -46,6 +47,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.error("contact send failed:", error.message);
       return json(res, 502, { error: "We couldn't send your message. Please email us directly." });
     }
+    // Receipt for the sender. The owner's copy is the record, so a failure here is only logged.
+    const receipt = await resend.emails.send({
+      from: "OneSimpleSite <noreply@onesimplesite.co.uk>",
+      to: d.email,
+      replyTo: process.env.ADMIN_EMAIL || "hello@onesimplesite.co.uk",
+      subject: "We got your message",
+      html: `${shellOpen}${title(`Thanks, ${esc(d.name)}.`)}${lead("We have your message and will reply by email.")}${row("Your message", esc(d.message))}<tr><td style="padding:32px 0;font-size:17px;line-height:1.6;color:#C9CBC6;">Need to add something? Reply to this email.<br><span style="color:#EFEBE3;">The OneSimpleSite team</span></td></tr>${foot("Sent because you used the contact form on onesimplesite.co.uk.")}${shellClose}`,
+    });
+    if (receipt.error) console.error("contact receipt failed:", receipt.error.message);
     return json(res, 200, { success: true });
   } catch (e) {
     console.error("contact failed:", e instanceof Error ? e.message : e);

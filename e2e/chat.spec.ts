@@ -34,11 +34,11 @@ for (const width of [390, 1440]) {
       await open(page);
       const dialog = page.getByRole("dialog", { name: /Chat with Sid/ });
       await expect(dialog.getByText(/I'm Sid/)).toBeVisible();
-      await dialog.getByRole("button", { name: "What do the packages cost?" }).click();
+      await dialog.getByRole("button", { name: "What do packages cost?" }).click();
       await expect(dialog.getByText(/The Starter is £199/)).toBeVisible();
-      expect(seen).toEqual(["What do the packages cost?"]);
+      expect(seen).toEqual(["What do packages cost?"]);
       await expect(dialog.getByRole("link", { name: "See packages and prices" })).toHaveAttribute("href", "/packages");
-      await expect(dialog.getByText(/Sid is an AI and can get things wrong/)).toBeVisible();
+      await expect(dialog.getByText(/AI can get things wrong/)).toBeVisible();
       await page.keyboard.press("Escape");
       await expect(dialog).toBeHidden();
       await expect(page.getByRole("button", { name: /Open chat with Sid/ })).toBeFocused();
@@ -112,7 +112,7 @@ for (const width of [390, 1440]) {
       };
       await run("launcher");
       await open(page);
-      await page.getByRole("button", { name: "What do the packages cost?" }).click();
+      await page.getByRole("button", { name: "What do packages cost?" }).click();
       await expect(page.getByText(/The Starter is £199/)).toBeVisible();
       await run("open");
     });

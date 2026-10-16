@@ -7,8 +7,8 @@ interface Msg { id: string; role: "user" | "assistant"; content: string; actions
 
 const STORE = "oss-sid-chat-v1";
 const MAX_CHARS = 500;
-const WELCOME: Msg = { id: "welcome", role: "assistant", content: "Hi, I'm Sid, OneSimpleSite's website assistant. Ask me about packages, prices, timings or whether we cover your area." };
-const PROMPTS = ["What do the packages cost?", "How long does a website take?", "Do you cover my area?", "What is included in each package?"];
+const WELCOME: Msg = { id: "welcome", role: "assistant", content: "Hi, I'm Sid. Ask me about packages, prices or timings." };
+const PROMPTS = ["What do packages cost?", "How long does it take?", "What is included?"];
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
@@ -198,7 +198,7 @@ export default function ChatPanel({ open, onClose }: { open: boolean; onClose: (
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-extrabold text-primary-foreground" aria-hidden="true">S</span>
         <div className="min-w-0 flex-1">
           <p className="text-base font-bold leading-tight">Sid</p>
-          <p className="truncate text-xs text-muted-foreground">OneSimpleSite assistant · AI</p>
+          <p className="truncate text-xs text-muted-foreground">AI assistant</p>
         </div>
         <button type="button" onClick={reset} aria-label="Start a new chat" className="flex h-11 w-11 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
           <RotateCcw className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -259,7 +259,7 @@ export default function ChatPanel({ open, onClose }: { open: boolean; onClose: (
               maxLength={MAX_CHARS}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={onTextKey}
-              placeholder="Ask about packages, prices, areas…"
+              placeholder="Ask a question"
               enterKeyHint="send"
               autoComplete="off"
               className="max-h-28 min-h-[44px] flex-1 resize-none rounded-2xl border border-border bg-background px-3.5 py-[11px] text-base leading-snug placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
@@ -270,7 +270,7 @@ export default function ChatPanel({ open, onClose }: { open: boolean; onClose: (
           </div>
         )}
         <p className="mt-2 px-1 text-[0.72rem] leading-snug text-muted-foreground">
-          Sid is an AI and can get things wrong. Please don't share passwords or card details. <Link to="/privacy" onClick={onClose} className="underline underline-offset-2">How chats are handled</Link>
+          AI can get things wrong. Don't share passwords or card details. <Link to="/privacy" onClick={onClose} className="underline underline-offset-2">Privacy</Link>
           {text.length > 400 && <span className="ml-1 tabular-nums">{MAX_CHARS - text.length} left</span>}
         </p>
       </form>
