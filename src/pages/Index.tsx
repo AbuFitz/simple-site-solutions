@@ -79,7 +79,7 @@ export default function Index() {
 
       <section className="hm-team" data-tone="dark" aria-labelledby="team-title">
         <h2 id="team-title" className="sr-only">The team</h2>
-        <blockquote><Scramble text="Planned around" /> <em><Scramble text="your trade" delay={300} /></em> <Scramble text="and the questions your customers ask." delay={600} /></blockquote>
+        <blockquote><Scramble text="“We want it to" /> <em><Scramble text="look right, feel right" delay={300} /></em> <Scramble text="and actually work for the business.”" delay={600} /></blockquote>
         <ul>
           {team.map((m) => (
             <li key={m.name} data-scramble-host>
