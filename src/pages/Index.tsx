@@ -71,9 +71,9 @@ export default function Index() {
       <section className="hm-how" data-tone="light" aria-labelledby="how-title">
         <h2 id="how-title"><Scramble text="Notes in," /> <em><Scramble text="site out." delay={200} /></em></h2>
         <ol>
-          <li><i aria-hidden="true">1</i><b>Brief</b><span>Tell us about the business. No copy or photos yet? We guide you.</span></li>
-          <li><i aria-hidden="true">2</i><b>Build</b><span>Planned for your kind of business and built around your details.</span></li>
-          <li><i aria-hidden="true">3</i><b>Launch</b><span>You review it, we refine it, then it goes live.</span></li>
+          <li><i aria-hidden="true">1</i><b>Brief</b><span>Pick a package and fill in one short form: your business, services and contact details.</span></li>
+          <li><i aria-hidden="true">2</i><b>Build</b><span>We design and build your site, ready for phones, search and enquiries.</span></li>
+          <li><i aria-hidden="true">3</i><b>Launch</b><span>You check it and ask for changes. When you are happy, it goes live.</span></li>
         </ol>
       </section>
 
