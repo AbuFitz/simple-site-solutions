@@ -16,7 +16,7 @@ Not found: a primary FSB / Which? / Google survey on what small businesses want 
 
 **Inference (not source claims)**
 - The recurring buyer questions look like: total cost in year 1 and year 2+, who owns the domain and files, can I leave and take the site, what is excluded (copy, photos, extra pages, changes), how long it takes, and is this a real, contactable company.
-- OneSimpleSite should show: all-in price including VAT treatment, a "what you own" statement, a plain £19/month hosting explainer with exit terms, an included/excluded table, and company details in the footer.
+- OneSimpleSite should show: all-in price including VAT treatment, a "what you own" statement, a plain £29/month hosting explainer (Hosting & Care) with exit terms, an included/excluded table, and company details in the footer.
 
 ## 2. Direct UK competitors and low-cost / productised offers
 
@@ -84,8 +84,8 @@ Patterns only. Do not copy wording.
 - Idempotency: send an `Idempotency-Key` (up to 255 characters, V4 UUID suggested, no personal data) on POST requests. Stripe returns the saved response for the same key, and API v1 keys can be pruned after 24 hours. [https://docs.stripe.com/api/idempotent_requests]
 - Server-side prices: Stripe's docs show `line_items` using a server-held Price ID or `price_data`. I found no official page saying "never trust client prices". A third-party write-up recommends the browser send only a plan key, with the server mapping it to a Price ID from an allowlist. [https://docs.stripe.com/payments/checkout/how-checkout-works.md?payment-ui=stripe-hosted] [https://lilting.ch/en/articles/stripe-price-server-side]
 - Stripe's security guide says payment pages need TLS 1.2 or above, webhooks should use TLS, and signature verification should be combined with IP allowlisting. [https://docs.stripe.com/security/guide]
-- Inference for the build: client sends only package id (199/399/649) and the optional hosting flag; the server maps to Price IDs; one session per order with an idempotency key; fulfil only from a signature-verified webhook.
-- **Review flag:** VAT status and whether to collect tax, receipts and invoices, terms acceptance at checkout, and how the £19/month subscription is cancelled (the Checkout `mode` and the customer portal).
+- Inference for the build: client sends only package id (launch/growth) and the optional hosting flag; the server maps to Price IDs; one session per order with an idempotency key; fulfil only from a signature-verified webhook.
+- **Review flag:** VAT status and whether to collect tax, receipts and invoices, terms acceptance at checkout, and how the £29/month subscription is cancelled (the Checkout `mode` and the customer portal).
 
 ## 5. Performance and accessibility thresholds
 

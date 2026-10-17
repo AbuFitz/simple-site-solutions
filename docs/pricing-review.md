@@ -1,57 +1,27 @@
-# Pricing and offer review
+# Pricing and offer: current position
 
-A working agenda for deciding prices, inclusions and promises, and for removing the places where the site contradicts itself.
-Sources are the live code in this repo.
+Updated 17 October 2026. The earlier review agenda (Starter £199 / Sorted £399 / Works £649, Keep It Running £19/month) is superseded and has been removed so it cannot be mistaken for the live offer.
 
-> **Update 2026-10-14:** the contradictions in section 1 and the stale pages in section 2 have been resolved in code (hosting is one £19 plan, delivery is per package, the guarantee, 24-hour promise, fake rating and invented about/case-study content are gone, `/services` redirects to `/packages`, the unrouted Pricing/CaseStudies pages were deleted). Section 3 decisions are still open, and package data now lives only in `src/data/packages.ts`. See `docs/fact-ledger.md`.
+## What is live
 
-## 1. Contradictions to fix (the site disagrees with itself)
+| Item | Detail |
+|---|---|
+| Launch | £189 (previously £249). Up to 3 main pages, 1 revision round, 5 to 7 working days. £189 before work begins. |
+| Growth | £489 (previously £649). Up to 10 main pages, content planning and navigation, one-off advanced on-page SEO, business email setup, basic analytics setup, 3 revision rounds, 10 to 14 working days. £244.50 to begin, £244.50 before launch. |
+| Enterprise | Tailored quotation. Shops, customer accounts, portals, advanced booking, CRM and payment integrations, larger sites. Not payable online. |
+| Hosting & Care | £29/month, month to month, 30 days' notice. Hosting, SSL, one standard-priced domain, weekly backups, security monitoring, up to 3 small content changes (30 minutes combined), support, Google Search Console setup. |
+| Add-ons | Logo £49, Google Business Profile £39, Booking System £39, Extra Email Templates ×3 £29, SEO Audit £59, Legal Pages Pack £19. |
 
-| What | Where | Says | Packages page says |
-|---|---|---|---|
-| Hosting plans | FAQ ("What about hosting?", "What if I need changes?"), Terms (hosting section) | Two plans: Keep It Live £9/month and Keep It Fresh £19/month | One plan: Keep It Running £19/month, up to 5 content updates a month |
-| Delivery time | Home, FAQ, Terms, sticky mobile bar, JSON-LD | "5-10 days" for everything | Starter 5–7, Sorted 7–10, Works 10–14 days |
-| "Satisfaction Guarantee" | Home hero strip | A guarantee | Terms say deposits are non-refundable once work starts. No guarantee is defined anywhere |
-| Support email | `index.html` structured data | hello@onesimplesite.co.uk | Packages structured data uses support@onesimplesite.co.uk |
-| Review rating | `index.html` structured data | aggregateRating 4.9 from 100 reviews | No reviews are shown anywhere. This is invented markup and a search-penalty risk |
-| Response promise | Project form confirmation (`/start`) | "We'll be in touch within 24 hours" | Not stated anywhere else. Confirm you can always keep it |
+Source of truth: `src/data/packages.ts`. The Packages page, project brief, Start form, preview recommendation, assistant, emails and the server's expected Stripe amounts all read it. Other places hold the figures as text and must be edited by hand when prices change: `index.html` (structured data), `public/llms.txt`, `src/data/faqs.ts`, `src/data/meta.json`, `src/data/locations.json`, `src/data/guides.json`, `src/pages/Terms.tsx`, `src/pages/Index.tsx`, `src/components/oss/DaysCounter.tsx`, `src/components/layout/Navbar.tsx` and `api/_lib/chat/knowledge.ts`.
 
-## 2. Unlinked pages that still contain old or invented offers
+## Still to confirm with the owner
 
-These are not in the navigation but are still routed or present, so they can be found:
+1. VAT: are prices inclusive or exclusive? Terms currently say "inclusive of VAT where applicable".
+2. What each add-on delivers, so the one-sentence explainers on the project brief are accurate.
+3. Whether a customer may self-host, and what happens to files and domain on cancelling Hosting & Care.
+4. Deposit and refund wording (Terms say deposits are non-refundable once work has begun).
+5. How long the "previously £249 / £649" prices should stay on show.
 
-- `/about`: invented team, "500+ websites", "since 2019", "98% satisfaction".
-- `/services`: "Up to 5 pages", "1 year hosting included", "99.9% uptime guarantee", "daily backups", prices that do not match.
-- `/contact`: budget options of £495 / £795 / £1,295, and a form that shows "Thank you" without sending anything.
-- `src/pages/Pricing.tsx` and `src/pages/CaseStudies.tsx`: not routed, old prices (£495/£795) and invented case studies.
+## Preview recommendation rules
 
-Decision needed: delete, correct, or redirect each one.
-
-## 3. Pricing decisions to make together
-
-1. **Are £199 / £399 / £649 right?** Check them against real build hours per package, hosting and domain costs, and the cost of revisions.
-2. **Free domain for a year (Sorted)**: what does the domain cost you, and who owns it afterwards?
-3. **"First month free" on hosting**: confirm it, and how it interacts with the 50% deposit.
-4. **Delivery promises**: one honest range per package, and what happens if content arrives late.
-5. **Revision rounds** (1 / 2 / 3): are they enough, and what does an extra round cost?
-6. **Deposit and refunds**: Starter is paid in full upfront and deposits are non-refundable. Is that what you want to say out loud?
-7. **Hosting**: one plan (£19) or two (£9 and £19)? A cheaper entry plan may convert better.
-8. **Add-ons**: do the prices (£19 to £59) cover your time? Anything missing, such as copywriting, photography or extra pages?
-9. **VAT and invoicing**: are prices inclusive or exclusive of VAT? The site does not say.
-10. **Is there a fourth tier or a monthly option** for people who want no upfront cost?
-
-## 4. The preview generator's recommendation rules (assumptions to approve)
-
-The preview page suggests a package from what the owner enters. These thresholds are my reading of the inclusions, not business rules you have confirmed:
-
-- More than one town → The Works (location pages for local search).
-- More than six services (or six for builders) → The Works.
-- Wants customers to book → The Sorted (booking is included there).
-- Four or more services → The Sorted.
-- Otherwise → The Starter.
-
-They live in `recommendPackage()` in `src/lib/preview/generate.ts` and are covered by tests.
-
-## 5. Keep in sync
-
-Package data lives only in `src/data/packages.ts`; the Packages page, Start form, preview recommendation and the server's expected Stripe amounts all read it.
+`recommendPackage()` in `src/lib/preview/generate.ts` suggests Growth for more than one town or four or more services, otherwise Launch. These thresholds are assumptions, covered by tests.

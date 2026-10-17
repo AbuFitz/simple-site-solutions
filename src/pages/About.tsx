@@ -5,8 +5,8 @@ import { Scramble } from "@/components/oss/Scramble";
 import { Link } from "react-router-dom";
 
 const principles = [
-  { t: "Fixed prices", d: "Three packages, with the price, page count and inclusions written down before you start." },
-  { t: "Planned layouts", d: "We start from a layout planned for your kind of business and build it around your details." },
+  { t: "Fixed prices", d: "Launch and Growth at a fixed price, and a tailored quotation for bigger projects. The price, page count and inclusions are written down before you start." },
+  { t: "Designed around you", d: "Colours, typography and layout agreed with you, using your branding and images, and built around your details." },
   { t: "Plain English", d: "No jargon. We tell you what we need from you, and what happens next." },
   { t: "Nothing invented", d: "No made-up reviews, logos or results. If we can't show it, we don't say it." },
 ];
@@ -25,7 +25,7 @@ export default function About() {
           <span><Scramble text="Websites for" /></span>
           <span><Scramble text="UK businesses." delay={200} /></span>
         </h1>
-        <p className="ab-lede">Trades, mechanics, cleaners, barbers, tutors, small shops and similar. A clear fixed price, a layout planned for your kind of business, and a short process.</p>
+        <p className="ab-lede">Trades, mechanics, cleaners, barbers, tutors, small shops and similar. A clear fixed price, a design built around your business, and a short process.</p>
       </section>
 
       <section className="ab-quote" data-tone="dark">
@@ -58,7 +58,7 @@ export default function About() {
           ))}
         </ol>
         <p className="ab-fit">
-          It suits you if you want a clean, working site without managing a design project. It doesn't suit you if you want full creative control or a custom web app. The <Link to="/faq">FAQ</Link> explains the trade-off.
+          It suits you if you want a clean, working site without managing a design project. For online shops, customer portals or a custom web app, ask us about Enterprise. The <Link to="/faq">FAQ</Link> explains the trade-off.
         </p>
       </section>
       <CtaBand />

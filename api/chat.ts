@@ -31,7 +31,7 @@ export function directAnswer(question: string): { reply: string; actions: ChatAc
     case "human":
       return { reply: "Of course. The quickest way to reach the team is the contact form, or you can email hello@onesimplesite.co.uk. Replies come by email, and I can't promise a time.", actions: [A("Contact us", "/contact")] };
     case "start":
-      return { reply: "Brilliant. The project brief takes a few minutes: pick a package, tell us about your business and we reply by email to confirm. If you'd like to see a sample first, the free preview builds one for your trade and town.", actions: [A("Start your project", "/start"), A("Try the free preview", "/preview")] };
+      return { reply: "Brilliant. The project brief takes a few minutes: pick a package, tell us about your business and we reply by email to confirm.", actions: [A("Start your project", "/start"), A("See packages", "/packages")] };
     default:
       return null;
   }

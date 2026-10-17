@@ -68,9 +68,9 @@ export const KNOWLEDGE: KnowledgeDoc[] = [
   {
     id: "design",
     title: "Design choices",
-    text: "Customers do not pick a design from scratch. Sites are built from layouts planned for each kind of business, so it is faster and costs less than a fully custom design, with less room for bespoke changes. Anyone who wants full creative control is probably not the right fit. There is a free website preview that shows a sample for a trade and town.",
+    text: "We agree the colours, typography and layout with the customer, using their supplied branding and images, and each package includes revision rounds (1 for Launch, 3 for Growth). New functionality or a substantial change of direction is quoted separately. Fully bespoke projects such as shops and portals are Enterprise, with a tailored quotation.",
     keywords: ["design", "custom", "template", "look", "style", "colour", "colours", "logo", "preview", "sample", "example", "bespoke", "choose"],
-    link: { label: "Try the free preview", href: "/preview" },
+    link: { label: "See packages", href: "/packages" },
   },
   {
     id: "need",

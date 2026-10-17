@@ -34,12 +34,12 @@ export const faqs: Faq[] = [
   {
     question: "How is this different from hiring a web designer?",
     answer:
-      "We're a productised service, not a custom agency. We don't offer unlimited revisions, moodboards, or 'design by committee.' We start from a layout planned for your kind of business and fill it with your details. It is faster and costs less than a fully custom design, with less room for bespoke changes.",
+      "We work to a fixed price and a written scope rather than an open-ended design project. Each package has a set number of pages and revision rounds, so you know the cost and timing before work starts. Anything outside that scope, such as new functionality or a substantial change of direction, is quoted separately.",
   },
   {
     question: "Can I choose my own design?",
     answer:
-      "No — and that's intentional. We build from layouts planned for your kind of business, so you don't choose the design from scratch. If you want full creative control, we're probably not the right fit.",
+      "Yes, within the package. We agree the colours, typography and layout with you, using your supplied branding and images, and you get revision rounds to refine it (1 for Launch, 3 for Growth). For a fully bespoke build, such as a shop or customer portal, ask us about Enterprise.",
   },
   {
     question: "What if I need changes after we launch?",

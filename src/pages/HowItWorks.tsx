@@ -23,7 +23,7 @@ const steps = [
     number: "03",
     title: "We Research & Build",
     description:
-      "We start from a layout planned for your kind of business and build it around your details.",
+      "We design and build your pages around your business, using your branding, images and details.",
   },
   {
     number: "04",
