@@ -24,7 +24,7 @@
   /* Desktop composition unit: 1px at a 1440px wide window, scaling with the window up to 1680px. */
   --u: calc(min(100vw, 1680px) / 1440 * 0.88);
   /* Mobile composition unit: 1px at 390px, scaling up to 1.75px so tablets get a scaled phone layout. */
-  --v: min(calc(100vw / 390 * 0.94), 1.65px);
+  --v: min(calc(100vw / 390), 1.75px);
 }
 
 .pg { font-family: var(--f-text); font-size: 19px; line-height: 1.5; --m: calc(56 * var(--u)); overflow-x: clip; }
@@ -143,7 +143,7 @@
 .oss-bar__r a:hover, .oss-bar button:hover { opacity: 0.65; }
 .oss-fm { position: fixed; inset: 0; z-index: 85; background: var(--ink); color: var(--bone); padding: 120px 56px 56px; display: grid; grid-template-columns: 1fr 320px; gap: 40px; overflow: auto; animation: oss-fm-in 0.3s ease both; }
 .oss-fm ul { list-style: none; margin: 0; padding: 0; }
-.oss-fm li a { display: flex; align-items: baseline; gap: 20px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: clamp(39px, 6.56vw, 99px); line-height: 1; letter-spacing: -0.05em; color: inherit; text-decoration: none; padding: 4px 0; }
+.oss-fm li a { display: flex; align-items: baseline; gap: 20px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: clamp(44px, 6.56vw, 99px); line-height: 1; letter-spacing: -0.05em; color: inherit; text-decoration: none; padding: 4px 0; }
 .oss-fm li a small { font: 13px var(--f-mono); letter-spacing: 0; color: var(--spring); width: 30px; }
 .oss-fm li a:hover, .oss-fm li a[aria-current="page"] { color: var(--spring); }
 .oss-fm__side { font-size: 17px; line-height: 1.6; padding-top: 16px; }
@@ -159,10 +159,10 @@
 @media (prefers-reduced-motion: reduce) { .oss-fm { animation: none; } }
 
 /* Menu: same scale on phones as desktop. It may scroll; it should still hit you in the face. */
-.oss-fm li a { font-size: clamp(56px, 8.8vw, 128px); }
+.oss-fm li a { font-size: clamp(64px, 8.8vw, 128px); }
 @media (max-width: 959px) {
   .oss-fm { padding-top: 92px; align-content: start; }
-  .oss-fm li a { font-size: 14.28vw; line-height: 0.95; padding: 6px 0; gap: 14px; }
+  .oss-fm li a { font-size: 17vw; line-height: 0.95; padding: 6px 0; gap: 14px; }
   .oss-fm li a small { align-self: flex-start; margin-top: 2.2vw; }
   .oss-fm__side { padding: 30px 0 60px; font-size: 18px; }
 }

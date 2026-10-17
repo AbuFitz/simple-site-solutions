@@ -60,7 +60,7 @@
 .pg-inner .badge, .pg-inner .badge-primary, .pg-inner .badge-muted { font-family: var(--f-mono); letter-spacing: 0; text-transform: none; }
 
 .oss-cta { background: var(--paper, #e6e7e3); color: var(--ink); padding: 110px 56px; font-family: var(--f-text); }
-.oss-cta h2 { font-size: clamp(35px, 5.12vw, 77px); line-height: 0.94; letter-spacing: -0.05em; max-width: 1100px; margin: 0; }
+.oss-cta h2 { font-size: clamp(40px, 5.12vw, 77px); line-height: 0.94; letter-spacing: -0.05em; max-width: 1100px; margin: 0; }
 .oss-cta p { margin: 24px 0 0; font-size: 21px; max-width: 560px; color: var(--ink); }
 .oss-cta .row { display: flex; gap: 30px; align-items: center; margin-top: 40px; flex-wrap: wrap; }
 .oss-cta .oss-btn { width: auto; }

@@ -196,7 +196,7 @@
 .pg-work .cta .row{display:flex;gap:calc(30 * var(--u));align-items:center;margin-top:calc(50 * var(--u))}
 .pg-work .cta .row a:not(.oss-btn){font-size:20px}
 @media (max-width:959px){.pg-work .wh{padding:calc(104 * var(--v)) var(--m) 0}
-.pg-work .wh h1{font-size:calc(132 * var(--v))}
+.pg-work .wh h1{font-size:min(calc(132 * var(--v)), calc((100vw - 40px) / 2.9))}
 .pg-work .wh .intro{position:static;width:auto;margin-top:calc(22 * var(--v));font-size:19px}
 .pg-work .filters{gap:calc(22 * var(--v));margin-top:calc(30 * var(--v));font-size:17px;overflow-x:auto;white-space:nowrap}
 .pg-work .feat{display:block;height:auto}
