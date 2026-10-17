@@ -36,7 +36,7 @@ export default function Packages() {
           <span><Scramble text="A website that" /></span>
           <span><Scramble text="fits your business." delay={200} /></span>
         </h1>
-        <p className="pk-lede">Choose a fixed package or speak to us about a project with different requirements. Extras and monthly care are separate, below.</p>
+        <p className="pk-lede">Pick a fixed-price package and know what you get, what it costs and when it will be ready. Need something bigger? Ask for a quote.</p>
       </section>
 
       <section className="pk-list" data-tone="light" aria-label="Packages">
@@ -45,7 +45,8 @@ export default function Packages() {
             <div className="pk-row__top">
               <div>
                 <h2 itemProp="name">{pkg.name}</h2>
-                <p itemProp="description">{pkg.ideal}{pkg.recommended ? " Our suggestion." : ""}</p>
+                <p itemProp="description">{pkg.summary}</p>
+                {pkg.recommended && <span className="pk-rec">Our recommendation</span>}
               </div>
               <div className="pk-row__price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
                 {pkg.price ? (
@@ -53,14 +54,16 @@ export default function Packages() {
                     {pkg.was && <s className="pk-was"><span className="sr-only">Previously </span>£{pkg.was}</s>}
                     <span itemProp="price">£{pkg.price}</span>
                     <meta itemProp="priceCurrency" content="GBP" />
+                    {pkg.saving && <em className="pk-save">{pkg.saving}</em>}
                   </>
                 ) : (
                   <span className="pk-quote">{pkg.priceLabel}</span>
                 )}
               </div>
             </div>
+            <p className="pk-pay">{pkg.paymentText}.</p>
             <details>
-              <summary>What is included</summary>
+              <summary>See what is included</summary>
               <p className="pk-meta">{pkg.tagline}</p>
               <ul>
                 {pkg.features.map((f) => (
@@ -87,7 +90,7 @@ export default function Packages() {
               className="pk-go"
               aria-label={pkg.price ? `Get started with ${pkg.name} for £${pkg.price}` : `Talk to us about an ${pkg.name} project`}
             >
-              {pkg.price ? "Get started" : "Talk to us"} <span aria-hidden="true">&#8594;</span>
+              {pkg.price ? `Start with ${pkg.name}` : "Talk to us"} <span aria-hidden="true">&#8594;</span>
             </Link>
           </article>
         ))}

@@ -12,6 +12,10 @@ export interface PackageTier {
   was?: string;
   /** Shown instead of a price when there is no fixed price. */
   priceLabel?: string;
+  /** What the customer saves against the previous price, e.g. "Save £60". Worked out from `was`. */
+  saving?: string;
+  /** Plain, benefit-led description for the packages page. */
+  summary: string;
   tagline: string;
   /** "Best suited to" line. */
   ideal: string;
@@ -50,6 +54,8 @@ export const packages: PackageTier[] = [
     name: "Launch",
     price: "189",
     was: "249",
+    saving: "Save £60",
+    summary: "A straightforward website that explains your business and makes it easy for customers to get in touch. Up to 3 pages, ready in 5 to 7 working days.",
     tagline: "A clear introduction to your business, services and contact details.",
     ideal: "A straightforward website that explains your business and helps customers contact you.",
     pages: 3,
@@ -66,6 +72,8 @@ export const packages: PackageTier[] = [
     name: "Growth",
     price: "489",
     was: "649",
+    saving: "Save £160",
+    summary: "A fuller website with a page for each service, more content and a stronger search setup, so customers can find the right service and the next step. Up to 10 pages, ready in 10 to 14 working days.",
     tagline: "More room to explain what you offer, with a more detailed structure and additional setup.",
     ideal: "A fuller website with individual service pages, more content and a stronger search setup.",
     recommended: true,
@@ -88,6 +96,7 @@ export const packages: PackageTier[] = [
     name: "Enterprise",
     price: null,
     priceLabel: "Tailored quotation",
+    summary: "Online shops, customer portals, integrations and anything that needs its own plan. We agree the scope, price and timeline with you before any work starts.",
     tagline: "For requirements that need a separate plan, price and delivery schedule.",
     ideal: "Online shops, customer portals, integrations and projects requiring a bespoke scope.",
     pages: null,
@@ -111,12 +120,12 @@ export interface Addon {
 }
 
 export const addons: Addon[] = [
-  { id: "logo", name: "Logo Design", price: "49", explain: "A simple logo made for your business and used across your website. You can supply your own instead." },
-  { id: "google-business", name: "Google Business Profile Setup", price: "39", explain: "We set up or tidy your Google Business Profile so your business details are ready to appear on Google Search and Maps." },
-  { id: "booking", name: "Booking System Setup", price: "39", explain: "A booking option added to your website so customers can request a time. Tell us how you take bookings today." },
-  { id: "email-templates", name: "Extra Email Templates (×3)", price: "29", explain: "Three reusable email layouts for replies you send often, such as a quote, a confirmation and a follow-up." },
-  { id: "seo-audit", name: "SEO Audit Report", price: "59", explain: "A written review of how an existing website is set up for search, with a prioritised list of what to fix." },
-  { id: "legal-pages", name: "Legal Pages Pack", price: "19", explain: "We add your privacy, terms and cookie pages to the website. You supply and approve the wording. These pages sit outside your main page allowance." },
+  { id: "logo", name: "Logo Design", price: "49", explain: "A simple logo for your business, used across your website. Already have one? Skip this." },
+  { id: "google-business", name: "Google Business Profile Setup", price: "39", explain: "We set up or tidy your Google Business Profile so you show up properly on Google Search and Maps." },
+  { id: "booking", name: "Booking System Setup", price: "39", explain: "A booking option on your website, so customers can ask for a time that suits them." },
+  { id: "email-templates", name: "Extra Email Templates (×3)", price: "29", explain: "Three reusable email layouts for replies you send often, like quotes and confirmations." },
+  { id: "seo-audit", name: "SEO Audit Report", price: "59", explain: "A written review of how your current website is set up for search, with a short list of what to fix first." },
+  { id: "legal-pages", name: "Legal Pages Pack", price: "19", explain: "We add your privacy, terms and cookie pages to the site. You supply and approve the wording. They sit outside your page allowance." },
 ];
 
 /** Packages that carry a fixed price (and so can be paid for online). */

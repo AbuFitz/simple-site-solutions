@@ -131,7 +131,7 @@ test.describe("package selection and brief form", () => {
     await page.getByRole("button", { name: /^Continue/ }).click();
     const logo = page.getByRole("button", { name: /Logo Design/ }).first();
     await page.getByRole("button", { name: "About Logo Design" }).click();
-    await expect(page.getByText(/simple logo made for your business/)).toBeVisible();
+    await expect(page.getByText(/simple logo for your business/)).toBeVisible();
     await logo.click();
     await expect(logo).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: /^Continue/ }).click();

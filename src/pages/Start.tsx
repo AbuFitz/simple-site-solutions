@@ -256,7 +256,7 @@ export default function Start() {
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                     <StepHeader
                       title={<>Pick a <span className="text-primary">package</span></>}
-                      description="Choose a fixed package, or speak to us about a project with different requirements."
+                      description="Pick a fixed package, or tell us about a bigger project and we will quote for it."
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
@@ -270,13 +270,12 @@ export default function Start() {
                         role="radio"
                         aria-checked={selectedPackage === "unsure"}
                         onClick={() => setSelectedPackage("unsure")}
-                        className={`flex min-h-[56px] w-full items-center justify-between gap-3 rounded-lg border-2 bg-card p-3 text-left transition-colors sm:rounded-xl sm:p-4 md:p-5 ${selectedPackage === "unsure" ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
+                        className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-lg border-2 bg-card p-3 text-left transition-colors sm:rounded-xl sm:p-4 md:p-5 ${selectedPackage === "unsure" ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
                       >
                         <span className="min-w-0">
-                          <span className="block text-base font-bold md:text-lg">Not sure yet</span>
-                          <span className="mt-0.5 block text-xs text-muted-foreground sm:text-sm">We will help you choose.</span>
+                          <span className="block text-sm font-bold sm:text-base md:text-lg">Not sure yet</span>
                         </span>
-                        <span aria-hidden="true" className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 sm:h-6 sm:w-6 ${selectedPackage === "unsure" ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
+                        <span aria-hidden="true" className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 sm:h-5 sm:w-5 md:h-6 md:w-6 ${selectedPackage === "unsure" ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
                           {selectedPackage === "unsure" && <Check className="h-3 w-3 text-primary-foreground" />}
                         </span>
                       </button>
@@ -294,14 +293,14 @@ export default function Start() {
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                     <StepHeader
                       title={<>Any <span className="text-primary">add-ons?</span></>}
-                      description="Optional extras, priced on their own. Tap the i for a short explanation."
+                      description="Optional extras. Hover or tap the i to see what each one does."
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
 
-                    <div className="grid items-start gap-2 sm:grid-cols-2 sm:gap-3 mb-4 sm:mb-6">
-                      {addonData.map((addon) => (
-                        <AddonChoice key={addon.id} addon={addon} selected={selectedAddons.includes(addon.id)} onToggle={() => toggleAddon(addon.id)} />
+                    <div className="grid grid-cols-2 items-start gap-2 sm:gap-3 mb-4 sm:mb-6">
+                      {addonData.map((addon, i) => (
+                        <AddonChoice key={addon.id} side={i % 2 === 0 ? "left" : "right"} addon={addon} selected={selectedAddons.includes(addon.id)} onToggle={() => toggleAddon(addon.id)} />
                       ))}
                     </div>
 
@@ -393,7 +392,7 @@ export default function Start() {
                       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <StepHeader
                           title={<>Monthly <span className="text-primary">plan</span></>}
-                          description="Would you like us to look after the website once it is live? It runs month to month."
+                          description="Want us to look after the website once it is live? It runs month to month."
                           progress={getProgressValue()}
                           headingRef={headingRef}
                         />
