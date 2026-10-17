@@ -106,12 +106,12 @@ export function PackageChoice({ pkg, selected, onSelect }: { pkg: PackageTier; s
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
-        className="flex min-h-[44px] w-full items-center justify-between border-t border-border px-3 text-sm text-muted-foreground transition-colors hover:text-foreground sm:px-4 md:px-5"
+        className="flex min-h-[44px] w-full items-center justify-between rounded-b-[inherit] px-3 text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:underline sm:px-4 md:px-5"
       >
         <span>{open ? "Hide what is included" : "What is included"}</span>
         <ChevronDown aria-hidden="true" className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      <div id={panelId} hidden={!open} className="border-t border-border px-3 pb-4 pt-3 sm:px-4 md:px-5">
+      <div id={panelId} hidden={!open} className="px-3 pb-4 pt-1 sm:px-4 md:px-5">
         <PackageDetails pkg={pkg} />
       </div>
     </div>
