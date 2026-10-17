@@ -92,10 +92,10 @@ const packages = [
 ];
 
 type StepKey = "package" | "addons" | "details" | "monthly";
-const STEP_NUMBER: Record<StepKey, number> = { package: 1, addons: 2, details: 3, monthly: 4 };
+const STEP_NUMBER: Record<StepKey, number> = { package: 1, addons: 2, monthly: 3, details: 4 };
 
 /** Enterprise is quoted individually, so add-ons and the monthly plan are agreed in the quotation instead. */
-const stepsFor = (pkg: string | null): StepKey[] => (pkg === "enterprise" ? ["package", "details"] : ["package", "addons", "details", "monthly"]);
+const stepsFor = (pkg: string | null): StepKey[] => (pkg === "enterprise" ? ["package", "details"] : ["package", "addons", "monthly", "details"]);
 
 const FIELD_NAMES = ["businessName", "name", "email", "phone", "businessDescription", "websiteUrl", "details"] as const;
 
@@ -119,7 +119,6 @@ export default function Start() {
   const steps = stepsFor(selectedPackage);
   const step: StepKey = (Object.keys(STEP_NUMBER) as StepKey[]).find((k) => STEP_NUMBER[k] === stepNo && steps.includes(k)) ?? "package";
   const stepIndex = steps.indexOf(step);
-  const isLastStep = stepIndex === steps.length - 1;
   const goTo = (k: StepKey) => setStepNo(STEP_NUMBER[k]);
   const next = () => steps[stepIndex + 1] && goTo(steps[stepIndex + 1]);
   const back = () => steps[stepIndex - 1] && goTo(steps[stepIndex - 1]);
@@ -129,7 +128,6 @@ export default function Start() {
     handleSubmit,
     watch,
     setError,
-    trigger,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -218,14 +216,8 @@ export default function Start() {
 
   const getProgressValue = () => (selectedPackage ? Math.round(((stepIndex + 1) / steps.length) * 100) : 0);
 
-  // Details is not the last step for fixed packages, so Enter there moves on instead of sending.
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (step === "details" && !isLastStep) {
-      void trigger().then((ok) => ok && next());
-      return;
-    }
-    if (step === "monthly" && monthlyPlan === null) return;
     void handleSubmit(onSubmit)(e);
   };
 
@@ -330,13 +322,41 @@ export default function Start() {
                 )}
 
                 {/* Steps: your details, then the monthly plan. One form so a single submit sends everything. */}
-                {(step === "details" || step === "monthly") && (
+            {step === "monthly" && (
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                    <StepHeader
+                      title={<>Monthly <span className="text-primary">plan</span></>}
+                      description="Want us to look after the website once it is live? It runs month to month."
+                      progress={getProgressValue()}
+                      headingRef={headingRef}
+                    />
+
+                    <MonthlyChoice value={monthlyPlan} onChange={setMonthlyPlan} />
+                    <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
+                      {hosting.terms.slice(0, 2).map((t) => (
+                        <li key={t}>{t}</li>
+                      ))}
+                    </ul>
+
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-5">
+                      <button type="button" onClick={back} className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 min-h-[44px]">
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Back
+                      </button>
+                      <button type="button" onClick={next} disabled={monthlyPlan === null} className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-60 min-h-[44px]">
+                        Continue
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {step === "details" && (
                   <form id="brief-form" onSubmit={onFormSubmit} noValidate>
-                    {step === "details" && (
                       <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                         <StepHeader
                           title={<>Your <span className="text-primary">details</span></>}
-                          description=""
+                          description="Last step. Tell us how to reach you."
                           progress={getProgressValue()}
                           headingRef={headingRef}
                         />
@@ -390,27 +410,9 @@ export default function Start() {
                             Used only to reply to you. <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">Privacy</Link>
                           </p>
                         </div>
-                      </motion.div>
-                    )}
-
-                    {step === "monthly" && (
-                      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                        <StepHeader
-                          title={<>Monthly <span className="text-primary">plan</span></>}
-                          description="Want us to look after the website once it is live? It runs month to month."
-                          progress={getProgressValue()}
-                          headingRef={headingRef}
-                        />
-
-                        <MonthlyChoice value={monthlyPlan} onChange={setMonthlyPlan} />
-                        <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
-                          {hosting.terms.slice(0, 2).map((t) => (
-                            <li key={t}>{t}</li>
-                          ))}
-                        </ul>
 
                         {/* What you are sending, with the sums shown. */}
-                        <dl className="mt-5 sm:mt-6 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 rounded-lg border border-border bg-secondary p-3 text-sm sm:p-4" aria-label="Summary">
+                        <dl className="mt-1 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 rounded-lg border border-border bg-secondary p-3 text-sm sm:p-4" aria-label="Summary">
                           <dt className="text-muted-foreground">Package</dt>
                           <dd className="text-right font-medium">{chosen ? `${chosen.name}${chosen.price ? ` £${chosen.price}` : ""}` : "Not sure yet"}</dd>
                           {selectedAddons.length > 0 && (
@@ -429,7 +431,6 @@ export default function Start() {
                           <dd className="text-right font-medium">{monthlyPlan === "hosting-care" ? `£${hosting.price}/month` : monthlyPlan === "none" ? "None" : "Choose above"}</dd>
                         </dl>
                       </motion.div>
-                    )}
 
                     {/* Honeypot: hidden from people and assistive tech. Bots tend to fill it in. */}
                     <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
@@ -450,31 +451,24 @@ export default function Start() {
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back
                       </button>
-                      {isLastStep ? (
-                        <button
-                          type="submit"
-                          disabled={isSubmitting || (step === "monthly" && monthlyPlan === null)}
-                          aria-busy={isSubmitting}
-                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-60 min-h-[44px]"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                              Sending…
-                            </>
-                          ) : (
-                            <>
-                              Send my brief
-                              <Send className="w-4 h-4 ml-2" />
-                            </>
-                          )}
-                        </button>
-                      ) : (
-                        <button type="submit" className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 min-h-[44px]">
-                          Continue
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </button>
-                      )}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        aria-busy={isSubmitting}
+                        className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-60 min-h-[44px]"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Sending…
+                          </>
+                        ) : (
+                          <>
+                            Send my brief
+                            <Send className="w-4 h-4 ml-2" />
+                          </>
+                        )}
+                      </button>
                     </div>
                   </form>
                 )}

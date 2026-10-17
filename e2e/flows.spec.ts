@@ -92,17 +92,22 @@ test.describe("package selection and brief form", () => {
     await expect(page.getByRole("radio", { name: /Growth/ })).toHaveAttribute("aria-checked", "true");
   });
 
-  /** Details -> monthly plan -> send. */
-  async function sendBrief(page: import("@playwright/test").Page, plan = /No monthly plan for now/) {
-    await page.getByRole("button", { name: /^Continue/ }).click();
-    await page.getByRole("radio", { name: plan }).click();
+  /** The last step is the details form; sending happens from there. */
+  async function sendBrief(page: import("@playwright/test").Page) {
     await page.getByRole("button", { name: /Send my brief/ }).click();
+  }
+
+  /** Package -> add-ons -> monthly plan: leaves the visitor on the details step. */
+  async function toDetails(page: import("@playwright/test").Page, plan = /No monthly plan for now/) {
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await page.getByRole("button", { name: /Skip and continue|^Continue/ }).click();
+    await page.getByRole("radio", { name: plan }).click();
+    await page.getByRole("button", { name: /^Continue/ }).click();
   }
 
   async function fillBrief(page: import("@playwright/test").Page) {
     await page.goto("/start?package=launch");
-    await page.getByRole("button", { name: /Continue/ }).click();
-    await page.getByRole("button", { name: /Skip and continue|Continue/ }).click();
+    await toDetails(page);
     await page.getByLabel(/Business name/).fill("Smith Plumbing");
     await page.getByLabel(/Your name/).fill("Sam Smith");
     await page.getByLabel(/Email address/).fill("sam@example.co.uk");
@@ -121,7 +126,7 @@ test.describe("package selection and brief form", () => {
     await expect(page.getByRole("radio", { name: /Growth/ })).toContainText("£489");
   });
 
-  test("add-ons explain themselves, and the monthly plan is the last step", async ({ page }) => {
+  test("add-ons explain themselves, and the monthly plan comes before the last page", async ({ page }) => {
     let body: Record<string, unknown> = {};
     await page.route("**/api/submit-form", async (route) => {
       body = route.request().postDataJSON();
@@ -130,22 +135,24 @@ test.describe("package selection and brief form", () => {
     await page.goto("/start?package=growth");
     await page.getByRole("button", { name: /^Continue/ }).click();
     const logo = page.getByRole("button", { name: /Logo Design/ }).first();
-    await logo.hover();
+    await logo.focus();
     await expect(page.getByRole("tooltip").filter({ hasText: /simple logo for your business/ })).toBeVisible();
     await logo.click();
     await expect(logo).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: /^Continue/ }).click();
+    // Monthly plan comes before the last page, and must be chosen.
+    await expect(page.getByRole("heading", { name: /Monthly/ })).toBeVisible();
+    const next = page.getByRole("button", { name: /^Continue/ });
+    await expect(next).toBeDisabled();
+    await page.getByRole("radio", { name: /^Hosting & Care/ }).click();
+    await next.click();
+    await expect(page.getByRole("heading", { name: /Your details/ })).toBeVisible();
     await page.getByLabel(/Business name/).fill("Smith Plumbing");
     await page.getByLabel(/Your name/).fill("Sam Smith");
     await page.getByLabel(/Email address/).fill("sam@example.co.uk");
     await page.getByLabel(/What does your business do/).fill("Plumber in Watford");
-    await page.getByRole("button", { name: /^Continue/ }).click();
-    await expect(page.getByRole("heading", { name: /Monthly/ })).toBeVisible();
-    const send = page.getByRole("button", { name: /Send my brief/ });
-    await expect(send).toBeDisabled();
-    await page.getByRole("radio", { name: /^Hosting & Care/ }).click();
     await expect(page.getByText("£538")).toBeVisible();
-    await send.click();
+    await page.getByRole("button", { name: /Send my brief/ }).click();
     await expect(page.getByRole("heading", { name: /Brief received/ })).toBeVisible();
     expect(body.monthlyPlan).toBe("hosting-care");
     expect(body.selectedPackage).toBe("growth");
@@ -161,9 +168,8 @@ test.describe("package selection and brief form", () => {
 
   test("inline validation is announced and tied to fields", async ({ page }) => {
     await page.goto("/start?package=launch");
-    await page.getByRole("button", { name: /Continue/ }).click();
-    await page.getByRole("button", { name: /Skip and continue|Continue/ }).click();
-    await page.getByRole("button", { name: /^Continue/ }).click();
+    await toDetails(page);
+    await page.getByRole("button", { name: /Send my brief/ }).click();
     const email = page.getByLabel(/Email address/);
     await expect(email).toHaveAttribute("aria-invalid", "true");
     await expect(page.getByRole("alert").filter({ hasText: "Email is required" }).or(page.getByRole("alert").filter({ hasText: /valid|like name@/ }))).toBeVisible();
@@ -191,7 +197,6 @@ test.describe("package selection and brief form", () => {
     await sendBrief(page);
     await expect(page.getByRole("alert").filter({ hasText: /couldn't send your brief/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Brief received/ })).toHaveCount(0);
-    await page.getByRole("button", { name: /Back/ }).click();
     await expect(page.getByLabel(/Business name/)).toHaveValue("Smith Plumbing");
   });
 
@@ -255,14 +260,14 @@ test.describe("checkout gating and result pages", () => {
   async function submitLaunch(page: import("@playwright/test").Page) {
     await briefMock(page);
     await page.goto("/start?package=launch");
-    await page.getByRole("button", { name: /Continue/ }).click();
-    await page.getByRole("button", { name: /Skip and continue|Continue/ }).click();
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await page.getByRole("button", { name: /Skip and continue|^Continue/ }).click();
+    await page.getByRole("radio", { name: /No monthly plan for now/ }).click();
+    await page.getByRole("button", { name: /^Continue/ }).click();
     await page.getByLabel(/Business name/).fill("Smith Plumbing");
     await page.getByLabel(/Your name/).fill("Sam Smith");
     await page.getByLabel(/Email address/).fill("sam@example.co.uk");
     await page.getByLabel(/What does your business do/).fill("Plumber in Watford");
-    await page.getByRole("button", { name: /^Continue/ }).click();
-    await page.getByRole("radio", { name: /No monthly plan for now/ }).click();
     await page.getByRole("button", { name: /Send my brief/ }).click();
     await expect(page.getByRole("heading", { name: /Brief received/ })).toBeVisible();
   }
