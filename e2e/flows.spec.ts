@@ -53,6 +53,17 @@ test.describe("Work pages", () => {
     }
   });
 
+  test("no page shows an out-of-date price", async ({ page }) => {
+    for (const path of ["/", "/packages", "/faq", "/terms", "/how-it-works", "/web-design/watford"]) {
+      await page.goto(path);
+      await settle(page);
+      const text = (await page.locator("body").innerText()) + (await page.locator("body").innerHTML());
+      expect(text, path).not.toMatch(/£199|£399|The Starter|The Sorted|The Works|Keep It Running|£19\/month/);
+    }
+    await page.goto("/");
+    await expect(page.locator(".hm-facts")).toContainText("£189");
+  });
+
   test("every project is presented as client work", async ({ page }) => {
     await page.goto("/work");
     await expect(page.locator(".idx .irow .oss-tag")).toHaveCount(6);

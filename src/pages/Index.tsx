@@ -3,6 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Seo } from "@/components/seo/Seo";
 import { CtaBand } from "@/components/oss/CtaBand";
 import { WorkRack } from "@/components/oss/WorkRack";
+import { pricedPackages } from "@/data/packages";
 import { CountUp } from "@/components/oss/CountUp";
 import { DaysCounter } from "@/components/oss/DaysCounter";
 import { TypeRotate } from "@/components/oss/TypeRotate";
@@ -15,6 +16,9 @@ const services = [
   { n: "04", t: "Quotes & bookings", d: "Forms and routes that turn a visit into an enquiry." },
   { n: "05", t: "Found locally", d: "A page for each area you cover, set up so people nearby can find you." },
 ];
+/** The lowest fixed price, read from the price list so it can never go stale. */
+const fromPrice = Math.min(...pricedPackages.map((p) => Number(p.price)));
+
 const team = [
   { slug: "farhan-m", name: "Farhan M", role: "Client Director", text: "Client relationships, briefs, communication and project coordination." },
   { slug: "matthew-r", name: "Matthew R", role: "Design Director", text: "Website design, interaction, visual systems and digital experience." },
@@ -46,7 +50,7 @@ export default function Index() {
         <p id="story-title"><Scramble text="Built for how customers" /> <em><Scramble text="find, check and contact" delay={350} /></em> <Scramble text="a local business." delay={700} /></p>
         <ul className="hm-facts">
           <li><b>UK</b><span>wide, with local pages</span></li>
-          <li><b><CountUp to={199} prefix="£" /></b><span>where fixed prices start</span></li>
+          <li><b><CountUp to={fromPrice} prefix="£" /></b><span>where fixed prices start</span></li>
         </ul>
         
       </section>

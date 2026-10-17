@@ -12,10 +12,11 @@ const covers: Record<string, string> = {
 const HOLD_MS = 4200;
 
 /**
- * Our work as a 3D ring. Browser windows stand around a drum that turns by itself, one site at a time.
- * Drag or swipe to turn it, use the arrows or arrow keys, or click a side window to bring it round.
- * It is an ordinary section, so the page scrolls straight past it. Reduced motion turns the drum
- * instantly instead of animating.
+ * Our work as a 3D stack of browser windows. The front window sits full size with the others stacked
+ * behind it in depth; every few seconds it lifts away to the left and the next one comes forward, forever.
+ * People can take over: drag or swipe, sideways trackpad or shift-wheel, arrows, arrow keys, the slider,
+ * or click a window behind. It is an ordinary section, so ordinary vertical scrolling passes straight over it.
+ * Reduced motion swaps windows instantly instead of animating.
  */
 export function WorkRack() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export function WorkRack() {
     const s = state.current;
     s.raf = 0;
     if (s.drag) return;
-    s.pos += (s.target - s.pos) * 0.085;
+    s.pos += (s.target - s.pos) * 0.11;
     if (Math.abs(s.target - s.pos) < 0.0015) s.pos = s.target;
     paint();
     if (s.pos !== s.target) s.raf = requestAnimationFrame(frame);
@@ -72,11 +73,26 @@ export function WorkRack() {
       s.visible = e.isIntersecting;
     }, { threshold: 0.35 });
     io.observe(el);
+    // Sideways scroll (trackpad swipe, shift-wheel) turns the stack. Plain vertical scrolling is left alone.
+    let lastWheel = 0;
+    const onWheel = (e: WheelEvent) => {
+      const dx = e.shiftKey && Math.abs(e.deltaX) < 1 ? e.deltaY : e.deltaX;
+      if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(e.deltaY) * (e.shiftKey ? 0 : 1)) return;
+      e.preventDefault();
+      s.paused = true;
+      window.setTimeout(() => (s.paused = false), 2500);
+      const now = performance.now();
+      if (now - lastWheel < 420) return;
+      lastWheel = now;
+      step(dx > 0 ? 1 : -1);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
     const timer = window.setInterval(() => {
       if (!reduced.current && !s.paused && s.visible && !s.drag && !document.hidden) step(1);
     }, HOLD_MS);
     return () => {
       window.clearInterval(timer);
+      el.removeEventListener("wheel", onWheel);
       io.disconnect();
       if (s.raf) cancelAnimationFrame(s.raf);
     };
@@ -182,6 +198,22 @@ export function WorkRack() {
             <span>{cur.line[0]}, {cur.line[1]}</span>
           </Link>
         </div>
+        <label className="hm-rack__scrub">
+          <span className="sr-only">Choose a project</span>
+          <input
+            type="range"
+            min={0}
+            max={n - 1}
+            step={1}
+            value={active}
+            onChange={(e) => {
+              const t = Number(e.target.value);
+              const cur = Math.round(state.current.target);
+              goTo(cur + wrap(t - cur));
+            }}
+            aria-valuetext={cur.name}
+          />
+        </label>
         <div className="hm-rack__ctl">
           <button type="button" onClick={() => step(-1)} aria-label="Previous project"><ArrowLeft aria-hidden="true" /></button>
           <button type="button" onClick={() => step(1)} aria-label="Next project"><ArrowRight aria-hidden="true" /></button>
