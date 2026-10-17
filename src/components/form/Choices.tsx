@@ -62,7 +62,7 @@ export function PackageDetails({ pkg }: { pkg: PackageTier }) {
           <List items={sharedFeatures} />
         </div>
       )}
-      <dl className="grid gap-x-6 gap-y-2 border-t border-border pt-3 text-sm sm:grid-cols-[auto_1fr]">
+      <dl className="grid gap-x-6 gap-y-2 pt-1 text-sm sm:grid-cols-[auto_1fr]">
         {pkg.revisions && (
           <>
             <dt className="text-muted-foreground">Revisions</dt>
