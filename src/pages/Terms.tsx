@@ -44,12 +44,12 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">2. Services</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  We provide web design and development services as outlined in your selected package. All packages include local SEO foundations and speed optimisation:
+                  We provide web design and development services as outlined in your selected package. Both fixed packages include design around your business, mobile-friendly layouts, website copywriting, an enquiry form, contact links, essential SEO, speed optimisation and cookie controls:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>The Starter (£199):</strong> Complete website, mobile-first design, local SEO, contact setup</li>
-                  <li><strong>The Sorted (£399):</strong> Everything in The Starter, plus conversion-focused layout, trust positioning, refined messaging</li>
-                  <li><strong>The Works (£649):</strong> Everything in The Sorted, plus deeper positioning, SEO-led structure, analytics</li>
+                  <li><strong>Launch (£189):</strong> Up to 3 main website pages and 1 revision round before launch</li>
+                  <li><strong>Growth (£489):</strong> Up to 10 main website pages (location pages count towards the allowance), content planning and navigation, one-off advanced on-page SEO, business email setup, basic analytics setup and 3 revision rounds before launch</li>
+                  <li><strong>Enterprise (tailored quotation):</strong> Online shops, customer accounts, portals, advanced booking, CRM connections, payment integrations and larger websites. We agree the functionality, deliverables, ongoing costs and support arrangements before work starts</li>
                 </ul>
               </section>
 
@@ -59,8 +59,9 @@ export default function Terms() {
                   Payment terms vary by package:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>The Starter:</strong> Full payment upfront before work begins</li>
-                  <li><strong>The Sorted & The Works:</strong> 50% deposit upfront, 50% before launch</li>
+                  <li><strong>Launch:</strong> £189 before work begins</li>
+                  <li><strong>Growth:</strong> £244.50 to begin and £244.50 before launch</li>
+                  <li><strong>Enterprise:</strong> As set out in the quotation</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
                   All prices are in GBP and inclusive of VAT where applicable.
@@ -85,7 +86,7 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">5. Timeline</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  We estimate delivery at 5–7 days (The Starter), 7–10 days (The Sorted) and 10–14 days (The Works), counted from receiving all required content and approval to proceed. These are estimates, not guarantees. 
+                  We estimate delivery at 5 to 7 working days (Launch) and 10 to 14 working days (Growth), counted from receiving the agreed information, assets, account access and initial payment. Enterprise timings are agreed in the quotation. These are estimates, not guarantees. 
                   Delays caused by the Client (e.g., late content delivery, delayed feedback) may extend this timeline.
                 </p>
               </section>
@@ -114,13 +115,13 @@ export default function Terms() {
               <section>
                 <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">8. Hosting Plans (Optional)</h2>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-3">
-                  We offer one optional hosting plan:
+                  We offer one optional monthly plan alongside Launch and Growth:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>Keep It Running (£19/month):</strong> Hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month</li>
+                  <li><strong>Hosting & Care (£29/month):</strong> Website hosting, SSL and one standard-priced domain; weekly backups and security monitoring; up to 3 small content changes a month (supplied text, images and contact details) within 30 minutes combined; support for the existing website; and Google Search Console setup, ownership verification and sitemap submission</li>
                 </ul>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mt-3">
-                  Either party may terminate with 30 days' notice.
+                  Either party may cancel with 30 days' notice. New pages, redesigns and additional functionality are quoted separately. Enterprise hosting and support are scoped with the quotation.
                 </p>
               </section>
 
@@ -130,7 +131,7 @@ export default function Terms() {
                   Post-launch support:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-sm sm:text-base text-muted-foreground">
-                  <li><strong>With Keep It Running:</strong> Up to 5 content updates a month, security monitoring and support</li>
+                  <li><strong>With Hosting & Care:</strong> Up to 3 small content changes a month (up to 30 minutes combined), security monitoring and support</li>
                   <li><strong>One-off changes:</strong> Quoted individually based on scope</li>
                 </ul>
               </section>

@@ -1,6 +1,8 @@
 // Email templates for OneSimpleSite
 // Used with Resend email service
 
+import { getPackage } from "@/data/packages";
+
 const baseUrl = "https://onesimplesite.co.uk";
 
 // Shared styles
@@ -117,12 +119,9 @@ interface FormData {
 
 // Get package display info
 function getPackageInfo(packageId: string): { name: string; price: string } {
-  const packages: Record<string, { name: string; price: string }> = {
-    starter: { name: "The Starter", price: "£199" },
-    sorted: { name: "The Sorted", price: "£399" },
-    works: { name: "The Works", price: "£649" },
-  };
-  return packages[packageId] || { name: packageId, price: "" };
+  const p = getPackage(packageId);
+  if (p) return { name: p.name, price: p.price ? `£${p.price}` : "Tailored quotation" };
+  return { name: packageId, price: "" };
 }
 
 // Get add-on display names

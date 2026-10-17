@@ -16,7 +16,7 @@ export const SITE = {
  * PROVISIONAL: owner-set ranges, pending the pricing review (docs/pricing-review.md).
  */
 export const DELIVERY_OVERALL = "5–14 days";
-export const DELIVERY_NOTE = "Estimated from when we have your content. Late content moves the date.";
+export const DELIVERY_NOTE = "Estimated from when we have the agreed information, assets, account access and initial payment. Late content moves the date.";
 
 /** We do not promise a reply time. Revisit once the owner confirms one they can always keep. */
 export const REPLY_COPY = "We'll reply to you by email.";

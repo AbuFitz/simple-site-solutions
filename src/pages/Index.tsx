@@ -21,9 +21,9 @@ const team = [
   { slug: "abukar-s", name: "Abukar S", role: "Creative Director", text: "Creative direction, website strategy, design and overall experience." },
 ];
 const packages = [
-  { name: "The Starter", note: "3 pages, 5 to 7 days", price: "£199" },
-  { name: "The Sorted", note: "6 pages, 7 to 10 days", price: "£399" },
-  { name: "The Works", note: "10 pages, 10 to 14 days", price: "£649" },
+  { name: "Launch", note: "Up to 3 pages, 5 to 7 working days", price: "£189" },
+  { name: "Growth", note: "Up to 10 pages, 10 to 14 working days", price: "£489" },
+  { name: "Enterprise", note: "Shops, portals and bespoke projects", price: "Quotation" },
 ];
 
 export default function Index() {
@@ -38,7 +38,7 @@ export default function Index() {
           <span><Scramble text="that make" delay={250} /></span>
           <span className="g"><TypeRotate words={["sense.", "an impact.", "a mark."]} /></span>
         </h1>
-        <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £199.</p>
+        <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £189.</p>
               </section>
 
       <section className="hm-story" data-tone="dark" aria-labelledby="story-title">

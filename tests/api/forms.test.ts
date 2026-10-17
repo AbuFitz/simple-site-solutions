@@ -13,7 +13,7 @@ const brief = {
   businessDescription: "Plumber in Watford",
   websiteUrl: "",
   details: "",
-  selectedPackage: "sorted",
+  selectedPackage: "growth",
   selectedAddons: [],
 };
 

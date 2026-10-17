@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { clearDraft, loadDraft, saveDraft } from "./draft";
 
-const draft = { step: 3, selectedPackage: "sorted", selectedAddons: ["logo"], fields: { name: "Sam", email: "a@b.co" } };
+const draft = { step: 3, selectedPackage: "growth", selectedAddons: ["logo"], monthlyPlan: "none", fields: { name: "Sam", email: "a@b.co" } };
 
 describe("brief draft", () => {
   beforeEach(() => localStorage.clear());

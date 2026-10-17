@@ -1,4 +1,4 @@
-import { packages, type PackageTier } from "../../src/data/packages.js";
+import { dueToBeginPence, packages, type PackageTier } from "../../src/data/packages.js";
 
 /**
  * Server-authoritative checkout configuration. The browser only ever sends a package id; the Stripe
@@ -7,16 +7,17 @@ import { packages, type PackageTier } from "../../src/data/packages.js";
  */
 export type PackageId = PackageTier["id"];
 
-/** Expected charge in pence, derived from the catalogue: "Upfront" is the full price, "50% upfront" is half. */
+/** Expected charge in pence, derived from the catalogue: "full" is the whole price, "half" is half. Quoted packages cannot be paid online. */
 export function expectedPence(id: PackageId): number {
   const p = packages.find((x) => x.id === id);
   if (!p) throw new Error(`Unknown package ${id}`);
-  const full = Math.round(Number(p.price) * 100);
-  return p.payment.startsWith("50%") ? Math.round(full / 2) : full;
+  const pence = dueToBeginPence(p);
+  if (pence === null) throw new Error(`Package ${id} is quoted individually and has no online price`);
+  return pence;
 }
 
 export function isPackageId(v: unknown): v is PackageId {
-  return typeof v === "string" && packages.some((p) => p.id === v);
+  return typeof v === "string" && packages.some((p) => p.id === v && p.price !== null);
 }
 
 export interface CheckoutConfig {
@@ -44,6 +45,7 @@ export function checkoutConfig(env: NodeJS.ProcessEnv = process.env): CheckoutCo
   const priceIds: Partial<Record<PackageId, string>> = {};
   const ready: PackageId[] = [];
   for (const p of packages) {
+    if (p.price === null) continue;
     const up = p.id.toUpperCase();
     const price = env[`STRIPE_PRICE_${up}`] || "";
     if (/^price_[A-Za-z0-9]+$/.test(price) && env[`PACKAGE_READY_${up}`] === "true") {

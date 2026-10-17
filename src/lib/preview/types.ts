@@ -103,6 +103,6 @@ export interface PreviewModel {
 }
 
 export interface PackageRecommendation {
-  id: "starter" | "sorted" | "works";
+  id: "launch" | "growth";
   reasons: string[];
 }

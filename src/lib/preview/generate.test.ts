@@ -146,10 +146,10 @@ describe("buildPreview", () => {
 describe("recommendPackage", () => {
   const b = defaultInput();
   it("matches the real package inclusions", () => {
-    expect(recommendPackage({ ...b, action: "call" }).id).toBe("starter");
-    expect(recommendPackage({ ...b, action: "book" }).id).toBe("sorted");
-    expect(recommendPackage({ ...b, services: ["a", "b", "c", "d"] }).id).toBe("sorted");
-    expect(recommendPackage({ ...b, multiArea: true }).id).toBe("works");
+    expect(recommendPackage({ ...b, action: "call" }).id).toBe("launch");
+    expect(recommendPackage({ ...b, action: "book" }).id).toBe("launch");
+    expect(recommendPackage({ ...b, services: ["a", "b", "c", "d"] }).id).toBe("growth");
+    expect(recommendPackage({ ...b, multiArea: true }).id).toBe("growth");
     const ids = packages.map((p) => p.id);
     for (const r of [recommendPackage(b), recommendPackage({ ...b, multiArea: true })]) {
       expect(ids).toContain(r.id);
@@ -170,8 +170,8 @@ describe("shareable state", () => {
   });
 
   it("builds a prefilled project link", () => {
-    const href = startHref({ ...defaultInput(), name: "Ace Plumbing", town: "Luton" }, "sorted");
-    expect(href).toBe("/start?package=sorted&business=Ace+Plumbing&type=Plumber+in+Luton");
+    const href = startHref({ ...defaultInput(), name: "Ace Plumbing", town: "Luton" }, "growth");
+    expect(href).toBe("/start?package=growth&business=Ace+Plumbing&type=Plumber+in+Luton");
   });
 
   it("hash is stable", () => {

@@ -3,25 +3,22 @@ import { Layout } from "@/components/layout/Layout";
 import { CtaBand } from "@/components/oss/CtaBand";
 import { Scramble } from "@/components/oss/Scramble";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
-import { addons, hosting, packages } from "@/data/packages";
+import { addons, hosting, packages, scopeNotes, sharedFeatures } from "@/data/packages";
 import { DELIVERY_NOTE } from "@/data/site";
 
 const comparison: { label: string; values: [string, string, string] }[] = [
-  { label: "Pages", values: ["Up to 3", "Up to 6", "Up to 10"] },
-  { label: "Copywriting", values: ["Included", "Included", "Included"] },
-  { label: "Contact form + WhatsApp, Google Maps", values: ["Included", "Included", "Included"] },
-  { label: "SEO", values: ["Basic", "Full on-page", "SEO-led structure"] },
-  { label: "Booking system", values: ["—", "Included", "Advanced"] },
-  { label: "Reviews & trust signals", values: ["—", "Included", "Included"] },
-  { label: "Free domain (1st year)", values: ["—", "Included", "Included"] },
-  { label: "Business email setup", values: ["—", "Included", "Included"] },
-  { label: "Location pages for local SEO", values: ["—", "—", "Included"] },
-  { label: "Blog setup + 1 post", values: ["—", "—", "Included"] },
-  { label: "Google Analytics setup", values: ["—", "—", "Included"] },
-  { label: "Full legal pages", values: ["—", "—", "Included"] },
-  { label: "Revision rounds", values: ["1", "2", "3"] },
-  { label: "Estimated delivery", values: ["5–7 days", "7–10 days", "10–14 days"] },
-  { label: "Payment", values: ["Upfront", "50% upfront", "50% upfront"] },
+  { label: "Main pages", values: ["Up to 3", "Up to 10", "Scoped"] },
+  { label: "Design, mobile layouts, copywriting", values: ["Included", "Included", "Scoped"] },
+  { label: "Enquiry form and contact links", values: ["Included", "Included", "Scoped"] },
+  { label: "Essential SEO and speed optimisation", values: ["Included", "Included", "Scoped"] },
+  { label: "Cookie controls", values: ["Included", "Included", "Scoped"] },
+  { label: "Content planning and navigation", values: ["—", "Included", "Scoped"] },
+  { label: "Advanced on-page SEO (one-off)", values: ["—", "Included", "Scoped"] },
+  { label: "Business email setup", values: ["—", "Included", "Scoped"] },
+  { label: "Basic analytics setup", values: ["—", "Included", "Scoped"] },
+  { label: "Revision rounds", values: ["1", "3", "Agreed"] },
+  { label: "Estimated delivery", values: ["5 to 7 working days", "10 to 14 working days", "Agreed"] },
+  { label: "Payment", values: ["£189 before work begins", "£244.50 to begin, £244.50 before launch", "In the quotation"] },
 ];
 
 export default function Packages() {
@@ -36,10 +33,10 @@ export default function Packages() {
 
       <section className="pk-hero" data-tone="dark">
         <h1>
-          <span><Scramble text="Fixed" /></span>
-          <span><Scramble text="prices." delay={200} /></span>
+          <span><Scramble text="A website that" /></span>
+          <span><Scramble text="fits your business." delay={200} /></span>
         </h1>
-        <p className="pk-lede">One price per package, written down. Extras and monthly care are separate, below.</p>
+        <p className="pk-lede">Choose a fixed package or speak to us about a project with different requirements. Extras and monthly care are separate, below.</p>
       </section>
 
       <section className="pk-list" data-tone="light" aria-label="Packages">
@@ -48,24 +45,49 @@ export default function Packages() {
             <div className="pk-row__top">
               <div>
                 <h2 itemProp="name">{pkg.name}</h2>
-                <p itemProp="description">{pkg.tagline}. {pkg.pages === 3 ? "Up to 3 pages" : `Up to ${pkg.pages} pages`}, {pkg.delivery}.{pkg.recommended ? " Our suggestion." : ""}</p>
+                <p itemProp="description">{pkg.ideal}{pkg.recommended ? " Our suggestion." : ""}</p>
               </div>
               <div className="pk-row__price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                <span itemProp="price">£{pkg.price}</span>
-                <meta itemProp="priceCurrency" content="GBP" />
+                {pkg.price ? (
+                  <>
+                    {pkg.was && <s className="pk-was"><span className="sr-only">Previously </span>£{pkg.was}</s>}
+                    <span itemProp="price">£{pkg.price}</span>
+                    <meta itemProp="priceCurrency" content="GBP" />
+                  </>
+                ) : (
+                  <span className="pk-quote">{pkg.priceLabel}</span>
+                )}
               </div>
             </div>
             <details>
               <summary>What is included</summary>
+              <p className="pk-meta">{pkg.tagline}</p>
               <ul>
                 {pkg.features.map((f) => (
-                  <li key={f}>{f}</li>
+                  <li key={f.title}><b>{f.title}.</b> {f.text}</li>
                 ))}
               </ul>
-              <p className="pk-meta">Delivery {pkg.delivery}. Payment: {pkg.payment}. Ideal for {pkg.ideal.toLowerCase()}.</p>
+              {pkg.note && <p className="pk-meta">{pkg.note}</p>}
+              {pkg.id !== "enterprise" && (
+                <>
+                  <p className="pk-meta"><b>Included with both fixed packages</b></p>
+                  <ul>
+                    {sharedFeatures.map((f) => (
+                      <li key={f.title}><b>{f.title}.</b> {f.text}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <p className="pk-meta">
+                {[pkg.revisions, pkg.delivery && `Estimated delivery: ${pkg.delivery}`, `Payment: ${pkg.paymentText}`].filter(Boolean).join(". ")}.
+              </p>
             </details>
-            <Link to={`/start?package=${pkg.id}`} className="pk-go" aria-label={`Get started with ${pkg.name} package for £${pkg.price}`}>
-              Get started <span aria-hidden="true">&#8594;</span>
+            <Link
+              to={`/start?package=${pkg.id}`}
+              className="pk-go"
+              aria-label={pkg.price ? `Get started with ${pkg.name} for £${pkg.price}` : `Talk to us about an ${pkg.name} project`}
+            >
+              {pkg.price ? "Get started" : "Talk to us"} <span aria-hidden="true">&#8594;</span>
             </Link>
           </article>
         ))}
@@ -79,7 +101,7 @@ export default function Packages() {
             <div role="row" className="pk-table__h">
               <span role="columnheader" />
               {packages.map((p) => (
-                <span role="columnheader" key={p.id}>{p.name}<small>£{p.price}</small></span>
+                <span role="columnheader" key={p.id}>{p.name}<small>{p.price ? `£${p.price}` : p.priceLabel}</small></span>
               ))}
             </div>
             {comparison.map((r) => (
@@ -97,14 +119,15 @@ export default function Packages() {
           <ul className="pk-extras">
             {addons.map((a) => (
               <li key={a.name}>
-                <span>{a.name}</span>
+                <span>{a.name}<small className="pk-sub">{a.explain}</small></span>
                 <i>£{a.price}</i>
               </li>
             ))}
           </ul>
         </details>
         <details>
-          <summary>Monthly care, £{hosting.price}</summary>
+          <summary>Hosting &amp; Care, £{hosting.price}/month</summary>
+          <p className="pk-meta">{hosting.intro}</p>
           <ul className="pk-extras">
             {hosting.features.map((f) => (
               <li key={f}>
@@ -112,7 +135,15 @@ export default function Packages() {
               </li>
             ))}
           </ul>
-          <p className="pk-meta">Optional. Either side can end it with 30 days' notice (see our terms).</p>
+          {hosting.terms.map((t) => (
+            <p className="pk-meta" key={t}>{t}</p>
+          ))}
+        </details>
+        <details>
+          <summary>How the package scope works</summary>
+          {scopeNotes.map((t) => (
+            <p className="pk-meta" key={t}>{t}</p>
+          ))}
         </details>
       </section>
 

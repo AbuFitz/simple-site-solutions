@@ -26,18 +26,18 @@ export function PackagesGlance() {
   return (
     <section className="relative py-10 sm:py-14 md:py-20" aria-labelledby="home-packages">
       <div className="content-width">
-        <Head badge="Packages" title="Three fixed prices." accent="Nothing hidden." text="Pick the one that fits. What each includes, and anything that costs extra, is written down before you start." />
+        <Head badge="Packages" title="Two fixed prices." accent="Nothing hidden." text="Pick the one that fits, or ask us about a bespoke project. What each includes, and anything that costs extra, is written down before you start." />
         <ul className="grid gap-4 md:grid-cols-3">
           {packages.map((p, i) => (
             <motion.li key={p.id} {...rise} transition={{ duration: 0.5, delay: i * 0.08 }} className={`relative flex flex-col rounded-2xl border bg-card p-5 sm:p-6 ${p.recommended ? "border-primary/60" : "border-border"}`}>
               {p.recommended && <span className="absolute -top-3 left-5 rounded-full bg-primary px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-primary-foreground">Our suggestion</span>}
               <h3 className="text-lg font-bold" id={i === 0 ? "home-packages" : undefined}>{p.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{p.tagline}</p>
-              <p className="mt-4 flex items-baseline gap-1"><span className="text-4xl font-bold tracking-tight">£{p.price}</span></p>
-              <p className="mt-1 text-sm text-muted-foreground">Up to {p.pages} pages · {p.delivery}</p>
+              <p className="mt-4 flex items-baseline gap-2">{p.price ? <><span className="text-4xl font-bold tracking-tight">£{p.price}</span>{p.was && <s className="text-sm text-muted-foreground"><span className="sr-only">Previously </span>£{p.was}</s>}</> : <span className="text-2xl font-bold tracking-tight">{p.priceLabel}</span>}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{p.pages ? `Up to ${p.pages} pages · ${p.delivery}` : "Bespoke scope"}</p>
               <ul className="mt-4 space-y-2 text-sm">
-                {p.features.filter((f) => !f.startsWith("Everything")).slice(0, 5).map((f) => (
-                  <li key={f} className="flex gap-2.5"><Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />{f}</li>
+                {p.features.slice(0, 5).map((f) => (
+                  <li key={f.title} className="flex gap-2.5"><Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />{f.title}</li>
                 ))}
               </ul>
               <p className="mt-4 text-xs text-muted-foreground">Best for: {p.ideal}</p>

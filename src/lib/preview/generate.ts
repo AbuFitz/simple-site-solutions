@@ -231,32 +231,28 @@ export function buildPreview(input: PreviewInput): PreviewModel {
 
 /**
  * Recommends a package from what the owner told us, using the real inclusions on the Packages page:
- * Starter = up to 3 pages, Sorted = up to 6 pages with booking and reviews, Works = up to 10 pages with location pages.
+ * Launch = up to 3 pages, Growth = up to 10 pages with individual service and location pages.
  * Every reason is stated so the recommendation can be checked rather than trusted.
  */
 export function recommendPackage(input: PreviewInput): PackageRecommendation {
   const n = input.services.map((s) => s.trim()).filter(Boolean).length;
   const reasons: string[] = [];
   if (input.multiArea) {
-    reasons.push("You cover more than one town, and The Works includes location pages for local search.");
+    reasons.push("You cover more than one town, and Growth has room for location pages and a stronger search setup.");
     if (n > 4) reasons.push(`${n} services is enough to give each its own page.`);
-    return { id: "works", reasons };
-  }
-  if (n > 6 || (n >= 6 && input.category === "builder")) {
-    reasons.push("A long list of services is easier to browse with a page each (up to 10 pages).");
-    return { id: "works", reasons };
-  }
-  if (input.action === "book") {
-    reasons.push("You want customers to book, and a booking system is included in The Sorted.");
-    return { id: "sorted", reasons };
+    return { id: "growth", reasons };
   }
   if (n >= 4) {
-    reasons.push(`${n} services reads best across up to 6 pages, with space for reviews and trust signals.`);
-    return { id: "sorted", reasons };
+    reasons.push(`${n} services reads best with a page each, which Growth allows (up to 10 pages).`);
+    return { id: "growth", reasons };
+  }
+  if (input.action === "book") {
+    reasons.push("You want customers to book. Launch or Growth can both link to your booking tool, and a booking system can be added for £39.");
+    return { id: "launch", reasons };
   }
   reasons.push("A short list of services and a simple call or quote action fits 3 pages well.");
   reasons.push("You can move up later if the business grows.");
-  return { id: "starter", reasons };
+  return { id: "launch", reasons };
 }
 
 /* ---------- Shareable URL state ---------- */

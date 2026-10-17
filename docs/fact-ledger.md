@@ -11,11 +11,11 @@ Status of every business fact the site relies on. Accessed 2026-10-14. Research 
 
 | Fact | Status | Source / note |
 |---|---|---|
-| Packages The Starter £199 (3 pages), The Sorted £399 (6), The Works £649 (10) and their inclusions | PROVISIONAL | Owner-authored in `src/data/packages.ts` (commit history: "Major pricing and packages overhaul"). Pricing review (`docs/pricing-review.md`) is still open. |
+| Packages Launch £189 (was £249, up to 3 pages), Growth £489 (was £649, up to 10 pages), Enterprise by tailored quotation, and their inclusions | PROVISIONAL | Supplied by the owner on 17 October 2026 and entered in `src/data/packages.ts`. Replaces the earlier Starter/Sorted/Works £199/£399/£649 list. Pricing review (`docs/pricing-review.md`) predates this and is out of date. |
 | Estimated delivery 5–7 / 7–10 / 10–14 days, counted from receipt of content | PROVISIONAL | Same file. Shown as an estimate, never a guarantee. The old blanket "5–10 days" was removed. |
-| Add-ons (£19–£59) | PROVISIONAL | Same file. |
-| One optional hosting plan "Keep It Running", £19/month | PROVISIONAL | Commit 09474f6 "Consolidate hosting to single £19/month plan". The old £9 "Keep It Live" / "Keep It Fresh" copy in the FAQ and Terms was removed. |
-| Payment: Starter upfront, Sorted/Works 50% upfront | PROVISIONAL | Packages data and FAQ. Drives the expected Stripe amounts (£199.00 / £199.50 / £324.50). |
+| Add-ons (£19–£59) and their one-sentence explainers on the project brief | PROVISIONAL | Prices unchanged. The explainers are Claude-written plain-language descriptions; the owner has not confirmed exactly what each add-on delivers (especially Booking System Setup and Legal Pages Pack). |
+| One optional monthly rolling plan "Hosting & Care", £29/month, 30 days' notice, alongside Launch and Growth | PROVISIONAL | Supplied by the owner on 17 October 2026. Replaces "Keep It Running" at £19/month. Whether a customer can self-host is not stated; the form offers "No monthly plan for now" only. |
+| Payment: Launch £189 before work begins; Growth £244.50 to begin and £244.50 before launch; Enterprise per quotation | PROVISIONAL | Supplied by the owner. Drives the expected Stripe amounts (£189.00 and £244.50). Enterprise cannot be paid online. |
 | "First month free" hosting | BLOCKED | Appeared once, unconfirmed. Removed. |
 | Prices include or exclude VAT | BLOCKED | Not stated anywhere. Needed before taking payment. |
 | What the customer owns (domain, files, design) and how files are handed over on leaving | BLOCKED | Not stated anywhere. Research shows buyers look for it. The FAQ says it is "to be confirmed in writing". |

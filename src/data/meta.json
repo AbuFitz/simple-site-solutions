@@ -21,8 +21,8 @@
     "description": "Choose a package and tell us about your business. We reply by email to confirm scope and next steps. No payment is taken on this form."
   },
   "/packages": {
-    "title": "Website Packages & Prices | From £199 | OneSimpleSite",
-    "description": "Three fixed-price website packages for UK local businesses: The Starter £199, The Sorted £399, The Works £649. See exactly what each includes and what costs extra."
+    "title": "Website Packages & Prices | From £189 | OneSimpleSite",
+    "description": "Fixed-price websites for UK businesses: Launch £189 and Growth £489, plus tailored quotations for Enterprise projects. See exactly what each includes and what costs extra."
   },
   "/checkout/success": {
     "title": "Payment status | OneSimpleSite",
@@ -35,7 +35,7 @@
   },
   "/": {
     "title": "OneSimpleSite | Fixed-Price Websites for UK Local Businesses",
-    "description": "Fixed-price websites for UK local businesses, built from layouts planned for your kind of business. Packages from £199. See real work and preview your site."
+    "description": "Fixed-price websites for UK local businesses, built from layouts planned for your kind of business. Packages from £189. See real work and preview your site."
   },
   "/how-it-works": {
     "title": "How It Works | From Brief to Live Site | OneSimpleSite",

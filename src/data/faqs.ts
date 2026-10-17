@@ -4,32 +4,32 @@ export const faqs: Faq[] = [
   {
     question: "How much does a website cost?",
     answer:
-      "We have three packages: The Starter at £199 (everything you need to get online properly), The Sorted at £399 (look established and win trust), and The Works at £649 (compete seriously and scale). Each package lists exactly what is included on the packages page. Optional extras and the optional £19/month Keep It Running plan are priced separately and shown there.",
+      "We have two fixed packages: Launch at £189 (previously £249) for a straightforward website, and Growth at £489 (previously £649) for a fuller website with individual service pages. Enterprise projects such as online shops and portals get a tailored quotation. Each package lists exactly what is included on the packages page. Optional extras and the optional £29/month Hosting & Care plan are priced separately and shown there.",
   },
   {
     question: "How long does it take to build my website?",
     answer:
-      "Our estimate is 5–7 days for The Starter, 7–10 for The Sorted and 10–14 for The Works, counted from when we have your content and the go-ahead. Late content or slow feedback moves the date.",
+      "Our estimate is 5 to 7 working days for Launch and 10 to 14 working days for Growth. The clock starts once we have the agreed information, assets, account access and initial payment, so late content or slow feedback moves the date. Enterprise timings are agreed in the quotation.",
   },
   {
     question: "What's included in every package?",
     answer:
-      "Local SEO foundations baked in, clean mobile-first design, speed and performance optimised, clear services and contact flow, Google Map integration, contact forms with click-to-call and WhatsApp, and cookie/privacy compliance. Every package gives you a complete, professional, fast-loading website.",
+      "Both fixed packages include a design around your business, mobile-friendly layouts, website copywriting, an enquiry form tested with your inbox, phone, email and WhatsApp links where needed, essential SEO, speed optimisation and cookie controls configured around the services your site actually uses.",
   },
   {
     question: "What's the difference between the packages?",
     answer:
-      "The Starter (£199) gets you online properly — a clean, professional site with everything you need. The Sorted (£399) adds conversion-focused layouts, trust positioning, and messaging that actually sells. The Works (£649) goes deeper with positioning, SEO-led structure, analytics, and multiple rounds of refinements.",
+      "Launch (£189) is up to 3 main pages with 1 revision round. Growth (£489) is up to 10 main pages with content planning and navigation, one-off advanced on-page SEO, business email setup, basic analytics setup and 3 revision rounds. Enterprise is for requirements that need their own plan and price, such as online shops, customer accounts and integrations.",
   },
   {
     question: "Which package should I choose?",
     answer:
-      "The Starter is perfect for new businesses and sole traders who need to get online fast. The Sorted suits growing businesses that want clearer trust signals, booking and room to refine. The Works is for businesses investing seriously in competing and scaling.",
+      "Launch suits a business that needs a clear website explaining what it does and how to get in touch. Growth suits a business with several services or locations that wants a page for each and a stronger search setup. If you need a shop, customer accounts or other integrations, ask us about Enterprise.",
   },
   {
     question: "Is SEO included?",
     answer:
-      "Yes — local SEO foundations are included in every package. This means your site is built with proper structure, meta tags, and local optimisation from day one. No separate SEO add-on needed.",
+      "Essential SEO is included in both fixed packages: clear page titles, search descriptions, heading structure, image descriptions and a sitemap. Growth adds a one-off advanced on-page SEO setup covering service and location keyword research, page-specific content improvements, links between related pages and structured business information. SEO results are never guaranteed.",
   },
   {
     question: "How is this different from hiring a web designer?",
@@ -44,7 +44,7 @@ export const faqs: Faq[] = [
   {
     question: "What if I need changes after we launch?",
     answer:
-      "We're here to help. The optional Keep It Running plan (£19/month) includes up to 5 content updates a month. Anything beyond that, or without the plan, we'll quote before doing the work.",
+      "We're here to help. The optional Hosting & Care plan (£29/month) includes up to 3 small content changes a month, within 30 minutes combined. Anything beyond that, or without the plan, we'll quote before doing the work.",
   },
   {
     question: "What do you need from me to get started?",
@@ -54,17 +54,17 @@ export const faqs: Faq[] = [
   {
     question: "What about hosting?",
     answer:
-      "One optional plan: Keep It Running at £19/month covers hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month. Whether you can host the site yourself, and how files are handed over, is still to be confirmed in writing, so ask us before you start.",
+      "One optional monthly plan: Hosting & Care at £29/month covers hosting, SSL and one standard-priced domain, weekly backups and security monitoring, up to 3 small content changes a month, and Google Search Console setup. It runs month to month and either side can cancel with 30 days' notice. The website belongs to you after full payment, with source files handed over; hosting and third-party subscriptions are separate from the build price.",
   },
   {
     question: "What are the payment terms?",
     answer:
-      "The Starter: paid upfront in full. The Sorted and The Works: 50% upfront to begin, 50% before we launch your site. How payment is taken is confirmed with you when your enquiry is accepted.",
+      "Launch: £189 before work begins. Growth: £244.50 to begin and £244.50 before launch. Enterprise: as set out in the quotation. How payment is taken is confirmed with you when your enquiry is accepted.",
   },
   {
     question: "What add-ons do you offer?",
     answer:
-      "Logo Design (£49), Google Business Profile Setup (£39), Booking System Setup (£39), Extra Email Templates ×3 (£29), SEO Audit Report (£59), and Legal Pages Pack (£19). These are optional extras you can add to any package. Speed and performance optimisation is already included in every package — we build fast sites by default.",
+      "Logo Design (£49), Google Business Profile Setup (£39), Booking System Setup (£39), Extra Email Templates ×3 (£29), SEO Audit Report (£59), and Legal Pages Pack (£19). These are optional extras you can add to Launch or Growth. Speed optimisation is already included in both packages.",
   },
   {
     question: "Do you offer refunds?",

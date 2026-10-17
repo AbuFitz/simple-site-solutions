@@ -9,6 +9,7 @@ export interface BriefDraft {
   step: number;
   selectedPackage: string | null;
   selectedAddons: string[];
+  monthlyPlan?: string | null;
   fields: Record<string, string>;
 }
 
@@ -35,9 +36,10 @@ export function loadDraft(now = Date.now()): BriefDraft | null {
     const d = stored.draft;
     if (!d || typeof d !== "object" || typeof d.fields !== "object") return null;
     return {
-      step: [1, 2, 3].includes(d.step) ? d.step : 1,
+      step: [1, 2, 3, 4].includes(d.step) ? d.step : 1,
       selectedPackage: typeof d.selectedPackage === "string" ? d.selectedPackage : null,
       selectedAddons: Array.isArray(d.selectedAddons) ? d.selectedAddons.filter((x) => typeof x === "string") : [],
+      monthlyPlan: typeof d.monthlyPlan === "string" ? d.monthlyPlan : null,
       fields: Object.fromEntries(
         Object.entries(d.fields ?? {}).filter(([, v]) => typeof v === "string")
       ) as Record<string, string>,

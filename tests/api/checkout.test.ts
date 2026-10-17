@@ -30,7 +30,7 @@ describe("checkout config fails closed", () => {
     ["STRIPE_WEBHOOK_SECRET", ""],
     ["UPSTASH_REDIS_REST_URL", ""],
     ["SITE_URL", ""],
-    ["PACKAGE_READY_STARTER", "false"],
+    ["PACKAGE_READY_LAUNCH", "false"],
   ])("is off when %s is %j", async (k, v) => {
     setEnv({ ...CHECKOUT_ENV, [k]: v });
     const { checkoutConfig } = await import("../../api/_lib/checkout-config.js");
@@ -47,8 +47,9 @@ describe("checkout config fails closed", () => {
   it("enables only packages that are ready", async () => {
     setEnv(CHECKOUT_ENV);
     const { checkoutConfig, expectedPence } = await import("../../api/_lib/checkout-config.js");
-    expect(checkoutConfig().packages).toEqual(["starter"]);
-    expect([expectedPence("starter"), expectedPence("sorted"), expectedPence("works")]).toEqual([19900, 19950, 32450]);
+    expect(checkoutConfig().packages).toEqual(["launch"]);
+    expect([expectedPence("launch"), expectedPence("growth")]).toEqual([18900, 24450]);
+    expect(() => expectedPence("enterprise")).toThrow();
   });
 
   it("is off with no environment at all", async () => {
@@ -68,7 +69,7 @@ describe("POST /api/create-checkout-session", () => {
     setEnv({});
     const h = await load("../../api/create-checkout-session.ts");
     const res = mockRes();
-    await h(mockReq({ body: { package: "starter" } }), res);
+    await h(mockReq({ body: { package: "launch" } }), res);
     expect(res.statusCode).toBe(503);
     expect(createSession).not.toHaveBeenCalled();
   });
@@ -76,7 +77,7 @@ describe("POST /api/create-checkout-session", () => {
   it("rejects foreign origins and wrong methods", async () => {
     const h = await load("../../api/create-checkout-session.ts");
     let res = mockRes();
-    await h(mockReq({ body: { package: "starter" }, headers: { origin: "https://evil.example" } }), res);
+    await h(mockReq({ body: { package: "launch" }, headers: { origin: "https://evil.example" } }), res);
     expect(res.statusCode).toBe(403);
     res = mockRes();
     await h(mockReq({ method: "GET" }), res);
@@ -85,7 +86,7 @@ describe("POST /api/create-checkout-session", () => {
 
   it("rejects unknown and not-ready packages", async () => {
     const h = await load("../../api/create-checkout-session.ts");
-    for (const pkg of ["free", "sorted", "../x"]) {
+    for (const pkg of ["free", "growth", "enterprise", "../x"]) {
       const res = mockRes();
       await h(mockReq({ body: { package: pkg } }), res);
       expect(res.statusCode).toBe(400);
@@ -97,10 +98,10 @@ describe("POST /api/create-checkout-session", () => {
     createSession.mockResolvedValue({ url: "https://checkout.stripe.com/c/pay/cs_test_abc" });
     const h = await load("../../api/create-checkout-session.ts");
     const res = mockRes();
-    await h(mockReq({ body: { package: "starter", price: 1, amount: 1, success_url: "https://evil.example" } }), res);
+    await h(mockReq({ body: { package: "launch", price: 1, amount: 1, success_url: "https://evil.example" } }), res);
     expect(res.statusCode).toBe(200);
     const arg = createSession.mock.calls[0][0];
-    expect(arg.line_items).toEqual([{ price: "price_starter1", quantity: 1 }]);
+    expect(arg.line_items).toEqual([{ price: "price_launch1", quantity: 1 }]);
     expect(arg.success_url.startsWith("https://onesimplesite.co.uk/checkout/success?session_id=")).toBe(true);
     expect(arg.cancel_url).toBe("https://onesimplesite.co.uk/checkout/cancel");
     expect(arg.mode).toBe("payment");
@@ -111,14 +112,14 @@ describe("POST /api/create-checkout-session", () => {
     createSession.mockRejectedValue(new Error("secret internal detail"));
     const h = await load("../../api/create-checkout-session.ts");
     const res = mockRes();
-    await h(mockReq({ body: { package: "starter" } }), res);
+    await h(mockReq({ body: { package: "launch" } }), res);
     expect(res.statusCode).toBe(502);
     expect(JSON.stringify(res.body)).not.toContain("secret");
   });
 });
 
 describe("GET /api/checkout-session", () => {
-  const paid = { id: "cs_test_abcdefghij", mode: "payment", status: "complete", payment_status: "paid", currency: "gbp", amount_total: 19900, metadata: { package: "starter" } };
+  const paid = { id: "cs_test_abcdefghij", mode: "payment", status: "complete", payment_status: "paid", currency: "gbp", amount_total: 18900, metadata: { package: "launch" } };
   beforeEach(() => {
     retrieveSession.mockReset();
     setEnv(CHECKOUT_ENV);
@@ -129,7 +130,7 @@ describe("GET /api/checkout-session", () => {
     const h = await load("../../api/checkout-session.ts");
     const res = mockRes();
     await h(mockReq({ method: "GET", query: { session_id: paid.id } }), res);
-    expect(res.body).toEqual({ status: "paid", package: "starter", amountTotal: 19900 });
+    expect(res.body).toEqual({ status: "paid", package: "launch", amountTotal: 18900 });
   });
 
   it("does not report paid when the amount differs from the catalogue", async () => {
@@ -153,7 +154,7 @@ describe("GET /api/checkout-session", () => {
 });
 
 describe("POST /api/stripe-webhook", () => {
-  const session = { id: "cs_test_abcdefghij", mode: "payment", status: "complete", payment_status: "paid", currency: "gbp", amount_total: 19900, metadata: { package: "starter" }, customer_details: { email: "c@example.com" } };
+  const session = { id: "cs_test_abcdefghij", mode: "payment", status: "complete", payment_status: "paid", currency: "gbp", amount_total: 18900, metadata: { package: "launch" }, customer_details: { email: "c@example.com" } };
   const rawReq = (headers: Record<string, string> = { "stripe-signature": "t=1,v1=x" }) => {
     const r: any = mockReq({ headers });
     r.on = (ev: string, cb: any) => {
@@ -235,6 +236,6 @@ describe("GET /api/checkout-status", () => {
     h = await load("../../api/checkout-status.ts");
     res = mockRes();
     h(mockReq({ method: "GET" }), res);
-    expect(res.body).toEqual({ enabled: true, packages: ["starter"] });
+    expect(res.body).toEqual({ enabled: true, packages: ["launch"] });
   });
 });

@@ -1,3 +1,4 @@
+import { addons as addonCatalogue, hosting as hostingCare, pricedPackages } from "@/data/packages";
 import { Seo } from "@/components/seo/Seo";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -173,26 +174,15 @@ const ctaOptions = [
   { id: "contact-form", label: "Contact Form" },
 ];
 
-const packages = [
-  { id: "starter", name: "The Starter", price: "£199" },
-  { id: "sorted", name: "The Sorted", price: "£399", recommended: true },
-  { id: "works", name: "The Works", price: "£649" },
-];
+const packages = pricedPackages.map((p) => ({ id: p.id as string, name: p.name, price: `£${p.price}`, recommended: p.recommended }));
 
-const addons = [
-  { id: "logo", name: "Logo Design", price: "£49" },
-  { id: "google-business", name: "Google Business Profile Setup", price: "£39" },
-  { id: "booking", name: "Booking System Setup", price: "£39" },
-  { id: "email-templates", name: "Extra Email Templates (×3)", price: "£29" },
-  { id: "seo-audit", name: "SEO Audit Report", price: "£59" },
-  { id: "legal-pages", name: "Legal Pages Pack", price: "£19" },
-];
+const addons = addonCatalogue.map((a) => ({ id: a.id, name: a.name, price: `£${a.price}` }));
 
 const hostingPlan = {
-  id: "keep-it-running",
-  name: "Keep It Running",
-  price: "£19/month",
-  description: "Hosting, domain, SSL, backups, security, and up to 5 content updates/month",
+  id: hostingCare.id,
+  name: hostingCare.name,
+  price: `£${hostingCare.price}/month`,
+  description: "Hosting, SSL and a standard domain, weekly backups, security monitoring and up to 3 small content changes a month. Cancel with 30 days' notice.",
 };
 
 const logoStyleOptions = [
@@ -1490,14 +1480,14 @@ export default function Onboard() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => updateField("hostingPlan", "self-host")}
+                      onClick={() => updateField("hostingPlan", "none")}
                       className={`py-3 px-4 rounded-xl border text-sm font-medium transition-all ${
-                        formData.hostingPlan === "self-host"
+                        formData.hostingPlan === "none"
                           ? "border-primary bg-primary/10 text-primary"
                           : "border-border bg-secondary hover:border-muted-foreground"
                       }`}
                     >
-                      No, I'll host it myself
+                      No monthly plan for now
                     </button>
                   </div>
                 </div>

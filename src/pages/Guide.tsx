@@ -70,7 +70,7 @@ export default function Guide() {
 
           <div className="bordered-highlight p-6">
             <h2 className="text-title">Want it done for you?</h2>
-            <p className="text-body mt-2">Fixed-price websites from £199, built for your trade and your area. Compare packages and see what is included.</p>
+            <p className="text-body mt-2">Fixed-price websites from £189, built for your trade and your area. Compare packages and see what is included.</p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Link to="/packages" className="btn-primary btn-lg min-h-[48px] !text-background">Packages and prices</Link>
             </div>

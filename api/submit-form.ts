@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { Resend } from "resend";
 import { briefSchema } from "../src/lib/brief-schema.js";
+import { getAddon, getPackage, hosting } from "../src/data/packages.js";
 import { clientIp, json, oneLine, originAllowed } from "./_lib/http.js";
 import { rateLimit } from "./_lib/rateLimit.js";
 import { foot as footBlock, row, shellClose, shellOpen } from "./_lib/emailKit.js";
@@ -21,30 +22,25 @@ interface FormData {
   details?: string;
   selectedPackage: string;
   selectedAddons: string[];
+  monthlyPlan?: string;
 }
 
-// Get package display info
+// Display info comes from the catalogue so the emails can never drift from the price list
 function getPackageInfo(packageId: string): { name: string; price: string } {
-  const packages: Record<string, { name: string; price: string }> = {
-    starter: { name: "The Starter", price: "£199" },
-    sorted: { name: "The Sorted", price: "£399" },
-    works: { name: "The Works", price: "£649" },
-    unsure: { name: "Not sure yet", price: "" },
-  };
-  return packages[packageId] || { name: packageId, price: "" };
+  const p = getPackage(packageId);
+  if (p) return { name: p.name, price: p.price ? `£${p.price}` : "Tailored quotation" };
+  if (packageId === "unsure") return { name: "Not sure yet", price: "" };
+  return { name: packageId, price: "" };
 }
 
-// Get add-on display names
 function getAddonDisplayName(addonId: string): string {
-  const addons: Record<string, string> = {
-    logo: "Logo Design (£49)",
-    "google-business": "Google Business Profile Setup (£39)",
-    booking: "Booking System Setup (£39)",
-    "email-templates": "Extra Email Templates ×3 (£29)",
-    "seo-audit": "SEO Audit Report (£59)",
-    "legal-pages": "Legal Pages Pack (£19)",
-  };
-  return addons[addonId] || addonId;
+  const a = getAddon(addonId);
+  return a ? `${a.name} (£${a.price})` : addonId;
+}
+
+function monthlyPlanLabel(id: string | undefined, packageId?: string): string {
+  if (packageId === "enterprise") return "Scoped with the Enterprise quotation";
+  return id === hosting.id ? `${hosting.name} (£${hosting.price}/month, 30 days' notice to cancel)` : "No monthly plan for now";
 }
 
 // Format selected addons for display
@@ -76,6 +72,7 @@ ${row("Package", `${pkg.name}${pkg.price ? ` (${pkg.price})` : ""}`)}
 ${row("Business", escapeHtml(data.businessName))}
 ${row("What you do", escapeHtml(data.businessDescription))}
 ${data.selectedAddons.length > 0 ? row("Add-ons", formatAddons(data.selectedAddons)) : ""}
+${row("Monthly plan", monthlyPlanLabel(data.monthlyPlan, data.selectedPackage))}
 <tr><td style="padding:32px 0;font-size:17px;line-height:1.6;color:#C9CBC6;">Questions? Reply to this email.<br><span style="color:#EFEBE3;">The OneSimpleSite team</span></td></tr>
 ${foot}
 ${SHELL_CLOSE}`;
@@ -94,6 +91,7 @@ ${data.phone ? row("Phone", `<a href="tel:${escapeHtml(data.phone)}" style="colo
 ${row("What they do", escapeHtml(data.businessDescription))}
 ${site ? row("Current site", site) : ""}
 ${data.selectedAddons.length > 0 ? row("Add-ons", formatAddons(data.selectedAddons)) : ""}
+${row("Monthly plan", monthlyPlanLabel(data.monthlyPlan, data.selectedPackage))}
 ${data.details ? row("Details", escapeHtml(data.details)) : ""}
 <tr><td style="padding:32px 0;"><a href="mailto:${escapeHtml(data.email)}?subject=${encodeURIComponent(`Re: Your OneSimpleSite enquiry - ${data.businessName}`)}" style="display:inline-block;background:#4FD9A0;color:#080C0B;font-size:16px;font-weight:700;text-decoration:none;padding:14px 26px;border-radius:999px;">Reply to ${escapeHtml(data.name)}</a></td></tr>
 ${foot}

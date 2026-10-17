@@ -11,7 +11,7 @@ const steps = [
     number: "01",
     title: "Choose Your Package",
     description:
-      "The Starter, The Sorted, or The Works. Pick what fits your business and budget. Clear pricing, no hidden costs.",
+      "Launch or Growth at a fixed price, or Enterprise with a tailored quotation. Pick what fits your business and budget.",
   },
   {
     number: "02",

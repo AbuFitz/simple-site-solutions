@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { z } from "zod";
 import { clientIp, json, oneLine, originAllowed } from "./_lib/http.js";
 import { rateLimit } from "./_lib/rateLimit.js";
+import { getAddon, getPackage, hosting } from "../src/data/packages.js";
 import { button, foot as footBlock, lead, row, section, shellClose, shellOpen, title } from "./_lib/emailKit.js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -90,33 +91,25 @@ interface OnboardFormData {
 }
 
 function getPackageInfo(packageId: string): { name: string; price: string } {
-  const packages: Record<string, { name: string; price: string }> = {
-    starter: { name: "The Starter", price: "£199" },
-    sorted: { name: "The Sorted", price: "£399" },
-    works: { name: "The Works", price: "£649" },
-  };
-  return packages[packageId] || { name: packageId, price: "" };
+  const p = getPackage(packageId);
+  if (p) return { name: p.name, price: p.price ? `£${p.price}` : "Tailored quotation" };
+  return { name: packageId, price: "" };
 }
 
 function getAddonNames(addonIds: string[]): string {
-  const addonMap: Record<string, string> = {
-    logo: "Logo Design (£49)",
-    "google-business": "Google Business Profile Setup (£39)",
-    booking: "Booking System Setup (£39)",
-    "email-templates": "Extra Email Templates ×3 (£29)",
-    "seo-audit": "SEO Audit Report (£59)",
-    "legal-pages": "Legal Pages Pack (£19)",
-  };
   if (addonIds.length === 0) return "None";
-  return addonIds.map((id) => addonMap[id] || id).join(", ");
+  return addonIds
+    .map((id) => {
+      const a = getAddon(id);
+      return a ? `${a.name} (£${a.price})` : id;
+    })
+    .join(", ");
 }
 
 function getHostingPlanInfo(planId: string): string {
-  const plans: Record<string, string> = {
-    "keep-it-running": "Keep It Running (£19/month)",
-    "self-host": "Self-hosting",
-  };
-  return plans[planId] || planId || "Not specified";
+  if (planId === hosting.id || planId === "keep-it-running") return `${hosting.name} (£${hosting.price}/month, 30 days' notice to cancel)`;
+  if (planId === "none" || planId === "self-host") return "No monthly plan for now";
+  return planId || "Not specified";
 }
 
 function getLogoStyleLabel(styleId: string): string {
@@ -193,7 +186,7 @@ function clientEmailHtml(data: OnboardFormData): string {
   const pkg = getPackageInfo(data.confirmedPackage);
   const extras = [
     data.selectedAddons && data.selectedAddons.length > 0 ? row("Add-ons", getAddonNames(data.selectedAddons)) : "",
-    data.hostingPlan && data.hostingPlan !== "self-host" ? row("Hosting", getHostingPlanInfo(data.hostingPlan)) : "",
+    data.hostingPlan && data.hostingPlan !== "self-host" && data.hostingPlan !== "none" ? row("Monthly plan", getHostingPlanInfo(data.hostingPlan)) : "",
   ].join("");
 
   return `${shellOpen}

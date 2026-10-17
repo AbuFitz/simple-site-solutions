@@ -15,7 +15,7 @@
     ],
     "faq": [
       { "q": "Do you have an office in {city}?", "a": "OneSimpleSite works online with businesses across the UK, including {city}. There is no need to travel or meet in person: the project brief, email and your review of the finished pages cover everything." },
-      { "q": "How much does a website for a {city} business cost?", "a": "Our packages are fixed-price: The Starter £199, The Sorted £399 and The Works £649. What each includes, and anything that costs extra, is listed on the packages page. Prices are the same wherever you are in the UK." },
+      { "q": "How much does a website for a {city} business cost?", "a": "Our packages are fixed-price: Launch £189 and Growth £489, with tailored quotations for larger Enterprise projects. What each includes, and anything that costs extra, is listed on the packages page. Prices are the same wherever you are in the UK." },
       { "q": "Can you guarantee my business will rank on Google in {city}?", "a": "No, and be wary of anyone who does. We build the site properly for local search: clear titles, a real map, fast mobile pages and honest structured data. Where you rank also depends on competition, reviews and your Google Business Profile." }
     ]
   },
@@ -25,8 +25,8 @@
       "name": "Hemel Hempstead",
       "county": "Hertfordshire",
       "h1": "Web design in Hemel Hempstead",
-      "title": "Web Design Hemel Hempstead | From £199 | OneSimpleSite",
-      "metaDescription": "Web design and development for Hemel Hempstead businesses. Fixed-price websites from £199, built for local search and mobile by OneSimpleSite, a UK-wide web design service.",
+      "title": "Web Design Hemel Hempstead | From £189 | OneSimpleSite",
+      "metaDescription": "Web design and development for Hemel Hempstead businesses. Fixed-price websites from £189, built for local search and mobile by OneSimpleSite, a UK-wide web design service.",
       "intro": [
         "Hemel Hempstead is a Hertfordshire new town with a busy mix of trades, shops, offices and industrial businesses. Whether you run a plumbing firm out of a van, a salon in the Old Town or a company on one of the business parks, customers look you up on their phone first, and your website is what they find.",
         "We build clear, fast, professionally designed websites for Hemel Hempstead businesses: layouts planned around your trade, plain-English wording, a real map of where you work and a call, quote or booking button that is easy to find. You get a fixed price up front and one site that does the job."
@@ -50,8 +50,8 @@
       "name": "St Albans",
       "county": "Hertfordshire",
       "h1": "Web design in St Albans",
-      "title": "Web Design St Albans | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for St Albans businesses, from independent shops to trades and practices. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design St Albans | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for St Albans businesses, from independent shops to trades and practices. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "St Albans is a Hertfordshire cathedral city with a lively centre of independent shops, cafes and professional practices, surrounded by commuter villages full of homes that need trades and services. Standing out here takes a site that looks as considered as the businesses customers expect to find.",
         "We build St Albans websites that feel established and are simple to use: clear services, a real map, and one obvious next step, whether that is a call, an enquiry or a booking. Everything is done online, at a fixed price, with wording written for your business."
@@ -75,8 +75,8 @@
       "name": "Watford",
       "county": "Hertfordshire",
       "h1": "Web design in Watford",
-      "title": "Web Design Watford | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Watford businesses: trades, shops, salons and services. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Watford | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Watford businesses: trades, shops, salons and services. Fixed-price websites from £189, mobile-first and built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Watford is one of Hertfordshire's busiest towns, with a large town centre, a mainline station into London and a steady stream of homeowners, commuters and businesses. That is a lot of customers searching for local services and a lot of competition for the same searches.",
         "We build Watford websites that get to the point: what you do, where you work and how to reach you, laid out for a phone screen and written in plain English. You get a fixed price, a design planned around your business, and a real map your customers can use."
@@ -100,8 +100,8 @@
       "name": "London",
       "county": "Greater London",
       "h1": "Web design for London businesses",
-      "title": "Web Design London | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for London businesses across the boroughs. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, a UK-wide web design service.",
+      "title": "Web Design London | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for London businesses across the boroughs. Fixed-price websites from £189, mobile-first and built for local search by OneSimpleSite, a UK-wide web design service.",
       "intro": [
         "London is the most competitive market in the UK for almost every service, and searches are often tied to a borough or neighbourhood rather than the whole city. A plumber in Barnet, a salon in Hackney and a practice in Croydon are all competing for different customers, so being specific matters more than being big.",
         "We build London websites that are clear about what you do and the part of London you serve, with fast mobile pages, honest structured data and a call, booking or enquiry route that is easy to find. Everything is done online, at a fixed price, wherever in London you are."
@@ -125,8 +125,8 @@
       "name": "Luton",
       "county": "Bedfordshire",
       "h1": "Web design in Luton",
-      "title": "Web Design Luton | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Luton businesses, from trades to shops and services. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Luton | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Luton businesses, from trades to shops and services. Fixed-price websites from £189, mobile-first and built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Luton is a large, diverse Bedfordshire town with a strong mix of independent shops, restaurants, trades and service businesses, and customers who often search in more than one language. A clear, fast website helps you be found and trusted by the people nearby.",
         "We build Luton websites that explain what you do in plain English, show where you work on a real map and make it easy to call, book or ask for a quote. You get a fixed price up front and a site designed around your business, not a generic template."
@@ -150,8 +150,8 @@
       "name": "Dunstable",
       "county": "Bedfordshire",
       "h1": "Web design in Dunstable",
-      "title": "Web Design Dunstable | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Dunstable businesses: trades, shops and local services. Fixed-price websites from £199, mobile-first and built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Dunstable | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Dunstable businesses: trades, shops and local services. Fixed-price websites from £189, mobile-first and built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Dunstable is a Bedfordshire market town at the edge of the Chiltern Hills, with a mix of independent traders, trades and services and neighbours in Luton, Houghton Regis and the villages around. Customers choose between nearby options, so a site that is clear and quick to use helps you get picked.",
         "We build Dunstable websites that say plainly what you do, where you work and how to reach you, on a design planned for your business. You get a fixed price, honest local SEO foundations and a real map that shows customers you are close."
@@ -175,8 +175,8 @@
       "name": "Harpenden",
       "county": "Hertfordshire",
       "h1": "Web design in Harpenden",
-      "title": "Web Design Harpenden | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Harpenden businesses: independent shops, practices and trades. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Harpenden | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Harpenden businesses: independent shops, practices and trades. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Harpenden is a Hertfordshire town with a well-loved high street of independent shops, cafes and practices, surrounded by homes that regularly look for trades and services. Customers here often value care and local knowledge, and your site should show both.",
         "We build Harpenden websites that feel considered and are simple to use: what you do, who you do it for, where you work and how to get in touch. You get a fixed price, plain-English wording and a design planned around your business."
@@ -200,8 +200,8 @@
       "name": "Hatfield",
       "county": "Hertfordshire",
       "h1": "Web design in Hatfield",
-      "title": "Web Design Hatfield | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Hatfield businesses: trades, shops, services and student-facing firms. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Hatfield | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Hatfield businesses: trades, shops, services and student-facing firms. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Hatfield is a Hertfordshire town with a university, a busy shopping and business area, the historic Old Hatfield and plenty of residential neighbourhoods, so its customers range from students to homeowners to office workers. A clear site helps each of them find the right thing quickly.",
         "We build Hatfield websites that explain what you do, show where you are and make the next step obvious, on a design planned around your business. You get a fixed price, plain-English wording and a real map."
@@ -225,8 +225,8 @@
       "name": "Welwyn Garden City",
       "county": "Hertfordshire",
       "h1": "Web design in Welwyn Garden City",
-      "title": "Web Design Welwyn Garden City | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Welwyn Garden City businesses: shops, trades and services. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Welwyn Garden City | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Welwyn Garden City businesses: shops, trades and services. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Welwyn Garden City is a planned town in Hertfordshire with a distinctive centre, tree-lined neighbourhoods and a steady base of local shops, trades and professional services. Customers here expect businesses to look tidy and be easy to deal with, and a website is where that starts.",
         "We build Welwyn Garden City websites that are clear and well organised: what you do, who for, where you work and how to get in touch. You get a fixed price, a design planned around your business and a real map of your area."
@@ -250,8 +250,8 @@
       "name": "Stevenage",
       "county": "Hertfordshire",
       "h1": "Web design in Stevenage",
-      "title": "Web Design Stevenage | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Stevenage businesses: trades, shops, industrial and service firms. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Stevenage | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Stevenage businesses: trades, shops, industrial and service firms. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Stevenage is a Hertfordshire town with a large employment area, a busy town centre, an Old Town and many residential neighbourhoods. That means a wide mix of customers and businesses, from tradespeople serving homes to firms working with other businesses.",
         "We build Stevenage websites that explain what you do, show where you are and make contact easy, on a design planned around your business. You get a fixed price, plain-English wording and a real map."
@@ -275,8 +275,8 @@
       "name": "Aylesbury",
       "county": "Buckinghamshire",
       "h1": "Web design in Aylesbury",
-      "title": "Web Design Aylesbury | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Aylesbury businesses and the Vale: trades, shops and services. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Aylesbury | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Aylesbury businesses and the Vale: trades, shops and services. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Aylesbury is the county town of Buckinghamshire, serving a large area of villages and new housing across the Vale. Many local businesses work well beyond the town itself, and customers search for trades and services that cover where they live.",
         "We build Aylesbury websites that say clearly what you do and which places you cover, on a design planned around your business. You get a fixed price, plain-English wording and a real map that shows your service area."
@@ -300,8 +300,8 @@
       "name": "Milton Keynes",
       "county": "Buckinghamshire",
       "h1": "Web design in Milton Keynes",
-      "title": "Web Design Milton Keynes | From £199 | OneSimpleSite",
-      "metaDescription": "Web design for Milton Keynes businesses: trades, shops, offices and services. Fixed-price websites from £199, built for local search by OneSimpleSite, UK-wide.",
+      "title": "Web Design Milton Keynes | From £189 | OneSimpleSite",
+      "metaDescription": "Web design for Milton Keynes businesses: trades, shops, offices and services. Fixed-price websites from £189, built for local search by OneSimpleSite, UK-wide.",
       "intro": [
         "Milton Keynes is a large, growing city with a wide mix of businesses, from tradespeople serving new housing to firms in business parks and independent shops across its towns and estates. Customers search by area, so clear local wording matters.",
         "We build Milton Keynes websites that explain what you do, show where you work and make contact easy, on a design planned around your business. You get a fixed price, plain-English wording and a real map of your area."

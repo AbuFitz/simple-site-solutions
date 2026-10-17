@@ -102,7 +102,7 @@ export function Navbar() {
           </ul>
           <div className="oss-fm__side">
             <p><small>CONTACT</small><a href="mailto:hello@onesimplesite.co.uk">hello@onesimplesite.co.uk</a></p>
-            <p><small>PRICING</small>Fixed prices from £199. Live in 5 to 14 days, nationwide.</p>
+            <p><small>PRICING</small>Fixed prices from £189. Live in 5 to 14 days, nationwide.</p>
           </div>
         </div>
       )}

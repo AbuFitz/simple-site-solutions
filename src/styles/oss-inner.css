@@ -249,3 +249,9 @@
 .tm .cta a:not(.oss-btn) { color: var(--ink); }
 .ab-team li > a, .hm-team li > a { display: contents; color: inherit; text-decoration: none; }
 @media (max-width: 959px) { .tm { --m: 20px; } .tm-hero { padding-top: 120px; min-height: 60svh; } .tm-hero h1 { font-size: 17vw; } .tm-body { grid-template-columns: 1fr; gap: 50px; padding: 80px var(--m); } .tm-next { grid-template-columns: 1fr; padding: 70px var(--m); } .tm .cta { padding: 80px var(--m); } }
+
+/* Packages: struck-through previous price, quotation label, add-on explainers. */
+.pk-was { display: block; font: 500 clamp(16px, 1.6vw, 22px) / 1 var(--f-mono); opacity: 0.6; text-decoration: line-through; letter-spacing: 0; margin-bottom: 6px; text-align: right; }
+.pk-quote { font: 700 clamp(26px, 4vw, 56px) / 1 var(--f-display); letter-spacing: -0.04em; text-transform: uppercase; }
+.pk-sub { display: block; font: 400 15px / 1.45 var(--f-body, inherit); opacity: 0.75; margin-top: 6px; letter-spacing: 0; text-transform: none; max-width: 560px; }
+.pk-row details li b { font-weight: 600; }

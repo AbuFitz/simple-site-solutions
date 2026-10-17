@@ -13,34 +13,34 @@ export interface KnowledgeDoc {
   link?: { label: string; href: string };
 }
 
-export const ALLOWED_PRICES = ["£199", "£399", "£649", "£49", "£39", "£29", "£59", "£19", "£19/month"];
+export const ALLOWED_PRICES = ["£189", "£249", "£489", "£649", "£244.50", "£49", "£39", "£29", "£59", "£19", "£29/month"];
 
 export const KNOWLEDGE: KnowledgeDoc[] = [
   {
     id: "about",
     title: "What OneSimpleSite does",
-    text: "OneSimpleSite provides web design and development for businesses across the UK. It builds fixed-price websites for local businesses such as plumbers, electricians, mechanics, cleaners, barbers and salons, tutors, small shops and builders. Work is done online. Each site starts from a layout planned for that kind of business and is filled with the customer's details.",
+    text: "OneSimpleSite provides web design and development for businesses across the UK. It builds fixed-price websites for local businesses such as plumbers, electricians, mechanics, cleaners, barbers and salons, tutors, small shops and builders. Work is done online. Each fixed-price site is designed around the business using the customer's details, branding and images.",
     keywords: ["who", "what", "do", "about", "company", "services", "website", "design", "build", "uk", "nationwide"],
     link: { label: "About us", href: "/about" },
   },
   {
     id: "prices",
     title: "Package prices",
-    text: "Three fixed-price packages. The Starter is £199: up to 3 pages, professional copywriting, mobile-first design, contact form and WhatsApp, Google Maps, basic SEO, SSL, speed optimised, 1 revision round. The Sorted is £399: up to 6 pages, conversion-focused layout, reviews and trust signals, booking system included, full on-page SEO, free domain for the first year, business email setup, 2 revision rounds. The Works is £649: up to 10 pages, SEO-led architecture, location pages for local SEO, blog setup with 1 post, Google Analytics setup, advanced booking, full legal pages, 3 revision rounds.",
-    keywords: ["price", "prices", "cost", "costs", "how", "much", "pricing", "package", "packages", "cheap", "afford", "budget", "starter", "sorted", "works", "£"],
+    text: "Two fixed-price packages plus tailored quotations. Launch is £189 (previously £249): up to 3 main website pages, 1 revision round, estimated delivery 5 to 7 working days, £189 paid before work begins. Growth is £489 (previously £649): up to 10 main pages, content planning and navigation, one-off advanced on-page SEO, business email setup, basic analytics setup, 3 revision rounds, estimated delivery 10 to 14 working days, £244.50 to begin and £244.50 before launch. Both include design around the business, mobile-friendly layouts, website copywriting, an enquiry form, contact links, essential SEO, speed optimisation and cookie controls. Enterprise is a tailored quotation for online shops, customer accounts, portals, advanced booking, CRM connections, payment integrations and larger websites.",
+    keywords: ["price", "prices", "cost", "costs", "how", "much", "pricing", "package", "packages", "cheap", "afford", "budget", "launch", "growth", "enterprise", "£"],
     link: { label: "See packages and prices", href: "/packages" },
   },
   {
     id: "which",
     title: "Which package to choose",
-    text: "The Starter suits new businesses and sole traders who need to get online properly. The Sorted suits growing businesses that want to look established, with trust signals and booking. The Works suits established businesses investing in competing locally, with an SEO-led structure, location pages and analytics.",
+    text: "Launch suits a business that needs a clear website explaining what it does and how to get in touch. Growth suits a business with several services or locations that wants a page for each and a stronger search setup. Enterprise is for online shops, customer portals, integrations and other bespoke projects.",
     keywords: ["which", "choose", "recommend", "best", "right", "suit", "difference", "compare", "between"],
     link: { label: "Compare packages", href: "/packages" },
   },
   {
     id: "delivery",
     title: "How long it takes",
-    text: "The estimate is 5 to 7 days for The Starter, 7 to 10 days for The Sorted and 10 to 14 days for The Works. It is counted from when we have the customer's content and the go-ahead. Late content or slow feedback moves the date. These are estimates, not guarantees.",
+    text: "The estimate is 5 to 7 working days for Launch and 10 to 14 working days for Growth. It is counted from when we have the agreed information, assets, account access and the initial payment. Late content or slow feedback moves the date. Enterprise timings are agreed in the quotation. These are estimates, not guarantees.",
     keywords: ["long", "time", "days", "weeks", "quick", "fast", "deadline", "delivery", "turnaround", "when", "ready", "launch", "urgent"],
     link: { label: "How it works", href: "/how-it-works" },
   },
@@ -54,14 +54,14 @@ export const KNOWLEDGE: KnowledgeDoc[] = [
   {
     id: "addons",
     title: "Add-ons and monthly plan",
-    text: "Optional add-ons: Logo Design £49, Google Business Profile Setup £39, Booking System Setup £39, Extra Email Templates (x3) £29, SEO Audit Report £59, Legal Pages Pack £19. There is also an optional Keep It Running plan at £19/month covering hosting and domain, SSL, weekly backups, security monitoring and up to 5 content updates a month. Whether a customer can host the site themselves and how files are handed over is still to be confirmed in writing, so they should ask us before ordering.",
+    text: "Optional add-ons: Logo Design £49, Google Business Profile Setup £39, Booking System Setup £39, Extra Email Templates (x3) £29, SEO Audit Report £59, Legal Pages Pack £19. There is also an optional monthly rolling plan, Hosting & Care at £29/month, available alongside Launch and Growth: hosting, SSL and one standard-priced domain, weekly backups and security monitoring, up to 3 small content changes a month (up to 30 minutes combined), support for the existing website, and Google Search Console setup. Either side can cancel with 30 days' notice. New pages, redesigns and extra functionality are quoted separately. The customer owns the website after full payment, with source files handed over.",
     keywords: ["addon", "addons", "add-on", "extra", "extras", "logo", "hosting", "host", "domain", "monthly", "maintenance", "updates", "backup", "email", "google", "business", "profile"],
     link: { label: "Add-ons on the packages page", href: "/packages" },
   },
   {
     id: "seo",
     title: "SEO",
-    text: "Every package is built with local SEO foundations: clear page titles and headings, a real map, fast mobile pages, structured data that is true and consistent business details. The Sorted adds full on-page SEO and The Works adds an SEO-led structure and location pages. Nobody can honestly guarantee a Google ranking, and OneSimpleSite does not. Rankings also depend on competition, reviews and the Google Business Profile.",
+    text: "Both fixed packages include essential SEO: clear page titles, search descriptions, heading structure, image descriptions and a sitemap. Growth adds a one-off advanced on-page SEO setup covering service and location keyword research, page-specific content improvements, links between related pages and structured business information. Nobody can honestly guarantee a Google ranking, and OneSimpleSite does not. Rankings also depend on competition, reviews and the Google Business Profile.",
     keywords: ["seo", "google", "rank", "ranking", "search", "found", "visible", "keywords", "local", "first", "page", "traffic"],
     link: { label: "Web design across the UK", href: "/web-design" },
   },
@@ -82,7 +82,7 @@ export const KNOWLEDGE: KnowledgeDoc[] = [
   {
     id: "payment",
     title: "Payment, changes and refunds",
-    text: "The Starter is paid upfront in full. The Sorted and The Works are 50% upfront to begin and 50% before launch. How payment is taken is confirmed when the enquiry is accepted. Deposits are non-refundable once work has begun; anyone who needs to cancel should say as soon as possible. After launch, changes beyond the plan are quoted before any work is done.",
+    text: "Launch is £189 before work begins. Growth is £244.50 to begin and £244.50 before launch. Enterprise payment is set out in the quotation. How payment is taken is confirmed when the enquiry is accepted. Deposits are non-refundable once work has begun; anyone who needs to cancel should say as soon as possible. After launch, changes beyond the plan are quoted before any work is done.",
     keywords: ["pay", "payment", "deposit", "upfront", "refund", "cancel", "invoice", "card", "vat", "terms", "changes", "revisions", "edit"],
     link: { label: "Terms", href: "/terms" },
   },

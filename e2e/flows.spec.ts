@@ -75,27 +75,84 @@ test.describe("package selection and brief form", () => {
 
   test("package choice from /packages is carried into /start", async ({ page }) => {
     await page.goto("/packages");
-    const cta = page.getByRole("link", { name: /Get started with The Sorted/ });
+    const cta = page.getByRole("link", { name: /Get started with Growth/ });
     await cta.click();
-    await expect(page).toHaveURL(/\/start\?package=sorted/);
-    await expect(page.getByRole("radio", { name: /The Sorted/ })).toHaveAttribute("aria-checked", "true");
+    await expect(page).toHaveURL(/\/start\?package=growth/);
+    await expect(page.getByRole("radio", { name: /Growth/ })).toHaveAttribute("aria-checked", "true");
   });
 
+  /** Details -> monthly plan -> send. */
+  async function sendBrief(page: import("@playwright/test").Page, plan = /No monthly plan for now/) {
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await page.getByRole("radio", { name: plan }).click();
+    await page.getByRole("button", { name: /Send my brief/ }).click();
+  }
+
   async function fillBrief(page: import("@playwright/test").Page) {
-    await page.goto("/start?package=starter");
+    await page.goto("/start?package=launch");
     await page.getByRole("button", { name: /Continue/ }).click();
-    await page.getByRole("button", { name: /Skip & Continue|Continue/ }).click();
+    await page.getByRole("button", { name: /Skip and continue|Continue/ }).click();
     await page.getByLabel(/Business name/).fill("Smith Plumbing");
     await page.getByLabel(/Your name/).fill("Sam Smith");
     await page.getByLabel(/Email address/).fill("sam@example.co.uk");
     await page.getByLabel(/What does your business do/).fill("Plumber in Watford");
   }
 
+  test("each package has a What is included dropdown that never changes the selection", async ({ page }) => {
+    await page.goto("/start");
+    const toggle = page.getByRole("button", { name: "What is included" }).first();
+    await expect(toggle).toHaveAttribute("aria-expanded", "false");
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByText("One standard contact form", { exact: false }).first()).toBeVisible();
+    await expect(page.getByRole("radio", { name: /Launch/ })).toHaveAttribute("aria-checked", "false");
+    await expect(page.getByRole("radio", { name: /Enterprise/ })).toContainText("Tailored quotation");
+    await expect(page.getByRole("radio", { name: /Growth/ })).toContainText("£489");
+  });
+
+  test("add-ons explain themselves, and the monthly plan is the last step", async ({ page }) => {
+    let body: Record<string, unknown> = {};
+    await page.route("**/api/submit-form", async (route) => {
+      body = route.request().postDataJSON();
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ success: true }) });
+    });
+    await page.goto("/start?package=growth");
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    const logo = page.getByRole("button", { name: /Logo Design/ }).first();
+    await page.getByRole("button", { name: "About Logo Design" }).click();
+    await expect(page.getByText(/simple logo made for your business/)).toBeVisible();
+    await logo.click();
+    await expect(logo).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await page.getByLabel(/Business name/).fill("Smith Plumbing");
+    await page.getByLabel(/Your name/).fill("Sam Smith");
+    await page.getByLabel(/Email address/).fill("sam@example.co.uk");
+    await page.getByLabel(/What does your business do/).fill("Plumber in Watford");
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await expect(page.getByRole("heading", { name: /Monthly/ })).toBeVisible();
+    const send = page.getByRole("button", { name: /Send my brief/ });
+    await expect(send).toBeDisabled();
+    await page.getByRole("radio", { name: /^Hosting & Care/ }).click();
+    await expect(page.getByText("£538")).toBeVisible();
+    await send.click();
+    await expect(page.getByRole("heading", { name: /Brief received/ })).toBeVisible();
+    expect(body.monthlyPlan).toBe("hosting-care");
+    expect(body.selectedPackage).toBe("growth");
+    expect(body.selectedAddons).toEqual(["logo"]);
+  });
+
+  test("Enterprise skips add-ons and the monthly plan", async ({ page }) => {
+    await page.goto("/start?package=enterprise");
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await expect(page.getByLabel(/Business name/)).toBeVisible();
+    await expect(page.getByRole("button", { name: /Send my brief/ })).toBeVisible();
+  });
+
   test("inline validation is announced and tied to fields", async ({ page }) => {
-    await page.goto("/start?package=starter");
+    await page.goto("/start?package=launch");
     await page.getByRole("button", { name: /Continue/ }).click();
-    await page.getByRole("button", { name: /Skip & Continue|Continue/ }).click();
-    await page.getByRole("button", { name: /Send my brief/ }).click();
+    await page.getByRole("button", { name: /Skip and continue|Continue/ }).click();
+    await page.getByRole("button", { name: /^Continue/ }).click();
     const email = page.getByLabel(/Email address/);
     await expect(email).toHaveAttribute("aria-invalid", "true");
     await expect(page.getByRole("alert").filter({ hasText: "Email is required" }).or(page.getByRole("alert").filter({ hasText: /valid|like name@/ }))).toBeVisible();
@@ -111,7 +168,7 @@ test.describe("package selection and brief form", () => {
     await expect(page.getByText("We kept your earlier answers")).toBeVisible();
     await expect(page.getByLabel(/Business name/)).toHaveValue("Smith Plumbing");
     await expect(page.getByLabel(/Email address/)).toHaveValue("sam@example.co.uk");
-    await page.getByRole("button", { name: /Send my brief/ }).click();
+    await sendBrief(page);
     await expect(page.getByRole("heading", { name: /Brief received/ })).toBeVisible();
     expect(await page.evaluate(() => localStorage.getItem("oss_brief_draft_v1"))).toBeNull();
     await expect(page.locator("body")).not.toContainText(/24 hours/);
@@ -120,16 +177,17 @@ test.describe("package selection and brief form", () => {
   test("a failed send is shown, never faked, and keeps the answers", async ({ page }) => {
     await briefMock(page, 502, { error: "We couldn't send your brief. Your answers are saved here, so you can try again or email us." });
     await fillBrief(page);
-    await page.getByRole("button", { name: /Send my brief/ }).click();
+    await sendBrief(page);
     await expect(page.getByRole("alert").filter({ hasText: /couldn't send your brief/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Brief received/ })).toHaveCount(0);
+    await page.getByRole("button", { name: /Back/ }).click();
     await expect(page.getByLabel(/Business name/)).toHaveValue("Smith Plumbing");
   });
 
   test("server field errors and rate limiting are surfaced", async ({ page }) => {
     await briefMock(page, 400, { error: "Some details need fixing.", fields: { email: "Enter an email address like name@example.com" } });
     await fillBrief(page);
-    await page.getByRole("button", { name: /Send my brief/ }).click();
+    await sendBrief(page);
     await expect(page.getByText("Some details need fixing. Check the highlighted fields.")).toBeVisible();
     await page.unroute("**/api/submit-form");
     await briefMock(page, 429, { error: "Too many" });
@@ -151,9 +209,10 @@ test.describe("package selection and brief form", () => {
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ success: true }) });
     });
     await fillBrief(page);
-    await page.getByRole("button", { name: /Send my brief/ }).click();
+    await sendBrief(page);
     await expect(page.getByRole("heading", { name: /Brief received/ })).toBeVisible();
-    expect(body.selectedPackage).toBe("starter");
+    expect(body.monthlyPlan).toBe("none");
+    expect(body.selectedPackage).toBe("launch");
     expect(body.businessName).toBe("Smith Plumbing");
     expect(body.company_site).toBe("");
     expect("price" in body).toBe(false);
@@ -168,7 +227,7 @@ test.describe("contact", () => {
     await expect(page.getByText("Your name is required")).toBeVisible();
     await page.getByLabel(/Your name/).fill("Sam");
     await page.getByLabel(/Email address/).fill("sam@example.co.uk");
-    await page.getByLabel(/Message/).fill("A question about the Sorted package");
+    await page.getByLabel(/Message/).fill("A question about the Growth package");
     await page.route("**/api/contact", (r) => r.fulfill({ status: 502, contentType: "application/json", body: JSON.stringify({ error: "We couldn't send your message. Please email us directly." }) }));
     await page.getByRole("button", { name: "Send message" }).click();
     await expect(page.getByRole("alert").filter({ hasText: /couldn't send your message/ })).toBeVisible();
@@ -182,53 +241,55 @@ test.describe("contact", () => {
 test.describe("checkout gating and result pages", () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
-  async function submitStarter(page: import("@playwright/test").Page) {
+  async function submitLaunch(page: import("@playwright/test").Page) {
     await briefMock(page);
-    await page.goto("/start?package=starter");
+    await page.goto("/start?package=launch");
     await page.getByRole("button", { name: /Continue/ }).click();
-    await page.getByRole("button", { name: /Skip & Continue|Continue/ }).click();
+    await page.getByRole("button", { name: /Skip and continue|Continue/ }).click();
     await page.getByLabel(/Business name/).fill("Smith Plumbing");
     await page.getByLabel(/Your name/).fill("Sam Smith");
     await page.getByLabel(/Email address/).fill("sam@example.co.uk");
     await page.getByLabel(/What does your business do/).fill("Plumber in Watford");
+    await page.getByRole("button", { name: /^Continue/ }).click();
+    await page.getByRole("radio", { name: /No monthly plan for now/ }).click();
     await page.getByRole("button", { name: /Send my brief/ }).click();
     await expect(page.getByRole("heading", { name: /Brief received/ })).toBeVisible();
   }
 
   test("no pay button when the server says checkout is off (the default)", async ({ page }) => {
     await page.route("**/api/checkout-status", (r) => r.fulfill({ json: { enabled: false, packages: [] } }));
-    await submitStarter(page);
+    await submitLaunch(page);
     await expect(page.getByRole("button", { name: /Pay £/ })).toHaveCount(0);
   });
 
   test("no pay button when the API is unreachable", async ({ page }) => {
     await page.route("**/api/checkout-status", (r) => r.abort());
-    await submitStarter(page);
+    await submitLaunch(page);
     await expect(page.getByRole("button", { name: /Pay £/ })).toHaveCount(0);
   });
 
   test("pay button appears only for enabled packages and only follows a Stripe URL", async ({ page }) => {
-    await page.route("**/api/checkout-status", (r) => r.fulfill({ json: { enabled: true, packages: ["starter"] } }));
+    await page.route("**/api/checkout-status", (r) => r.fulfill({ json: { enabled: true, packages: ["launch"] } }));
     let sent: Record<string, unknown> = {};
     await page.route("**/api/create-checkout-session", async (r) => {
       sent = r.request().postDataJSON();
       await r.fulfill({ json: { url: "https://evil.example/phish" } });
     });
-    await submitStarter(page);
-    const pay = page.getByRole("button", { name: "Pay £199.00 now" });
+    await submitLaunch(page);
+    const pay = page.getByRole("button", { name: "Pay £189.00 now" });
     await expect(pay).toBeVisible();
     await pay.click();
     await expect(page.getByRole("alert").filter({ hasText: /couldn't start payment/ })).toBeVisible();
     expect(page).toHaveURL(/\/start/);
-    expect(sent.package).toBe("starter");
+    expect(sent.package).toBe("launch");
     expect("price" in sent || "amount" in sent).toBe(false);
   });
 
   test("success page shows paid only when the server verifies it", async ({ page }) => {
-    await page.route("**/api/checkout-session**", (r) => r.fulfill({ json: { status: "paid", package: "starter", amountTotal: 19900 } }));
+    await page.route("**/api/checkout-session**", (r) => r.fulfill({ json: { status: "paid", package: "launch", amountTotal: 18900 } }));
     await page.goto("/checkout/success?session_id=cs_test_abcdefghijklmn");
     await expect(page.getByRole("heading", { name: /Payment received/ })).toBeVisible();
-    await expect(page.getByText(/£199\.00/)).toBeVisible();
+    await expect(page.getByText(/£189\.00/)).toBeVisible();
   });
 
   test("success page never claims payment for unpaid, errors or missing/invalid ids", async ({ page }) => {
@@ -253,7 +314,7 @@ test.describe("checkout gating and result pages", () => {
 });
 
 test.describe("accessibility (axe, WCAG 2.x A/AA)", () => {
-  const pages = ["/", "/work", "/work/arf-mods", "/packages", "/how-it-works", "/preview", "/faq", "/start", "/start?package=sorted", "/contact", "/about", "/privacy", "/terms", "/cookies", "/accessibility", "/checkout/cancel", "/nope"];
+  const pages = ["/", "/work", "/work/arf-mods", "/packages", "/how-it-works", "/preview", "/faq", "/start", "/start?package=growth", "/contact", "/about", "/privacy", "/terms", "/cookies", "/accessibility", "/checkout/cancel", "/nope"];
   for (const width of [390, 1440]) {
     for (const route of pages) {
       test(`${route} @ ${width}`, async ({ browser }) => {

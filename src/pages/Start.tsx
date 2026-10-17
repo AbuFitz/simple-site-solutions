@@ -12,7 +12,8 @@ import { DottedGrid } from "@/components/ui/DottedGrid";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, ArrowRight, ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { addons as addonData, packages as packageData } from "@/data/packages";
+import { addons as addonData, hosting, packages as packageData, getPackage, getAddon } from "@/data/packages";
+import { AddonChoice, MonthlyChoice, PackageChoice } from "@/components/form/Choices";
 import { briefFieldsSchema } from "@/lib/brief-schema";
 import { clearDraft, loadDraft, saveDraft } from "@/lib/draft";
 import { REPLY_COPY } from "@/data/site";
@@ -87,17 +88,14 @@ function Field({
 }
 
 const packages = [
-  ...packageData.map((p) => ({
-    id: p.id as string,
-    name: p.name,
-    price: `£${p.price}`,
-    description: `${p.tagline} · up to ${p.pages} pages · ${p.delivery}`,
-    recommended: p.recommended,
-  })),
-  { id: "unsure", name: "Not sure yet", price: "", description: "Help me choose the right package", recommended: false },
+  ...packageData,
 ];
 
-const availableAddons = addonData.map((a) => ({ id: a.id, name: a.name, price: `£${a.price}` }));
+type StepKey = "package" | "addons" | "details" | "monthly";
+const STEP_NUMBER: Record<StepKey, number> = { package: 1, addons: 2, details: 3, monthly: 4 };
+
+/** Enterprise is quoted individually, so add-ons and the monthly plan are agreed in the quotation instead. */
+const stepsFor = (pkg: string | null): StepKey[] => (pkg === "enterprise" ? ["package", "details"] : ["package", "addons", "details", "monthly"]);
 
 const FIELD_NAMES = ["businessName", "name", "email", "phone", "businessDescription", "websiteUrl", "details"] as const;
 
@@ -105,11 +103,12 @@ export default function Start() {
   const [params] = useSearchParams();
   const prefillPackage = params.get("package");
   const draft = useMemo(() => loadDraft(), []);
-  const [step, setStep] = useState(() => (draft && (!prefillPackage || prefillPackage === draft.selectedPackage) ? draft.step : 1));
+  const [stepNo, setStepNo] = useState(() => (draft && (!prefillPackage || prefillPackage === draft.selectedPackage) ? draft.step : 1));
   const [selectedPackage, setSelectedPackage] = useState<string | null>(
     packages.some((p) => p.id === prefillPackage) ? prefillPackage : draft?.selectedPackage ?? null
   );
   const [selectedAddons, setSelectedAddons] = useState<string[]>(draft?.selectedAddons ?? []);
+  const [monthlyPlan, setMonthlyPlan] = useState<"hosting-care" | "none" | null>(draft?.monthlyPlan === "hosting-care" || draft?.monthlyPlan === "none" ? draft.monthlyPlan : null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -117,12 +116,20 @@ export default function Start() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
   const stored = useMemo(() => recallPreview(), []);
+  const steps = stepsFor(selectedPackage);
+  const step: StepKey = (Object.keys(STEP_NUMBER) as StepKey[]).find((k) => STEP_NUMBER[k] === stepNo && steps.includes(k)) ?? "package";
+  const stepIndex = steps.indexOf(step);
+  const isLastStep = stepIndex === steps.length - 1;
+  const goTo = (k: StepKey) => setStepNo(STEP_NUMBER[k]);
+  const next = () => steps[stepIndex + 1] && goTo(steps[stepIndex + 1]);
+  const back = () => steps[stepIndex - 1] && goTo(steps[stepIndex - 1]);
 
   const {
     register,
     handleSubmit,
     watch,
     setError,
+    trigger,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -146,8 +153,8 @@ export default function Start() {
     FIELD_NAMES.forEach((k) => {
       fields[k] = String((values as Record<string, unknown>)[k] ?? "");
     });
-    saveDraft({ step, selectedPackage, selectedAddons, fields });
-  }, [values, step, selectedPackage, selectedAddons, isSubmitted]);
+    saveDraft({ step: stepNo, selectedPackage, selectedAddons, monthlyPlan, fields });
+  }, [values, stepNo, selectedPackage, selectedAddons, monthlyPlan, isSubmitted]);
 
   // Move focus to the new step's heading so keyboard and screen-reader users land in the right place
   useEffect(() => {
@@ -156,7 +163,7 @@ export default function Start() {
       return;
     }
     headingRef.current?.focus();
-  }, [step, isSubmitted]);
+  }, [stepNo, isSubmitted]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -172,7 +179,8 @@ export default function Start() {
           ...data,
           details: data.details,
           selectedPackage: selectedPackage ?? "unsure",
-          selectedAddons,
+          selectedAddons: selectedPackage === "enterprise" ? [] : selectedAddons,
+          monthlyPlan: selectedPackage === "enterprise" ? "none" : monthlyPlan ?? "none",
           company_site: honeypot,
         }),
       });
@@ -208,16 +216,23 @@ export default function Start() {
     );
   };
 
-  const canProceedStep1 = selectedPackage !== null;
+  const getProgressValue = () => (selectedPackage ? Math.round(((stepIndex + 1) / steps.length) * 100) : 0);
 
-  const getProgressValue = () => {
-    if (!selectedPackage) return 0;
-    if (step === 1) return 33;
-    if (step === 2) return 66;
-    return 100;
+  // Details is not the last step for fixed packages, so Enter there moves on instead of sending.
+  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (step === "details" && !isLastStep) {
+      void trigger().then((ok) => ok && next());
+      return;
+    }
+    if (step === "monthly" && monthlyPlan === null) return;
+    void handleSubmit(onSubmit)(e);
   };
 
-  const glowLevel = step + (selectedPackage ? 1 : 0) + selectedAddons.length + (values ? Object.values(values).filter((v) => typeof v === "string" && v.trim()).length : 0);
+  const chosen = selectedPackage ? getPackage(selectedPackage) : undefined;
+  const addonTotal = selectedAddons.reduce((sum, id) => sum + Number(getAddon(id)?.price ?? 0), 0);
+
+  const glowLevel = stepNo + (monthlyPlan ? 1 : 0) + (selectedPackage ? 1 : 0) + selectedAddons.length + (values ? Object.values(values).filter((v) => typeof v === "string" && v.trim()).length : 0);
 
   return (
     <Layout>
@@ -236,260 +251,207 @@ export default function Start() {
                 
               >
                 <div>
-                {/* Step 1: Package Selection */}
-                {step === 1 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                  >
+                {/* Step: package */}
+                {step === "package" && (
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                     <StepHeader
-                      title={
-                        <>
-                          Pick a <span className="text-primary">package</span>
-                        </>
-                      }
-                      description=""
+                      title={<>Pick a <span className="text-primary">package</span></>}
+                      description="Choose a fixed package, or speak to us about a project with different requirements."
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
 
                     <div role="radiogroup" aria-label="Package" className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
                       {packages.map((pkg) => (
-                        <button
-                          key={pkg.id}
-                          type="button"
-                          role="radio"
-                          aria-checked={selectedPackage === pkg.id}
-                          onClick={() => setSelectedPackage(pkg.id)}
-                          className={`relative w-full min-h-[44px] p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl text-left transition-all flex items-center justify-between border-2 bg-card ${
-                            selectedPackage === pkg.id
-                              ? "border-primary"
-                              : "border-border hover:border-muted-foreground/50"
-                          }`}
-                        >
-                          <div className="min-w-0 flex-1 mr-2 sm:mr-3">
-                            <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 sm:mb-1 flex-wrap">
-                              <span className="text-sm sm:text-base md:text-lg font-bold">{pkg.name}</span>
-                              {pkg.recommended && (
-                                <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[9px] sm:text-[10px] font-medium border border-primary/30">
-                                  Recommended
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                            {pkg.price && (
-                              <span className="text-base sm:text-lg md:text-xl font-bold text-primary">
-                                {pkg.price}
-                              </span>
-                            )}
-                            <div
-                              className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                                selectedPackage === pkg.id
-                                  ? "border-primary bg-primary"
-                                  : "border-muted-foreground/30"
-                              }`}
-                            >
-                              {selectedPackage === pkg.id && (
-                                <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
-                              )}
-                            </div>
-                          </div>
-                        </button>
+                        <PackageChoice key={pkg.id} pkg={pkg} selected={selectedPackage === pkg.id} onSelect={() => setSelectedPackage(pkg.id)} />
                       ))}
+                      <button
+                        type="button"
+                        role="radio"
+                        aria-checked={selectedPackage === "unsure"}
+                        onClick={() => setSelectedPackage("unsure")}
+                        className={`flex min-h-[56px] w-full items-center justify-between gap-3 rounded-lg border-2 bg-card p-3 text-left transition-colors sm:rounded-xl sm:p-4 md:p-5 ${selectedPackage === "unsure" ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
+                      >
+                        <span className="min-w-0">
+                          <span className="block text-base font-bold md:text-lg">Not sure yet</span>
+                          <span className="mt-0.5 block text-xs text-muted-foreground sm:text-sm">We will help you choose.</span>
+                        </span>
+                        <span aria-hidden="true" className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 sm:h-6 sm:w-6 ${selectedPackage === "unsure" ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
+                          {selectedPackage === "unsure" && <Check className="h-3 w-3 text-primary-foreground" />}
+                        </span>
+                      </button>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => setStep(2)}
-                      disabled={!canProceedStep1}
-                      className="btn-primary btn-md sm:btn-lg w-full sm:w-auto justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
+                    <button type="button" onClick={next} disabled={!selectedPackage} className="btn-primary btn-md sm:btn-lg w-full sm:w-auto justify-center disabled:opacity-50 disabled:cursor-not-allowed">
                       Continue
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </button>
                   </motion.div>
                 )}
 
-                {/* Step 2: Add-ons Selection */}
-                {step === 2 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                  >
+                {/* Step: add-ons */}
+                {step === "addons" && (
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                     <StepHeader
-                      title={
-                        <>
-                          Any <span className="text-primary">add-ons?</span>
-                        </>
-                      }
-                      description=""
+                      title={<>Any <span className="text-primary">add-ons?</span></>}
+                      description="Optional extras, priced on their own. Tap the i for a short explanation."
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
 
-                    <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
-                      {availableAddons.map((addon) => (
-                        <button
-                          key={addon.id}
-                          type="button"
-                          aria-pressed={selectedAddons.includes(addon.id)}
-                          onClick={() => toggleAddon(addon.id)}
-                          className={`min-h-[44px] p-3 sm:p-4 rounded-lg sm:rounded-xl text-left transition-all border-2 bg-card ${
-                            selectedAddons.includes(addon.id)
-                              ? "border-primary"
-                              : "border-border hover:border-muted-foreground/50"
-                          }`}
-                        >
-                          <div className="flex items-start justify-between mb-1">
-                            <span className="text-xs sm:text-sm font-semibold leading-tight">{addon.name}</span>
-                            <div
-                              className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md border-2 flex items-center justify-center transition-colors shrink-0 ml-2 ${
-                                selectedAddons.includes(addon.id)
-                                  ? "border-primary bg-primary"
-                                  : "border-muted-foreground/30"
-                              }`}
-                            >
-                              {selectedAddons.includes(addon.id) && (
-                                <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary-foreground" />
-                              )}
-                            </div>
-                          </div>
-                          <span className="text-xs text-primary font-medium">{addon.price}</span>
-                        </button>
+                    <div className="grid items-start gap-2 sm:grid-cols-2 sm:gap-3 mb-4 sm:mb-6">
+                      {addonData.map((addon) => (
+                        <AddonChoice key={addon.id} addon={addon} selected={selectedAddons.includes(addon.id)} onToggle={() => toggleAddon(addon.id)} />
                       ))}
                     </div>
 
                     {selectedAddons.length > 0 && (
-                      <div className="mb-4 sm:mb-6 p-2.5 sm:p-3 rounded-lg bg-secondary border border-border">
-                        <div className="text-[10px] sm:text-xs text-muted-foreground">
-                          Selected:{" "}
-                          <span className="text-foreground font-medium">
-                            {selectedAddons.length} add-on{selectedAddons.length > 1 ? "s" : ""}
-                          </span>
-                        </div>
-                      </div>
+                      <p className="mb-4 sm:mb-6 rounded-lg border border-border bg-secondary p-3 text-sm text-muted-foreground" aria-live="polite">
+                        {selectedAddons.length} add-on{selectedAddons.length > 1 ? "s" : ""} selected:{" "}
+                        <span className="font-medium text-foreground">£{addonTotal}</span>
+                      </p>
                     )}
 
                     <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setStep(1)}
-                        className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1"
-                      >
+                      <button type="button" onClick={back} className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1">
                         <ArrowLeft className="w-4 h-4 mr-2" />
                         Back
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setStep(3)}
-                        className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2"
-                      >
-                        {selectedAddons.length > 0 ? "Continue" : "Skip & Continue"}
+                      <button type="button" onClick={next} className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2">
+                        {selectedAddons.length > 0 ? "Continue" : "Skip and continue"}
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </button>
                     </div>
                   </motion.div>
                 )}
 
-                {/* Step 3: Your Details */}
-                {step === 3 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                  >
-                    <StepHeader
-                      title={
-                        <>
-                          Your <span className="text-primary">details</span>
-                        </>
-                      }
-                      description=""
-                      progress={getProgressValue()}
-                      headingRef={headingRef}
-                    />
+                {/* Steps: your details, then the monthly plan. One form so a single submit sends everything. */}
+                {(step === "details" || step === "monthly") && (
+                  <form id="brief-form" onSubmit={onFormSubmit} noValidate>
+                    {step === "details" && (
+                      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                        <StepHeader
+                          title={<>Your <span className="text-primary">details</span></>}
+                          description=""
+                          progress={getProgressValue()}
+                          headingRef={headingRef}
+                        />
 
-                    <form id="brief-form" onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4 mb-6 sm:mb-8">
-                      {restored && (
-                        <p className="text-sm text-muted-foreground">
-                          We kept your earlier answers in this browser.{" "}
-                          <button
-                            type="button"
-                            className="underline underline-offset-2 hover:text-foreground min-h-[44px]"
-                            onClick={() => {
-                              clearDraft();
-                              window.location.assign("/start");
-                            }}
-                          >
-                            Start again
-                          </button>
-                        </p>
-                      )}
-                      <Field id="businessName" label="Business name" required error={errors.businessName?.message}>
-                        {(a) => <input {...a} {...register("businessName")} autoComplete="organization" placeholder="e.g. Smith's Plumbing" className="input-base text-base" />}
-                      </Field>
+                        <div className="space-y-4 mb-6 sm:mb-8">
+                          {restored && (
+                            <p className="text-sm text-muted-foreground">
+                              We kept your earlier answers in this browser.{" "}
+                              <button
+                                type="button"
+                                className="underline underline-offset-2 hover:text-foreground min-h-[44px]"
+                                onClick={() => {
+                                  clearDraft();
+                                  window.location.assign("/start");
+                                }}
+                              >
+                                Start again
+                              </button>
+                            </p>
+                          )}
+                          <Field id="businessName" label="Business name" required error={errors.businessName?.message}>
+                            {(a) => <input {...a} {...register("businessName")} autoComplete="organization" placeholder="e.g. Smith's Plumbing" className="input-base text-base" />}
+                          </Field>
 
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <Field id="name" label="Your name" required error={errors.name?.message}>
-                          {(a) => <input {...a} {...register("name")} autoComplete="name" placeholder="John Smith" className="input-base text-base" />}
-                        </Field>
-                        <Field id="phone" label="Phone number" error={errors.phone?.message}>
-                          {(a) => <input {...a} {...register("phone")} type="tel" autoComplete="tel" inputMode="tel" placeholder="07XXX XXXXXX" className="input-base text-base" />}
-                        </Field>
-                      </div>
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            <Field id="name" label="Your name" required error={errors.name?.message}>
+                              {(a) => <input {...a} {...register("name")} autoComplete="name" placeholder="John Smith" className="input-base text-base" />}
+                            </Field>
+                            <Field id="phone" label="Phone number" error={errors.phone?.message}>
+                              {(a) => <input {...a} {...register("phone")} type="tel" autoComplete="tel" inputMode="tel" placeholder="07XXX XXXXXX" className="input-base text-base" />}
+                            </Field>
+                          </div>
 
-                      <Field id="email" label="Email address" required hint="We reply here." error={errors.email?.message}>
-                        {(a) => <input {...a} {...register("email")} type="email" autoComplete="email" placeholder="john@example.com" className="input-base text-base" />}
-                      </Field>
+                          <Field id="email" label="Email address" required hint="We reply here." error={errors.email?.message}>
+                            {(a) => <input {...a} {...register("email")} type="email" autoComplete="email" placeholder="john@example.com" className="input-base text-base" />}
+                          </Field>
 
-                      <Field id="businessDescription" label="What does your business do?" required error={errors.businessDescription?.message}>
-                        {(a) => <input {...a} {...register("businessDescription")} placeholder="e.g. Mobile mechanic, hair salon, personal trainer" className="input-base text-base" />}
-                      </Field>
+                          <Field id="businessDescription" label="What does your business do?" required error={errors.businessDescription?.message}>
+                            {(a) => <input {...a} {...register("businessDescription")} placeholder="e.g. Mobile mechanic, hair salon, personal trainer" className="input-base text-base" />}
+                          </Field>
 
-                      <Field id="websiteUrl" label="Current website" error={errors.websiteUrl?.message}>
-                        {(a) => <input {...a} {...register("websiteUrl")} inputMode="url" autoComplete="url" placeholder="e.g. www.yourbusiness.co.uk" className="input-base text-base" />}
-                      </Field>
+                          <Field id="websiteUrl" label="Current website" error={errors.websiteUrl?.message}>
+                            {(a) => <input {...a} {...register("websiteUrl")} inputMode="url" autoComplete="url" placeholder="e.g. www.yourbusiness.co.uk" className="input-base text-base" />}
+                          </Field>
 
-                      <Field id="details" label="Anything else we should know?" error={errors.details?.message}>
-                        {(a) => <textarea {...a} {...register("details")} placeholder="Goals, timeline, questions" rows={3} className="input-base resize-none text-base" />}
-                      </Field>
+                          <Field id="details" label="Anything else we should know?" error={errors.details?.message}>
+                            {(a) => <textarea {...a} {...register("details")} placeholder="Goals, timeline, questions" rows={3} className="input-base resize-none text-base" />}
+                          </Field>
 
-                      {/* Honeypot: hidden from people and assistive tech. Bots tend to fill it in. */}
-                      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-                        <label>
-                          Leave this empty
-                          <input type="text" name="company_site" tabIndex={-1} autoComplete="off" defaultValue="" />
-                        </label>
-                      </div>
-
-                      <p className="text-sm text-muted-foreground">
-                        Used only to reply to you. <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">Privacy</Link>
-                      </p>
-
-                      {submitError && (
-                        <div role="alert" className="p-3 sm:p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
-                          {submitError}
+                          <p className="text-sm text-muted-foreground">
+                            Used only to reply to you. <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground">Privacy</Link>
+                          </p>
                         </div>
-                      )}
+                      </motion.div>
+                    )}
 
-                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-2">
-                        <button
-                          type="button"
-                          onClick={() => setStep(2)}
-                          disabled={isSubmitting}
-                          className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 disabled:opacity-50 min-h-[44px]"
-                        >
-                          <ArrowLeft className="w-4 h-4 mr-2" />
-                          Back
-                        </button>
+                    {step === "monthly" && (
+                      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                        <StepHeader
+                          title={<>Monthly <span className="text-primary">plan</span></>}
+                          description="Would you like us to look after the website once it is live? It runs month to month."
+                          progress={getProgressValue()}
+                          headingRef={headingRef}
+                        />
+
+                        <MonthlyChoice value={monthlyPlan} onChange={setMonthlyPlan} />
+                        <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
+                          {hosting.terms.slice(0, 2).map((t) => (
+                            <li key={t}>{t}</li>
+                          ))}
+                        </ul>
+
+                        {/* What you are sending, with the sums shown. */}
+                        <dl className="mt-5 sm:mt-6 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 rounded-lg border border-border bg-secondary p-3 text-sm sm:p-4" aria-label="Summary">
+                          <dt className="text-muted-foreground">Package</dt>
+                          <dd className="text-right font-medium">{chosen ? `${chosen.name}${chosen.price ? ` £${chosen.price}` : ""}` : "Not sure yet"}</dd>
+                          {selectedAddons.length > 0 && (
+                            <>
+                              <dt className="text-muted-foreground">Add-ons</dt>
+                              <dd className="text-right font-medium">£{addonTotal}</dd>
+                            </>
+                          )}
+                          {chosen?.price && (
+                            <>
+                              <dt className="text-muted-foreground">One-off total</dt>
+                              <dd className="text-right font-semibold">£{Number(chosen.price) + addonTotal}</dd>
+                            </>
+                          )}
+                          <dt className="text-muted-foreground">Monthly</dt>
+                          <dd className="text-right font-medium">{monthlyPlan === "hosting-care" ? `£${hosting.price}/month` : monthlyPlan === "none" ? "None" : "Choose above"}</dd>
+                        </dl>
+                      </motion.div>
+                    )}
+
+                    {/* Honeypot: hidden from people and assistive tech. Bots tend to fill it in. */}
+                    <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                      <label>
+                        Leave this empty
+                        <input type="text" name="company_site" tabIndex={-1} autoComplete="off" defaultValue="" />
+                      </label>
+                    </div>
+
+                    {submitError && (
+                      <div role="alert" className="mt-4 p-3 sm:p-4 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
+                        {submitError}
+                      </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-4">
+                      <button type="button" onClick={back} disabled={isSubmitting} className="btn-outline btn-md sm:btn-lg justify-center order-2 sm:order-1 disabled:opacity-50 min-h-[44px]">
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Back
+                      </button>
+                      {isLastStep ? (
                         <button
                           type="submit"
-                          disabled={isSubmitting}
+                          disabled={isSubmitting || (step === "monthly" && monthlyPlan === null)}
                           aria-busy={isSubmitting}
-                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-70 min-h-[44px]"
+                          className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 disabled:opacity-60 min-h-[44px]"
                         >
                           {isSubmitting ? (
                             <>
@@ -503,9 +465,14 @@ export default function Start() {
                             </>
                           )}
                         </button>
-                      </div>
-                    </form>
-                  </motion.div>
+                      ) : (
+                        <button type="submit" className="btn-primary btn-md sm:btn-lg justify-center order-1 sm:order-2 min-h-[44px]">
+                          Continue
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </button>
+                      )}
+                    </div>
+                  </form>
                 )}
                 </div>
               </motion.div>
@@ -536,14 +503,20 @@ export default function Start() {
                   <div className="inline-block p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl bg-secondary border border-border text-left">
                     <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Package</div>
                     <div className="text-base sm:text-lg font-bold">
-                      {packages.find((p) => p.id === selectedPackage)?.name || "Not sure yet"}
+                      {getPackage(selectedPackage ?? "")?.name || "Not sure yet"}
                     </div>
                     {selectedAddons.length > 0 && (
                       <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-border">
                         <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Selected Add-ons</div>
                         <div className="text-xs sm:text-sm font-medium">
-                          {selectedAddons.map((id) => availableAddons.find((a) => a.id === id)?.name).join(", ")}
+                          {selectedAddons.map((id) => getAddon(id)?.name).join(", ")}
                         </div>
+                      </div>
+                    )}
+                    {selectedPackage !== "enterprise" && (
+                      <div className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-border">
+                        <div className="text-[10px] sm:text-xs text-muted-foreground mb-1">Monthly plan</div>
+                        <div className="text-xs sm:text-sm font-medium">{monthlyPlan === "hosting-care" ? `${hosting.name}, £${hosting.price}/month` : "None for now"}</div>
                       </div>
                     )}
                   </div>

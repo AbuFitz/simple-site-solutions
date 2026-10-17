@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { addons, packageIds } from "../data/packages.js";
+import { addons, monthlyPlanIds, packageIds } from "../data/packages.js";
 
 /**
  * One validation contract for the project brief. The browser uses it for inline errors and
@@ -44,6 +44,8 @@ export const ADDON_IDS = addons.map((a) => a.id) as [string, ...string[]];
 
 export const briefSchema = briefFieldsSchema.extend({
   selectedPackage: z.enum(PACKAGE_CHOICES, { errorMap: () => ({ message: "Choose a package, or 'Not sure yet'" }) }),
+  /** Monthly rolling plan. "none" means no monthly plan for now. */
+  monthlyPlan: z.enum(monthlyPlanIds).default("none"),
   selectedAddons: z.array(z.enum(ADDON_IDS)).max(ADDON_IDS.length).default([]),
   /** Honeypot. Real visitors never see or fill this; bots often do. */
   company_site: z.string().max(0).optional(),

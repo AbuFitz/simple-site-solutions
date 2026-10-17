@@ -10,7 +10,7 @@ const fill = (s, name) => s.replaceAll("{city}", name);
 export const faqFor = (loc, data) => [...loc.faq, ...data.shared.faq.map((f) => ({ q: fill(f.q, loc.name), a: fill(f.a, loc.name) }))];
 
 export const hubTitle = "Web Design Across the UK | Local Areas | OneSimpleSite";
-export const hubDescription = "OneSimpleSite provides web design and development for businesses across the UK. Fixed-price websites from £199, with local pages for Hertfordshire, Bedfordshire, Buckinghamshire and London.";
+export const hubDescription = "OneSimpleSite provides web design and development for businesses across the UK. Fixed-price websites from £189, with local pages for Hertfordshire, Bedfordshire, Buckinghamshire and London.";
 
 const org = (siteUrl) => ({ "@type": "Organization", name: "OneSimpleSite", url: siteUrl });
 

@@ -16,7 +16,7 @@ async function mockChat(page: Page, reply: (q: string) => Reply) {
   });
   return seen;
 }
-const price = { reply: "Our packages are fixed-price: The Starter is £199, The Sorted is £399 and The Works is £649.", actions: [{ label: "See packages and prices", href: "/packages" }], source: "site" };
+const price = { reply: "Our packages are fixed-price: Launch is £189 and Growth is £489.", actions: [{ label: "See packages and prices", href: "/packages" }], source: "site" };
 const open = async (page: Page) => {
   await page.getByRole("button", { name: /Open chat with Sid/ }).click();
   await expect(page.getByRole("dialog", { name: /Chat with Sid/ })).toBeVisible();
@@ -35,7 +35,7 @@ for (const width of [390, 1440]) {
       const dialog = page.getByRole("dialog", { name: /Chat with Sid/ });
       await expect(dialog.getByText(/I'm Sid/)).toBeVisible();
       await dialog.getByRole("button", { name: "What do packages cost?" }).click();
-      await expect(dialog.getByText(/The Starter is £199/)).toBeVisible();
+      await expect(dialog.getByText(/Launch is £189/)).toBeVisible();
       expect(seen).toEqual(["What do packages cost?"]);
       await expect(dialog.getByRole("link", { name: "See packages and prices" })).toHaveAttribute("href", "/packages");
       await expect(dialog.getByText(/AI can get things wrong/)).toBeVisible();
@@ -54,9 +54,9 @@ for (const width of [390, 1440]) {
       const box = page.getByLabel("Message Sid");
       await box.fill("how much");
       await box.press("Shift+Enter");
-      await expect(page.getByText("The Starter is £199")).toHaveCount(0);
+      await expect(page.getByText("Launch is £189")).toHaveCount(0);
       await box.press("Enter");
-      await expect(page.getByText(/The Starter is £199/)).toBeVisible();
+      await expect(page.getByText(/Launch is £189/)).toBeVisible();
       await page.getByRole("dialog", { name: /Chat with Sid/ }).getByRole("link", { name: "See packages and prices" }).click();
       await expect(page).toHaveURL(/\/packages$/);
       await expect(page.getByRole("dialog", { name: /Chat with Sid/ })).toBeHidden();
@@ -70,7 +70,7 @@ for (const width of [390, 1440]) {
       await page.getByLabel("Message Sid").fill("what does it cost");
       await page.getByRole("button", { name: "Send message" }).click();
       await expect(page.getByRole("status").filter({ hasText: "Sid is typing" })).toBeVisible();
-      await expect(page.getByText(/The Starter is £199/)).toBeVisible();
+      await expect(page.getByText(/Launch is £189/)).toBeVisible();
       await page.getByRole("link", { name: "Packages and prices" }).count();
       await page.goto("/contact");
       await settle(page);
@@ -113,7 +113,7 @@ for (const width of [390, 1440]) {
       await run("launcher");
       await open(page);
       await page.getByRole("button", { name: "What do packages cost?" }).click();
-      await expect(page.getByText(/The Starter is £199/)).toBeVisible();
+      await expect(page.getByText(/Launch is £189/)).toBeVisible();
       await run("open");
     });
   });

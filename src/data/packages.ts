@@ -1,81 +1,104 @@
+/**
+ * The price list. One source for the packages page, the project brief, checkout and the assistant.
+ * Wording comes from the owner's approved pricing copy (October 2026). Do not add inclusions here
+ * that the owner has not approved.
+ */
 export interface PackageTier {
-  id: "starter" | "sorted" | "works";
+  id: "launch" | "growth" | "enterprise";
   name: string;
-  price: string;
+  /** Pounds as a string, or null when the package is quoted individually. */
+  price: string | null;
+  /** The previous price, shown struck through next to the current one. */
+  was?: string;
+  /** Shown instead of a price when there is no fixed price. */
+  priceLabel?: string;
   tagline: string;
+  /** "Best suited to" line. */
   ideal: string;
-  /** Our suggested starting point for most growing businesses. This is a recommendation, not a sales statistic. */
+  /** Our suggested starting point for most growing businesses. A recommendation, not a sales statistic. */
   recommended?: boolean;
-  /** Maximum pages included. Drives the page-stack height in the 3D pricing scene. */
-  pages: number;
-  features: string[];
-  delivery: string;
-  payment: string;
+  /** Maximum main pages. Null when scoped individually. */
+  pages: number | null;
+  /** What this package adds on top of the shared inclusions. */
+  features: { title: string; text?: string }[];
+  /** Short form, e.g. "5 to 7 working days". Null when agreed in the quotation. */
+  delivery: string | null;
+  revisions: string | null;
+  /** Payment terms in words, shown to the customer. */
+  paymentText: string;
+  /** How the price is taken, used to work out the amount due to begin. */
+  payment: "full" | "half" | "quote";
+  /** Extra note shown under the list. */
+  note?: string;
 }
+
+/** Included with both fixed packages. */
+export const sharedFeatures: { title: string; text: string }[] = [
+  { title: "Design around your business", text: "Agreed colours, typography and layout, using your supplied branding and images." },
+  { title: "Mobile-friendly layouts", text: "Your website checked on mobile, tablet and desktop." },
+  { title: "Website copywriting", text: "We turn your business information and rough notes into clear wording for the agreed pages." },
+  { title: "An enquiry form", text: "One standard contact form, connected and tested with your chosen email inbox." },
+  { title: "Contact links", text: "Phone, email and WhatsApp links where required, plus location or service-area information." },
+  { title: "Essential SEO", text: "Clear page titles, search descriptions, heading structure, image descriptions and a sitemap." },
+  { title: "Speed optimisation", text: "Appropriately sized images and an efficient page build." },
+  { title: "Appropriate cookie controls", text: "Configured around the services actually used on your website." },
+];
 
 export const packages: PackageTier[] = [
   {
-    id: "starter",
-    name: "The Starter",
-    price: "199",
-    tagline: "Get online properly",
-    ideal: "New businesses & sole traders",
+    id: "launch",
+    name: "Launch",
+    price: "189",
+    was: "249",
+    tagline: "A clear introduction to your business, services and contact details.",
+    ideal: "A straightforward website that explains your business and helps customers contact you.",
     pages: 3,
     features: [
-      "Up to 3 pages",
-      "Professional copywriting",
-      "Mobile-first design",
-      "Contact form + WhatsApp",
-      "Google Maps",
-      "Basic SEO",
-      "SSL + Speed optimised",
-      "1 revision round",
+      { title: "Up to 3 main website pages", text: "For example: Home, Services and Contact." },
     ],
-    delivery: "5–7 days",
-    payment: "Upfront",
+    delivery: "5 to 7 working days",
+    revisions: "1 revision round before launch",
+    paymentText: "£189 before work begins",
+    payment: "full",
   },
   {
-    id: "sorted",
-    name: "The Sorted",
-    price: "399",
-    tagline: "Look established, win trust",
-    ideal: "Growing businesses",
+    id: "growth",
+    name: "Growth",
+    price: "489",
+    was: "649",
+    tagline: "More room to explain what you offer, with a more detailed structure and additional setup.",
+    ideal: "A fuller website with individual service pages, more content and a stronger search setup.",
     recommended: true,
-    pages: 6,
-    features: [
-      "Up to 6 pages",
-      "Everything in Starter, plus:",
-      "Conversion-focused layout",
-      "Reviews & trust signals",
-      "Booking system included",
-      "Full on-page SEO",
-      "Free domain (1st year)",
-      "Business email setup",
-      "2 revision rounds",
-    ],
-    delivery: "7–10 days",
-    payment: "50% upfront",
-  },
-  {
-    id: "works",
-    name: "The Works",
-    price: "649",
-    tagline: "Compete seriously, scale",
-    ideal: "Established businesses",
     pages: 10,
     features: [
-      "Up to 10 pages",
-      "Everything in Sorted, plus:",
-      "SEO-led architecture",
-      "Location pages for local SEO",
-      "Blog setup + 1 post",
-      "Google Analytics setup",
-      "Advanced booking",
-      "Full legal pages",
-      "3 revision rounds",
+      { title: "Up to 10 main website pages", text: "These can cover individual services, your business, frequently asked questions, contact details and relevant locations." },
+      { title: "Content planning and navigation", text: "We organise the agreed pages so visitors can find the right service and next step." },
+      { title: "Advanced on-page SEO", text: "A one-off setup covering service and location keyword research, page-specific content improvements, links between related pages and structured business information for search engines." },
+      { title: "Business email setup", text: "Connect one customer-owned business email account to your domain. Mailbox subscription charges are separate." },
+      { title: "Basic analytics setup", text: "Connect your analytics account so you can view visits and popular pages, with appropriate privacy controls." },
     ],
-    delivery: "10–14 days",
-    payment: "50% upfront",
+    delivery: "10 to 14 working days",
+    revisions: "3 revision rounds before launch",
+    paymentText: "£244.50 to begin and £244.50 before launch",
+    payment: "half",
+    note: "Any location pages count towards the 10-page allowance.",
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise",
+    price: null,
+    priceLabel: "Tailored quotation",
+    tagline: "For requirements that need a separate plan, price and delivery schedule.",
+    ideal: "Online shops, customer portals, integrations and projects requiring a bespoke scope.",
+    pages: null,
+    features: [
+      { title: "Scoped to your project", text: "Examples include online shops, customer accounts, portals, advanced booking, CRM connections, payment integrations and larger websites." },
+      { title: "Agreed before work starts", text: "We agree the functionality, deliverables, ongoing costs and support arrangements first." },
+    ],
+    delivery: null,
+    revisions: null,
+    paymentText: "Agreed in the quotation",
+    payment: "quote",
   },
 ];
 
@@ -83,30 +106,59 @@ export interface Addon {
   id: string;
   name: string;
   price: string;
+  /** One or two plain sentences, shown when the add-on is selected and on hover or tap of the info control. */
+  explain: string;
 }
 
 export const addons: Addon[] = [
-  { id: "logo", name: "Logo Design", price: "49" },
-  { id: "google-business", name: "Google Business Profile Setup", price: "39" },
-  { id: "booking", name: "Booking System Setup", price: "39" },
-  { id: "email-templates", name: "Extra Email Templates (×3)", price: "29" },
-  { id: "seo-audit", name: "SEO Audit Report", price: "59" },
-  { id: "legal-pages", name: "Legal Pages Pack", price: "19" },
+  { id: "logo", name: "Logo Design", price: "49", explain: "A simple logo made for your business and used across your website. You can supply your own instead." },
+  { id: "google-business", name: "Google Business Profile Setup", price: "39", explain: "We set up or tidy your Google Business Profile so your business details are ready to appear on Google Search and Maps." },
+  { id: "booking", name: "Booking System Setup", price: "39", explain: "A booking option added to your website so customers can request a time. Tell us how you take bookings today." },
+  { id: "email-templates", name: "Extra Email Templates (×3)", price: "29", explain: "Three reusable email layouts for replies you send often, such as a quote, a confirmation and a follow-up." },
+  { id: "seo-audit", name: "SEO Audit Report", price: "59", explain: "A written review of how an existing website is set up for search, with a prioritised list of what to fix." },
+  { id: "legal-pages", name: "Legal Pages Pack", price: "19", explain: "We add your privacy, terms and cookie pages to the website. You supply and approve the wording. These pages sit outside your main page allowance." },
 ];
 
+/** Packages that carry a fixed price (and so can be paid for online). */
+export const pricedPackages = packages.filter((p) => p.price !== null);
 export const packageIds = packages.map((p) => p.id) as PackageTier["id"][];
 export const getPackage = (id: string) => packages.find((p) => p.id === id);
 export const getAddon = (id: string) => addons.find((a) => a.id === id);
 
+/** Pence due to begin: the full price, or half of it. Null for a quoted package. */
+export function dueToBeginPence(p: PackageTier): number | null {
+  if (p.price === null || p.payment === "quote") return null;
+  const full = Math.round(Number(p.price) * 100);
+  return p.payment === "half" ? Math.round(full / 2) : full;
+}
+
+/** Monthly rolling plan, available alongside Launch and Growth. */
 export const hosting = {
-  name: "Keep It Running",
-  price: "19",
+  id: "hosting-care",
+  name: "Hosting & Care",
+  price: "29",
+  intro: "Available alongside Launch and Growth.",
   features: [
-    "Website hosting & domain",
-    "SSL certificate",
-    "Weekly backups",
-    "Security monitoring",
-    "Up to 5 content updates/month",
-    "Priority support",
+    "Website hosting, SSL and one standard-priced domain",
+    "Weekly website backups and security monitoring",
+    "Up to 3 small content changes each month, covering supplied text, images and contact details",
+    "Up to 30 minutes combined for those monthly content changes",
+    "Support for the existing website",
+    "Google Search Console setup, ownership verification and sitemap submission, with indexing requests for key pages where appropriate",
+  ],
+  terms: [
+    "New pages, redesigns and additional functionality are quoted separately.",
+    "Either side can cancel with 30 days' notice.",
+    "Enterprise hosting and support are scoped with the quotation.",
   ],
 };
+
+export const monthlyPlanIds = ["hosting-care", "none"] as const;
+
+/** How the package scope works. */
+export const scopeNotes = [
+  "A revision round is one combined list of changes to the agreed design and content. New functionality or a substantial change of direction is quoted separately.",
+  "Delivery estimates begin once we have the agreed information, assets, account access and initial payment.",
+  "Main page allowances exclude separately purchased policy-page implementation. Customers supply and approve their policy wording.",
+  "The website belongs to the customer after full payment, with source-file handover included. Hosting and third-party subscriptions are separate from the one-off build price.",
+];

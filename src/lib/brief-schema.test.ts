@@ -9,7 +9,7 @@ const ok = {
   businessDescription: "Plumber in Watford",
   websiteUrl: "",
   details: "",
-  selectedPackage: "sorted",
+  selectedPackage: "growth",
   selectedAddons: ["logo"],
 };
 

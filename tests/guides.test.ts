@@ -26,7 +26,7 @@ describe("platform guides", () => {
   it("only quotes our own prices, and says it is independent", () => {
     for (const g of d.guides) {
       const prices = [...JSON.stringify(g).matchAll(/£\d+/g)].map((m) => m[0]);
-      for (const p of prices) expect(["£199", "£399", "£649"], `${g.slug} ${p}`).toContain(p);
+      for (const p of prices) expect(["£189", "£249", "£489", "£649"], `${g.slug} ${p}`).toContain(p);
       expect(staticGuideHtml(g, d)).toContain("not affiliated");
     }
   });

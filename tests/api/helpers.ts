@@ -28,10 +28,10 @@ export const CHECKOUT_ENV = {
   SITE_URL: "https://onesimplesite.co.uk",
   UPSTASH_REDIS_REST_URL: "https://redis.example",
   UPSTASH_REDIS_REST_TOKEN: "tok",
-  STRIPE_PRICE_STARTER: "price_starter1",
-  PACKAGE_READY_STARTER: "true",
-  STRIPE_PRICE_SORTED: "price_sorted1",
-  PACKAGE_READY_SORTED: "false",
+  STRIPE_PRICE_LAUNCH: "price_launch1",
+  PACKAGE_READY_LAUNCH: "true",
+  STRIPE_PRICE_GROWTH: "price_growth1",
+  PACKAGE_READY_GROWTH: "false",
 };
 
 export function setEnv(env: Record<string, string>) {
