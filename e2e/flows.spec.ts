@@ -46,7 +46,7 @@ test.describe("Work pages", () => {
       await page.goto("/");
       await settle(page);
       await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName(/Websites\s*that make\s*sense\./);
-      await expect(page.getByRole("link", { name: "View more" }).first()).toHaveAttribute("href", "/work");
+      await expect(page.getByRole("link", { name: "View all work" }).first()).toHaveAttribute("href", "/work");
       expect(await page.locator("main .hm-hero img").count()).toBe(0);
       expect(errors).toEqual([]);
       await ctx.close();
