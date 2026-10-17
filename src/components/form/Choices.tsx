@@ -172,7 +172,7 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
       ref={wrap}
       onPointerEnter={enter}
       onPointerLeave={leave}
-      className={`relative rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${show ? "z-20" : "z-0"} ${selected ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
+      className={`relative h-full rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${show ? "z-20" : "z-0"} ${selected ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
     >
       <button
         type="button"
@@ -181,7 +181,7 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
         onClick={onToggle}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        className="block min-h-[44px] w-full rounded-[inherit] p-3 pb-9 text-left sm:p-4 sm:pb-10"
+        className="block h-full min-h-[88px] w-full rounded-[inherit] p-3 pb-9 text-left sm:p-4 sm:pb-10 [@media(hover:hover)_and_(pointer:fine)]:min-h-[76px] [@media(hover:hover)_and_(pointer:fine)]:pb-4"
       >
         <span className="flex items-start justify-between">
           <span className="text-xs font-semibold leading-tight sm:text-sm">{addon.name}</span>
@@ -196,11 +196,9 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
         aria-label={`About ${addon.name}`}
         aria-expanded={show}
         onClick={() => setTap((v) => !v)}
-        className="group absolute bottom-0 right-0 flex h-11 w-11 items-center justify-center outline-none"
+        className="group absolute bottom-0 right-0 flex h-11 w-11 items-center justify-center outline-none [@media(hover:hover)_and_(pointer:fine)]:hidden"
       >
-        <span className="flex h-6 w-6 items-center justify-center rounded-full border border-muted-foreground/40 text-muted-foreground transition-colors group-hover:border-foreground group-hover:text-foreground group-focus-visible:border-foreground group-focus-visible:text-foreground">
-          <Info aria-hidden="true" className="h-3.5 w-3.5" />
-        </span>
+        <Info aria-hidden="true" className="h-5 w-5 text-muted-foreground transition-colors group-focus-visible:text-foreground" />
       </button>
       <div
         id={textId}

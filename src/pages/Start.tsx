@@ -293,16 +293,21 @@ export default function Start() {
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                     <StepHeader
                       title={<>Any <span className="text-primary">add-ons?</span></>}
-                      description="Optional extras. Hover or tap the i to see what each one does."
+                      description="Optional extras, priced separately."
                       progress={getProgressValue()}
                       headingRef={headingRef}
                     />
 
-                    <div className="grid grid-cols-2 items-start gap-2 sm:gap-3 mb-4 sm:mb-6">
+                    <div className="grid grid-cols-2 auto-rows-fr gap-2 sm:gap-3 mb-4 sm:mb-6">
                       {addonData.map((addon, i) => (
                         <AddonChoice key={addon.id} side={i % 2 === 0 ? "left" : "right"} addon={addon} selected={selectedAddons.includes(addon.id)} onToggle={() => toggleAddon(addon.id)} />
                       ))}
                     </div>
+
+                    <p className="mb-4 text-sm text-muted-foreground sm:mb-6">
+                      <span className="[@media(hover:hover)_and_(pointer:fine)]:hidden">Tap the i on an add-on to see what it is.</span>
+                      <span className="hidden [@media(hover:hover)_and_(pointer:fine)]:inline">Hover over an add-on to see what it is.</span>
+                    </p>
 
                     {selectedAddons.length > 0 && (
                       <p className="mb-4 sm:mb-6 rounded-lg border border-border bg-secondary p-3 text-sm text-muted-foreground" aria-live="polite">
