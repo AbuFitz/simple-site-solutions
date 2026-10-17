@@ -6,12 +6,10 @@ import { hd, shots } from "@/assets/redesign";
 
 const picks = ["true-to-detail", "brightlearn-tutoring", "readysold", "fixnow-mechanics", "fixnow-shop", "stonebridge", "arf-mods"];
 const desktop: Record<string, string> = { "true-to-detail": shots.ttdHero, "brightlearn-tutoring": shots.blHero };
-const phone: Record<string, string> = { "true-to-detail": shots.ttdMHero, "brightlearn-tutoring": shots.blMHero };
 const HOLD_MS = 4500;
 
 /**
- * Our work as a 3D coverflow. The live site sits large in the middle with its phone view in front of it,
- * the neighbouring sites angle away on either side and run off the edges of the screen. It turns by itself;
+ * Our work as a 3D coverflow. The live site sits large in the middle and the neighbouring sites angle away on either side and run off the edges of the screen. It turns by itself;
  * people can take over with the arrows, dots, a drag or swipe, a sideways trackpad scroll or the arrow keys.
  * Tap the middle one to open it, tap a side one to bring it forward. It is an ordinary section, so normal
  * vertical scrolling passes straight over it. Reduced motion swaps sites instantly instead of animating.
@@ -176,9 +174,6 @@ export function WorkRack() {
                 </span>
                 <span className="hm-win__shot">
                   <img src={desktop[p.slug] ?? hd[p.slug]?.[0] ?? p.img.d} alt={`${p.name} website`} width={1600} height={900} loading="lazy" decoding="async" draggable={false} />
-                </span>
-                <span className="hm-phone" aria-hidden="true">
-                  <img src={phone[p.slug] ?? p.img.m} alt="" width={390} height={844} loading="lazy" decoding="async" draggable={false} />
                 </span>
               </Link>
             </li>

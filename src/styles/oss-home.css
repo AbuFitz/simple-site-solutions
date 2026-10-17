@@ -103,7 +103,7 @@
 .hm .cta, .hm .cta a { color: var(--ink); }
 .hm .cta .oss-btn--ink { color: var(--bone); }
 
-/* Our work: a 3D coverflow of live sites, each with its phone view in front. */
+/* Our work: a 3D coverflow of live sites. */
 .hm-rack { background: #070a09; padding: 110px 0 70px; overflow: hidden; position: relative; }
 .hm-rack__head { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 0 var(--m); }
 .hm-rack__head h2 { font: 700 clamp(48px, 9vw, 150px) / 0.85 var(--f-display); letter-spacing: -0.06em; text-transform: uppercase; margin: 0; }
@@ -123,9 +123,6 @@
 .hm-rack__ring > li[aria-hidden="true"] .hm-win__bar em { opacity: 0.0; }
 .hm-win__shot { display: block; aspect-ratio: 16 / 9.4; overflow: hidden; background: #000; border-radius: 0 0 14px 14px; }
 .hm-win__shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; pointer-events: none; }
-/* The phone view stands in front of its window. */
-.hm-phone { position: absolute; right: -5%; bottom: -14%; width: 19%; border-radius: clamp(16px, 2.4vw, 34px); background: #1b211e; padding: clamp(5px, 0.55vw, 9px); box-shadow: 0 40px 60px -20px #000, 0 0 0 1px rgba(239, 235, 227, 0.2); transform: translateZ(90px); }
-.hm-phone img { width: 100%; height: auto; display: block; border-radius: clamp(11px, 1.8vw, 26px); pointer-events: none; }
 .hm-rack__arrow { position: absolute; top: 40%; z-index: 90; width: 58px; height: 58px; border-radius: 50%; border: 0; background: rgba(8, 12, 10, 0.78); color: var(--bone); display: grid; place-items: center; cursor: pointer; box-shadow: 0 0 0 1px rgba(239, 235, 227, 0.14); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background-color 0.2s ease, transform 0.2s ease; }
 .hm-rack__arrow:hover { background: rgba(239, 235, 227, 0.16); }
 .hm-rack__arrow:active { transform: scale(0.94); }
@@ -152,7 +149,6 @@
   .hm-win__bar em { font-size: 10px; padding: 2px 8px; }
   .hm-win, .hm-win__shot { border-radius: 10px; }
   .hm-win__shot { border-radius: 0 0 10px 10px; }
-  .hm-phone { width: 24%; right: -3%; bottom: -16%; transform: translateZ(60px); }
   .hm-rack__arrow { top: 36%; width: 48px; height: 48px; }
   .hm-rack__arrow--l { left: 8px; }
   .hm-rack__arrow--r { right: 8px; }
