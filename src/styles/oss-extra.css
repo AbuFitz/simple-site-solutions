@@ -155,3 +155,19 @@ body.has-cookie main { padding-bottom: 96px; }
 @keyframes fg-a { to { transform: translate3d(14vmax, 10vmax, 0) scale(1.15); } }
 @keyframes fg-b { to { transform: translate3d(-12vmax, 14vmax, 0) scale(0.9); } }
 @media (prefers-reduced-motion: reduce) { .fg-o, .fg { transition: none; } .fg-o i { animation: none; } }
+
+/* Press: a soft green gradient grows from where a button is pressed. */
+:is(button, [role="button"], [role="radio"], a[class*="btn"], a.pkx-go, a.hm-link, .oss-bar a):active:not(:disabled) {
+  background-image: radial-gradient(circle at var(--px, 50%) var(--py, 50%), rgba(79, 217, 160, 0.62) 0%, rgba(79, 217, 160, 0.26) 34%, rgba(79, 217, 160, 0) 74%);
+  background-repeat: no-repeat;
+}
+:is(button, [role="button"], [role="radio"], a[class*="btn"], a.pkx-go):active:not(:disabled) { transform: scale(0.985); }
+@media (prefers-reduced-motion: reduce) { :is(button, [role="button"], [role="radio"], a[class*="btn"], a.pkx-go):active:not(:disabled) { transform: none; } }
+
+/* Scroll: a green light that wakes after the first screen and follows the page. */
+.scroll-glow { position: fixed; inset: 0; z-index: 30; pointer-events: none; mix-blend-mode: screen; opacity: calc(var(--wake, 0) * 0.55);
+  background: radial-gradient(60vmax 46vmax at var(--gx, 50%) var(--gy, 20%), rgba(38, 176, 125, 0.34), rgba(38, 176, 125, 0.08) 52%, transparent 74%); }
+body[data-menu-open="true"] .scroll-glow { display: none; }
+
+/* Keep the page width steady when a long panel opens and the scrollbar appears. */
+html { scrollbar-gutter: stable; }

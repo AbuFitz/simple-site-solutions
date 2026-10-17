@@ -8,6 +8,8 @@ import { RouteFallback } from "@/components/RouteFallback";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import { ChatWidget } from "@/components/chat/ChatWidget";
+import { PressGlow } from "@/components/oss/PressGlow";
+import { ScrollGlow } from "@/components/oss/ScrollGlow";
 const HowItWorks = lazy(() => import("./pages/HowItWorks"));
 const Packages = lazy(() => import("./pages/Packages"));
 const FAQ = lazy(() => import("./pages/FAQ"));
@@ -91,6 +93,8 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
+        <PressGlow />
+        <ScrollGlow />
         <ChatWidget />
       </BrowserRouter>
     </TooltipProvider>

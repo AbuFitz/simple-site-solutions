@@ -232,7 +232,7 @@ export default function Start() {
       <section className="pt-20 pb-4 sm:pt-20 sm:pb-8 md:pt-20 md:pb-10 lg:pt-24 lg:pb-12 relative min-h-[calc(100dvh-3.5rem)] flex flex-col justify-start">
         <FlowGlow level={glowLevel} />
         <DottedGrid className="opacity-30" spacing={32} />
-        <div className={`content-width relative z-10 flex-1 flex flex-col mx-auto max-w-xl sm:max-w-2xl lg:max-w-3xl xl:max-w-4xl`}>
+        <div className={`content-width relative z-10 flex-1 flex flex-col mx-auto w-full sm:w-[620px] sm:!px-0 !max-w-full`}>
           <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.div
@@ -262,12 +262,12 @@ export default function Start() {
                         role="radio"
                         aria-checked={selectedPackage === "unsure"}
                         onClick={() => setSelectedPackage("unsure")}
-                        className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-lg border-2 bg-card p-3 text-left transition-colors sm:rounded-xl sm:p-4 md:p-5 ${selectedPackage === "unsure" ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
+                        className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-xl border p-3 text-left transition-colors sm:p-4 md:p-5 ${selectedPackage === "unsure" ? "border-primary/70 bg-primary/[0.07]" : "border-foreground/10 bg-foreground/[0.035] hover:border-foreground/25"}`}
                       >
                         <span className="min-w-0">
                           <span className="block text-sm font-bold sm:text-base md:text-lg">Not sure yet</span>
                         </span>
-                        <span aria-hidden="true" className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 sm:h-5 sm:w-5 md:h-6 md:w-6 ${selectedPackage === "unsure" ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
+                        <span aria-hidden="true" className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border sm:h-5 sm:w-5 ${selectedPackage === "unsure" ? "border-primary bg-primary" : "border-foreground/30"}`}>
                           {selectedPackage === "unsure" && <Check className="h-3 w-3 text-primary-foreground" />}
                         </span>
                       </button>
@@ -297,12 +297,12 @@ export default function Start() {
                     </div>
 
                     <p className="mb-4 text-sm text-muted-foreground sm:mb-6">
-                      <span className="[@media(hover:hover)_and_(pointer:fine)]:hidden">Tap the i on an add-on to see what it is.</span>
+                      <span className="[@media(hover:hover)_and_(pointer:fine)]:hidden">Tap an add-on to pick it and see what it is.</span>
                       <span className="hidden [@media(hover:hover)_and_(pointer:fine)]:inline">Hover over an add-on to see what it is.</span>
                     </p>
 
                     {selectedAddons.length > 0 && (
-                      <p className="mb-4 sm:mb-6 rounded-lg border border-border bg-secondary p-3 text-sm text-muted-foreground" aria-live="polite">
+                      <p className="mb-4 sm:mb-6 rounded-xl border border-foreground/10 bg-foreground/[0.035] p-3 text-sm text-muted-foreground" aria-live="polite">
                         {selectedAddons.length} add-on{selectedAddons.length > 1 ? "s" : ""} selected:{" "}
                         <span className="font-medium text-foreground">£{addonTotal}</span>
                       </p>
@@ -412,7 +412,7 @@ export default function Start() {
                         </div>
 
                         {/* What you are sending, with the sums shown. */}
-                        <dl className="mt-1 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 rounded-lg border border-border bg-secondary p-3 text-sm sm:p-4" aria-label="Summary">
+                        <dl className="mt-1 grid grid-cols-[1fr_auto] gap-x-4 gap-y-2 rounded-xl border border-foreground/10 bg-foreground/[0.035] p-3 text-sm sm:p-4" aria-label="Summary">
                           <dt className="text-muted-foreground">Package</dt>
                           <dd className="text-right font-medium">{chosen ? `${chosen.name}${chosen.price ? ` £${chosen.price}` : ""}` : "Not sure yet"}</dd>
                           {selectedAddons.length > 0 && (

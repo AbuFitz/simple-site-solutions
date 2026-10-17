@@ -1,12 +1,12 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, ChevronDown, Info } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { sharedFeatures, type Addon, type PackageTier, hosting } from "@/data/packages";
 
 /** Round tick used by single choice cards. */
 function Radio({ on }: { on: boolean }) {
   return (
-    <span aria-hidden="true" className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 transition-colors sm:h-5 sm:w-5 md:h-6 md:w-6 ${on ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
+    <span aria-hidden="true" className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition-colors sm:h-5 sm:w-5 md:h-5 md:w-5 ${on ? "border-primary bg-primary" : "border-foreground/30"}`}>
       {on && <Check className="h-3 w-3 text-primary-foreground" />}
     </span>
   );
@@ -85,7 +85,7 @@ export function PackageChoice({ pkg, selected, onSelect }: { pkg: PackageTier; s
   const [open, setOpen] = useState(false);
   const panelId = useId();
   return (
-    <div className={`rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${selected ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}>
+    <div className={`rounded-xl border transition-colors ${selected ? "border-primary/70 bg-primary/[0.07]" : "border-foreground/10 bg-foreground/[0.035] hover:border-foreground/25"}`}>
       <div className="flex items-stretch">
         <button type="button" role="radio" aria-checked={selected} onClick={onSelect} className="flex min-h-[44px] min-w-0 flex-1 items-center justify-between gap-2 rounded-l-[inherit] p-3 text-left sm:gap-3 sm:p-4 md:p-5">
           <span className="min-w-0 flex-1">
@@ -120,7 +120,7 @@ export function PackageChoice({ pkg, selected, onSelect }: { pkg: PackageTier; s
 
 /**
  * A selectable add-on, the same compact box as before. A speech bubble explains it without changing the box:
- * hover anywhere on the card with a mouse, keyboard focus, or tap the (i) on a phone. On a wide screen the bubble
+ * hover the card with a mouse, keyboard focus, or pick it with a finger. On a wide screen the bubble
  * sits centred above the card; on a phone it lines up with the card's edge (`side`) so it never leaves the screen.
  */
 export function AddonChoice({ addon, selected, onToggle, side = "right" }: { addon: Addon; selected: boolean; onToggle: () => void; side?: "left" | "right" }) {
@@ -129,6 +129,8 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
   const [focus, setFocus] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const timer = useRef<number>();
+  const tapTimer = useRef<number>();
+  const touch = useRef(false);
   const textId = useId();
   const show = tap || hover || focus;
   const tip = useRef<HTMLDivElement>(null);
@@ -151,7 +153,10 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
     window.clearTimeout(timer.current);
     setHover(false);
   };
-  useEffect(() => () => window.clearTimeout(timer.current), []);
+  useEffect(() => () => {
+    window.clearTimeout(timer.current);
+    window.clearTimeout(tapTimer.current);
+  }, []);
 
   // A tap opens it; a tap anywhere else, or Escape, closes it.
   useEffect(() => {
@@ -172,33 +177,33 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
       ref={wrap}
       onPointerEnter={enter}
       onPointerLeave={leave}
-      className={`relative h-full rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${show ? "z-20" : "z-0"} ${selected ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
+      className={`relative h-full rounded-xl border transition-colors ${show ? "z-20" : "z-0"} ${selected ? "border-primary/70 bg-primary/[0.07]" : "border-foreground/10 bg-foreground/[0.035] hover:border-foreground/25"}`}
     >
       <button
         type="button"
         aria-pressed={selected}
         aria-describedby={textId}
-        onClick={onToggle}
+        onPointerDown={(e) => (touch.current = e.pointerType !== "mouse")}
+        onClick={() => {
+          // With a finger there is no hover, so picking an add-on shows its bubble for a moment.
+          if (touch.current && !selected) {
+            setTap(true);
+            window.clearTimeout(tapTimer.current);
+            tapTimer.current = window.setTimeout(() => setTap(false), 3600);
+          }
+          onToggle();
+        }}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        className="block h-full min-h-[88px] w-full rounded-[inherit] p-3 pb-9 text-left sm:p-4 sm:pb-10 [@media(hover:hover)_and_(pointer:fine)]:min-h-[76px] [@media(hover:hover)_and_(pointer:fine)]:pb-4"
+        className="block h-full min-h-[80px] w-full rounded-[inherit] p-3 text-left sm:p-4"
       >
         <span className="flex items-start justify-between">
           <span className="text-xs font-semibold leading-tight sm:text-sm">{addon.name}</span>
-          <span aria-hidden="true" className={`ml-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-md border-2 transition-colors sm:h-5 sm:w-5 ${selected ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
+          <span aria-hidden="true" className={`ml-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-md border transition-colors sm:h-5 sm:w-5 ${selected ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
             {selected && <Check className="h-2.5 w-2.5 text-primary-foreground sm:h-3 sm:w-3" />}
           </span>
         </span>
         <span className="mt-1 block text-xs font-medium text-primary">£{addon.price}</span>
-      </button>
-      <button
-        type="button"
-        aria-label={`About ${addon.name}`}
-        aria-expanded={show}
-        onClick={() => setTap((v) => !v)}
-        className="group absolute bottom-0 right-0 flex h-11 w-11 items-center justify-center outline-none [@media(hover:hover)_and_(pointer:fine)]:hidden"
-      >
-        <Info aria-hidden="true" className="h-5 w-5 text-muted-foreground transition-colors group-focus-visible:text-foreground" />
       </button>
       <div
         id={textId}
@@ -223,7 +228,7 @@ export function MonthlyChoice({ value, onChange }: { value: string | null; onCha
   const off = value === "none";
   return (
     <div role="radiogroup" aria-label="Monthly plan" className="space-y-3">
-      <div className={`rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${on ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}>
+      <div className={`rounded-xl border transition-colors ${on ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}>
         <button type="button" role="radio" aria-checked={on} onClick={() => onChange("hosting-care")} className="flex min-h-[44px] w-full items-center justify-between gap-3 rounded-t-[inherit] p-3 text-left sm:p-4 md:p-5">
           <span className="min-w-0">
             <span className="block text-sm font-bold sm:text-base md:text-lg">{hosting.name}</span>
@@ -243,7 +248,7 @@ export function MonthlyChoice({ value, onChange }: { value: string | null; onCha
           ))}
         </ul>
       </div>
-      <button type="button" role="radio" aria-checked={off} onClick={() => onChange("none")} className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-lg border-2 bg-card p-3 text-left transition-colors sm:rounded-xl sm:p-4 md:p-5 ${off ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}>
+      <button type="button" role="radio" aria-checked={off} onClick={() => onChange("none")} className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-xl border p-3 text-left transition-colors sm:p-4 md:p-5 ${off ? "border-primary/70 bg-primary/[0.07]" : "border-foreground/10 bg-foreground/[0.035] hover:border-foreground/25"}`}>
         <span className="min-w-0">
           <span className="block text-sm font-bold sm:text-base md:text-lg">No monthly plan for now</span>
           <span className="mt-0.5 block text-xs text-muted-foreground sm:text-sm">You can add one later.</span>
