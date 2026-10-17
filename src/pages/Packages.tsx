@@ -1,27 +1,70 @@
 import { Link } from "react-router-dom";
+import { Check } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { CtaBand } from "@/components/oss/CtaBand";
 import { Scramble } from "@/components/oss/Scramble";
 import { Seo, breadcrumb } from "@/components/seo/Seo";
-import { addons, hosting, packages, scopeNotes, sharedFeatures } from "@/data/packages";
+import { addons, hosting, packages, scopeNotes, sharedFeatures, type PackageTier } from "@/data/packages";
 import { DELIVERY_NOTE } from "@/data/site";
 
-const comparison: { label: string; values: [string, string, string] }[] = [
-  { label: "Main pages", values: ["Up to 3", "Up to 10", "Scoped"] },
-  { label: "Design, mobile layouts, copywriting", values: ["Included", "Included", "Scoped"] },
-  { label: "Enquiry form and contact links", values: ["Included", "Included", "Scoped"] },
-  { label: "Essential SEO and speed optimisation", values: ["Included", "Included", "Scoped"] },
-  { label: "Cookie controls", values: ["Included", "Included", "Scoped"] },
-  { label: "Content planning and navigation", values: ["—", "Included", "Scoped"] },
-  { label: "Advanced on-page SEO (one-off)", values: ["—", "Included", "Scoped"] },
-  { label: "Business email setup", values: ["—", "Included", "Scoped"] },
-  { label: "Basic analytics setup", values: ["—", "Included", "Scoped"] },
-  { label: "Revision rounds", values: ["1", "3", "Agreed"] },
-  { label: "Estimated delivery", values: ["5 to 7 working days", "10 to 14 working days", "Agreed"] },
-  { label: "Payment", values: ["£189 before work begins", "£244.50 to begin, £244.50 before launch", "In the quotation"] },
+/** The short, scannable list on each card. The full wording sits behind "See the details". */
+const keyPoints = (p: PackageTier) => [
+  ...p.features.map((f) => f.title),
+  ...(p.revisions ? [p.revisions] : []),
+  ...(p.delivery ? [`Estimated delivery: ${p.delivery}`] : []),
 ];
 
+function Card({ pkg }: { pkg: PackageTier }) {
+  const fixed = pkg.price !== null;
+  return (
+    <article className="pkx-card" data-rec={pkg.recommended ? "true" : "false"} itemScope itemType="https://schema.org/Product">
+      <header>
+        <h2 itemProp="name">{pkg.name}</h2>
+        {pkg.recommended && <span className="pkx-rec">Our recommendation</span>}
+      </header>
+
+      <div className="pkx-price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+        {fixed ? (
+          <>
+            <span className="pkx-now" itemProp="price">£{pkg.price}</span>
+            <meta itemProp="priceCurrency" content="GBP" />
+            {pkg.was && <s className="pkx-was"><span className="sr-only">Previously </span>£{pkg.was}</s>}
+            {pkg.saving && <em className="pkx-save">{pkg.saving}</em>}
+          </>
+        ) : (
+          <span className="pkx-quote">{pkg.priceLabel}</span>
+        )}
+      </div>
+      <p className="pkx-pay">{pkg.paymentText}</p>
+
+      <p className="pkx-sum" itemProp="description">{pkg.summary}</p>
+
+      <ul className="pkx-points">
+        {keyPoints(pkg).map((t) => (
+          <li key={t}><Check aria-hidden="true" />{t}</li>
+        ))}
+      </ul>
+
+      <Link to={`/start?package=${pkg.id}`} className="pkx-go" aria-label={fixed ? `Get started with ${pkg.name} for £${pkg.price}` : `Talk to us about an ${pkg.name} project`}>
+        {fixed ? `Start with ${pkg.name}` : "Talk to us"} <span aria-hidden="true">&#8594;</span>
+      </Link>
+
+      <details className="pkx-more">
+        <summary>See the details</summary>
+        <ul>
+          {pkg.features.map((f) => (
+            <li key={f.title}><b>{f.title}.</b> {f.text}</li>
+          ))}
+        </ul>
+        {pkg.note && <p>{pkg.note}</p>}
+      </details>
+    </article>
+  );
+}
+
 export default function Packages() {
+  const fixedPackages = packages.filter((p) => p.price !== null);
+  const bespoke = packages.filter((p) => p.price === null);
   return (
     <Layout pageClass="pg pg-inner pk">
       <Seo path="/packages"
@@ -39,115 +82,68 @@ export default function Packages() {
         <p className="pk-lede">Pick a fixed-price package and know what you get, what it costs and when it will be ready. Need something bigger? Ask for a quote.</p>
       </section>
 
-      <section className="pk-list" data-tone="light" aria-label="Packages">
-        {packages.map((pkg) => (
-          <article key={pkg.id} className="pk-row" data-rec={pkg.recommended ? "true" : "false"} itemScope itemType="https://schema.org/Product">
-            <div className="pk-row__top">
-              <div>
-                <h2 itemProp="name">{pkg.name}</h2>
-                <p itemProp="description">{pkg.summary}</p>
-                {pkg.recommended && <span className="pk-rec">Our recommendation</span>}
-              </div>
-              <div className="pk-row__price" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                {pkg.price ? (
-                  <>
-                    {pkg.was && <s className="pk-was"><span className="sr-only">Previously </span>£{pkg.was}</s>}
-                    <span itemProp="price">£{pkg.price}</span>
-                    <meta itemProp="priceCurrency" content="GBP" />
-                    {pkg.saving && <em className="pk-save">{pkg.saving}</em>}
-                  </>
-                ) : (
-                  <span className="pk-quote">{pkg.priceLabel}</span>
-                )}
-              </div>
-            </div>
-            <p className="pk-pay">{pkg.paymentText}.</p>
-            <details>
-              <summary>See what is included</summary>
-              <p className="pk-meta">{pkg.tagline}</p>
+      <section className="pkx" data-tone="light" aria-label="Packages">
+        <div className="pkx-grid">
+          {fixedPackages.map((p) => <Card key={p.id} pkg={p} />)}
+        </div>
+        {bespoke.map((p) => (
+          <article key={p.id} className="pkx-band">
+            <div>
+              <h2>{p.name}</h2>
+              <p>{p.summary}</p>
               <ul>
-                {pkg.features.map((f) => (
-                  <li key={f.title}><b>{f.title}.</b> {f.text}</li>
-                ))}
+                {keyPoints(p).map((t) => <li key={t}>{t}</li>)}
               </ul>
-              {pkg.note && <p className="pk-meta">{pkg.note}</p>}
-              {pkg.id !== "enterprise" && (
-                <>
-                  <p className="pk-meta"><b>Included with both fixed packages</b></p>
-                  <ul>
-                    {sharedFeatures.map((f) => (
-                      <li key={f.title}><b>{f.title}.</b> {f.text}</li>
-                    ))}
-                  </ul>
-                </>
-              )}
-              <p className="pk-meta">
-                {[pkg.revisions, pkg.delivery && `Estimated delivery: ${pkg.delivery}`, `Payment: ${pkg.paymentText}`].filter(Boolean).join(". ")}.
-              </p>
-            </details>
-            <Link
-              to={`/start?package=${pkg.id}`}
-              className="pk-go"
-              aria-label={pkg.price ? `Get started with ${pkg.name} for £${pkg.price}` : `Talk to us about an ${pkg.name} project`}
-            >
-              {pkg.price ? `Start with ${pkg.name}` : "Talk to us"} <span aria-hidden="true">&#8594;</span>
-            </Link>
+            </div>
+            <div className="pkx-band__go">
+              <span className="pkx-quote">{p.priceLabel}</span>
+              <Link to={`/start?package=${p.id}`} className="pkx-go" aria-label={`Talk to us about an ${p.name} project`}>Talk to us <span aria-hidden="true">&#8594;</span></Link>
+            </div>
           </article>
         ))}
-        <p className="pk-note">{DELIVERY_NOTE}</p>
+        <p className="pkx-note">{DELIVERY_NOTE}</p>
       </section>
 
-      <section className="pk-more" data-tone="dark" aria-label="More detail">
-        <details>
-          <summary>Compare everything</summary>
-          <div className="pk-table" role="table" aria-label="Package comparison">
-            <div role="row" className="pk-table__h">
-              <span role="columnheader" />
-              {packages.map((p) => (
-                <span role="columnheader" key={p.id}>{p.name}<small>{p.price ? `£${p.price}` : p.priceLabel}</small></span>
-              ))}
-            </div>
-            {comparison.map((r) => (
-              <div role="row" key={r.label}>
-                <span role="rowheader">{r.label}</span>
-                {r.values.map((v, i) => (
-                  <span role="cell" key={i}>{v}</span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </details>
-        <details>
-          <summary>Optional extras</summary>
-          <ul className="pk-extras">
+      <section className="pkx-shared" data-tone="light" aria-labelledby="shared-title">
+        <h2 id="shared-title">Included with both packages</h2>
+        <ul>
+          {sharedFeatures.map((f) => (
+            <li key={f.title}><b>{f.title}</b><span>{f.text}</span></li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="pkx-extra" data-tone="dark" aria-labelledby="extras-title">
+        <div>
+          <h2 id="extras-title">Optional extras</h2>
+          <p>Add any of these to Launch or Growth.</p>
+          <ul>
             {addons.map((a) => (
-              <li key={a.name}>
-                <span>{a.name}<small className="pk-sub">{a.explain}</small></span>
+              <li key={a.id}>
+                <span><b>{a.name}</b><small>{a.explain}</small></span>
                 <i>£{a.price}</i>
               </li>
             ))}
           </ul>
-        </details>
-        <details>
-          <summary>Hosting &amp; Care, £{hosting.price}/month</summary>
-          <p className="pk-meta">{hosting.intro}</p>
-          <ul className="pk-extras">
+        </div>
+        <div className="pkx-care">
+          <h2>Hosting &amp; Care</h2>
+          <p className="pkx-care__price"><b>£{hosting.price}</b> a month</p>
+          <p>{hosting.intro} Month to month, cancel with 30 days&apos; notice.</p>
+          <ul>
             {hosting.features.map((f) => (
-              <li key={f}>
-                <span>{f}</span>
-              </li>
+              <li key={f}><Check aria-hidden="true" />{f}</li>
             ))}
           </ul>
-          {hosting.terms.map((t) => (
-            <p className="pk-meta" key={t}>{t}</p>
-          ))}
-        </details>
-        <details>
-          <summary>How the package scope works</summary>
-          {scopeNotes.map((t) => (
-            <p className="pk-meta" key={t}>{t}</p>
-          ))}
-        </details>
+          <p className="pkx-fine">{hosting.terms[0]} {hosting.terms[2]}</p>
+        </div>
+      </section>
+
+      <section className="pkx-scope" data-tone="dark" aria-labelledby="scope-title">
+        <h2 id="scope-title">How the scope works</h2>
+        <ul>
+          {scopeNotes.map((t) => <li key={t}>{t}</li>)}
+        </ul>
       </section>
 
       <CtaBand />

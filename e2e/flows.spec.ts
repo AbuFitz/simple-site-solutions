@@ -115,7 +115,7 @@ test.describe("package selection and brief form", () => {
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await toggle.click();
     await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    await expect(page.getByText("One standard contact form", { exact: false }).first()).toBeVisible();
+    await expect(page.getByText("An enquiry form", { exact: true }).first()).toBeVisible();
     await expect(page.getByRole("radio", { name: /Launch/ })).toHaveAttribute("aria-checked", "false");
     await expect(page.getByRole("radio", { name: /Enterprise/ })).toContainText("Tailored quotation");
     await expect(page.getByRole("radio", { name: /Growth/ })).toContainText("£489");

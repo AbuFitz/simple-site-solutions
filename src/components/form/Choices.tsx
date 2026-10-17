@@ -1,4 +1,5 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Check, ChevronDown, Info } from "lucide-react";
 import { sharedFeatures, type Addon, type PackageTier, hosting } from "@/data/packages";
 
@@ -41,43 +42,40 @@ function List({ items }: { items: { title: string; text?: string }[] }) {
   );
 }
 
-/** What a package includes. Shown inside the dropdown on the form. */
+/** A short checklist of what a package includes. The full wording lives on the packages page. */
+function Short({ items }: { items: string[] }) {
+  return (
+    <ul className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2">
+      {items.map((t) => (
+        <li key={t} className="flex gap-2 text-sm leading-snug">
+          <Check aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <span>{t}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** What a package includes, kept brief. Shown inside the dropdown on the form. */
 export function PackageDetails({ pkg }: { pkg: PackageTier }) {
   const fixed = pkg.id !== "enterprise";
   return (
-    <div className="space-y-4 text-left">
-      <p className="text-sm text-muted-foreground">{pkg.tagline}</p>
-      <p className="text-sm">
-        <span className="font-medium">Best suited to: </span>
-        <span className="text-muted-foreground">{pkg.ideal}</span>
-      </p>
+    <div className="space-y-4 pt-1 text-left">
+      <p className="text-sm text-muted-foreground">{pkg.ideal}</p>
       <div>
-        <p className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">{fixed ? `${pkg.name} includes` : "Examples"}</p>
-        <List items={pkg.features} />
-        {pkg.note && <p className="mt-2 text-sm text-muted-foreground">{pkg.note}</p>}
+        <p className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">{fixed ? pkg.name : "Examples"}</p>
+        <Short items={[...pkg.features.map((f) => f.title), ...(pkg.revisions ? [pkg.revisions] : [])]} />
       </div>
       {fixed && (
         <div>
-          <p className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">Included with both packages</p>
-          <List items={sharedFeatures} />
+          <p className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">Plus, in both packages</p>
+          <Short items={sharedFeatures.map((f) => f.title)} />
         </div>
       )}
-      <dl className="grid gap-x-6 gap-y-2 pt-1 text-sm sm:grid-cols-[auto_1fr]">
-        {pkg.revisions && (
-          <>
-            <dt className="text-muted-foreground">Revisions</dt>
-            <dd>{pkg.revisions}</dd>
-          </>
-        )}
-        {pkg.delivery && (
-          <>
-            <dt className="text-muted-foreground">Delivery</dt>
-            <dd>Estimated {pkg.delivery}</dd>
-          </>
-        )}
-        <dt className="text-muted-foreground">Payment</dt>
-        <dd>{pkg.paymentText}</dd>
-      </dl>
+      <p className="text-sm text-muted-foreground">
+        {[pkg.delivery && `Estimated delivery: ${pkg.delivery}`, `Payment: ${pkg.paymentText}`].filter(Boolean).join(". ")}.{" "}
+        <Link to="/packages" className="underline underline-offset-2 hover:text-foreground">Full details</Link>
+      </p>
     </div>
   );
 }
@@ -121,17 +119,39 @@ export function PackageChoice({ pkg, selected, onSelect }: { pkg: PackageTier; s
 }
 
 /**
- * A selectable add-on, the same compact box as before. The (i) in the corner opens a small speech bubble above the card:
- * on hover or keyboard focus with a mouse, on tap with a finger. The card itself never changes size.
- * `side` is which edge of the card the bubble lines up with, so it never runs off the screen in a two-column grid.
+ * A selectable add-on, the same compact box as before. A speech bubble explains it without changing the box:
+ * hover anywhere on the card with a mouse, keyboard focus, or tap the (i) on a phone. On a wide screen the bubble
+ * sits centred above the card; on a phone it lines up with the card's edge (`side`) so it never leaves the screen.
  */
 export function AddonChoice({ addon, selected, onToggle, side = "right" }: { addon: Addon; selected: boolean; onToggle: () => void; side?: "left" | "right" }) {
   const [tap, setTap] = useState(false);
   const [hover, setHover] = useState(false);
   const [focus, setFocus] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
+  const timer = useRef<number>();
   const textId = useId();
   const show = tap || hover || focus;
+  const tip = useRef<HTMLDivElement>(null);
+  const [below, setBelow] = useState(false);
+
+  // Open upwards, unless there is no room above the card (the top row): then open downwards.
+  useLayoutEffect(() => {
+    if (!show || !wrap.current || !tip.current) return;
+    const room = wrap.current.getBoundingClientRect().top - 72;
+    setBelow(room < tip.current.offsetHeight + 100);
+  }, [show]);
+
+  const enter = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setHover(true), 150);
+  };
+  const leave = (e: React.PointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    window.clearTimeout(timer.current);
+    setHover(false);
+  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   // A tap opens it; a tap anywhere else, or Escape, closes it.
   useEffect(() => {
@@ -148,8 +168,21 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
   }, [tap]);
 
   return (
-    <div ref={wrap} className={`relative rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${show ? "z-20" : "z-0"} ${selected ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}>
-      <button type="button" aria-pressed={selected} onClick={onToggle} className="block min-h-[44px] w-full rounded-[inherit] p-3 pb-9 text-left sm:p-4 sm:pb-10">
+    <div
+      ref={wrap}
+      onPointerEnter={enter}
+      onPointerLeave={leave}
+      className={`relative rounded-lg border-2 bg-card transition-colors sm:rounded-xl ${show ? "z-20" : "z-0"} ${selected ? "border-primary" : "border-border hover:border-muted-foreground/50"}`}
+    >
+      <button
+        type="button"
+        aria-pressed={selected}
+        aria-describedby={textId}
+        onClick={onToggle}
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
+        className="block min-h-[44px] w-full rounded-[inherit] p-3 pb-9 text-left sm:p-4 sm:pb-10"
+      >
         <span className="flex items-start justify-between">
           <span className="text-xs font-semibold leading-tight sm:text-sm">{addon.name}</span>
           <span aria-hidden="true" className={`ml-2 flex h-4 w-4 shrink-0 items-center justify-center rounded-md border-2 transition-colors sm:h-5 sm:w-5 ${selected ? "border-primary bg-primary" : "border-muted-foreground/40"}`}>
@@ -161,25 +194,27 @@ export function AddonChoice({ addon, selected, onToggle, side = "right" }: { add
       <button
         type="button"
         aria-label={`About ${addon.name}`}
-        aria-describedby={textId}
         aria-expanded={show}
         onClick={() => setTap((v) => !v)}
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
-        className="absolute bottom-0 right-0 flex h-11 w-11 items-center justify-center text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:text-foreground"
+        className="group absolute bottom-0 right-0 flex h-11 w-11 items-center justify-center outline-none"
       >
-        <Info aria-hidden="true" className="h-[18px] w-[18px]" />
+        <span className="flex h-6 w-6 items-center justify-center rounded-full border border-muted-foreground/40 text-muted-foreground transition-colors group-hover:border-foreground group-hover:text-foreground group-focus-visible:border-foreground group-focus-visible:text-foreground">
+          <Info aria-hidden="true" className="h-3.5 w-3.5" />
+        </span>
       </button>
       <div
         id={textId}
+        ref={tip}
         role="tooltip"
-        className={`pointer-events-none absolute bottom-[calc(100%+12px)] ${side === "left" ? "left-0" : "right-0"} w-[min(280px,calc(100vw-40px))] rounded-xl bg-foreground p-3 text-left text-sm font-normal leading-snug text-background shadow-xl transition-all duration-150 ${show ? "visible translate-y-0 opacity-100" : "invisible translate-y-1 opacity-0"}`}
+        className={`pointer-events-none absolute ${below ? "top-[calc(100%+12px)] origin-top" : "bottom-[calc(100%+12px)] origin-bottom"} w-[min(300px,calc(100vw-40px))] rounded-xl bg-foreground p-3.5 text-left text-background shadow-xl transition-all duration-150 ${side === "left" ? "left-0" : "right-0"} sm:left-1/2 sm:right-auto sm:-translate-x-1/2 ${show ? "visible scale-100 opacity-100" : "invisible scale-95 opacity-0"}`}
       >
-        {addon.explain}
+        <span className="block text-sm font-semibold">{addon.name}</span>
+        <span className="mt-1 block text-sm font-normal leading-snug opacity-90">{addon.explain}</span>
       </div>
-      <span aria-hidden="true" className={`pointer-events-none absolute bottom-[calc(100%+6px)] right-[14px] h-3 w-3 rotate-45 rounded-[2px] bg-foreground transition-opacity duration-150 ${show ? "opacity-100" : "opacity-0"}`} />
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute ${below ? "top-[calc(100%+6px)]" : "bottom-[calc(100%+6px)]"} right-[14px] h-3 w-3 rotate-45 rounded-[2px] bg-foreground transition-opacity duration-150 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 ${show ? "opacity-100" : "opacity-0"}`}
+      />
     </div>
   );
 }
