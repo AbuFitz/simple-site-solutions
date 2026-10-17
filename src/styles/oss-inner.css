@@ -5,8 +5,7 @@
 
 /* Bar blur so scrolling content doesn't fight the links */
 .oss-bar { background: none !important; }
-.oss-bar::before { content: ""; position: absolute; inset: 0 0 -26px 0; z-index: -1; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent); mask-image: linear-gradient(180deg, #000 50%, transparent); pointer-events: none; opacity: 0; transition: opacity 0.35s ease; }
-.oss-bar[data-scrolled="true"]::before { opacity: 1; }
+.oss-bar::before { content: ""; position: absolute; inset: 0 0 -26px 0; z-index: -1; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); -webkit-mask-image: linear-gradient(180deg, #000 50%, transparent); mask-image: linear-gradient(180deg, #000 50%, transparent); pointer-events: none; opacity: 1; }
 .oss-bar[data-open="true"]::before { display: none; }
 
 /* Area pages */
