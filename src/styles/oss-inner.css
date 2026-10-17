@@ -332,3 +332,6 @@
   .pkx-scope { padding-bottom: 50px; }
   .pkx-go { width: 100%; }
 }
+.pkx-points li b { display: block; font-weight: 600; }
+.pkx-points li small { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; opacity: 0.7; }
+.pkx-nb { margin: 14px 0 0; font-size: 14px; line-height: 1.45; opacity: 0.65; }

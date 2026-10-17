@@ -58,7 +58,7 @@ export default function About() {
           ))}
         </ol>
         <p className="ab-fit">
-          It suits you if you want a clean, working site without managing a design project. For online shops, customer portals or a custom web app, ask us about Enterprise. The <Link to="/faq">FAQ</Link> explains the trade-off.
+          It suits you if you want a clean, working site without managing a design project. For online shops, customer portals or a custom web app, ask us about Enterprise.
         </p>
       </section>
       <CtaBand />

@@ -42,7 +42,7 @@ export default function Index() {
           <span><Scramble text="that make" delay={250} /></span>
           <span className="g"><TypeRotate words={["sense.", "an impact.", "a mark."]} /></span>
         </h1>
-        <p className="hm-hero__line">Fixed-price websites for businesses across the UK. Fixed prices from £189.</p>
+        <p className="hm-hero__line">Fixed-price websites for businesses across the UK, from £189.</p>
               </section>
 
       <section className="hm-story" data-tone="dark" aria-labelledby="story-title">
@@ -108,7 +108,7 @@ export default function Index() {
             </li>
           ))}
         </ul>
-        <Link to="/packages" className="hm-link">Compare everything included &#8594;</Link>
+        <Link to="/packages" className="hm-link">See what is included &#8594;</Link>
       </section>
 
       <CtaBand />

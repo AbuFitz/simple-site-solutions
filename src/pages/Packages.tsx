@@ -7,11 +7,11 @@ import { Seo, breadcrumb } from "@/components/seo/Seo";
 import { addons, hosting, packages, scopeNotes, sharedFeatures, type PackageTier } from "@/data/packages";
 import { DELIVERY_NOTE } from "@/data/site";
 
-/** The short, scannable list on each card. The full wording sits behind "See the details". */
-const keyPoints = (p: PackageTier) => [
-  ...p.features.map((f) => f.title),
-  ...(p.revisions ? [p.revisions] : []),
-  ...(p.delivery ? [`Estimated delivery: ${p.delivery}`] : []),
+/** The breakdown shown on each card: what is specific to the package, then revisions and timing. */
+const breakdown = (p: PackageTier): { title: string; text?: string }[] => [
+  ...p.features,
+  ...(p.revisions ? [{ title: p.revisions }] : []),
+  ...(p.delivery ? [{ title: `Estimated delivery: ${p.delivery}` }] : []),
 ];
 
 function Card({ pkg }: { pkg: PackageTier }) {
@@ -40,24 +40,19 @@ function Card({ pkg }: { pkg: PackageTier }) {
       <p className="pkx-sum" itemProp="description">{pkg.summary}</p>
 
       <ul className="pkx-points">
-        {keyPoints(pkg).map((t) => (
-          <li key={t}><Check aria-hidden="true" />{t}</li>
+        {breakdown(pkg).map((f) => (
+          <li key={f.title}>
+            <Check aria-hidden="true" />
+            <span><b>{f.title}</b>{f.text && <small>{f.text}</small>}</span>
+          </li>
         ))}
       </ul>
+      {pkg.note && <p className="pkx-nb">{pkg.note}</p>}
+      {fixed && <p className="pkx-nb">Plus everything in &ldquo;Included with both packages&rdquo;, below.</p>}
 
       <Link to={`/start?package=${pkg.id}`} className="pkx-go" aria-label={fixed ? `Get started with ${pkg.name} for £${pkg.price}` : `Talk to us about an ${pkg.name} project`}>
         {fixed ? `Start with ${pkg.name}` : "Talk to us"} <span aria-hidden="true">&#8594;</span>
       </Link>
-
-      <details className="pkx-more">
-        <summary>See the details</summary>
-        <ul>
-          {pkg.features.map((f) => (
-            <li key={f.title}><b>{f.title}.</b> {f.text}</li>
-          ))}
-        </ul>
-        {pkg.note && <p>{pkg.note}</p>}
-      </details>
     </article>
   );
 }
@@ -92,7 +87,7 @@ export default function Packages() {
               <h2>{p.name}</h2>
               <p>{p.summary}</p>
               <ul>
-                {keyPoints(p).map((t) => <li key={t}>{t}</li>)}
+                {p.features.map((f) => <li key={f.title}>{f.title}</li>)}
               </ul>
             </div>
             <div className="pkx-band__go">

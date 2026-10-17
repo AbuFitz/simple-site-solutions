@@ -83,11 +83,11 @@ export default function FAQ() {
       <CTASection
         title="Still have"
         highlightedText="questions?"
-        description="The best way to learn more is to start. Fill out the form, choose your package, and we'll take it from there."
-        primaryButtonText="Get Started"
-        primaryButtonLink="/start"
-        secondaryButtonText="View Pricing"
-        secondaryButtonLink="/packages"
+        description="Send us a message and we will reply by email, or start your project when you are ready."
+        primaryButtonText="Contact us"
+        primaryButtonLink="/contact"
+        secondaryButtonText="Start a project"
+        secondaryButtonLink="/start"
       />
     </Layout>
   );

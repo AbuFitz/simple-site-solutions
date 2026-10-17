@@ -45,7 +45,7 @@ export function PackagesGlance() {
           ))}
         </ul>
         <motion.div className="mt-6 flex flex-wrap gap-3" {...rise}>
-          <Link to="/packages" className="btn-primary btn-lg min-h-[48px] gap-2 !text-background">Compare everything included <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+          <Link to="/packages" className="btn-primary btn-lg min-h-[48px] gap-2 !text-background">See what is included <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
           <Link to="/preview" className="btn-outline btn-lg min-h-[48px]">See a sample first</Link>
         </motion.div>
       </div>

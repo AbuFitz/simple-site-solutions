@@ -44,12 +44,12 @@ export const faqs: Faq[] = [
   {
     question: "What if I need changes after we launch?",
     answer:
-      "We're here to help. The optional Hosting & Care plan (£29/month) includes up to 3 small content changes a month, within 30 minutes combined. Anything beyond that, or without the plan, we'll quote before doing the work.",
+      "We can help. The optional Hosting & Care plan (£29/month) includes up to 3 small content changes a month, within 30 minutes combined. Anything beyond that, or without the plan, we'll quote before doing the work.",
   },
   {
     question: "What do you need from me to get started?",
     answer:
-      "Business name and details, your services, contact information, and any images or logos you want to use. We guide you through it with a simple form. Don't worry if you don't have everything — we'll help you figure it out.",
+      "Your business name and contact details, your services, and any images or logos you want to use. One short form collects it. If you are missing anything, such as wording or photos, we will help.",
   },
   {
     question: "What about hosting?",
@@ -74,11 +74,11 @@ export const faqs: Faq[] = [
   {
     question: "What industries do you work with?",
     answer:
-      "We specialise in local UK businesses: plumbers, electricians, mechanics, cleaners, barbers and salons, tutors, small shops, builders, and other trades. Our layouts are researched and proven for these industries.",
+      "Mostly local UK businesses: plumbers, electricians, mechanics, cleaners, barbers and salons, tutors, small shops and builders. If you are somewhere else, such as a shop or a customer portal, ask us about Enterprise.",
   },
   {
     question: "Can I see examples of your work?",
     answer:
-      "Yes! See the Our Work section on the homepage for real sites we have built or have in preview.",
+      "Yes. The Our work section on the home page and the Work page show real websites we have built.",
   },
 ];
