@@ -122,10 +122,10 @@
 .hm-win__bar em { flex: 1; max-width: 62%; margin: 0 auto; padding: 4px 14px; border-radius: 8px; background: #0b100e; font: 13px var(--f-mono); font-style: normal; color: #cfd2cc; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transform: translateX(-4%); }
 .hm-rack__ring > li[aria-hidden="true"] .hm-win__bar em { opacity: 0.0; }
 .hm-win__shot { display: block; aspect-ratio: 16 / 9.4; overflow: hidden; background: #000; border-radius: 0 0 14px 14px; }
-.hm-win__shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; pointer-events: none; }
+.hm-win__shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; pointer-events: none; }
 /* The phone view stands in front of its window. */
-.hm-phone { position: absolute; right: -5%; bottom: -14%; width: 19%; aspect-ratio: 390 / 800; border-radius: 9% / 4.4%; background: #1b211e; padding: 2.6%; box-shadow: 0 40px 60px -20px #000, 0 0 0 1px rgba(239, 235, 227, 0.2); transform: translateZ(90px); }
-.hm-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 7% / 3.4%; display: block; pointer-events: none; }
+.hm-phone { position: absolute; right: -5%; bottom: -14%; width: 19%; border-radius: clamp(16px, 2.4vw, 34px); background: #1b211e; padding: clamp(5px, 0.55vw, 9px); box-shadow: 0 40px 60px -20px #000, 0 0 0 1px rgba(239, 235, 227, 0.2); transform: translateZ(90px); }
+.hm-phone img { width: 100%; height: auto; display: block; border-radius: clamp(11px, 1.8vw, 26px); pointer-events: none; }
 .hm-rack__arrow { position: absolute; top: 40%; z-index: 90; width: 58px; height: 58px; border-radius: 50%; border: 0; background: rgba(8, 12, 10, 0.78); color: var(--bone); display: grid; place-items: center; cursor: pointer; box-shadow: 0 0 0 1px rgba(239, 235, 227, 0.14); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background-color 0.2s ease, transform 0.2s ease; }
 .hm-rack__arrow:hover { background: rgba(239, 235, 227, 0.16); }
 .hm-rack__arrow:active { transform: scale(0.94); }
