@@ -27,6 +27,17 @@ export interface CheckoutConfig {
   priceIds: Partial<Record<PackageId, string>>;
 }
 
+const notPlaceholder = (value: string) =>
+  !/(?:placeholder|change[-_ ]?me|replace|example|dummy|fake|todo)/i.test(value);
+
+const validHttpsUrl = (value: string) => {
+  try {
+    return new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 export function checkoutConfig(env: NodeJS.ProcessEnv = process.env): CheckoutConfig {
   const reasons: string[] = [];
   const need = (ok: boolean, why: string) => {
@@ -36,11 +47,17 @@ export function checkoutConfig(env: NodeJS.ProcessEnv = process.env): CheckoutCo
   need(env.CHECKOUT_ENABLED === "true", "CHECKOUT_ENABLED is not 'true'");
   need(env.PRICING_APPROVED === "true", "PRICING_APPROVED is not 'true' (owner has not signed off prices and terms)");
   const key = env.STRIPE_SECRET_KEY || "";
-  need(/^sk_(test|live)_/.test(key), "STRIPE_SECRET_KEY missing or malformed");
+  need(/^sk_(test|live)_[A-Za-z0-9_-]{12,}$/.test(key) && notPlaceholder(key), "STRIPE_SECRET_KEY missing, malformed or a placeholder");
   need(key.startsWith("sk_live_") ? env.STRIPE_ALLOW_LIVE === "true" : true, "Live Stripe key without STRIPE_ALLOW_LIVE='true'");
-  need(/^whsec_/.test(env.STRIPE_WEBHOOK_SECRET || ""), "STRIPE_WEBHOOK_SECRET missing or malformed");
-  need(Boolean(env.SITE_URL), "SITE_URL missing");
-  need(Boolean(env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN), "Fulfilment store (UPSTASH_REDIS_REST_URL/TOKEN) missing");
+  const webhook = env.STRIPE_WEBHOOK_SECRET || "";
+  need(/^whsec_[A-Za-z0-9_-]{12,}$/.test(webhook) && notPlaceholder(webhook), "STRIPE_WEBHOOK_SECRET missing, malformed or a placeholder");
+  need(env.SITE_URL === "https://onesimplesite.co.uk", "SITE_URL must be the canonical production origin");
+  const redisUrl = env.UPSTASH_REDIS_REST_URL || "";
+  const redisToken = env.UPSTASH_REDIS_REST_TOKEN || "";
+  need(validHttpsUrl(redisUrl) && redisToken.length >= 16 && notPlaceholder(redisUrl) && notPlaceholder(redisToken), "Fulfilment store (UPSTASH_REDIS_REST_URL/TOKEN) missing or malformed");
+  const resend = env.RESEND_API_KEY || "";
+  need(/^re_[A-Za-z0-9_-]{20,}$/.test(resend) && notPlaceholder(resend), "RESEND_API_KEY missing, malformed or a placeholder");
+  need(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(env.ADMIN_EMAIL || ""), "ADMIN_EMAIL missing or malformed");
 
   const priceIds: Partial<Record<PackageId, string>> = {};
   const ready: PackageId[] = [];

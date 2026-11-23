@@ -29,6 +29,8 @@ describe("checkout config fails closed", () => {
     ["STRIPE_SECRET_KEY", ""],
     ["STRIPE_WEBHOOK_SECRET", ""],
     ["UPSTASH_REDIS_REST_URL", ""],
+    ["RESEND_API_KEY", ""],
+    ["ADMIN_EMAIL", ""],
     ["SITE_URL", ""],
     ["PACKAGE_READY_LAUNCH", "false"],
   ])("is off when %s is %j", async (k, v) => {
@@ -168,7 +170,7 @@ describe("POST /api/stripe-webhook", () => {
     constructEvent.mockReset();
     fetchMock.mockReset();
     sendMock.mockReset();
-    setEnv({ ...CHECKOUT_ENV, RESEND_API_KEY: "re_123" });
+    setEnv(CHECKOUT_ENV);
   });
 
   it("rejects a missing or invalid signature", async () => {
