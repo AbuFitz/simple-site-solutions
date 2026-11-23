@@ -7,7 +7,7 @@ import { addons, monthlyPlanIds, packageIds } from "../data/packages.js";
  */
 const text = (label: string, min: number, max: number) =>
   z
-    .string({ required_error: `${label} is required` })
+    .string({ error: `${label} is required` })
     .trim()
     .min(min, min <= 2 ? `${label} is required` : `${label} needs a few more words`)
     .max(max, `${label} is too long (max ${max} characters)`);
@@ -18,7 +18,7 @@ export const briefFieldsSchema = z.object({
   businessName: text("Business name", 2, 100),
   name: text("Your name", 2, 100),
   email: z
-    .string({ required_error: "Email is required" })
+    .string({ error: "Email is required" })
     .trim()
     .min(1, "Email is required")
     .max(254, "Email is too long")
@@ -43,7 +43,7 @@ export const PACKAGE_CHOICES = [...packageIds, "unsure"] as unknown as [string, 
 export const ADDON_IDS = addons.map((a) => a.id) as [string, ...string[]];
 
 export const briefSchema = briefFieldsSchema.extend({
-  selectedPackage: z.enum(PACKAGE_CHOICES, { errorMap: () => ({ message: "Choose a package, or 'Not sure yet'" }) }),
+  selectedPackage: z.enum(PACKAGE_CHOICES, { error: "Choose a package, or 'Not sure yet'" }),
   /** Monthly rolling plan. "none" means no monthly plan for now. */
   monthlyPlan: z.enum(monthlyPlanIds).default("none"),
   selectedAddons: z.array(z.enum(ADDON_IDS)).max(ADDON_IDS.length).default([]),

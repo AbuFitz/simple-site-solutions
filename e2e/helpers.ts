@@ -7,6 +7,7 @@ export const ROUTES = [
   "/packages",
   "/how-it-works",
   "/preview",
+  "/solutions/commerce",
   "/web-design",
   "/guides",
   "/guides/diy-website-builder-or-web-designer",
@@ -62,7 +63,10 @@ export function watchErrors(page: Page) {
 }
 
 export async function settle(page: Page) {
-  await page.waitForLoadState("networkidle").catch(() => undefined);
+  // Some preview templates load third-party media after the useful UI is ready.
+  // Keep this a best-effort settle rather than allowing network activity to
+  // consume the test's entire timeout budget.
+  await page.waitForLoadState("networkidle", { timeout: 5_000 }).catch(() => undefined);
   await page.waitForTimeout(400);
 }
 

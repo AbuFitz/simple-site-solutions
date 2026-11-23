@@ -23,6 +23,16 @@ Status of every business fact the site relies on. Accessed 2026-10-14. Research 
 | Reply-time promise (was "within 24 hours") | BLOCKED | Unconfirmed; removed everywhere (site, emails, forms). Copy now says "we'll reply by email". |
 | Refunds: deposit non-refundable once work starts | PROVISIONAL | `Terms.tsx`, `FAQ.tsx`. Needs legal review against the Consumer Contracts Regulations (see research notes §4). |
 
+## OneSimpleCommerce
+
+| Fact | Status | Source / note |
+|---|---|---|
+| OneSimpleCommerce is a standalone product with one plan: £479 one-time build and £39/month | VERIFIED as the accepted product decision | `osscommerce` ADR 0008 and contracts package, checked 23 November 2026. |
+| Bespoke storefront, merchant dashboard, payments setup, delivery configuration, hosting, security and platform updates | VERIFIED in the current product repository | Marketing app, portal and deployment documentation. Production integrations still have separate launch gates. |
+| 0.5% application fee | BLOCKED | Present in plan data but ADR 0008 says it is not commercially confirmed. Omitted from this site. |
+| VAT treatment, exact Commerce build scope and delivery time | BLOCKED | Must be settled in the written order form before checkout or a public promise. |
+| Production customer outcomes, reviews and revenue claims | BLOCKED | No launch evidence; none are claimed. |
+
 ## Business identity and contact
 
 | Fact | Status | Note |

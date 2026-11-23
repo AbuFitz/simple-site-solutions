@@ -5,6 +5,7 @@ const items = [
   { path: "/", label: "Home" },
   { path: "/work", label: "Work" },
   { path: "/packages", label: "Pricing" },
+  { path: "/solutions/commerce", label: "Commerce" },
   { path: "/how-it-works", label: "Process" },
   { path: "/about", label: "About" },
   { path: "/guides", label: "Guides" },

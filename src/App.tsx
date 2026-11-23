@@ -31,6 +31,7 @@ const GuidesHub = lazy(() => import("./pages/GuidesHub"));
 const Guide = lazy(() => import("./pages/Guide"));
 const WebDesignHub = lazy(() => import("./pages/WebDesignHub"));
 const WebDesignLocation = lazy(() => import("./pages/WebDesignLocation"));
+const Commerce = lazy(() => import("./pages/Commerce"));
 const DevTemplate = import.meta.env.DEV ? lazy(() => import("./pages/DevTemplate")) : null;
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -74,6 +75,7 @@ const App = () => {
           <Route path="/guides/:slug" element={<Guide />} />
           <Route path="/web-design" element={<WebDesignHub />} />
           <Route path="/web-design/:slug" element={<WebDesignLocation />} />
+          <Route path="/solutions/commerce" element={<Commerce />} />
           <Route path="/start" element={<Start />} />
           <Route path="/about" element={<About />} />
           <Route path="/about/:slug" element={<TeamMember />} />

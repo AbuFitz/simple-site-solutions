@@ -330,7 +330,7 @@ test.describe("checkout gating and result pages", () => {
 });
 
 test.describe("accessibility (axe, WCAG 2.x A/AA)", () => {
-  const pages = ["/", "/work", "/work/arf-mods", "/packages", "/how-it-works", "/preview", "/faq", "/start", "/start?package=growth", "/contact", "/about", "/privacy", "/terms", "/cookies", "/accessibility", "/checkout/cancel", "/nope"];
+  const pages = ["/", "/work", "/work/arf-mods", "/packages", "/solutions/commerce", "/how-it-works", "/preview", "/faq", "/start", "/start?package=growth", "/contact", "/about", "/privacy", "/terms", "/cookies", "/accessibility", "/checkout/cancel", "/nope"];
   for (const width of [390, 1440]) {
     for (const route of pages) {
       test(`${route} @ ${width}`, async ({ browser }) => {

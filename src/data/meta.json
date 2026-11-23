@@ -24,6 +24,10 @@
     "title": "Website Packages & Prices | From £189 | OneSimpleSite",
     "description": "Fixed-price websites for UK businesses: Launch £189 and Growth £489, plus tailored quotations for Enterprise projects. See exactly what each includes and what costs extra."
   },
+  "/solutions/commerce": {
+    "title": "OneSimpleCommerce | Bespoke Online Stores for UK Businesses",
+    "description": "A bespoke online store, merchant dashboard, payments and delivery setup, with hosting, security and updates looked after by OneSimpleSite."
+  },
   "/checkout/success": {
     "title": "Payment status | OneSimpleSite",
     "description": "See the status of your OneSimpleSite payment after checkout. Nothing shows as paid until Stripe confirms it.",

@@ -28,6 +28,7 @@ export const PAGES_FOR_SITEMAP = [
   "/packages",
   "/how-it-works",
   "/preview",
+  "/solutions/commerce",
   "/faq",
   "/start",
   "/contact",

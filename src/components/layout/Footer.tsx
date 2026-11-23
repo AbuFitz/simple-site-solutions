@@ -7,6 +7,7 @@ import { locationPath } from "@/lib/locationSeo.mjs";
 const siteLinks = [
   { to: "/work", label: "Work" },
   { to: "/packages", label: "Pricing" },
+  { to: "/solutions/commerce", label: "Commerce" },
   { to: "/how-it-works", label: "Process" },
   { to: "/guides", label: "Guides" },
   { to: "/faq", label: "FAQ" },

@@ -216,10 +216,7 @@ export default function Start() {
 
   const getProgressValue = () => (selectedPackage ? Math.round(((stepIndex + 1) / steps.length) * 100) : 0);
 
-  const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    void handleSubmit(onSubmit)(e);
-  };
+  const onFormSubmit = handleSubmit(onSubmit);
 
   const chosen = selectedPackage ? getPackage(selectedPackage) : undefined;
   const addonTotal = selectedAddons.reduce((sum, id) => sum + Number(getAddon(id)?.price ?? 0), 0);

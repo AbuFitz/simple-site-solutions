@@ -64,7 +64,7 @@ test("structured data has no ratings and parses", async ({ page }) => {
 
 test("sitemap and robots", async ({ request }) => {
   const sm = await (await request.get("/sitemap.xml")).text();
-  for (const p of ["/", "/work", "/packages", "/start", "/work/fixnow-mechanics"]) expect(sm).toContain(`<loc>https://onesimplesite.co.uk${p === "/" ? "/" : p}</loc>`);
+  for (const p of ["/", "/work", "/packages", "/solutions/commerce", "/start", "/work/fixnow-mechanics"]) expect(sm).toContain(`<loc>https://onesimplesite.co.uk${p === "/" ? "/" : p}</loc>`);
   expect(sm).not.toContain("/onboard");
   expect(sm).not.toContain("/checkout");
   const robots = await (await request.get("/robots.txt")).text();
@@ -96,10 +96,20 @@ test("no broken internal links across the site", async ({ page }) => {
 
 test("unsupported claims are gone", async ({ page }) => {
   const banned = [/satisfaction guarantee/i, /within 24 hours/i, /500\+/, /99\.9%/, /4\.9/, /most popular/i, /first month free/i, /keep it (live|fresh)/i, /£9\/month/i, /5-10 (business )?days/i];
-  for (const route of ["/", "/packages", "/faq", "/how-it-works", "/start", "/contact", "/about", "/terms"]) {
+  for (const route of ["/", "/packages", "/solutions/commerce", "/faq", "/how-it-works", "/start", "/contact", "/about", "/terms"]) {
     await page.goto(route);
     await settle(page);
     const text = await page.locator("body").innerText();
     for (const re of banned) expect(text, `${route} matches ${re}`).not.toMatch(re);
   }
+});
+
+test("Commerce page uses only approved commercial claims", async ({ page }) => {
+  await page.goto("/solutions/commerce");
+  await settle(page);
+  const text = await page.locator("main").innerText();
+  expect(text).toContain("£479");
+  expect(text).toContain("£39");
+  expect(text).not.toMatch(/0\.5%|VAT|guarantee|live in|conversion rate|customers served/i);
+  await expect(page.getByRole("link", { name: /Plan my store/i }).first()).toHaveAttribute("href", "/start?package=enterprise&type=Online%20shop");
 });
